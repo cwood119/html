@@ -2,8 +2,12 @@
 
 <div layout="row" layout-xs="column" layout-margin>
         <tri-widget flex flex-xs="100"  content-padding>
-            <md-card-content ng-controller="ninetyDayController as vm" ng-include="'app/decision-engine/90-day-forecast.html'"></md-card-content>
+            <md-card-content ng-controller="ninetyController as vm" ng-include="'app/air/decision-engine/charts/90-day-forecast.html'"></md-card-content>
         </tri-widget>
+
+
+
+
 
         <div flex="30" flex-sm="100" class="drag-container" layout="column" layout-margin dragula='"drag-server-container"'>
             <tri-widget palette-background="triCyan:500" background="primary" content-layout="row" content-layout-align="space-between center" content-padding>
@@ -57,7 +61,7 @@
 
 <!--
     <md-card>
-        <md-card-content ng-controller="ninetyDayController as vm" ng-include="'app/decision-engine/90-day-forecast.html'"></md-card-content>
+        <md-card-content ng-controller="ninety-controller as vm" ng-include="'app/decision-engine/90-day-forecast.html'"></md-card-content>
     </md-card>
 -->
 </div>

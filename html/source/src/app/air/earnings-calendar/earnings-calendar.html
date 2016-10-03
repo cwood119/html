@@ -1,0 +1,39 @@
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<div class="padded-content-page">
+    <div layout="row" layout-xs="column" layout-margin>
+
+        <tri-widget flex flex-xs="100"  content-padding>
+            <md-card-content>
+
+                <table style="width:100%">
+                    <tr style="border-bottom: 1px solid lightgray;">
+                        <td><span class="md-subhead">Symbol</span></td>
+                        <td><span class="md-subhead">Price</span></td>
+                        <td><span class="md-subhead">Quick View</span></td>
+                   </tr>
+                    <tr>
+                        <td>
+                            <span class="md-headline">BBRY</span><br>
+                            <span class="md-body-1">Blackberry Ltd</span><br>
+                        </td>
+                        <td>
+                            <span class="md-body-1">7.98</span><br>
+                            <span class="md-body-1">+0.04 (0.50%)</span><br>
+                        </td>
+                        <td>
+                            <span class="md-body-1">Vitals</span><br>
+                            <span class="md-body-1">Headlines</span><br>
+                        </td>
+                    </tr>
+                </table>
+
+
+            <md-card-content ng-controller="ecalController as vm" ng-include="'app/air/earnings-calendar/charts/tomorrow.html'"></md-card-content>
+	    </md-card-content>
+	</tri-widget>
+        <tri-widget flex flex-xs="100"  content-padding>
+            <md-card-content>test2</md-card-content>
+        </tri-widget>
+
+    </div>
+</div>

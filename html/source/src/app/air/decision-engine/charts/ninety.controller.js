@@ -2,11 +2,11 @@
     'use strict';
 
     angular
-        .module('app.examples.charts')
-        .controller('GoogleChartsBarController', GoogleChartsBarController);
+        .module('app.air.decision-engine')
+        .controller('ninetyController', ninetyController);
 
     /* @ngInject */
-    function GoogleChartsBarController() {
+    function ninetyController() {
         var vm = this;
         vm.barChart = {
             type: 'Bar',
@@ -21,9 +21,9 @@
                     title: '90 Day Forecast',
                 },
                 bars: 'vertical',
-		width: '100%',
+                width: '100%',
                 height: '400',
-		legend: { position: 'none' }
+                legend: { position: 'none' }
             }
         };
     }

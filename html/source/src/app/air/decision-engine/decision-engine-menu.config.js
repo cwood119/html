@@ -1,7 +1,7 @@
 (function() {
     'use strict';
     angular
-        .module('app')
+        .module('app.air.decision-engine')
         .config(routeConfig);
     /* @ngInject */
     function routeConfig($stateProvider, triMenuProvider) {
@@ -9,16 +9,16 @@
         $stateProvider
         .state('triangular.forecast', {
             url: '/forecast',
-            templateUrl: 'app/decision-engine/forecast.html'
+            templateUrl: 'app/air/decision-engine/forecast.html'
         })
 
         .state('triangular.pattern-recognition', {
             url: '/pattern-recognition',
-            templateUrl: 'app/decision-engine/pattern-recognition.html'
+            templateUrl: 'app/air/decision-engine/pattern-recognition.html'
         })
         .state('triangular.calculators', {
             url: '/calculators',
-            templateUrl: 'app/decision-engine/calculators.html'
+            templateUrl: 'app/air/decision-engine/calculators.html'
         });
         // next add the menu item that points to the above state.
         triMenuProvider.addMenu({
