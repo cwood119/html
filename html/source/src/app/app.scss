@@ -17,8 +17,21 @@ button, select, html, textarea, input {
 
 // Add your CSS here
 .side-menu-badge {color:white !important;}
-
-
+.symbol-card-row1 {border-bottom: 1px solid lightgray;}
+.symbol-card-row1 .md-subhead {
+    text-transform: uppercase;
+    color: #9E9E9E;
+    font-size: 13px;
+}
+md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active {color:#03A9F4;}
+md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper {
+    background-color: transparent;
+}
+md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {
+    color: #9E9E9E;
+    border: 1px solid #fafafa;
+}
+.pointer {cursor:pointer;}
 /**
  *  Do not remove this comments bellow. It's the markers used by gulp-inject to inject
  *  all your sass files automatically
