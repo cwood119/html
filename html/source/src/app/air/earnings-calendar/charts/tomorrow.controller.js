@@ -2,10 +2,10 @@
     'use strict';
     angular
         .module('app.air.earnings-calendar')
-        .controller('ecalController', ecalController);
+        .controller('chartController', chartController);
 
     /* @ngInject */
-    function ecalController() {
+    function chartController() {
         var vm = this;
         vm.chartData = {
             type: 'Line',

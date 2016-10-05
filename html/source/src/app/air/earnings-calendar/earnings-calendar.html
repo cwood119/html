@@ -16,8 +16,8 @@
                             <span class="md-body-1">Blackberry Ltd</span><br>
                         </td>
                         <td>
-                            <span class="md-body-2">7.98</span><br>
-                            <span class="md-body-1">+0.04 (0.50%)</span><br>
+                            <span class="md-body-2" ng-controller="dataController as vm" >{{vm.price}}</span><br>
+                            <span class="md-body-1" ng-controller="dataController as vm" ng-class="{'green': vm.dollarChange > 0,'red':vm.dollarChange < 0}">{{vm.dollarChange}} ({{vm.percentChange}}%)</span><br>
                         </td>
                         <td>
                             <span class="md-body-1 pointer" style="color:#03a9f4" ng-controller="vitalsController as vm" ng-disabled="dialogForm.$invalid" ng-click="vm.createDialog($event, vm.newDialog)">Vitals</span><br>
@@ -29,7 +29,7 @@
                 </table>
 
 
-<!--            <md-card-content ng-controller="ecalController as vm" ng-include="'app/air/earnings-calendar/charts/tomorrow.html'"></md-card-content>-->
+<!--            <md-card-content ng-controller="chartController as vm" ng-include="'app/air/earnings-calendar/charts/tomorrow.html'"></md-card-content>-->
 		<md-card-content ng-include="'app/air/earnings-calendar/charts/tabs.html'"></md-card-content>	    
 	</md-card-content>
 	</tri-widget>
