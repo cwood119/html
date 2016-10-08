@@ -26,11 +26,13 @@ a{color:#03A9F4 !important;}
 .red {color:#F44336;}
 
 // Symbol Cards
-.symbol-card-row1 {border-bottom: 1px solid lightgray;}
+.symbol-card-row1 {border-bottom: 1px solid #EEEEEE;}
 .symbol-card-row1 .md-subhead {text-transform: uppercase;color: #9E9E9E;font-size: 13px;}
+.chart-tab {padding:0;background-color:white !important;}
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active {color:#03A9F4;}
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper {background-color: transparent;}
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {color: #9E9E9E;border: 1px solid #fafafa;}
+md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 280px;}
 
 // Headlines Dialog
 .headline-row1 {font-size: 13px !important; color: #9E9E9E;}
@@ -38,9 +40,11 @@ md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-p
 // Vitals Dialog
 .vitals-table-container {width:50%;float:left;}
 .vitals-table-container table {width:95%;}
-.vitals-table-container tr {border-bottom:1px solid lightgray; padding:10px;}
+.vitals-table-container tr {border-bottom:1px solid #EEEEEE; padding:10px;}
+.vitals-table-container tr:last-child {border-bottom:none;}
+.vitals-table-container tr:hover{background:#EEEEEE;}
 .vitals-table-container td {padding:5px 0px 5px 0px;font-size: 19px;line-height: 45px}
-
+.vitals-table-container td:first-child {padding-left:5px;}
 /**
  *  Do not remove this comments bellow. It's the markers used by gulp-inject to inject
  *  all your sass files automatically

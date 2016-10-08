@@ -7,12 +7,16 @@
     /* @ngInject */
     function dataController($http) {
         var vm = this;
-        vm.price = 7.75;
+        vm.price = 7.95;
         vm.dollarChange = .04;
         vm.percentChange = .05;
         $http.get("app/air/earnings-calendar/data/BBRY-headlines.json")
           .then(function(response) {
            vm.headlineData = response.data;
+          });
+        $http.get("app/air/earnings-calendar/data/BBRY-vitals.json")
+          .then(function(response) {
+           vm.vitalsData = response.data;
           });
     };
 })();

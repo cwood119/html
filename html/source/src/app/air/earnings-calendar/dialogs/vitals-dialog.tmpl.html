@@ -10,9 +10,49 @@
         </div>
     </md-toolbar>
 
-    <md-dialog-content class="md-dialog-content">
-
-test
+    <md-dialog-content class="md-dialog-content" ng-controller="dataController as vm">
+        <div class="vitals-table-container">
+            <table>
+                <tr>
+                   <td>Open</td>
+                   <td>{{vm.vitalsData.open}}</td>
+                </tr>
+                <tr>
+                   <td>Day Range</td>
+                   <td>{{vm.vitalsData.dayRange}}</td>
+                </tr>
+                <tr>
+                   <td>Volume</td>
+                   <td>{{vm.vitalsData.volume}}</td>
+                </tr>
+                <tr>
+                   <td>Avg Volume (3mo)</td>
+                   <td>{{vm.vitalsData.avgVol}}</td>
+                </tr>
+            </table>
+        </div> 
+        <div class="vitals-table-container">
+            <table style="margin-left:5%;">
+                <tr>
+                   <td>Shares Short</td>
+                   <td>{{vm.vitalsData.sharesShort}}</td>
+                </tr>
+                <tr>
+                   <td>Short Percent</td>
+                   <td>{{vm.vitalsData.shortPercent}}</td>
+                </tr>
+                <tr>
+                   <td>Market Cap</td>
+                   <td>{{vm.vitalsData.marketCap}}</td>
+                </tr>
+                <tr>
+                   <td>Float</td>
+                   <td>{{vm.vitalsData.float}}</td>
+                </tr>
+            </table>
+       </div> 
     </md-dialog-content>
+
+
 
 </md-dialog>
