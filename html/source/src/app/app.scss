@@ -31,7 +31,7 @@ a{color:#03A9F4 !important;}
 .chart-tab {padding:0;background-color:white !important;}
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active {color:#03A9F4;}
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper {background-color: transparent;}
-md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {color: #9E9E9E;border: 1px solid #fafafa;}
+md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {color: #9E9E9E;border-bottom: 1px solid #fafafa;}
 md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 280px;}
 
 // Headlines Dialog
@@ -43,7 +43,7 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 280px;}
 .vitals-table-container tr {border-bottom:1px solid #EEEEEE; padding:10px;}
 .vitals-table-container tr:last-child {border-bottom:none;}
 .vitals-table-container tr:hover{background:#EEEEEE;}
-.vitals-table-container td {padding:5px 0px 5px 0px;font-size: 19px;line-height: 45px}
+.vitals-table-container td {color:#616161;padding:5px 0px 5px 0px;font-size: 19px;line-height: 45px}
 .vitals-table-container td:first-child {padding-left:5px;}
 /**
  *  Do not remove this comments bellow. It's the markers used by gulp-inject to inject

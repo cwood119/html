@@ -10,24 +10,24 @@
         </div>
     </md-toolbar>
 
-    <md-dialog-content class="md-dialog-content" ng-controller="dataController as vm">
+    <md-dialog-content class="md-dialog-content">
         <div class="vitals-table-container">
             <table>
                 <tr>
                    <td>Open</td>
-                   <td>{{vm.vitalsData.open}}</td>
+                   <td>{{modal.symbol.vitals.open}}</td>
                 </tr>
                 <tr>
                    <td>Day Range</td>
-                   <td>{{vm.vitalsData.dayRange}}</td>
+                   <td>{{modal.symbol.vitals.dayRange}}</td>
                 </tr>
                 <tr>
                    <td>Volume</td>
-                   <td>{{vm.vitalsData.volume}}</td>
+                   <td>{{modal.symbol.vitals.volume}}</td>
                 </tr>
                 <tr>
-                   <td>Avg Volume (3mo)</td>
-                   <td>{{vm.vitalsData.avgVol}}</td>
+                   <td>Avg Vol (3mo)</td>
+                   <td>{{modal.symbol.vitals.avgVol}}</td>
                 </tr>
             </table>
         </div> 
@@ -35,19 +35,19 @@
             <table style="margin-left:5%;">
                 <tr>
                    <td>Shares Short</td>
-                   <td>{{vm.vitalsData.sharesShort}}</td>
+                   <td>{{modal.symbol.vitals.sharesShort}}</td>
                 </tr>
                 <tr>
                    <td>Short Percent</td>
-                   <td>{{vm.vitalsData.shortPercent}}</td>
+                   <td>{{modal.symbol.vitals.shortPercent}}</td>
                 </tr>
                 <tr>
                    <td>Market Cap</td>
-                   <td>{{vm.vitalsData.marketCap}}</td>
+                   <td>{{modal.symbol.vitals.marketCap}}</td>
                 </tr>
                 <tr>
                    <td>Float</td>
-                   <td>{{vm.vitalsData.float}}</td>
+                   <td>{{modal.symbol.vitals.float}}</td>
                 </tr>
             </table>
        </div> 

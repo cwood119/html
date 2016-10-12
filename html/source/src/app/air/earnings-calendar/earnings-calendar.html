@@ -1,7 +1,7 @@
 <div class="padded-content-page">
-    <div layout="row" layout-xs="column" layout-margin>
+    <div ng-controller="dataController as vm" layout="row" layout-xs="column" layout-margin>
 
-        <tri-widget flex flex-xs="100"  content-padding>
+        <tri-widget flex flex-xs="100" ng-repeat="symbol in vm.symbolData.symbol" content-padding>
             <md-card-content>
 
                 <table style="width:100%">
@@ -12,30 +12,53 @@
                    </tr>
                     <tr>
                         <td style="padding-bottom: 15px;">
-                            <span class="md-headline">BBRY</span><br>
-                            <span class="md-body-1">Blackberry Ltd</span><br>
+                            <span class="md-headline">{{symbol.stats.symbol}}</span><br>
+                            <span class="md-body-1">{{symbol.stats.name}}</span><br>
                         </td>
                         <td>
-                            <span class="md-body-2" ng-controller="dataController as vm" >{{vm.price}}</span><br>
-                            <span class="md-body-1" ng-controller="dataController as vm" ng-class="{'green': vm.dollarChange > 0,'red':vm.dollarChange < 0}">{{vm.dollarChange}} ({{vm.percentChange}}%)</span><br>
+                            <span class="md-body-2" >{{symbol.stats.price}}</span><br>
+                            <span class="md-body-1" ng-class="{'green': symbol.stats.dollarChange > 0,'red':symbol.stats.dollarChange < 0}">{{symbol.stats.dollarChange}} ({{symbol.stats.percentChange}}%)</span><br>
                         </td>
                         <td>
-                            <span class="md-body-1 pointer" style="color:#03a9f4" ng-controller="vitalsController as vm" ng-disabled="dialogForm.$invalid" ng-click="vm.createDialog($event, vm.newDialog)">Vitals</span><br>
+                            <span class="md-body-1 pointer" style="color:#03a9f4" data-symbol="{{symbol.stats.symbol}}" data-open="{{symbol.vitals.open}}"  ng-disabled="dialogForm.$invalid" ng-click="vm.openVitals($event, symbol)">Vitals</span><br>
 
-
-                            <span class="md-body-1 pointer" style="color:#03a9f4" ng-controller="headlineController as vm" ng-disabled="dialogForm.$invalid" ng-click="vm.createDialog($event, vm.newDialog)">Headlines</span>
+                            <span class="md-body-1 pointer" style="color:#03a9f4" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event, symbol)">Headlines</span>
                         </td>
                     </tr>
                 </table>
 
 
 <!--            <md-card-content ng-controller="chartController as vm" ng-include="'app/air/earnings-calendar/charts/tomorrow.html'"></md-card-content>-->
-		<md-card-content ng-include="'app/air/earnings-calendar/charts/tabs.html'"></md-card-content>	    
+		<!--<md-card-content ng-include="'app/air/earnings-calendar/charts/tabs.html'"></md-card-content>-->
+<md-tabs class="md-primary" md-selected="selectedTabIndex" md-stretch-tabs="always">
+    <md-tab label="1D">
+        <md-content class="md-padding chart-tab">
+                <img src="http://automatedinvestmentresearch.com/BBRY.php"> 
+        </md-content>
+    </md-tab>
+    <md-tab label="1M">
+        <md-content class="md-padding chart-tab">
+                <img src="http://automatedinvestmentresearch.com/BBRY.php"> 
+        </md-content>
+    </md-tab>
+    <md-tab label="3M">
+        <md-content class="md-padding chart-tab">
+                <img src="http://automatedinvestmentresearch.com/BBRY.php"> 
+        </md-content>
+    </md-tab>
+    <md-tab label="6M">
+        <md-content class="md-padding chart-tab">
+                <img src="http://automatedinvestmentresearch.com/BBRY.php"> 
+        </md-content>
+    </md-tab>
+    <md-tab label="1YR">
+        <md-content class="md-padding chart-tab">
+                <img src="http://automatedinvestmentresearch.com/BBRY.php"> 
+        </md-content>
+    </md-tab>
+</md-tabs>
+
 	</md-card-content>
 	</tri-widget>
-        <tri-widget flex flex-xs="100"  content-padding>
-
-            <md-card-content>test2</md-card-content>
-        </tri-widget>
     </div>
 </div>
