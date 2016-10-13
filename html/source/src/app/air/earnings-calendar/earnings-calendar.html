@@ -1,9 +1,7 @@
 <div class="padded-content-page">
-    <div ng-controller="dataController as vm" layout="row" layout-xs="column" layout-margin>
-
-        <tri-widget flex flex-xs="100" ng-repeat="symbol in vm.symbolData.symbol" content-padding>
+    <div ng-controller="dataController as vm" layout-margin>
+        <tri-widget flex flex-xs="100" ng-repeat="symbol in vm.symbolData.symbol" content-padding class="symbol-card">
             <md-card-content>
-
                 <table style="width:100%">
                     <tr class="symbol-card-row1">
                         <td><span class="md-subhead">Symbol</span></td>
@@ -16,7 +14,7 @@
                             <span class="md-body-1">{{symbol.stats.name}}</span><br>
                         </td>
                         <td>
-                            <span class="md-body-2" >{{symbol.stats.price}}</span><br>
+                            <span class="md-body-2" >{{symbol.stats.price | number:2}}</span><br>
                             <span class="md-body-1" ng-class="{'green': symbol.stats.dollarChange > 0,'red':symbol.stats.dollarChange < 0}">{{symbol.stats.dollarChange}} ({{symbol.stats.percentChange}}%)</span><br>
                         </td>
                         <td>
@@ -26,38 +24,25 @@
                         </td>
                     </tr>
                 </table>
-
-
-<!--            <md-card-content ng-controller="chartController as vm" ng-include="'app/air/earnings-calendar/charts/tomorrow.html'"></md-card-content>-->
+           <!-- <md-card-content ng-controller="chartController as vm" ng-include="'app/air/earnings-calendar/charts/tomorrow.html'"></md-card-content>-->
 		<!--<md-card-content ng-include="'app/air/earnings-calendar/charts/tabs.html'"></md-card-content>-->
-<md-tabs class="md-primary" md-selected="selectedTabIndex" md-stretch-tabs="always">
-    <md-tab label="1D">
-        <md-content class="md-padding chart-tab">
-                <img src="http://automatedinvestmentresearch.com/BBRY.php"> 
-        </md-content>
-    </md-tab>
-    <md-tab label="1M">
-        <md-content class="md-padding chart-tab">
-                <img src="http://automatedinvestmentresearch.com/BBRY.php"> 
-        </md-content>
-    </md-tab>
-    <md-tab label="3M">
-        <md-content class="md-padding chart-tab">
-                <img src="http://automatedinvestmentresearch.com/BBRY.php"> 
-        </md-content>
-    </md-tab>
-    <md-tab label="6M">
-        <md-content class="md-padding chart-tab">
-                <img src="http://automatedinvestmentresearch.com/BBRY.php"> 
-        </md-content>
-    </md-tab>
-    <md-tab label="1YR">
-        <md-content class="md-padding chart-tab">
-                <img src="http://automatedinvestmentresearch.com/BBRY.php"> 
-        </md-content>
-    </md-tab>
-</md-tabs>
-
+                <md-tabs class="md-primary" md-selected="selectedTabIndex" md-stretch-tabs="always">
+                    <md-tab label="1D">
+                        <md-content class="md-padding chart-tab"><img src="http://automatedinvestmentresearch.com/BBRY.php"></md-content>
+                    </md-tab>
+                    <md-tab label="1M">
+                        <md-content class="md-padding chart-tab"><img src="http://automatedinvestmentresearch.com/BBRY.php"></md-content>
+                   </md-tab>
+                   <md-tab label="3M">
+                       <md-content class="md-padding chart-tab"><img src="http://automatedinvestmentresearch.com/BBRY.php"> </md-content>
+                   </md-tab>
+                   <md-tab label="6M">
+                       <md-content class="md-padding chart-tab"><img src="http://automatedinvestmentresearch.com/BBRY.php"> </md-content>
+                   </md-tab>
+                   <md-tab label="1YR">
+                       <md-content class="md-padding chart-tab"><img src="http://automatedinvestmentresearch.com/BBRY.php"> </md-content>
+                   </md-tab>
+               </md-tabs>
 	</md-card-content>
 	</tri-widget>
     </div>
