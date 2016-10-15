@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Define Variables
-tomorrow=$(date --date="next day" "+%Y%m%d")
+#tomorrow=$(date --date="next day" "+%Y%m%d")
+tomorrow=$(date --date="next monday" "+%Y%m%d")
 today=`date +%Y-%m-%d`
 pub=~/public_html/QuoVadimus/
 
@@ -88,9 +89,78 @@ do
     float="$(echo $line | cut -d, -f 17)"
     # Get headlines
     headlines="$(curl "https://api.intrinio.com/news?ticker="$symbol"" -u "506540ef71e2788714ac2bdd2255d337:1d3bce294c77797adefb8a602339ff21")"
+
+    # Generate charts
+    # Iterate through each symbol and pull price history
+    cat tomorrow.new.csv | while read line || [ -n "$line" ]
+    do
+        symbol="$(echo $line | cut -d, -f 1)"
+       
+        # Generate 1 month chart
+        oneMonthAgo="$(date -d "1 month ago" +%Y-%m-%d)"
+        curl -H "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6" https://api.tradier.com/v1/markets/history?symbol=$symbol"&start="$oneMonthAgo -H "Accept: application/json" > $symbol"-1mo.json"
+        cat "$symbol"-1mo.json | ./jq-linux64 '.history.day[].date' $1 | sed 's/\"//g' $1 > date.txt    
+        cat "$symbol"-1mo.json | ./jq-linux64 '.history.day[].open' $1 | sed 's/\"//g' $1 > open.txt
+        cat "$symbol"-1mo.json | ./jq-linux64 '.history.day[].high' $1 | sed 's/\"//g' $1 > high.txt    
+        cat "$symbol"-1mo.json | ./jq-linux64 '.history.day[].low' $1 | sed 's/\"//g' $1 > low.txt    
+        cat "$symbol"-1mo.json | ./jq-linux64 '.history.day[].close' $1 | sed 's/\"//g' $1 > close.txt    
+        paste -d ',' date.txt open.txt high.txt low.txt close.txt > "$symbol"-1mo.csv && sed -i '1i Date,Open,High,Low,Close' "$symbol"-1mo.csv
+        sed 's/symbol/'$symbol'/g' symbol-1mo.php > $symbol"-1mo.php"
+        mv "$symbol"-1mo.csv /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
+        mv "$symbol"-1mo.php /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
+        # Clean up
+        rm date.txt && rm open.txt && rm high.txt && rm low.txt && rm close.txt && rm $symbol"-1mo.json"
+       
+        # Generate 3 month chart
+        threeMonthsAgo="$(date -d "3 months ago" +%Y-%m-%d)"
+        curl -H "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6" https://api.tradier.com/v1/markets/history?symbol=$symbol"&start="$threeMonthsAgo -H "Accept: application/json" > $symbol"-3mo.json"
+        cat "$symbol"-3mo.json | ./jq-linux64 '.history.day[].date' $1 | sed 's/\"//g' $1 > date.txt    
+        cat "$symbol"-3mo.json | ./jq-linux64 '.history.day[].open' $1 | sed 's/\"//g' $1 > open.txt
+        cat "$symbol"-3mo.json | ./jq-linux64 '.history.day[].high' $1 | sed 's/\"//g' $1 > high.txt    
+        cat "$symbol"-3mo.json | ./jq-linux64 '.history.day[].low' $1 | sed 's/\"//g' $1 > low.txt    
+        cat "$symbol"-3mo.json | ./jq-linux64 '.history.day[].close' $1 | sed 's/\"//g' $1 > close.txt    
+        paste -d ',' date.txt open.txt high.txt low.txt close.txt > "$symbol"-3mo.csv && sed -i '1i Date,Open,High,Low,Close' "$symbol"-3mo.csv
+        sed 's/symbol/'$symbol'/g' symbol-3mo.php > $symbol"-3mo.php"
+        mv "$symbol"-3mo.csv /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
+        mv "$symbol"-3mo.php /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
+        # Clean up
+        rm date.txt && rm open.txt && rm high.txt && rm low.txt && rm close.txt && rm $symbol"-3mo.json"
+        
+        # Generate 6 month chart
+        sixMonthsAgo="$(date -d "6 months ago" +%Y-%m-%d)"
+        curl -H "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6" https://api.tradier.com/v1/markets/history?symbol=$symbol"&start="$sixMonthsAgo -H "Accept: application/json" > $symbol"-6mo.json"
+        cat "$symbol"-6mo.json | ./jq-linux64 '.history.day[].date' $1 | sed 's/\"//g' $1 > date.txt    
+        cat "$symbol"-6mo.json | ./jq-linux64 '.history.day[].open' $1 | sed 's/\"//g' $1 > open.txt
+        cat "$symbol"-6mo.json | ./jq-linux64 '.history.day[].high' $1 | sed 's/\"//g' $1 > high.txt    
+        cat "$symbol"-6mo.json | ./jq-linux64 '.history.day[].low' $1 | sed 's/\"//g' $1 > low.txt    
+        cat "$symbol"-6mo.json | ./jq-linux64 '.history.day[].close' $1 | sed 's/\"//g' $1 > close.txt    
+        paste -d ',' date.txt open.txt high.txt low.txt close.txt > "$symbol"-6mo.csv && sed -i '1i Date,Open,High,Low,Close' "$symbol"-6mo.csv
+        sed 's/symbol/'$symbol'/g' symbol-6mo.php > $symbol"-6mo.php"
+        mv "$symbol"-6mo.csv /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
+        mv "$symbol"-6mo.php /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
+        # Clean up
+        rm date.txt && rm open.txt && rm high.txt && rm low.txt && rm close.txt && rm $symbol"-6mo.json"
+
+        # Generate 1 year  chart
+        twelveMonthsAgo="$(date -d "12 months ago" +%Y-%m-%d)"
+        curl -H "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6" https://api.tradier.com/v1/markets/history?symbol=$symbol"&start="$twelveMonthsAgo -H "Accept: application/json" > $symbol"-1yr.json"
+        cat "$symbol"-1yr.json | ./jq-linux64 '.history.day[].date' $1 | sed 's/\"//g' $1 > date.txt    
+        cat "$symbol"-1yr.json | ./jq-linux64 '.history.day[].open' $1 | sed 's/\"//g' $1 > open.txt
+        cat "$symbol"-1yr.json | ./jq-linux64 '.history.day[].high' $1 | sed 's/\"//g' $1 > high.txt    
+        cat "$symbol"-1yr.json | ./jq-linux64 '.history.day[].low' $1 | sed 's/\"//g' $1 > low.txt    
+        cat "$symbol"-1yr.json | ./jq-linux64 '.history.day[].close' $1 | sed 's/\"//g' $1 > close.txt    
+        paste -d ',' date.txt open.txt high.txt low.txt close.txt > "$symbol"-1yr.csv && sed -i '1i Date,Open,High,Low,Close' "$symbol"-1yr.csv
+        sed 's/symbol/'$symbol'/g' symbol-1yr.php > $symbol"-1yr.php"
+        mv "$symbol"-1yr.csv /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
+        mv "$symbol"-1yr.php /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
+        # Clean up
+        rm date.txt && rm open.txt && rm high.txt && rm low.txt && rm close.txt && rm $symbol"-1yr.json"
+    done
+
     # Build JSON
-echo '"'$symbol'": {"stats": {"symbol": "'$symbol'","name": "'$name'","price": "'$price'","dollarChange": "'$change'","percentChange": "'$changePercent'"},"charts": {"1D": "http://automatedinvestmentresearch.com/BBRY.php","1M": "http://automatedinvestmentresearch.com/BBRY.php","3M": "http://automatedinvestmentresearch.com/BBRY.php","6M": "http://automatedinvestmentresearch.com/BBRY.php","1YR": "http://automatedinvestmentresearch.com/BBRY.php"},"vitals": {"open": "'$open'","dayRange": "'$low' - '$high'","volume": "'$volume'","avgVol": "'$avgVol'","sharesShort": "'$sharesShort'","shortPercent": "'$shortPercent'","marketCap": "'$marketCap'","float": "'$float'"},"headlines":'$headlines'},' >> data.json
+    echo '"'$symbol'": {"stats": {"symbol": "'$symbol'","name": "'$name'","price": "'$price'","dollarChange": "'$change'","percentChange": "'$changePercent'"},"charts": {"oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php"},"vitals": {"open": "'$open'","dayRange": "'$low' - '$high'","volume": "'$volume'","avgVol": "'$avgVol'","sharesShort": "'$sharesShort'","shortPercent": "'$shortPercent'","marketCap": "'$marketCap'","float": "'$float'"},"headlines":'$headlines'},' >> data.json
 done
+# Remove , from json
 sed -i '$ s/.$//' data.json
 echo '}}' >> data.json
-
+mv data.json /var/www/html/source/src/app/air/earnings-calendar/data/
