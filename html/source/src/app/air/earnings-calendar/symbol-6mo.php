@@ -35,7 +35,7 @@ function read_prices_data_data($filename)
 
 
 
-$plot = new PHPlot(530, 250);
+$plot = new PHPlot(600, 300);
 $plot->SetDrawDashedGrid(false);
 $plot->SetGridColor('#F2F2F2');
 $plot->SetLightGridColor('#F2F2F2');
@@ -47,11 +47,11 @@ $plot->SetImageBorderType('none');
 $plot->SetDataType('data-data');
 $plot->SetDataValues(read_prices_data_data(DATAFILE));
 $plot->SetPlotType('candlesticks');
-$plot->SetDataColors(array('#396a93', '#4682B4', '#396a93', '#4682B4'));
+$plot->SetDataColors(array('#03a9f4', '#0277bd', '#03a9f4', '#0277bd'));
 $plot->SetXLabelAngle(0);
 $plot->SetXLabelType('time', '%b %d');
 //$plot->SetXTickIncrement(7*24*60*60); // 1 week interval
-$plot->SetXTickIncrement(14*24*60*60); // 2 week interval
+$plot->SetXTickIncrement(42*24*60*60); // 2 week interval
 if (method_exists($plot, 'TuneYAutoRange'))
     $plot->TuneYAutoRange(0); // Suppress Y zero magnet (PHPlot >= 6.0.0)
 $plot->DrawGraph();

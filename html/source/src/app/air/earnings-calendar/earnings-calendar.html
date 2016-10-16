@@ -40,7 +40,11 @@
                        <md-content class="md-padding chart-tab"><img src="{{symbol.charts.sixMonth}}"> </md-content>
                    </md-tab>
                    <md-tab label="1YR">
-                       <md-content class="md-padding chart-tab"><img src="{{symbol.charts.oneYear}}"> </md-content>
+                       <md-content class="md-padding chart-tab"><img src="{{symbol.charts.oneYear}}"> 
+                          <div layout="column" layout-align="center center" flex class="interactive-chart">
+                              <md-button class="md-raised" ng-class="['md-accent', 'md-default-hue']" aria-label="flat button">View Interactive Chart</md-button>
+                          </div>
+                       </md-content>
                    </md-tab>
                </md-tabs>
 	</md-card-content>

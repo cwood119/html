@@ -18,23 +18,28 @@ button, select, html, textarea, input {
 // Add your CSS here
 // Custom CSS starts here - cwood cwood@automatedinvestmentresearch.com 2016
 
-// General App Styles
+// Global App Styles
 a{color:#03A9F4 !important;}
 .side-menu-badge {color:white !important;}
 .pointer {cursor:pointer;}
 .green {color:#4CAF50;}
 .red {color:#F44336;}
+.md-button.md-light-blue-theme.md-accent.md-raised, .md-button.md-light-blue-theme.md-accent.md-fab {color:white;}
 
 // Symbol Cards
-.symbol-card {width: 32%;display: inline-block;}
+.symbol-card {width: 48%;display: inline-block;height:485px;}
 .symbol-card-row1 {border-bottom: 1px solid #EEEEEE;}
 .symbol-card-row1 .md-subhead {text-transform: uppercase;color: #9E9E9E;font-size: 13px;}
-.chart-tab {padding:0;background-color:white !important;}
+.chart-tab {height: 315px;padding:0;background-color:white !important;}
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active {color:#03A9F4;}
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper {background-color: transparent;}
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {color: #9E9E9E;border-bottom: 1px solid #fafafa;}
 md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 280px;}
 
+.symbol-card md-tab-content, .symbol-card md-tabs-content-wrapper{height:315px;}
+.symbol-card md-tabs:not(.md-no-tab-content):not(.md-dynamic-height){height:345px;}
+.symbol-card md-card-content.ng-scope{height:460px;}
+.interactive-chart.layout-align-center-center.layout-column.flex{padding-top: 35px;}
 // Headlines Dialog
 .headline-row1 {font-size: 13px !important; color: #9E9E9E;}
 
