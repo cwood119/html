@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Define Variables
-#tomorrow=$(date --date="next day" "+%Y%m%d")
-tomorrow=$(date --date="next monday" "+%Y%m%d")
+tomorrow=$(date --date="next day" "+%Y%m%d")
+#tomorrow=$(date --date="next monday" "+%Y%m%d")
 today=`date +%Y-%m-%d`
 pub=~/public_html/QuoVadimus/
 
@@ -25,31 +25,35 @@ do
     # Get quote data
     data="$(curl -X GET "https://api.tradier.com/v1/markets/quotes?symbols="$symbol"" -H "Accept: application/json" -H "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6")"	
     price="$(echo $data | ./jq-linux64 '.quotes.quote.last' $1)"
-    company="$(echo $data | ./jq-linux64 '.quotes.quote.description' $1)"
-    change="$(echo $data | ./jq-linux64 '.quotes.quote.change' $1)"
-    changePercent="$(echo $data | ./jq-linux64 '.quotes.quote.change_percentage' $1)"
-    changePercent="$(printf "%0.2f\n" $changePercent)"
-    open="$(echo $data | ./jq-linux64 '.quotes.quote.open' $1)"
-    high="$(echo $data | ./jq-linux64 '.quotes.quote.high' $1)"
-    high="$(printf "%0.2f\n" $high)"
-    low="$(echo $data | ./jq-linux64 '.quotes.quote.low' $1)"
-    low="$(printf "%0.2f\n" $low)"
-    vol="$(echo $data | ./jq-linux64 '.quotes.quote.volume' $1)"
-    # Calculate average volume 
-    volume="$(echo $historicalData | ./jq-linux64 '.history.day[].volume' $1)"
-    volume60=$(echo $volume | tr ' ' '\n' | tail -60)
-    averageVolume="$(echo $volume60 | tr ' ' '\n' | awk '{ sum += $1 } END { if (NR > 0) printf("%f", sum / NR) }')"
-    # Get share data
-    tradierCompanyApi="$(curl -X GET "https://api.tradier.com/beta/markets/fundamentals/company?symbols="$symbol"" -H "Accept: application/json" -H "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6")"	
-    marketCap="$(echo $tradierCompanyApi | ./jq-linux64 '.[].results[1].tables.share_class_profile.market_cap' $1)"
-    sharesOutstanding="$(echo $tradierCompanyApi | ./jq-linux64 '.[].results[1].tables.share_class_profile.shares_outstanding' $1)"
-    insiderOwnership="$(echo $tradierCompanyApi | ./jq-linux64 '.[].results[1].tables.ownership_summary.insider_shares_owned' $1)"
-    short="$(echo $tradierCompanyApi | ./jq-linux64 '.[].results[1].tables.ownership_summary.short_interest' $1)"
-    shortPercent="$(echo $tradierCompanyApi | ./jq-linux64 '.[].results[1].tables.ownership_summary.short_percentage_of_float' $1)"
-    float=$((sharesOutstanding-insiderOwnership)) 
+    if [[ $price > 20 ]]; then
+        continue
+    else 
+        company="$(echo $data | ./jq-linux64 '.quotes.quote.description' $1)"
+        change="$(echo $data | ./jq-linux64 '.quotes.quote.change' $1)"
+        changePercent="$(echo $data | ./jq-linux64 '.quotes.quote.change_percentage' $1)"
+        changePercent="$(printf "%0.2f\n" $changePercent)"
+        open="$(echo $data | ./jq-linux64 '.quotes.quote.open' $1)"
+        high="$(echo $data | ./jq-linux64 '.quotes.quote.high' $1)"
+        high="$(printf "%0.2f\n" $high)"
+        low="$(echo $data | ./jq-linux64 '.quotes.quote.low' $1)"
+        low="$(printf "%0.2f\n" $low)"
+        vol="$(echo $data | ./jq-linux64 '.quotes.quote.volume' $1)"
+        # Calculate average volume 
+        volume="$(echo $historicalData | ./jq-linux64 '.history.day[].volume' $1)"
+        volume60=$(echo $volume | tr ' ' '\n' | tail -60)
+        averageVolume="$(echo $volume60 | tr ' ' '\n' | awk '{ sum += $1 } END { if (NR > 0) printf("%f", sum / NR) }')"
+        # Get share data
+        tradierCompanyApi="$(curl -X GET "https://api.tradier.com/beta/markets/fundamentals/company?symbols="$symbol"" -H "Accept: application/json" -H "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6")"	
+        marketCap="$(echo $tradierCompanyApi | ./jq-linux64 '.[].results[1].tables.share_class_profile.market_cap' $1)"
+        sharesOutstanding="$(echo $tradierCompanyApi | ./jq-linux64 '.[].results[1].tables.share_class_profile.shares_outstanding' $1)"
+        insiderOwnership="$(echo $tradierCompanyApi | ./jq-linux64 '.[].results[1].tables.ownership_summary.insider_shares_owned' $1)"
+        short="$(echo $tradierCompanyApi | ./jq-linux64 '.[].results[1].tables.ownership_summary.short_interest' $1)"
+        shortPercent="$(echo $tradierCompanyApi | ./jq-linux64 '.[].results[1].tables.ownership_summary.short_percentage_of_float' $1)"
+        float=$((sharesOutstanding-insiderOwnership)) 
 
-    # Build csv
-    echo $symbol","$short","$averageVolume","$company","$price","$announce","$change","$changePercent","$open","$high","$low","$vol","$marketCap","$sharesOutstanding","$insiderOwnership","$shortPercent","$float >> tomorrow.new.csv
+        # Build csv
+        echo $symbol","$short","$averageVolume","$company","$price","$announce","$change","$changePercent","$open","$high","$low","$vol","$marketCap","$sharesOutstanding","$insiderOwnership","$shortPercent","$float >> tomorrow.new.csv
+    fi
 done
 
 # Remove double quotes
@@ -113,7 +117,7 @@ do
         
         # Generate 6 month chart
         sixMonthsAgo="$(date -d "6 months ago" +%Y-%m-%d)"
-        tail -130 "$symbol"-6mo.csv > "$symbol"-6mo.csv && sed -i '1i Date,Open,High,Low,Close' "$symbol"-6mo.csv
+        tail -130 "$symbol"-1yr.csv > "$symbol"-6mo.csv && sed -i '1i Date,Open,High,Low,Close' "$symbol"-6mo.csv
         sed 's/symbol/'$symbol'/g' symbol-6mo.php > $symbol"-6mo.php"
         mv "$symbol"-6mo.csv /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
         mv "$symbol"-6mo.php /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
