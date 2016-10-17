@@ -25,9 +25,12 @@ do
     # Get quote data
     data="$(curl -X GET "https://api.tradier.com/v1/markets/quotes?symbols="$symbol"" -H "Accept: application/json" -H "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6")"	
     price="$(echo $data | ./jq-linux64 '.quotes.quote.last' $1)"
-    if [[ $price > 20 ]]; then
+echo $symbol " " $price
+    if (( $(echo "$price > 20" | bc -l) )) ; then
+        echo "filtered "$symbol" bc "$price" is greater than 20"
         continue
     else 
+        echo "kept "$symbol" bc "$price" is less than 20"
         company="$(echo $data | ./jq-linux64 '.quotes.quote.description' $1)"
         change="$(echo $data | ./jq-linux64 '.quotes.quote.change' $1)"
         changePercent="$(echo $data | ./jq-linux64 '.quotes.quote.change_percentage' $1)"
@@ -59,14 +62,8 @@ done
 # Remove double quotes
 sed -i 's/\"//g' tomorrow.new.csv
 
-# Filter by price
-sed -i '1i Symbol,Short,ADV,Name,Price,Time' tomorrow.new.csv
-awk -F, 'NR == 1 { for(i = 1; i <= NF; ++i) { col[$i] = i }; next } $col["Price"] < 20' tomorrow.new.csv > tomorrow.price.csv
-sed -i '1i Symbol,Price,Date,Time' $pub"filterOne.csv"
-awk -F, 'NR == 1 { for(i = 1; i <= NF; ++i) { col[$i] = i }; next } $col["Price"] > 1' tomorrow.price.csv > tomorrow.new.csv
-
 # Clean up
-rm tomorrow.sorted && rm tomorrow.price.csv
+rm tomorrow.sorted
 
 # Pull headlines and other vitals, then convert to JSON
 echo '{"symbol":{' > data.json
