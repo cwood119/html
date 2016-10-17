@@ -47,7 +47,7 @@ $plot->SetImageBorderType('none');
 $plot->SetDataType('data-data');
 $plot->SetDataValues(read_prices_data_data(DATAFILE));
 $plot->SetPlotType('candlesticks');
-$plot->SetDataColors(array('#03a9f4', '#4682B4', '#03a9f4', '#4682B4'));
+$plot->SetDataColors(array('#03a9f4', '#03a9f4', '#03a9f4', '#03a9f4'));
 $plot->SetXLabelAngle(0);
 $plot->SetXLabelType('time', '%b');
 //$plot->SetXTickIncrement(7*24*60*60); // 1 week interval
