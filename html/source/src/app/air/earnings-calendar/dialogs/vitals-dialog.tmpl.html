@@ -2,9 +2,9 @@
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2 flex >
-                <span translate>{{modal.symbol.stats.symbol}} Vitals</span>
+                <span translate>{{modal.symbol.symbol}} Vitals</span>
             </h2>
-            <md-button class="md-icon-button" ng-controller="vitalsController as vm" ng-click="vm.cancelClick()" aria-label="cancel">
+            <md-button class="md-icon-button" ng-controller="dialogController as vm" ng-click="vm.cancelClick()" aria-label="cancel">
                 <md-icon md-font-icon="zmdi zmdi-close"></md-icon>
             </md-button>
         </div>
@@ -15,19 +15,19 @@
             <table>
                 <tr>
                    <td>Open</td>
-                   <td>{{modal.symbol.vitals.open | number:2}}</td>
+                   <td>{{modal.symbol.open | number:2}}</td>
                 </tr>
                 <tr>
                    <td>Day Range</td>
-                   <td>{{modal.symbol.vitals.dayRange}}</td>
+                   <td>{{modal.symbol.dayRange}}</td>
                 </tr>
                 <tr>
                    <td>Volume</td>
-                   <td>{{modal.symbol.vitals.volume | number:0}}</td>
+                   <td>{{modal.symbol.volume | number:0}}</td>
                 </tr>
                 <tr>
                    <td>Avg Vol (3mo)</td>
-                   <td>{{modal.symbol.vitals.avgVol | number:0}}</td>
+                   <td>{{modal.symbol.avgVol | number:0}}</td>
                 </tr>
             </table>
         </div> 
@@ -35,19 +35,19 @@
             <table style="margin-left:5%;">
                 <tr>
                    <td>Shares Short</td>
-                   <td>{{modal.symbol.vitals.sharesShort | number:0}}</td>
+                   <td>{{modal.symbol.sharesShort | number:0}}</td>
                 </tr>
                 <tr>
                    <td>Short Percent</td>
-                   <td>{{modal.symbol.vitals.shortPercent | number:2}}</td>
+                   <td>{{modal.symbol.shortPercent | number:2}}</td>
                 </tr>
                 <tr>
                    <td>Market Cap</td>
-                   <td>{{modal.symbol.vitals.marketCap | number:0}}</td>
+                   <td>{{modal.symbol.marketCap | number:0}}</td>
                 </tr>
                 <tr>
                    <td>Float</td>
-                   <td>{{modal.symbol.vitals.float | number:0}}</td>
+                   <td>{{modal.symbol.float | number:0}}</td>
                 </tr>
             </table>
        </div> 

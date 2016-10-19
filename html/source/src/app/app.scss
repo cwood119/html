@@ -25,9 +25,11 @@ a{color:#03A9F4 !important;}
 .green {color:#4CAF50;}
 .red {color:#F44336;}
 .md-button.md-light-blue-theme.md-accent.md-raised, .md-button.md-light-blue-theme.md-accent.md-fab {color:white;}
-
+.md-button.md-light-blue-theme.md-primary.md-raised, .md-button.md-light-blue-theme.md-primary.md-fab{background-color:#03A9F4;}
+.md-fab-toolbar-background{background-color:#03A9F4 !important;}
+.layout-margin.ng-scope{text-align:center;}
 // Symbol Cards
-.symbol-card {width: 48%;display: inline-block;height:485px;}
+.symbol-card {width: 48%;display: inline-block;height:485px;text-align:left;}
 .symbol-card-row1 {border-bottom: 1px solid #EEEEEE;}
 .symbol-card-row1 .md-subhead {text-transform: uppercase;color: #9E9E9E;font-size: 13px;}
 .chart-tab {height: 315px;padding:0;background-color:white !important;}
@@ -35,11 +37,11 @@ md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-p
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper {background-color: transparent;}
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {color: #9E9E9E;border-bottom: 1px solid #fafafa;}
 md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 280px;}
-
+.symbol-card md-content {text-align: center;}
 .symbol-card md-tab-content, .symbol-card md-tabs-content-wrapper{height:315px;}
 .symbol-card md-tabs:not(.md-no-tab-content):not(.md-dynamic-height){height:345px;}
 .symbol-card md-card-content.ng-scope{height:460px;}
-.interactive-chart.layout-align-center-center.layout-column.flex{padding-top: 35px;}
+.interactive-chart.layout-align-center-center.layout-column.flex{padding-top: 25px;}
 // Headlines Dialog
 .headline-row1 {font-size: 13px !important; color: #9E9E9E;}
 
@@ -51,6 +53,21 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 280px;}
 .vitals-table-container tr:hover{background:#EEEEEE;}
 .vitals-table-container td {color:#616161;padding:5px 0px 5px 0px;font-size: 19px;line-height: 45px}
 .vitals-table-container td:first-child {padding-left:5px;}
+
+// Filters
+.filter-group md-select {
+    display: inline-block;
+    padding: 0px 5px 0px 5px;
+}
+.filter-group label {color:rgba(0,0,0,0.38);}
+
+
+
+// Responsive
+
+
+
+
 /**
  *  Do not remove this comments bellow. It's the markers used by gulp-inject to inject
  *  all your sass files automatically

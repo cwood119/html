@@ -7,15 +7,15 @@ today=`date +%Y-%m-%d`
 pub=~/public_html/QuoVadimus/
 
 # Get Nightly Calendar and format
-wget https://www.quandl.com/api/v3/databases/ZEA/download?api_key=pDqgMz1TxeRQxoExz8VW
-mv download?api_key=pDqgMz1TxeRQxoExz8VW ZEA.zip && unzip ZEA.zip && rm ZEA.zip
-cut --complement -d, -f 2,3-5,7-10,12-15 ZEA-1.csv > ZEA.cut.csv && rm ZEA-1.csv
-awk "/$tomorrow/" ZEA.cut.csv > tomorrow.new.csv && rm ZEA.cut.csv
-sed -i 1d tomorrow.new.csv
-sort -t, -k 1,1 tomorrow.new.csv > tomorrow.sorted && rm tomorrow.new.csv
-sed -i '/_/d' tomorrow.sorted
+#wget https://www.quandl.com/api/v3/databases/ZEA/download?api_key=pDqgMz1TxeRQxoExz8VW
+#mv download?api_key=pDqgMz1TxeRQxoExz8VW ZEA.zip && unzip ZEA.zip && rm ZEA.zip
+#cut --complement -d, -f 2,3-5,7-10,12-15 ZEA-1.csv > ZEA.cut.csv && rm ZEA-1.csv
+#awk "/$tomorrow/" ZEA.cut.csv > tomorrow.new.csv && rm ZEA.cut.csv
+#sed -i 1d tomorrow.new.csv
+#sort -t, -k 1,1 tomorrow.new.csv > tomorrow.sorted && rm tomorrow.new.csv
+#sed -i '/_/d' tomorrow.sorted
 # Generate the goods
-cat tomorrow.sorted | while read line || [ -n "$line" ]
+cat tomorrow.sorted.head | while read line || [ -n "$line" ]
 do
     symbol="$(echo $line | cut -d, -f 1)"
     announce="$(echo $line | cut -d, -f 3)"
@@ -66,7 +66,7 @@ sed -i 's/\"//g' tomorrow.new.csv
 rm tomorrow.sorted
 
 # Pull headlines and other vitals, then convert to JSON
-echo '{"symbol":{' > data.json
+echo '[' > data.json
 cat tomorrow.new.csv | while read line || [ -n "$line" ]
 do
     # Define variables for symbol card and vitals
@@ -144,9 +144,9 @@ do
     done
 
     # Build JSON
-    echo '"'$symbol'": {"stats": {"symbol": "'$symbol'","name": "'$name'","price": "'$price'","dollarChange": "'$change'","percentChange": "'$changePercent'"},"charts": {"oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php"},"vitals": {"open": "'$open'","dayRange": "'$low' - '$high'","volume": "'$volume'","avgVol": "'$avgVol'","sharesShort": "'$sharesShort'","shortPercent": "'$shortPercent'","marketCap": "'$marketCap'","float": "'$float'"},"headlines":'$headlines'},' >> data.json
+    echo '{"symbol": "'$symbol'","name": "'$name'","price": '$price',"dollarChange": '$change',"percentChange": '$changePercent',"oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php","open": '$open',"dayRange": "'$low' - '$high'","volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
 done
 # Remove , from json
 sed -i '$ s/.$//' data.json
-echo '}}' >> data.json
+echo ']' >> data.json
 mv data.json /var/www/html/source/src/app/air/earnings-calendar/data/
