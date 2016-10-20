@@ -14,40 +14,56 @@
         <div class="vitals-table-container">
             <table>
                 <tr>
-                   <td>Open</td>
-                   <td>{{modal.symbol.open | number:2}}</td>
+                   <td class="vitals-line-item">Open</td>
+                   <td>{{modal.symbol.open | number:2}}
+                       <span class="vitals-line-item-responsive">Open</span>
+                   </td>
                 </tr>
                 <tr>
-                   <td>Day Range</td>
-                   <td>{{modal.symbol.dayRange}}</td>
+                   <td class="vitals-line-item">Day Range</td>
+                   <td>{{modal.symbol.dayRange}}
+                       <span class="vitals-line-item-responsive">Day Range</span>
+                   </td>
                 </tr>
                 <tr>
-                   <td>Volume</td>
-                   <td>{{modal.symbol.volume | number:0}}</td>
+                   <td class="vitals-line-item">Volume</td>
+                   <td>{{modal.symbol.volume | number:0}}
+                       <span class="vitals-line-item-responsive">Volume</span>
+                   </td>
                 </tr>
                 <tr>
-                   <td>Avg Vol (3mo)</td>
-                   <td>{{modal.symbol.avgVol | number:0}}</td>
+                   <td class="vitals-line-item">Avg Vol (3mo)</td>
+                   <td>{{modal.symbol.avgVol | number:0}}
+                       <span class="vitals-line-item-responsive">Avg Vol (3mo)</span>
+                   </td>
                 </tr>
             </table>
         </div> 
         <div class="vitals-table-container">
             <table style="margin-left:5%;">
                 <tr>
-                   <td>Shares Short</td>
-                   <td>{{modal.symbol.sharesShort | number:0}}</td>
+                   <td class="vitals-line-item">Shares Short</td>
+                   <td>{{modal.symbol.sharesShort | number:0}}
+                       <span class="vitals-line-item-responsive">Shares Short</span>
+                   </td>
                 </tr>
                 <tr>
-                   <td>Short Percent</td>
-                   <td>{{modal.symbol.shortPercent | number:2}}</td>
+                   <td class="vitals-line-item">Short Percent</td>
+                   <td>{{modal.symbol.shortPercent | number:2}}
+                       <span class="vitals-line-item-responsive">Short Percent</span>
+                   </td>
                 </tr>
                 <tr>
-                   <td>Market Cap</td>
-                   <td>{{modal.symbol.marketCap | number:0}}</td>
+                   <td class="vitals-line-item">Market Cap</td>
+                   <td>{{modal.symbol.marketCap | number:0}}
+                       <span class="vitals-line-item-responsive">Market Cap</span>
+                   </td>
                 </tr>
                 <tr>
-                   <td>Float</td>
-                   <td>{{modal.symbol.float | number:0}}</td>
+                   <td class="vitals-line-item">Float</td>
+                   <td>{{modal.symbol.float | number:0}}
+                       <span class="vitals-line-item-responsive">Float</span>
+                   </td>
                 </tr>
             </table>
        </div> 

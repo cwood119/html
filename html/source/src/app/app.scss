@@ -29,19 +29,19 @@ a{color:#03A9F4 !important;}
 .md-fab-toolbar-background{background-color:#03A9F4 !important;}
 .layout-margin.ng-scope{text-align:center;}
 // Symbol Cards
-.symbol-card {width: 48%;display: inline-block;height:485px;text-align:left;}
+.symbol-card {width: 32%;display: inline-block;text-align:left;}
 .symbol-card-row1 {border-bottom: 1px solid #EEEEEE;}
 .symbol-card-row1 .md-subhead {text-transform: uppercase;color: #9E9E9E;font-size: 13px;}
-.chart-tab {height: 315px;padding:0;background-color:white !important;}
+.symbol-card img {max-width: 100%;min-height: 210px;max-height: 225px;}
+.chart-tab {height: auto;padding:0;background-color:white !important;}
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active {color:#03A9F4;}
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper {background-color: transparent;}
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {color: #9E9E9E;border-bottom: 1px solid #fafafa;}
-md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 280px;}
+md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .symbol-card md-content {text-align: center;}
-.symbol-card md-tab-content, .symbol-card md-tabs-content-wrapper{height:315px;}
-.symbol-card md-tabs:not(.md-no-tab-content):not(.md-dynamic-height){height:345px;}
-.symbol-card md-card-content.ng-scope{height:460px;}
-.interactive-chart.layout-align-center-center.layout-column.flex{padding-top: 25px;}
+.symbol-card md-tab-content, .symbol-card md-tabs-content-wrapper{height:auto;padding-top: 10px;}
+.symbol-card md-tabs:not(.md-no-tab-content):not(.md-dynamic-height){height:auto;}
+.symbol-card md-card-content.ng-scope{padding-bottom:0;}
 // Headlines Dialog
 .headline-row1 {font-size: 13px !important; color: #9E9E9E;}
 
@@ -53,18 +53,61 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 280px;}
 .vitals-table-container tr:hover{background:#EEEEEE;}
 .vitals-table-container td {color:#616161;padding:5px 0px 5px 0px;font-size: 19px;line-height: 45px}
 .vitals-table-container td:first-child {padding-left:5px;}
-
+.vitals-line-item-responsive {display:none;color: #9E9E9E !important;font-size: 13px !important;line-height: .1;padding-bottom: 10px;}
 // Filters
-.filter-group md-select {
-    display: inline-block;
-    padding: 0px 5px 0px 5px;
-}
+.filter-group md-select {display: inline-block;padding: 0px 5px 0px 5px;}
 .filter-group label {color:rgba(0,0,0,0.38);}
 
 
 
 // Responsive
 
+@media all and (max-width:1280px){ /* Laptop */
+    .symbol-card{margin:7px !important;}
+}
+@media all and (max-width:1175px){.symbol-card{width: 48%;}} /* Laptop */
+@media all and (max-width:1024px){ /* Laptop */
+	
+}
+@media all and (max-width:900px){ 
+    .vitals-line-item-responsive{display:block;}
+    .vitals-line-item{display:none;}
+}
+@media all and (max-width:800px){ /* Nexus 10 */
+    .symbol-card{width: 95%;height:500px;}
+    .symbol-card img {max-height:none;}
+    .symbol-card md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {height: 400px;}
+}
+@media all and (max-width:768px){ /* Generic Tablet */
+
+}
+
+@media all and (max-width:730px){
+    .symbol-card{width: 95%;height:auto;}
+    .symbol-card img {max-width: 100%;min-height: 210px;max-height: 225px;}
+    .symbol-card md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {height: auto;}
+    .filter-group label {display:block;}
+}
+@media all and (max-width:500px){ /* Nexus 6P, Nexus 5X */
+    .symbol-card{width:97%;margin-bottom:5px;}
+}
+
+@media all and (max-width: 450px){
+    .padded-content-page{padding:0 !important;}
+}
+@media all and (max-width:414px){ /* iPhone 6 Plus, Nexus 5X */
+
+}
+@media all and (max-width:375px){ /* iPhone 6 */
+
+}
+@media all and (max-width:360px){ /* Nexus 5 */
+    .symbol-card-row1 .md-subhead{font-size:11px;}
+    .md-body-1{font-size:13px;}
+}
+@media all and (max-width:325px){ /* iPhone 4, iPhone 5 */
+    .symbol-card-row1 .md-subhead{font-size:10px;}
+}
 
 
 
