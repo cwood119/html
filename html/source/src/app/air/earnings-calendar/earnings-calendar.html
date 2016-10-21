@@ -93,7 +93,7 @@
                         </td>
                         <td>
                             <span class="md-body-2" >{{symbol.price | number:2}}</span><br>
-                            <span class="md-body-1" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">{{symbol.dollarChange}} ({{symbol.percentChange}}%)</span><br>
+                            <span class="md-body-1" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">{{symbol.dollarChange}} ({{symbol.percentChange | number:2}}%)</span><br>
                         </td>
                         <td>
                             <span class="md-body-1 pointer" style="color:#03a9f4" data-symbol="{{symbol.symbol}}" data-open="{{symbol.vitals.open}}"  ng-disabled="dialogForm.$invalid" ng-click="vm.openVitals($event, symbol)">Vitals</span><br>
