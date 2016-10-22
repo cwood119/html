@@ -52,6 +52,8 @@ $plot->SetXLabelAngle(0);
 $plot->SetXLabelType('time', '%b');
 //$plot->SetXTickIncrement(7*24*60*60); // 1 week interval
 $plot->SetXTickIncrement(42*24*60*60); // 3 week interval
+$plot->SetFont('y_label',4);
+$plot->SetFont('x_label',4);
 if (method_exists($plot, 'TuneYAutoRange'))
     $plot->TuneYAutoRange(0); // Suppress Y zero magnet (PHPlot >= 6.0.0)
 $plot->DrawGraph();

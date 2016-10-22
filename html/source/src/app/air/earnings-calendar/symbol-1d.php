@@ -1,7 +1,7 @@
 <?php
 # PHPlot Example: OHLC (Financial) plot, Candlesticks plot, using
 # external data file, data-data format with date-formatted labels.
-define('DATAFILE', 'symbol-3mo.csv'); // External data file
+define('DATAFILE', 'symbol-1d.csv'); // External data file
 require_once '/usr/local/share/php/phplot.php';
 
 /*
@@ -32,8 +32,11 @@ function read_prices_data_data($filename)
     fclose($f);
     return $data;
 }
-
-
+function formatTime($value)
+{
+    if (date('i', $value) != 00) { $value = null; return $value; }
+     else { return date('ga', $value); }
+}
 
 $plot = new PHPlot(600, 300);
 $plot->SetDrawDashedGrid(false);
@@ -43,17 +46,16 @@ $plot->SetTickColor('white');
 $plot->SetTickLabelColor('#778899');
 $plot->SetYTickLabelPos(plotright);
 $plot->SetImageBorderType('none');
-//$plot->SetTitle("Candlesticks Financial Plot (data-data)\nMSFT Q1 2009");
 $plot->SetDataType('data-data');
 $plot->SetDataValues(read_prices_data_data(DATAFILE));
 $plot->SetPlotType('candlesticks');
 $plot->SetDataColors(array('#03a9f4', '#03a9f4', '#03a9f4', '#03a9f4'));
 $plot->SetXLabelAngle(0);
-$plot->SetXLabelType('time', '%b %d');
-//$plot->SetXTickIncrement(7*24*60*60); // 1 week interval
-$plot->SetXTickIncrement(14*24*60*60); // 2 week interval
+$plot->SetXLabelType('custom', 'formatTime');
+$plot->SetNumXTicks(500);
 $plot->SetFont('y_label',4);
 $plot->SetFont('x_label',4);
 if (method_exists($plot, 'TuneYAutoRange'))
     $plot->TuneYAutoRange(0); // Suppress Y zero magnet (PHPlot >= 6.0.0)
 $plot->DrawGraph();
+
