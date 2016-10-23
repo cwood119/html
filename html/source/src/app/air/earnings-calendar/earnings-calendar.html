@@ -3,82 +3,88 @@
         <div class="filter-group">
             <label>Filter by:</label>
             <md-select placeholder="Price" ng-change="vm.priceFilter" ng-model="vm.priceFilterActive">
-                    <md-option value="0">Any Price</md-option>
+                <md-option value="0">Any Price</md-option>
                 <md-optgroup label="Over">
-                    <md-option>15</md-option> 
-                    <md-option>10</md-option> 
-                    <md-option>5</md-option>
+                    <md-option ng-repeat="filterPrice in vm.filterPrice" value="{{filterPrice}}">
+                        <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon>{{filterPrice}}
+                    </md-option> 
                 </md-optgroup>
                 <md-optgroup label="Under">
-                    <md-option value="-15">15</md-option> 
-                    <md-option value="-10">10</md-option> 
-                    <md-option value="-5">5</md-option>
+                    <md-option ng-repeat="filterPrice in vm.filterPrice" value="{{filterPrice * -1}}">
+                        <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true"></md-icon>{{filterPrice}}
+                    </md-option> 
                 </md-optgroup>
             </md-select>
             <md-select placeholder="Volume" ng-change="vm.volumeFilter" ng-model="vm.volumeFilterActive">
-                    <md-option value="0">Any Volume</md-option>
+                <md-option value="0">Any Volume</md-option>
                 <md-optgroup label="Over">
-                    <md-option value="500000">500k</md-option> 
-                    <md-option value="1000000">1M</md-option> 
-                    <md-option value="5000000">5M</md-option>
+                    <md-option ng-repeat="filterVolume in vm.filterVolume" value="{{filterVolume.value}}">
+                        <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon>{{filterVolume.text}}
+                    </md-option>
                 </md-optgroup>
-                    <md-optgroup label="Under">
-                    <md-option value="-500000">500k</md-option> 
-                    <md-option value="-1000000">1M</md-option> 
-                    <md-option value="-5000000">5M</md-option>
+                <md-optgroup label="Under">
+                    <md-option ng-repeat="filterVolume in vm.filterVolume" value="{{filterVolume.value * -1}}">
+                        <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true"></md-icon>{{filterVolume.text}}                   
+                    </md-option>
                 </md-optgroup>
             </md-select>
             <md-select placeholder="Avg Vol" ng-change="vm.avgVolFilter" ng-model="vm.avgVolFilterActive">
                     <md-option value="0">Any Avg Vol</md-option>
                 <md-optgroup label="Over">
-                    <md-option value="500000">500k</md-option> 
-                    <md-option value="1000000">1M</md-option> 
-                    <md-option value="5000000">5M</md-option>
+                    <md-option ng-repeat="filterAdv in vm.filterAdv" value="{{filterAdv.value}}">
+                        <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon>{{filterAdv.text}}
+                    </md-option>
                 </md-optgroup>
-                    <md-optgroup label="Under">
-                    <md-option value="-500000">500k</md-option> 
-                    <md-option value="-1000000">1M</md-option> 
-                    <md-option value="-5000000">5M</md-option>
+                <md-optgroup label="Under">
+                    <md-option ng-repeat="filterAdv in vm.filterAdv" value="{{filterAdv.value * -1}}">
+                        <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true"></md-icon>{{filterAdv.text}}
+                    </md-option>
                 </md-optgroup>
             </md-select>
             <md-select placeholder="Mkt Cap" ng-change="vm.mktCapFilter" ng-model="vm.mktCapFilterActive">
                     <md-option value="0">Any Mkt Cap</md-option>
                 <md-optgroup label="Over">
-                    <md-option value="50000000">50M</md-option> 
-                    <md-option value="300000000">300M</md-option> 
-                    <md-option value="2000000000">2B</md-option> 
-                    <md-option value="10000000000">10B</md-option>
+                    <md-option ng-repeat="filterMktOver in vm.filterMktOver" value="{{filterMktOver.value}}">
+                        <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon>{{filterMktOver.text}}
+                    </md-option>
                 </md-optgroup>
-                    <md-optgroup label="Under">
-                    <md-option value="-300000000">300M</md-option> 
-                    <md-option value="-2000000000">2B</md-option> 
-                    <md-option value="-10000000000">10B</md-option> 
-                    <md-option value="-200000000000">200B</md-option>
+                <md-optgroup label="Under">
+                <md-option ng-repeat="filterMktUnder in vm.filterMktUnder" value="{{filterMktUnder.value * -1}}">
+                        <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true"></md-icon>{{filterMktUnder.text}}
+                    </md-option>
                 </md-optgroup>
             </md-select>
             <md-select placeholder="Float" ng-change="vm.floatFilter" ng-model="vm.floatFilterActive">
                     <md-option value="0">Any Float</md-option>
                 <md-optgroup label="Over">
-                    <md-option value="50000000">50M</md-option> 
-                    <md-option value="100000000">100M</md-option> 
-                    <md-option value="500000000">500M</md-option>
+                    <md-option ng-repeat="filterFloat in vm.filterFloat" value="{{filterFloat.value}}">
+                        <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon>{{filterFloat.text}}
+                    </md-option>
                 </md-optgroup>
                 <md-optgroup label="Under">
-                    <md-option value="-50000000">50M</md-option> 
-                    <md-option value="-100000000">100M</md-option> 
-                    <md-option value="-500000000">500M</md-option>
+                    <md-option ng-repeat="filterFloat in vm.filterFloat" value="{{filterFloat.value * -1}}">
+                        <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true"></md-icon>{{filterFloat.text}}
+                    </md-option>
                 </md-optgroup>
             </md-select>
             <md-select placeholder="Short %" ng-change="vm.shortFilter" ng-model="vm.shortFilterActive">
                     <md-option value="0">Any Short %</md-option>
                 <md-optgroup label="Over">
-                    <md-option value="5">5%</md-option> 
-                    <md-option value="15">15%</md-option> 
-                    <md-option value="25">25%</md-option>
+                <md-option ng-repeat="filterShort in vm.filterShort" value="{{filterShort.value}}">
+                        <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon>{{filterShort.text}}
+                    </md-option>
                 </md-optgroup>
             </md-select>
         </div>
-        <tri-widget flex flex-xs="100" ng-repeat="symbol in vm.symbols | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short" content-padding class="symbol-card">
+        <div class="filter-group">
+            <label>Sort by:</label>
+            <md-select placeholder="Price" ng-model="sortPrice">
+                <md-option value="symbol"><md-icon md-font-icon="zmdi zmdi-close" class="material-icons zmdi zmdi-close sortPrice" aria-hidden="true"></md-icon> Clear</md-option>
+                <md-option value="price"><md-icon class="material-icons fa fa-sort-numeric-asc sortPrice" aria-hidden="true"></md-icon> Price</md-option>
+                <md-option value="-price"><md-icon class="material-icons fa fa-sort-numeric-desc sortPrice" aria-hidden="true"></md-icon> Price</md-option> 
+            </md-select>
+        </div>
+        <tri-widget flex flex-xs="100" ng-repeat="symbol in vm.symbols | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short | orderBy:sortPrice" content-padding class="symbol-card">
             <md-card-content>
                 <table style="width:100%">
                     <tr class="symbol-card-row1">

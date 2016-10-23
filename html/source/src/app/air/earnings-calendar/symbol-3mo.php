@@ -51,7 +51,7 @@ $plot->SetDataColors(array('#03a9f4', '#03a9f4', '#03a9f4', '#03a9f4'));
 $plot->SetXLabelAngle(0);
 $plot->SetXLabelType('time', '%b %d');
 //$plot->SetXTickIncrement(7*24*60*60); // 1 week interval
-$plot->SetXTickIncrement(14*24*60*60); // 2 week interval
+$plot->SetXTickIncrement(28*24*60*60); // 2 week interval
 $plot->SetFont('y_label',4);
 $plot->SetFont('x_label',4);
 if (method_exists($plot, 'TuneYAutoRange'))
