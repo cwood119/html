@@ -29,7 +29,8 @@ a{color:#03A9F4 !important;}
 .md-fab-toolbar-background{background-color:#03A9F4 !important;}
 .layout-margin.ng-scope{text-align:center;}
 // Symbol Cards
-.symbol-card {width: 32%;display: inline-block;text-align:left;}
+.symbol-cards-include{margin:0;}
+.symbol-card {width: 32%;display: inline-block;text-align:left;margin: 8px;}
 .symbol-card-row1 {border-bottom: 1px solid #EEEEEE;}
 .symbol-card-row1 .md-subhead {text-transform: uppercase;color: #9E9E9E;font-size: 13px;}
 .symbol-card img {max-width: 100%;min-height: 210px;max-height: 225px;}
@@ -54,6 +55,21 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .vitals-table-container td:first-child {padding-left:5px;}
 .vitals-line-item-responsive {display:none;color: #9E9E9E !important;font-size: 13px !important;line-height: .1;padding-bottom: 10px;}
 // Filters
+.filter-tabs{
+    min-height: 100px !important;
+    overflow: hidden;
+    background: white;
+    padding-top: 0px;
+}
+.filter-tabs md-tab-item.md-tab {
+    width: 65px;
+    padding: 12px 0px 0px 0px;
+    flex-grow: 0;
+}
+.filter-tab{
+    background-color: white !important;
+    font-size: 13pt;
+}
 .filter-group md-select {margin-top:0;display: inline-block;padding: 0px 5px 0px 5px;}
 .filter-group label {color:rgba(0,0,0,0.38);}
 md-icon.filter-long-up-arrow {vertical-align: baseline;text-align: right;padding-right: 2px;}
