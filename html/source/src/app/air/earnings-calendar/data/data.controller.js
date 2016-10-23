@@ -149,5 +149,17 @@
     vm.filterMktUnder = [{'value':'300000000','text':'300M'},{'value':'2000000000','text':'2B'},{'value':'10000000000','text':'10B'},{'value':'200000000000','text':'200B'}];
     vm.filterFloat = [{'value':'50000000','text':'50M'},{'value':'100000000','text':'100M'},{'value':'500000000','text':'500M'}];
     vm.filterShort = [{'value':'5','text':'5%'},{'value':'15','text':'15%'},{'value':'25','text':'25%'}];
+
+   vm.reset =  function reset() {
+        vm.sortPrice = {};
+        vm.sortVolume = {};
+        vm.sortAvgVol = {};
+        vm.sortMktCap = {};
+        vm.sortFloat = {};
+        vm.sortShort = {};
+    };
+    
+
+
     };
 })();
