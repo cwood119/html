@@ -5,7 +5,7 @@
         .controller('dataController', dataController);
 
     /* @ngInject */
-    function dataController($http, $mdDialog) {
+    function dataController($http, $mdDialog, $location) {
         var vm = this;
         // Get data
         $http.get("app/air/earnings-calendar/data/data.json")
@@ -140,6 +140,16 @@
           }
     }
     vm.shortFilter = function() {if (vm.short != 0){ return true;}}
+    
+    // Announcement Time Filters
+    vm.timeFilterActive = false;
+    vm.time = function(entry) {
+        if(vm.timeFilterActive >= 0 ) {
+          if(vm.timeFilterActive) { return (entry.time == vm.timeFilterActive) ? true: false;}
+          return true;
+          }
+    }
+    vm.timeFilter = function() {if (vm.time != 0){ return true;}}
 
     // Filter Data
     vm.filterPrice = ['5','10','15'];
@@ -149,6 +159,7 @@
     vm.filterMktUnder = [{'value':'300000000','text':'300M'},{'value':'2000000000','text':'2B'},{'value':'10000000000','text':'10B'},{'value':'200000000000','text':'200B'}];
     vm.filterFloat = [{'value':'50000000','text':'50M'},{'value':'100000000','text':'100M'},{'value':'500000000','text':'500M'}];
     vm.filterShort = [{'value':'5','text':'5%'},{'value':'15','text':'15%'},{'value':'25','text':'25%'}];
+    vm.filterTime = [{'value':'2','text':'Before Market'},{'value':'1','text':'After Market'},{'value':'3','text':'Intraday'},{'value':'4','text':'Unknown'}];
 
    vm.reset =  function reset() {
         vm.sortPrice = {};
@@ -158,7 +169,8 @@
         vm.sortFloat = {};
         vm.sortShort = {};
     };
-    
+    // Get current path.  Using this to show/hide before/after market announcement filter
+    vm.currentPath = $location.path();
 
 
     };

@@ -1,10 +1,9 @@
 #!/bin/bash
 
 # Define Variables
-#tomorrow=$(date --date="next day" "+%Y%m%d")
-tomorrow=$(date --date="next monday" "+%Y%m%d")
+tomorrow=$(date --date="next day" "+%Y%m%d")
+#tomorrow=$(date --date="next monday" "+%Y%m%d")
 today=`date +%Y-%m-%d`
-pub=~/public_html/QuoVadimus/
 
 # Get Nightly Calendar and format
 wget https://www.quandl.com/api/v3/databases/ZEA/download?api_key=pDqgMz1TxeRQxoExz8VW
@@ -147,7 +146,7 @@ do
     name="$(echo $line | cut -d, -f 4)"
     name="$(echo $name | cut -c1-20)"
     price="$(echo $line | cut -d, -f 5)"
-    announce="$(echo $line | cut -d, -f 6)"
+    time="$(echo $line | cut -d, -f 6)"
     change="$(echo $line | cut -d, -f 7)"
     changePercent="$(echo $line | cut -d, -f 8)"
     open="$(echo $line | cut -d, -f 9)"
@@ -211,9 +210,10 @@ echo "vvv Getting 1d chart data for "$symbol" vvv"
         rm date.txt && rm open.txt && rm high.txt && rm low.txt && rm close.txt && rm $symbol"-1d.json"
     
         # Build JSON
-        echo '{"symbol": "'$symbol'","name": "'$name'","price": '$price',"dollarChange": '$change',"percentChange": '$changePercent',"oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
+        echo '{"symbol": "'$symbol'","name": "'$name'","price": '$price',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
 done
 # Remove , from json
 sed -i '$ s/.$//' data.json
 echo ']' >> data.json
+cp data.json /var/www/html/source/src/app/air/decision-engine/data/ecal-daily-data.json
 mv data.json /var/www/html/source/src/app/air/earnings-calendar/data/
