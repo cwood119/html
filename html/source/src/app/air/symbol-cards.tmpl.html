@@ -1,4 +1,4 @@
-<tri-widget flex flex-xs="100" ng-repeat="symbol in vm.symbols | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short | filter:vm.time | orderBy:vm.sortPrice | orderBy:vm.sortPercentChange | orderBy:vm.sortVolume | orderBy:vm.sortAvgVol | orderBy:vm.sortMktCap | orderBy:vm.sortFloat | orderBy:vm.sortShort" content-padding class="symbol-card">
+<tri-widget flex flex-xs="100" ng-repeat="symbol in vm.symbols | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short | filter:vm.time | orderBy: '-percentChange' | orderBy:vm.sortPrice | orderBy:vm.sortPercentChange | orderBy:vm.sortVolume | orderBy:vm.sortAvgVol | orderBy:vm.sortMktCap | orderBy:vm.sortFloat | orderBy:vm.sortShort | orderBy:vm.sortSymbol" content-padding class="symbol-card">
      <md-card-content>
          <table style="width:100%">
                     <tr class="symbol-card-row1">

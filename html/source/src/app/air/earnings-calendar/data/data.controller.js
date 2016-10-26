@@ -169,6 +169,7 @@
         vm.sortMktCap = {};
         vm.sortFloat = {};
         vm.sortShort = {};
+        vm.sortSymbol = {};
     };
     // Get current path.  Using this to show/hide before/after market announcement filter
     vm.currentPath = $location.path();

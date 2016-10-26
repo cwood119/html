@@ -1,3 +1,7 @@
+<md-select placeholder="Symbol" ng-model="vm.sortSymbol" ng-click="vm.reset();">
+    <md-option value="symbol"><md-icon class="material-icons fa fa-sort-alpha-asc sort-text-center" aria-hidden="true"></md-icon> Symbol</md-option>
+    <md-option value="-symbol"><md-icon class="material-icons fa fa-sort-alpha-desc sort-text-center" aria-hidden="true"></md-icon> Symbol</md-option>
+</md-select>
 <md-select placeholder="Price" ng-model="vm.sortPrice" ng-click="vm.reset();">
     <md-option value="price"><md-icon class="material-icons fa fa-sort-numeric-asc sort-text-center" aria-hidden="true"></md-icon> Price</md-option>
     <md-option value="-price"><md-icon class="material-icons fa fa-sort-numeric-desc sort-text-center" aria-hidden="true"></md-icon> Price</md-option>
