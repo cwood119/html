@@ -163,6 +163,7 @@
 
    vm.reset =  function reset() {
         vm.sortPrice = {};
+        vm.sortPercentChange = {};
         vm.sortVolume = {};
         vm.sortAvgVol = {};
         vm.sortMktCap = {};

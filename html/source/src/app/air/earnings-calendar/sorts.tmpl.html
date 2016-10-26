@@ -2,6 +2,10 @@
     <md-option value="price"><md-icon class="material-icons fa fa-sort-numeric-asc sort-text-center" aria-hidden="true"></md-icon> Price</md-option>
     <md-option value="-price"><md-icon class="material-icons fa fa-sort-numeric-desc sort-text-center" aria-hidden="true"></md-icon> Price</md-option>
 </md-select>
+<md-select placeholder="% Change" ng-model="vm.sortPercentChange" ng-click="vm.reset();">
+    <md-option value="percentChange"><md-icon class="material-icons fa fa-sort-numeric-asc sort-text-center" aria-hidden="true"></md-icon> % Change</md-option>
+    <md-option value="-percentChange"><md-icon class="material-icons fa fa-sort-numeric-desc sort-text-center" aria-hidden="true"></md-icon> % Change</md-option>
+</md-select>
 <md-select placeholder="Volume" ng-model="vm.sortVolume" ng-click="vm.reset();">
     <md-option value="volume"><md-icon class="material-icons fa fa-sort-numeric-asc sort-text-center" aria-hidden="true"></md-icon> Volume</md-option>
     <md-option value="-volume"><md-icon class="material-icons fa fa-sort-numeric-desc sort-text-center" aria-hidden="true"></md-icon> Volume</md-option>
