@@ -52,7 +52,7 @@ $plot->SetPlotType('candlesticks');
 $plot->SetDataColors(array('#03a9f4', '#03a9f4', '#03a9f4', '#03a9f4'));
 $plot->SetXLabelAngle(0);
 $plot->SetXLabelType('custom', 'formatTime');
-$plot->SetNumXTicks(500);
+$plot->SetNumXTicks(xTix);
 $plot->SetFont('y_label',4);
 $plot->SetFont('x_label',4);
 if (method_exists($plot, 'TuneYAutoRange'))
