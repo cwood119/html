@@ -236,6 +236,6 @@ echo ']' >> data.json
 # Clean up and prepare data for other scans
 cp data.json /var/www/html/source/src/app/air/decision-engine/data/ecal-daily-data.json
 mv data.json /var/www/html/source/src/app/air/earnings-calendar/data/
-cut -d, -f 1,3 tomorrow.sorted > /var/www/html/source/src/app/air/earnings-calendar/data/ecal-daily-symbols
-rm tomorrow.sorted && rm tomorrow.new.csv
+mv tomorrow.new.csv /var/www/html/source/src/app/air/earnings-calendar/data/ecal-daily-symbols
+rm tomorrow.sorted
 
