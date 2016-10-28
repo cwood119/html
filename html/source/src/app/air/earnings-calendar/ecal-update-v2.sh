@@ -90,7 +90,7 @@ echo "vvv Getting historical data for "$symbol" vvv"
                 volume="$(echo $historicalData | ./jq-linux64 '.history.day[].volume' $1)"
                 volume60=$(echo $volume | tr ' ' '\n' | tail -60)
                 averageVolume="$(echo $volume60 | tr ' ' '\n' | awk '{ sum += $1 } END { if (NR > 0) printf("%f", sum / NR) }')"
-                announce=$(echo $line | cut -d, -f 2)
+                announce=$(echo $line | cut -d, -f 6)
                 # Assign quotes data from ecal-data.json file
                 company="$(./jq-linux64 '.quotes.quote['$jsonIndex'].description' ecal-data.json)"
                 company="$(echo $company | sed 's/,//')"
@@ -200,6 +200,9 @@ echo "vvv Getting 1d chart data for "$symbol" vvv"
         cat "$symbol"-1d.json | ./jq-linux64 '.series.data[].close' $1 | sed 's/\"//g' $1 > close.txt       
         paste -d ',' date.txt open.txt high.txt low.txt close.txt > "$symbol"-1d.csv && sed -i '1i Date,Open,High,Low,Close' "$symbol"-1d.csv
         sed 's/symbol/'$symbol'/g' symbol-1d.php > $symbol"-1d.php"
+        wc=$(wc -l "$symbol"-1d.csv | cut -d' ' -f1)
+        xTicks=$(($wc -2))
+        sed -i 's/xTix/'$xTicks'/g' $symbol"-1d.php"
         mv "$symbol"-1d.csv /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
         mv "$symbol"-1d.php /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
 
