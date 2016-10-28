@@ -144,8 +144,12 @@
     // Announcement Time Filters
     vm.timeFilterActive = false;
     vm.time = function(entry) {
-        if(vm.timeFilterActive >= 0 ) {
+        if(vm.timeFilterActive > 0 ) {
           if(vm.timeFilterActive) { return (entry.time == vm.timeFilterActive) ? true: false;}
+          return true;
+          }
+        if(vm.timeFilterActive < 1 ) {
+          if(vm.timeFilterActive) { return (entry.time > vm.timeFilterActive) ? true: false;}
           return true;
           }
     }
