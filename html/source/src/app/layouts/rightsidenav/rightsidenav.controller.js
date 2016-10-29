@@ -12,78 +12,46 @@
         vm.close = close;
         vm.currentTab = 0;
         vm.notificationGroups = [{
-            name: 'Twitter',
+            name: 'Triggered',
             notifications: [{
-                title: 'Mention from oxygenna',
-                icon: 'fa fa-twitter',
-                iconColor: '#55acee',
-                date: moment().startOf('hour')
-            },{
-                title: 'Oxygenna',
-                icon: 'fa fa-twitter',
-                iconColor: '#55acee',
-                date: moment().startOf('hour')
-            },{
-                title: 'Oxygenna',
-                icon: 'fa fa-twitter',
-                iconColor: '#55acee',
-                date: moment().startOf('hour')
-            },{
-                title: 'Followed by Oxygenna',
-                icon: 'fa fa-twitter',
-                iconColor: '#55acee',
-                date: moment().startOf('hour')
-            }]
-        },{
-            name: 'Server',
-            notifications: [{
-                title: 'Server Down',
-                icon: 'zmdi zmdi-alert-circle',
-                iconColor: 'rgb(244, 67, 54)',
-                date: moment().startOf('hour')
-            },{
-                title: 'Slow Response Time',
-                icon: 'zmdi zmdi-alert-triangle',
+                title: 'WLL at or above 9',
+                icon: 'zmdi zmdi-notifications-active',
                 iconColor: 'rgb(255, 152, 0)',
                 date: moment().startOf('hour')
             },{
-                title: 'Server Down',
-                icon: 'zmdi zmdi-alert-circle',
-                iconColor: 'rgb(244, 67, 54)',
+                title: 'OCN at or above 4.40',
+                icon: 'zmdi zmdi-notifications-active',
+                iconColor: 'rgb(255, 152, 0)',
+                date: moment().startOf('hour')
+            },{
+                title: 'FCX at or above 11',
+                icon: 'zmdi zmdi-notifications-active',
+                iconColor: 'rgb(255, 152, 0)',
+                date: moment().startOf('hour')
+            },{
+                title: 'AMD at or above 7.50',
+                icon: 'zmdi zmdi-notifications-active',
+                iconColor: 'rgb(255, 152, 0)',
                 date: moment().startOf('hour')
             }]
         },{
-            name: 'Sales',
+            name: 'Active',
             notifications: [{
-                title: 'Triangular Admin $21',
-                icon: 'zmdi zmdi-shopping-cart',
-                iconColor: 'rgb(76, 175, 80)',
-                date: moment().startOf('hour')
+                title: 'WLL at or above 9',
+                icon: 'zmdi zmdi-notifications',
+                iconColor: '#4caf50'
             },{
-                title: 'Lambda WordPress $60',
-                icon: 'zmdi zmdi-shopping-cart',
-                iconColor: 'rgb(76, 175, 80)',
-                date: moment().startOf('hour')
+                title: 'OCN at or above 4.40',
+                icon: 'zmdi zmdi-notifications',
+                iconColor: '#4caf50'
             },{
-                title: 'Triangular Admin $21',
-                icon: 'zmdi zmdi-shopping-cart',
-                iconColor: 'rgb(76, 175, 80)',
-                date: moment().startOf('hour')
+                title: 'FCX at or above 11',
+                icon: 'zmdi zmdi-notifications',
+                iconColor: '#4caf50'
             },{
-                title: 'Triangular Admin $21',
-                icon: 'zmdi zmdi-shopping-cart',
-                iconColor: 'rgb(76, 175, 80)',
-                date: moment().startOf('hour')
-            },{
-                title: 'Lambda WordPress $60',
-                icon: 'zmdi zmdi-shopping-cart',
-                iconColor: 'rgb(76, 175, 80)',
-                date: moment().startOf('hour')
-            },{
-                title: 'Triangular Admin $21',
-                icon: 'zmdi zmdi-shopping-cart',
-                iconColor: 'rgb(76, 175, 80)',
-                date: moment().startOf('hour')
+                title: 'AMD at or above 7.50',
+                icon: 'zmdi zmdi-notifications',
+                iconColor: '#4caf50'
             }]
         }];
         vm.openMail = openMail;
