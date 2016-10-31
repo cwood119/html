@@ -9,5 +9,15 @@
             </md-tab>
         </md-tabs>
         <md-content class="symbol-cards-include" ng-include="'app/air/symbol-cards.tmpl.html'"></md-content>
+        <md-menu class="reset-menu-container">
+            <md-button class="md-icon-button" aria-label="open menu" ng-click="$mdOpenMenu()">
+                <md-icon md-font-icon="zmdi zmdi-more-vert"></md-icon>
+            </md-button>
+            <md-menu-content width="3">
+                <md-menu-item>
+                    <md-button class="md-flat" ng-class="['md-warn','md-default-hue'] " ng-click="vm.reset();" aria-label="Reset Sort Button">Reset Sort</md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
     </div>
 </div>

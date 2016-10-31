@@ -4,8 +4,9 @@
 # Define Variables
 ecalPath=/var/www/html/source/src/app/air/earnings-calendar/data/
 tradierApi=2IigxmuJp1Vzdq6nJKjxXwoXY9D6
+PIDFILE=~/ecalUpdate.pid
 
-
+function ecalUpdate {
 # Make a dynamic copy of the symbols file 
 cut -d, -f 1 $ecalPath"ecal-daily-symbols" > ecal-update-symbols && cp ecal-update-symbols ecal-update-symbols-dynamic
 cp $ecalPath"ecal-daily-symbols" today.sorted && cp today.sorted today-dynamic
@@ -127,7 +128,7 @@ do
 done
 
 # Clean up
-rm ecal-data.json && rm ecal-fundamentals.json && rm ecal-update-symbols && rm ecal-update-symbols-dynamic && rm today-dynamic
+rm ecal-data.json && rm  ecal-update-symbols && rm ecal-update-symbols-dynamic && rm today-dynamic
 
 # Remove double quotes
 sed -i 's/\"//g' today.new.csv
@@ -234,3 +235,31 @@ echo ']' >> data.json
 cp data.json /var/www/html/source/src/app/air/decision-engine/data/ecal-intraday-data.json
 mv data.json /var/www/html/source/src/app/air/earnings-calendar/data/
 rm today.new.csv && rm today.sorted
+}
+
+if [ -f $PIDFILE ]
+then
+  PID=$(cat $PIDFILE)
+  ps -p $PID > /dev/null 2>&1
+  if [ $? -eq 0 ]
+  then
+    echo "Ecal Update is already running"
+    exit 1
+  else
+    # Process not found assume not running
+    echo $$ > $PIDFILE
+    if [ $? -ne 0 ]
+    then
+      echo "Could not create PID file"
+      exit 1
+    fi
+    ecalUpdate
+  fi
+else
+  echo $$ > $PIDFILE
+  if [ $? -ne 0 ]
+  then
+    echo "Could not create PID file"
+    exit 1
+  fi
+fi
