@@ -234,7 +234,7 @@ echo ']' >> data.json
 # Clean up and prepare data for other scans
 cp data.json /var/www/html/source/src/app/air/decision-engine/data/ecal-intraday-data.json
 mv data.json /var/www/html/source/src/app/air/earnings-calendar/data/
-rm today.new.csv && rm today.sorted
+mv today.new.csv $ecalPath"ecal-update-symbols" && rm today.sorted
 }
 
 if [ -f $PIDFILE ]
