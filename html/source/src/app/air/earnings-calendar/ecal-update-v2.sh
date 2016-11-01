@@ -38,12 +38,12 @@ function bulkQuotes {
 
     # Get quote data
 echo "vvv Getting quote data vvv"
-    data="$(curl -X GET "https://api.tradier.com/v1/markets/quotes?symbols="$list"" -H "Accept: application/json" -H "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6")"
+    data="$(curl -X GET "https://api.tradier.com/v1/markets/quotes?symbols="$list"" -H "Accept: application/json" -H "Authorization: Bearer "$tradierApi"")"
     echo $data > ecal-data.json
 
     # Get share data
 echo "vvv Getting fundamentals data vvv"
-    tradierCompanyApi="$(curl -X GET "https://api.tradier.com/beta/markets/fundamentals/company?symbols="$list"" -H "Accept: application/json" -H "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6")"
+    tradierCompanyApi="$(curl -X GET "https://api.tradier.com/beta/markets/fundamentals/company?symbols="$list"" -H "Accept: application/json" -H "Authorization: Bearer "$tradierApi"")"
     echo $tradierCompanyApi > ecal-fundamentals.json
     # Pull first 100 symbols and place them in a temporary reader file
     scount=$(wc -l< today-dynamic)
@@ -82,7 +82,7 @@ echo "vvv Getting fundamentals data vvv"
                 
                 # Calculate average volume 
 echo "vvv Getting historical data for "$symbol" vvv"
-                historicalData="$(curl -H "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6" https://api.tradier.com/v1/markets/history?symbol="$symbol" -H "Accept: application/json")"
+                historicalData="$(curl -H "Authorization: Bearer "$tradierApi"" https://api.tradier.com/v1/markets/history?symbol="$symbol" -H "Accept: application/json")"
                 historicalDataCheck=$(echo $historicalData | ./jq-linux64 '.history' $1)
                 if [ "$historicalDataCheck" = "null" ]; then 
                     jsonIndex=$(($jsonIndex + 2))
@@ -119,7 +119,7 @@ echo "vvv Getting historical data for "$symbol" vvv"
         }
 
     # Clean up
-    rm line && rm today-reader && rm ecal-update-symbols-list
+    rm line && rm today-reader && rm ecal-update-symbols-list && rm ecal-fundamentals.json
 }
 # Check if dynamic symbol file is empty.  If not, perform bulkQuotes function
 while test -s "ecal-update-symbols-dynamic"
@@ -163,7 +163,7 @@ echo "vvv Getting headline data for "$symbol" vvv"
         # Generate 1 year  chart
 echo "vvv Getting 1yr chart data for "$symbol" vvv"
         twelveMonthsAgo="$(date -d "12 months ago" +%Y-%m-%d)"
-        curl -H "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6" https://api.tradier.com/v1/markets/history?symbol=$symbol"&start="$twelveMonthsAgo -H "Accept: application/json" > $symbol"-1yr.json"
+        curl -H "Authorization: Bearer "$tradierApi"" https://api.tradier.com/v1/markets/history?symbol=$symbol"&start="$twelveMonthsAgo -H "Accept: application/json" > $symbol"-1yr.json"
 
         cat "$symbol"-1yr.json | ./jq-linux64 '.history.day[].date' $1 | sed 's/\"//g' $1 > date.txt    
         cat "$symbol"-1yr.json | ./jq-linux64 '.history.day[].open' $1 | sed 's/\"//g' $1 > open.txt
@@ -193,7 +193,7 @@ echo "vvv Getting 1yr chart data for "$symbol" vvv"
     
         # Generate 1 day chart
 echo "vvv Getting 1d chart data for "$symbol" vvv"
-        curl -H "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6" -H "Accept: application/json" "https://api.tradier.com/v1/markets/timesales?symbol="$symbol"&interval=5min" > $symbol"-1d.json"
+        curl -H "Authorization: Bearer "$tradierApi"" -H "Accept: application/json" "https://api.tradier.com/v1/markets/timesales?symbol="$symbol"&interval=5min" > $symbol"-1d.json"
         cat "$symbol"-1d.json | ./jq-linux64 '.series.data[].time' $1 | sed 's/\"//g' $1 | cut -dT -f 2 > date.txt
         cat "$symbol"-1d.json | ./jq-linux64 '.series.data[].open' $1 | sed 's/\"//g' $1 > open.txt
         cat "$symbol"-1d.json | ./jq-linux64 '.series.data[].high' $1 | sed 's/\"//g' $1 > high.txt
