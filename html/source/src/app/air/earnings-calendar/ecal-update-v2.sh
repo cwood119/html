@@ -157,9 +157,8 @@ do
     shortPercent="$(echo $line | cut -d, -f 16)"
     float="$(echo $line | cut -d, -f 17)"
     # Get headlines
-echo "vvv Getting headline data for "$symbol" vvv"
-    headlines="$(curl "https://api.intrinio.com/news?ticker="$symbol"" -u "506540ef71e2788714ac2bdd2255d337:1d3bce294c77797adefb8a602339ff21")"
-       
+    #headlines="$(curl "https://api.intrinio.com/news?ticker="$symbol"" -u "506540ef71e2788714ac2bdd2255d337:1d3bce294c77797adefb8a602339ff21")"
+    headlines="$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .headlines' data.json)"   
         # Generate 1 year  chart
 echo "vvv Getting 1yr chart data for "$symbol" vvv"
         twelveMonthsAgo="$(date -d "12 months ago" +%Y-%m-%d)"
