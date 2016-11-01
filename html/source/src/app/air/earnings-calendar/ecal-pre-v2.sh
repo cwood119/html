@@ -9,8 +9,12 @@ regularHoursClose=15:55
 afterHoursClose=20:00
 afterHoursEpoch=$(date -d "$yesterday $afterHoursClose" +%s)
 regularHoursEpoch=$(date -d "$yesterday $regularHoursClose" +%s)
+PIDFILE=~/ecalPre.pid
 
+function ecalPre {
 # Iterate through symbols and request pre market price
+#
+echo '[' > data.json
 cat $ecalPath"ecal-daily-symbols" | while read line || [ -n "$line" ]
 do
     # Define variables for symbol card and vitals
@@ -40,21 +44,16 @@ do
     preTimestamp=$(./jq-linux64 '.series.data[-1].timestamp' $symbol"-1d.json")  
     # If the last tick price was later (in epoch time) than the close of after hours, it's a pre-market tick.
     if [[ $preTimestamp -gt $afterHoursEpoch ]] ; then
-        # Get yesterday's close
-        #jsonIndex=$(./jq-linux64 '.[].symbol=="'$symbol'"' $ecalPath"data.json" | awk '/true/{ print NR;exit  }' $1)
-        #jsonIndex=$(($jsonIndex-1))
-        #price=$(./jq-linux64 '.series.data[] | select(.timestamp == '$regularHoursEpoch') | .close' $symbol"-1d.json")
-     echo "symbol is "$symbol" price is "$price" prePrice is "$prePrice 
         if (( $(echo "$prePrice > $price" | bc -l) )) ; then
             # Calculate percent change
-            change=$(echo $prePrice - $price | bc)
+            change=$(echo $prePrice - $price | bc | awk '{printf "%f", $0}')
             percentCalc=$(echo $change / $price | bc -l)
-            percentChange=$(echo $percentCalc \* 100 | bc -l) 
+            changePercent=$(echo $percentCalc \* 100 | bc -l) 
             # Get headlines
             headlines="$(curl "https://api.intrinio.com/news?ticker="$symbol"" -u "506540ef71e2788714ac2bdd2255d337:1d3bce294c77797adefb8a602339ff21")"
 
             # Check for nulls and replace with 0
-            if [ "$price" = "" ]; then price=0; fi
+            if [ "$prePrice" = "" ]; then prePrice=0; fi
             if [ "$change" = "" ]; then change=0; fi
             if [ "$changePercent" = "" ]; then changePercent=0; fi
             if [ "$time" = "" ]; then time=0; fi
@@ -68,7 +67,7 @@ do
             if [ "$marketCap" = "" ]; then marketCap=0; fi
             if [ "$float" = "" ]; then float=0; fi
             # Build JSON
-            echo '{"symbol": "'$symbol'","name": "'$name'","price": '$price',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
+            echo '{"symbol": "'$symbol'","name": "'$name'","price": '$prePrice',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
         fi
     fi
 done
@@ -79,3 +78,31 @@ echo ']' >> data.json
 # Clean up and prepare data for other scans
 cp data.json /var/www/html/source/src/app/air/decision-engine/data/ecal-pre-data.json
 mv data.json /var/www/html/source/src/app/air/earnings-calendar/data/
+}
+if [ -f $PIDFILE ]
+then
+  PID=$(cat $PIDFILE)
+  ps -p $PID > /dev/null 2>&1
+  if [ $? -eq 0 ]
+  then
+    echo "Ecal After is already running"
+    exit 1
+  else
+    # Process not found assume not running
+    echo $$ > $PIDFILE
+    if [ $? -ne 0 ]
+    then
+      echo "Could not create PID file"
+      exit 1
+    fi
+    ecalAfter
+  fi
+else
+  echo $$ > $PIDFILE
+  if [ $? -ne 0 ]
+  then
+    echo "Could not create PID file"
+    exit 1
+  fi
+fi
+

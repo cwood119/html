@@ -9,7 +9,7 @@ regularHoursClose=15:55
 afterHoursClose=20:00
 afterHoursEpoch=$(date -d "$yesterday $afterHoursClose" +%s)
 regularHoursEpoch=$(date -d "$yesterday $regularHoursClose" +%s)
-PIDFILE=~/ecalUpdate.pid
+PIDFILE=~/ecalAfter.pid
 
 function ecalAfter {
 # Iterate through symbols and request after market price.
