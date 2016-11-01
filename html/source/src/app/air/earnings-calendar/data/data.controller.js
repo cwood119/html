@@ -12,6 +12,12 @@
             .then(function(response) {
                 vm.symbols = response.data;
             });
+        $http.get('app/air/earnings-calendar/data/data.json')
+            .success(function(data, status, headers){
+                var modified = headers()['last-modified'];
+                var newModified = new Date(modified);
+                vm.updated = newModified.toLocaleString();
+            });
 
         // Vitals Modal
         vm.openVitals = function (e, symbol) {
