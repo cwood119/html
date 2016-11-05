@@ -1,4 +1,4 @@
-<tri-widget flex flex-xs="100" ng-repeat="symbol in vm.symbols | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short | filter:vm.time | orderBy: '-percentChange' | orderBy:vm.sortPrice | orderBy:vm.sortPercentChange | orderBy:vm.sortVolume | orderBy:vm.sortAvgVol | orderBy:vm.sortMktCap | orderBy:vm.sortFloat | orderBy:vm.sortShort | orderBy:vm.sortSymbol" content-padding class="symbol-card">
+<tri-widget flex flex-xs="100" ng-repeat="symbol in vm.filtered = (vm.symbols | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short | filter:vm.time) | orderBy: '-percentChange' | orderBy:vm.sortPrice | orderBy:vm.sortPercentChange | orderBy:vm.sortVolume | orderBy:vm.sortAvgVol | orderBy:vm.sortMktCap | orderBy:vm.sortFloat | orderBy:vm.sortShort | orderBy:vm.sortSymbol | pagination: vm.curPage * vm.pageSize | limitTo: vm.pageSize | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short | filter:vm.time" content-padding class="symbol-card">
      <md-card-content>
          <table style="width:100%">
                     <tr class="symbol-card-row1">
@@ -52,3 +52,13 @@
         </md-tabs>
     </md-card-content>
 </tri-widget>
+<md-whiteframe class="md-whiteframe-z1 text-center pagination-container">
+    Showing {{vm.filtered.length}} of {{vm.symbols.length}}
+    <md-button class="md-primary md-icon-button md-button md-light-blue-theme md-ink-ripple" type="button" aria-label="Previous Page" ng-disabled="vm.curPage == 0" ng-click="vm.curPage = vm.curPage - 1">
+        <md-icon md-font-icon="zmdi zmdi-chevron-left" class="ng-scope md-light-blue-theme md-font material-icons zmdi zmdi-chevron-left" aria-hidden="true"></md-icon>
+    </md-button>
+    <span>Page {{vm.curPage + 1}} of {{ vm.numberOfPages() }}</span>
+    <md-button class="md-primary md-icon-button md-button md-light-blue-theme md-ink-ripple" type="button" aria-label="Next Page" ng-disabled="vm.curPage >= vm.filtered.length/vm.pageSize -1" ng-click="vm.curPage = vm.curPage+1">
+        <md-icon md-font-icon="zmdi zmdi-chevron-right" class="ng-scope md-light-blue-theme md-font material-icons zmdi zmdi-chevron-right" aria-hidden="true"></md-icon>
+    </md-button>
+</md-whiteframe>

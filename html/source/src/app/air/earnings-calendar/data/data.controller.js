@@ -4,13 +4,24 @@
         .module('app.air.earnings-calendar')
         .controller('dataController', dataController);
 
+    // Pagination
+    angular.module('app.air.earnings-calendar').filter('pagination', function(){ 
+        return function(input, start) {
+            if (!input || !input.length) { return; }
+            start = +start;
+            return input.slice(start);
+        };
+    });
     /* @ngInject */
-    function dataController($http, $mdDialog, $location, $document) {
+    function dataController($http, $mdDialog, $location, $document, $timeout) {
         var vm = this;
         // Get data
         $http.get('app/air/earnings-calendar/data/data.json')
             .then(function(response) {
                 vm.symbols = response.data;
+                vm.curPage = 0;
+                vm.pageSize = 12;
+                vm.numberOfPages = function() {return Math.ceil(vm.symbols.length / vm.pageSize);};
             });
         $http.get('app/air/earnings-calendar/data/data.json')
             .success(function(data, status, headers){
@@ -19,6 +30,10 @@
                 vm.updated = newModified.toLocaleString();
             });
 
+        // Refresh pagination
+        vm.resetPagination = function resetPagination() {
+            $timeout(function() { vm.numberOfPages = function() {return Math.ceil(vm.filtered.length / vm.pageSize);};}, 10);
+        };
         // Vitals Modal
         vm.openVitals = function (e, symbol) {
             $mdDialog.show({
@@ -70,6 +85,8 @@
                 if(vm.priceFilterActive) { return (entry.price < underPrice) ? true: false;}
                 return true;
             }
+
+
         };
         vm.priceFilter = function() {if (vm.price != 0){ return true;}};
 
@@ -162,7 +179,7 @@
         vm.timeFilter = function() {if (vm.time != 0){ return true;}};
 
         // Filter Data
-        vm.filterPrice = ['5','10','15'];
+        vm.filterPrice = ['5','10'];
         vm.filterVolume = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
         vm.filterAdv = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
         vm.filterMktOver = [{'value':'50000000','text':'50M'},{'value':'300000000','text':'300M'},{'value':'2000000000','text':'2B'},{'value':'10000000000','text':'10B'}];
