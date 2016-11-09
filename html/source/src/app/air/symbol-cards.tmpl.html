@@ -1,27 +1,27 @@
-<tri-widget flex flex-xs="100" ng-repeat="symbol in vm.filtered = (vm.symbols | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short | filter:vm.time) | orderBy: '-percentChange' | orderBy:vm.sortPrice | orderBy:vm.sortPercentChange | orderBy:vm.sortVolume | orderBy:vm.sortAvgVol | orderBy:vm.sortMktCap | orderBy:vm.sortFloat | orderBy:vm.sortShort | orderBy:vm.sortSymbol | pagination: vm.curPage * vm.pageSize | limitTo: vm.pageSize | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short | filter:vm.time" content-padding class="symbol-card">
+<tri-widget flex flex-xs="100" ng-repeat="symbol in vm.filtered = (vm.symbols | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short | filter:vm.time) | orderBy: '-percentChange' | orderBy:vm.sortPrice | orderBy:vm.sortPercentChange | orderBy:vm.sortVolume | orderBy:vm.sortAvgVol | orderBy:vm.sortMktCap | orderBy:vm.sortFloat | orderBy:vm.sortShort | orderBy:vm.sortSymbol  | limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short | filter:vm.time" content-padding class="symbol-card">
      <md-card-content>
-         <table style="width:100%">
-                    <tr class="symbol-card-row1">
-                        <td><span class="md-subhead">Symbol</span></td>
-                        <td><span class="md-subhead">Price</span></td>
-                        <td><span class="md-subhead">Quick View</span></td>
-                   </tr>
-                    <tr>
-                        <td style="padding-bottom: 15px;">
+         <div style="width:100%; display:table;">
+                    <div class="symbol-card-row1" style="display:table-row;">
+                        <div style="display:table-cell;"><span class="md-subhead">Symbol</span></div>
+                        <div style="display:table-cell;"><span class="md-subhead">Price</span></div>
+                        <div style="display:table-cell;"><span class="md-subhead">Quick View</span></div>
+                   </div>
+                    <div style="display:table-row;">
+                        <div style="padding-bottom: 15px; dispaly:table-cell;">
                             <span class="md-headline">{{symbol.symbol}}</span><br>
                             <span class="md-body-1">{{symbol.name}}</span><br>
-                        </td>
-                        <td>
+                        </div>
+                        <div style="display:table-cell;">
                             <span class="md-body-2" >{{symbol.price | number:2}}</span><br>
                             <span class="md-body-1" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">{{symbol.dollarChange | number:2}} ({{symbol.percentChange | number:2}}%)</span><br>
-                        </td>
-                        <td>
+                        </div>
+                        <div style="display: table-cell;">
                             <span class="md-body-1 pointer" style="color:#03a9f4" data-symbol="{{symbol.symbol}}" data-open="{{symbol.vitals.open}}"  ng-disabled="dialogForm.$invalid" ng-click="vm.openVitals($event, symbol)">Vitals</span><br>
 
                             <span class="md-body-1 pointer" style="color:#03a9f4" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event, symbol)">Headlines</span>
-                        </td>
-                    </tr>
-        </table>
+                        </div>
+                    </div>
+        </div>
                 <md-tabs class="md-primary" md-selected="selectedTabIndex" md-stretch-tabs="always">
                    <md-tab label="1D">
                         <md-content class="md-padding chart-tab"><a style="border:none;"target="_blank" href="https://www.tradingview.com/widgetembed/?symbol={{symbol.symbol}}&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en"><img src="{{symbol.oneDay}}"></a>
@@ -52,13 +52,4 @@
         </md-tabs>
     </md-card-content>
 </tri-widget>
-<md-whiteframe class="md-whiteframe-z1 text-center pagination-container">
-    Showing {{vm.filtered.length}} of {{vm.symbols.length}}
-    <md-button class="md-primary md-icon-button md-button md-light-blue-theme md-ink-ripple" type="button" aria-label="Previous Page" ng-disabled="vm.curPage == 0" ng-click="vm.curPage = vm.curPage - 1">
-        <md-icon md-font-icon="zmdi zmdi-chevron-left" class="ng-scope md-light-blue-theme md-font material-icons zmdi zmdi-chevron-left" aria-hidden="true"></md-icon>
-    </md-button>
-    <span>Page {{vm.curPage + 1}} of {{ vm.numberOfPages() }}</span>
-    <md-button class="md-primary md-icon-button md-button md-light-blue-theme md-ink-ripple" type="button" aria-label="Next Page" ng-disabled="vm.curPage >= vm.filtered.length/vm.pageSize -1" ng-click="vm.curPage = vm.curPage+1">
-        <md-icon md-font-icon="zmdi zmdi-chevron-right" class="ng-scope md-light-blue-theme md-font material-icons zmdi zmdi-chevron-right" aria-hidden="true"></md-icon>
-    </md-button>
-</md-whiteframe>
+<md-table-pagination md-limit="vm.pageSize" md-limit-options="vm.limitOptions"  md-page-select md-page="vm.curPage" md-total="{{vm.filtered.length}}" class="symbol-pagination"></md-table-pagination>

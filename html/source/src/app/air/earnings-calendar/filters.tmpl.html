@@ -70,7 +70,7 @@
 <md-select ng-show="vm.currentPath === '/earnings-calendar'" placeholder="Time of Day" ng-change="vm.timeFilter" ng-model="vm.timeFilterActive">
     <md-option value="0">Any Time</md-option>
         <md-option ng-repeat="filterTime in vm.filterTime" value="{{filterTime.value}}" ng-click="vm.resetPagination();" ng-click="vm.resetPagination();">
-            <md-icon class=" material-icons fa fa-clock-o filter-long-up-arrow" aria-hidden="true"></md-icon>{{filterTime.text}}
+            <md-icon aria-hidden="true"></md-icon>{{filterTime.text}}
         </md-option>
     </md-optgroup>
 </md-select>

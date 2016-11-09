@@ -16,7 +16,8 @@ button, select, html, textarea, input {
 @import "scss/material-backgrounds";
 
 // Add your CSS here
-// Custom CSS starts here - cwood cwood@automatedinvestmentresearch.com 2016
+// Custom CSS starts here 
+// By cwood - cwood@automatedinvestmentresearch.com 2016
 
 // Global App Styles
 a{color:#03A9F4 !important;}
@@ -36,6 +37,7 @@ a{color:#03A9F4 !important;}
     font-size: 10pt;
     margin-top: -15px;
 }
+.showing {position:relative;top:5px;}
 // Symbol Cards
 .symbol-cards-include{margin:0;}
 .symbol-card {width: 32%;display: inline-block;text-align:left;margin: 8px;}
@@ -86,17 +88,11 @@ md-icon.filter-long-up-arrow {vertical-align: baseline;text-align: right;padding
 .sort-text-center {text-align:center;}
 .reset-menu-container {
     position: absolute;
-    top: 25px;
+    top: 40px;
     right: 20px;
 }
 // Pagination
-.pagination-container{
-    margin: 10px auto !important;
-    padding: 0px;
-    width: 95%;
-    background: white;
-    display: block;
-}
+.symbol-pagination{margin-top:20px;}
 // Responsive
 @media all and (max-width:1280px){ /* Laptop */
     .symbol-card{margin:7px !important;}

@@ -13,15 +13,15 @@
         };
     });
     /* @ngInject */
-    function dataController($http, $mdDialog, $location, $document, $timeout) {
+    function dataController($http, $mdDialog, $location, $document) {
         var vm = this;
         // Get data
         $http.get('app/air/earnings-calendar/data/data.json')
             .then(function(response) {
                 vm.symbols = response.data;
-                vm.curPage = 0;
+                vm.curPage = 1;
+                vm.limitOptions = [6,12,24];
                 vm.pageSize = 12;
-                vm.numberOfPages = function() {return Math.ceil(vm.symbols.length / vm.pageSize);};
             });
         $http.get('app/air/earnings-calendar/data/data.json')
             .success(function(data, status, headers){
@@ -30,10 +30,6 @@
                 vm.updated = newModified.toLocaleString();
             });
 
-        // Refresh pagination
-        vm.resetPagination = function resetPagination() {
-            $timeout(function() { vm.numberOfPages = function() {return Math.ceil(vm.filtered.length / vm.pageSize);};}, 10);
-        };
         // Vitals Modal
         vm.openVitals = function (e, symbol) {
             $mdDialog.show({
