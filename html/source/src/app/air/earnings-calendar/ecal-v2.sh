@@ -2,9 +2,12 @@
 # Daily Earnings Calendar Scanner
 
 # Define Variables
+#tomorrow=$(date --date="today" "+%Y%m%d")
 tomorrow=$(date --date="next day" "+%Y%m%d")
 #tomorrow=$(date --date="next monday" "+%Y%m%d")
 today=`date +%Y-%m-%d`
+ecalPath=/var/www/html/source/src/app/air/earnings-calendar/data/
+tradierApi=2IigxmuJp1Vzdq6nJKjxXwoXY9D6
 
 # Get Nightly Calendar and format
 wget https://www.quandl.com/api/v3/databases/ZEA/download?api_key=pDqgMz1TxeRQxoExz8VW
@@ -27,6 +30,9 @@ cp tomorrow.sorted tomorrow-dynamic
 
 # Get bulk quotes
 function bulkQuotes {
+    # Prepare headlines json
+    echo '[' > headlines.json
+
     # Pull first 100 symbols and place them in a temporary reader file
     scount=$(wc -l< ecal-symbols-dynamic)
     if [[ $scount -lt 100 ]]; then
@@ -52,12 +58,12 @@ function bulkQuotes {
 
     # Get quote data
 echo "vvv Getting quote data vvv"
-    data="$(curl -X GET "https://api.tradier.com/v1/markets/quotes?symbols="$list"" -H "Accept: application/json" -H "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6")"
+    data="$(curl -X GET "https://api.tradier.com/v1/markets/quotes?symbols="$list"" -H "Accept: application/json" -H "Authorization: Bearer "$tradierApi"")"
     echo $data > ecal-data.json
 
     # Get share data
 echo "vvv Getting fundamentals data vvv"
-    tradierCompanyApi="$(curl -X GET "https://api.tradier.com/beta/markets/fundamentals/company?symbols="$list"" -H "Accept: application/json" -H "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6")"
+    tradierCompanyApi="$(curl -X GET "https://api.tradier.com/beta/markets/fundamentals/company?symbols="$list"" -H "Accept: application/json" -H "Authorization: Bearer "$tradierApi"")"
     echo $tradierCompanyApi > ecal-fundamentals.json
     # Pull first 100 symbols and place them in a temporary reader file
     scount=$(wc -l< tomorrow-dynamic)
@@ -76,16 +82,16 @@ echo "vvv Getting fundamentals data vvv"
             sed -n $jsonIndex"p" tomorrow-reader > line
             line=$(cat line)
             jsonIndex=$(($jsonIndex-1))
-            # Get price and remove any symbols under $20
+            # Get price and remove any symbols under $15
             price=$(./jq-linux64 '.quotes.quote['$jsonIndex'].last' ecal-data.json)
-            if (( $(echo "$price > 20" | bc -l) )) ; then
+            if (( $(echo "$price > 15" | bc -l) )) ; then
                 jsonIndex=$(($jsonIndex + 2))
                 continue
             else
                 symbol=$(./jq-linux64 '.quotes.quote['$jsonIndex'].symbol' ecal-data.json | sed 's/\"//g')
                 # Calculate average volume 
 echo "vvv Getting historical data for "$symbol" vvv"
-                historicalData="$(curl -H "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6" https://api.tradier.com/v1/markets/history?symbol="$symbol" -H "Accept: application/json")"
+                historicalData="$(curl -H "Authorization: Bearer "$tradierApi"" https://api.tradier.com/v1/markets/history?symbol="$symbol" -H "Accept: application/json")"
                 historicalDataCheck=$(echo $historicalData | ./jq-linux64 '.history' $1)
                 if [ "$historicalDataCheck" = "null" ]; then 
                     jsonIndex=$(($jsonIndex + 2))
@@ -162,11 +168,12 @@ do
     # Get headlines
 echo "vvv Getting headline data for "$symbol" vvv"
     headlines="$(curl "https://api.intrinio.com/news?ticker="$symbol"" -u "506540ef71e2788714ac2bdd2255d337:1d3bce294c77797adefb8a602339ff21")"
+    echo '{"symbol": "'$symbol'","headlines":'$headlines'},' >> headlines.json
        
         # Generate 1 year  chart
 echo "vvv Getting 1yr chart data for "$symbol" vvv"
         twelveMonthsAgo="$(date -d "12 months ago" +%Y-%m-%d)"
-        curl -H "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6" https://api.tradier.com/v1/markets/history?symbol=$symbol"&start="$twelveMonthsAgo -H "Accept: application/json" > $symbol"-1yr.json"
+        curl -H "Authorization: Bearer "$tradierApi"" https://api.tradier.com/v1/markets/history?symbol=$symbol"&start="$twelveMonthsAgo -H "Accept: application/json" > $symbol"-1yr.json"
 
         cat "$symbol"-1yr.json | ./jq-linux64 '.history.day[].date' $1 | sed 's/\"//g' $1 > date.txt    
         cat "$symbol"-1yr.json | ./jq-linux64 '.history.day[].open' $1 | sed 's/\"//g' $1 > open.txt
@@ -196,7 +203,7 @@ echo "vvv Getting 1yr chart data for "$symbol" vvv"
     
         # Generate 1 day chart
 echo "vvv Getting 1d chart data for "$symbol" vvv"
-        curl -H "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6" -H "Accept: application/json" "https://api.tradier.com/v1/markets/timesales?symbol="$symbol"&interval=5min" > $symbol"-1d.json"
+        curl -H "Authorization: Bearer "$tradierApi"" -H "Accept: application/json" "https://api.tradier.com/v1/markets/timesales?symbol="$symbol"&interval=5min" > $symbol"-1d.json"
         cat "$symbol"-1d.json | ./jq-linux64 '.series.data[].time' $1 | sed 's/\"//g' $1 | cut -dT -f 2 > date.txt
         cat "$symbol"-1d.json | ./jq-linux64 '.series.data[].open' $1 | sed 's/\"//g' $1 > open.txt
         cat "$symbol"-1d.json | ./jq-linux64 '.series.data[].high' $1 | sed 's/\"//g' $1 > high.txt
@@ -232,13 +239,14 @@ echo "vvv Getting 1d chart data for "$symbol" vvv"
         # Build JSON
         echo '{"symbol": "'$symbol'","name": "'$name'","price": '$price',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
 done
-# Remove , from json
+# Remove , from data json
 sed -i '$ s/.$//' data.json
 echo ']' >> data.json
+# Remove , from headlines json
+sed -i '$ s/.$//' headlines.json
+echo ']' >> headlines.json
 
 # Clean up and prepare data for other scans
 cp data.json /var/www/html/source/src/app/air/decision-engine/data/ecal-daily-data.json
-mv data.json /var/www/html/source/src/app/air/earnings-calendar/data/
-mv tomorrow.new.csv /var/www/html/source/src/app/air/earnings-calendar/data/ecal-daily-symbols
+mv data.json $ecalPath"data.json" && mv tomorrow.new.csv $ecalPath"ecal-daily-symbols" && mv headlines.json $ecalPath"headlines.json"
 rm tomorrow.sorted
-
