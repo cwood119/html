@@ -87,6 +87,11 @@ echo "vvv Getting fundamentals data vvv"
             if (( $(echo "$price > 15" | bc -l) )) ; then
                 jsonIndex=$(($jsonIndex + 2))
                 continue
+            fi
+            # Remove any symbols under $1
+            if (( $(echo "$price < 1" | bc -l) )) ; then
+                jsonIndex=$(($jsonIndex + 2))
+                continue
             else
                 symbol=$(./jq-linux64 '.quotes.quote['$jsonIndex'].symbol' ecal-data.json | sed 's/\"//g')
                 # Calculate average volume 
@@ -144,6 +149,9 @@ sed -i 's/\"//g' tomorrow.new.csv
 
 # Pull headlines and other vitals, then convert to JSON
 echo '[' > data.json
+
+# Echo number of symbols for debugging and information purposes only
+wc -l tomorrow.new.csv
 cat tomorrow.new.csv | while read line || [ -n "$line" ]
 do
     # Define variables for symbol card and vitals
