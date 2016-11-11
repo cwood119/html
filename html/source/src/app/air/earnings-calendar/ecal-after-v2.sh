@@ -41,14 +41,15 @@ do
     curl -H "Authorization: Bearer "$tradierApi"" -H "Accept: application/json" "https://api.tradier.com/v1/markets/timesales?symbol="$symbol"&interval=5min" > $symbol"-1d.json"
     # Get the latest price 
     afterPrice=$(./jq-linux64 '.series.data[-1].price' $symbol"-1d.json")    
-    afterTimestamp=$(./jq-linux64 '.series.data[-1].timestamp' $symbol"-1d.json")  
+    afterTimestamp=$(./jq-linux64 '.series.data[-1].timestamp' $symbol"-1d.json")
+    rm $symbol"-1d.json"
     # If the last tick price was later (in epoch time) than the close of regular hours, it's a after-market tick.
     if [[ $afterTimestamp -gt $regularHoursEpoch ]] ; then
         if (( $(echo "$afterPrice > $price" | bc -l) )) ; then
             # Calculate percent change
             change=$(echo $afterPrice - $price | bc | awk '{printf "%f", $0}')
             percentCalc=$(echo $change / $price | bc -l)
-            changePercent=$(echo $percentCalc \* 100 | bc -l) 
+            changePercent=$(echo $percentCalc \* 100 | bc -l | awk '{printf "%f", $0}') 
             # Get headlines
             headlines="$(curl "https://api.intrinio.com/news?ticker="$symbol"" -u "506540ef71e2788714ac2bdd2255d337:1d3bce294c77797adefb8a602339ff21")"
 
@@ -66,8 +67,13 @@ do
             if [ "$shortPercent" = "" ]; then shortPercent=0; fi
             if [ "$marketCap" = "" ]; then marketCap=0; fi
             if [ "$float" = "" ]; then float=0; fi
+
+            oneDayNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .oneDayNull' /var/www/html/source/src/app/air/decision-engine/data/ecal-intraday-data.json)
+            threeMonthNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .threeMonthNull' /var/www/html/source/src/app/air/decision-engine/data/ecal-intraday-data.json)
+            sixMonthNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .sixMonthNull' /var/www/html/source/src/app/air/decision-engine/data/ecal-intraday-data.json)
+            oneYearNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .oneYearNull' /var/www/html/source/src/app/air/decision-engine/data/ecal-intraday-data.json)
             # Build JSON
-            echo '{"symbol": "'$symbol'","name": "'$name'","price": '$afterPrice',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
+            echo '{"symbol": "'$symbol'","name": "'$name'","price": '$afterPrice',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDayNull":'$oneDayNull',"oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonthNull":'$threeMonthNull',"threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonthNull":'$sixMonthNull',"sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYearNull":'$oneYearNull',"oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
         fi
     fi
 done
