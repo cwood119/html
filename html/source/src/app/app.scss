@@ -29,20 +29,17 @@ a{color:#03A9F4 !important;}
 .md-button.md-light-blue-theme.md-primary.md-raised, .md-button.md-light-blue-theme.md-primary.md-fab{background-color:#03A9F4;}
 .md-fab-toolbar-background{background-color:#03A9F4 !important;}
 .layout-margin.ng-scope{text-align:center;}
-.last-updated {
-    text-align: right;
-    width: 98%;
-    display: block;
-    color: #545454;
-    font-size: 10pt;
-    margin-top: -15px;
-}
+.last-updated {text-align: right;width: 98%;display: block;color: #545454;font-size: 10pt;margin-top: -15px;}
 .showing {position:relative;top:5px;}
 // Symbol Cards
 .symbol-cards-include{margin:0;}
 .symbol-card {width: 32%;display: inline-block;text-align:left;margin: 8px;}
+.symbol-card-table {display:table;width:100%;}
+.symbol-card-row {display:table-row;}
 .symbol-card-row1 {border-bottom: 1px solid #EEEEEE;}
 .symbol-card-row1 .md-subhead {text-transform: uppercase;color: #9E9E9E;font-size: 13px;}
+.symbol-card-cell {display:table-cell;}
+.symbol-card-symbol-container {padding-bottom:15px;}
 .symbol-card img {max-width: 100%;min-height: 210px;max-height: 225px;}
 .chart-tab {height: auto;padding:0;background-color:white !important;}
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active {color:#03A9F4;}
@@ -65,32 +62,15 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .vitals-table-container td:first-child {padding-left:5px;}
 .vitals-line-item-responsive {display:none;color: #9E9E9E !important;font-size: 13px !important;line-height: .1;padding-bottom: 10px;}
 // Filters
-.filter-tabs{
-    min-height: 125px !important;
-    overflow: hidden;
-    background: white;
-    padding-top: 0px;
-}
-.filter-tabs md-tab-item.md-tab {
-    width: 65px;
-    padding: 12px 0px 0px 0px;
-    flex-grow: 0;
-}
-.filter-tab{
-    background-color: white !important;
-    font-size: 13pt;
-    padding-top:15px;
-}
+.filter-tabs{min-height: 125px !important;overflow: hidden;background: white;padding-top: 0px;}
+.filter-tabs md-tab-item.md-tab {width: 65px;padding: 12px 0px 0px 0px;flex-grow: 0;}
+.filter-tab{background-color: white !important;font-size: 13pt;padding-top:15px;}
 .filter-group md-select {margin-top:0;display: inline-block;padding: 0px 5px 0px 5px;}
 .filter-group label {color:rgba(0,0,0,0.38);}
 md-icon.filter-long-up-arrow {vertical-align: baseline;text-align: right;padding-right: 2px;}
 // Sorts
 .sort-text-center {text-align:center;}
-.reset-menu-container {
-    position: absolute;
-    top: 40px;
-    right: 20px;
-}
+.reset-menu-container {position: absolute;top: 40px;right: 20px;}
 // Pagination
 .symbol-pagination{margin-top:20px;}
 // Responsive
