@@ -62,9 +62,9 @@ echo "vvv Getting fundamentals data vvv"
             sed -n $jsonIndex"p" today-reader > line
             line=$(cat line)
             jsonIndex=$(($jsonIndex-1))
-            # Get price and remove any symbols under $20
+            # Get price and remove any symbols over $15
             price=$(./jq-linux64 '.quotes.quote['$jsonIndex'].last' ecal-data.json)
-            if (( $(echo "$price > 20" | bc -l) )) ; then
+            if (( $(echo "$price > 15" | bc -l) )) ; then
                 jsonIndex=$(($jsonIndex + 2))
                 continue
             else
@@ -158,7 +158,7 @@ do
     float="$(echo $line | cut -d, -f 17)"
     # Get headlines
     #headlines="$(curl "https://api.intrinio.com/news?ticker="$symbol"" -u "506540ef71e2788714ac2bdd2255d337:1d3bce294c77797adefb8a602339ff21")"
-    headlines="$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .headlines' data.json)"   
+    headlines="$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .headlines' "$ecalPath"headlines.json)"
         # Generate 1 year  chart
 echo "vvv Getting 1yr chart data for "$symbol" vvv"
         twelveMonthsAgo="$(date -d "12 months ago" +%Y-%m-%d)"

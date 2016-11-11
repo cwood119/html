@@ -51,7 +51,6 @@ do
             changePercent=$(echo $percentCalc \* 100 | bc -l) 
             # Get headlines
             headlines="$(curl "https://api.intrinio.com/news?ticker="$symbol"" -u "506540ef71e2788714ac2bdd2255d337:1d3bce294c77797adefb8a602339ff21")"
-
             # Check for nulls and replace with 0
             if [ "$prePrice" = "" ]; then prePrice=0; fi
             if [ "$change" = "" ]; then change=0; fi
@@ -85,7 +84,7 @@ then
   ps -p $PID > /dev/null 2>&1
   if [ $? -eq 0 ]
   then
-    echo "Ecal After is already running"
+    echo "Ecal Pre is already running"
     exit 1
   else
     # Process not found assume not running

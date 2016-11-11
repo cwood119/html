@@ -218,13 +218,18 @@ echo "vvv Getting 1d chart data for "$symbol" vvv"
         cat "$symbol"-1d.json | ./jq-linux64 '.series.data[].low' $1 | sed 's/\"//g' $1 > low.txt
         cat "$symbol"-1d.json | ./jq-linux64 '.series.data[].close' $1 | sed 's/\"//g' $1 > close.txt       
         paste -d ',' date.txt open.txt high.txt low.txt close.txt > "$symbol"-1d.csv && sed -i '1i Date,Open,High,Low,Close' "$symbol"-1d.csv
-        sed 's/symbol/'$symbol'/g' symbol-1d.php > $symbol"-1d.php"
-        wc=$(wc -l "$symbol"-1d.csv | cut -d' ' -f1)
-        xTicks=$(($wc -2))
-        sed -i 's/xTix/'$xTicks'/g' $symbol"-1d.php"
-        mv "$symbol"-1d.csv /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
-        mv "$symbol"-1d.php /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
-
+        dataCheck=$(cat $symbol"-1d.csv")
+        if [ "$dataCheck" != "" ]; then
+            oneDayNull=0
+            sed 's/symbol/'$symbol'/g' symbol-1d.php > $symbol"-1d.php"
+            wc=$(wc -l "$symbol"-1d.csv | cut -d' ' -f1)
+            xTicks=$(($wc -2))
+            sed -i 's/xTix/'$xTicks'/g' $symbol"-1d.php"
+            mv "$symbol"-1d.csv /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
+            mv "$symbol"-1d.php /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
+        else
+        oneDayNull=1
+        fi
         # Clean up
         rm date.txt && rm open.txt && rm high.txt && rm low.txt && rm close.txt && rm $symbol"-1d.json" && rm "$symbol"-1yr.csv 
 
@@ -245,7 +250,7 @@ echo "vvv Getting 1d chart data for "$symbol" vvv"
 
         
         # Build JSON
-        echo '{"symbol": "'$symbol'","name": "'$name'","price": '$price',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
+        echo '{"symbol": "'$symbol'","name": "'$name'","price": '$price',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDayNull":"'$oneDayNull'","oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
 done
 # Remove , from data json
 sed -i '$ s/.$//' data.json
