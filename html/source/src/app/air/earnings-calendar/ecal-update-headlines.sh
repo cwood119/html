@@ -5,10 +5,13 @@
 ecalPath=/var/www/html/source/src/app/air/earnings-calendar/data/
 PIDFILE=~/headlines.pid
 
+# Echo number of symbols for debugging and information purposes
+wc -l $ecalPath"ecal-daily-symbols"
+
 function headlines {
 # Iterate through symbols and request headlines
 echo '[' > headlines.json
-cat $ecalPath"ecal-update-symbols" | while read line || [ -n "$line" ]
+cat $ecalPath"ecal-daily-symbols" | while read line || [ -n "$line" ]
 do
     symbol="$(echo $line | cut -d, -f 1)"
  
