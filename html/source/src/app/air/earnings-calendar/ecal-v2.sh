@@ -2,13 +2,20 @@
 # Daily Earnings Calendar Scanner
 
 # Define Variables
-#tomorrow=$(date --date="today" "+%Y%m%d")
-tomorrow=$(date --date="next day" "+%Y%m%d")
-#tomorrow=$(date --date="next monday" "+%Y%m%d")
-today=`date +%Y-%m-%d`
 ecalPath=/var/www/html/source/src/app/air/earnings-calendar/data/
+dePath=/var/www/html/source/src/app/air/decision-engine/data/
 tradierApi=2IigxmuJp1Vzdq6nJKjxXwoXY9D6
+weekday=`date +%a`
+today=$(date --date="today" "+%Y%m%d")
 
+# Check to see if today is a weekday
+if [[ "$weekday" == "Fri" || "$weekday" == "Sat" ]]; then
+    tomorrow=$(date --date="next monday" "+%Y%m%d")
+else
+    tomorrow=$(date --date="next day" "+%Y%m%d")
+fi
+
+function ecal {
 # Get Nightly Calendar and format
 wget https://www.quandl.com/api/v3/databases/ZEA/download?api_key=pDqgMz1TxeRQxoExz8VW
 mv download?api_key=pDqgMz1TxeRQxoExz8VW ZEA.zip && unzip ZEA.zip && rm ZEA.zip
@@ -193,8 +200,8 @@ echo "vvv Getting 1yr chart data for "$symbol" vvv"
         if [ "$dataCheck" != "" ]; then
             oneYearNull=0
             sed 's/symbol/'$symbol'/g' symbol-1yr.php > $symbol"-1yr.php"
-            cp "$symbol"-1yr.csv /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
-            mv "$symbol"-1yr.php /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
+            cp "$symbol"-1yr.csv $ecalPath"charts/"
+            mv "$symbol"-1yr.php $ecalPath"charts/"
         else
             oneYearNull=1 
         fi
@@ -208,8 +215,8 @@ echo "vvv Getting 1yr chart data for "$symbol" vvv"
         if [ "$dataCheck" != "" ]; then
             sixMonthNull=0
             sed 's/symbol/'$symbol'/g' symbol-6mo.php > $symbol"-6mo.php"
-            mv "$symbol"-6mo.csv /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
-            mv "$symbol"-6mo.php /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
+            mv "$symbol"-6mo.csv $ecalPath"charts/"
+            mv "$symbol"-6mo.php $ecalPath"charts/"
         else
             sixMonthNull=1
         fi
@@ -221,8 +228,8 @@ echo "vvv Getting 1yr chart data for "$symbol" vvv"
         if [ "$dataCheck" != "" ]; then
             threeMonthNull=0
             sed 's/symbol/'$symbol'/g' symbol-3mo.php > $symbol"-3mo.php"
-            mv "$symbol"-3mo.csv /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
-            mv "$symbol"-3mo.php /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
+            mv "$symbol"-3mo.csv $ecalPath"charts/"
+            mv "$symbol"-3mo.php $ecalPath"charts/"
         else
             threeMonthNull=1
         fi
@@ -243,8 +250,8 @@ echo "vvv Getting 1d chart data for "$symbol" vvv"
             wc=$(wc -l "$symbol"-1d.csv | cut -d' ' -f1)
             xTicks=$(($wc -2))
             sed -i 's/xTix/'$xTicks'/g' $symbol"-1d.php"
-            mv "$symbol"-1d.csv /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
-            mv "$symbol"-1d.php /var/www/html/source/src/app/air/earnings-calendar/data/charts/  
+            mv "$symbol"-1d.csv $ecalPath"charts/" 
+            mv "$symbol"-1d.php $ecalPath"charts/" 
         else
             oneDayNull=1
         fi
@@ -277,6 +284,11 @@ sed -i '$ s/.$//' headlines.json
 echo ']' >> headlines.json
 
 # Clean up and prepare data for other scans
-cp data.json /var/www/html/source/src/app/air/decision-engine/data/ecal-daily-data.json
-mv data.json $ecalPath"data.json" && mv tomorrow.new.csv $ecalPath"ecal-daily-symbols" && mv headlines.json $ecalPath"headlines.json"
-rm tomorrow.sorted
+cat data.json > $ecalPath"data.json" && mv tomorrow.new.csv $ecalPath"ecal-daily-symbols" && mv headlines.json $ecalPath"headlines.json" && rm tomorrow.sorted
+mv data.json $dePath"ecal-daily-data.json"
+
+}
+
+# Check to see if the script has been executed already.  This would only happen if the after market script came up empty
+lastModified=$(date -r $dePath"ecal-daily-data.json" | cut -d" " -f 1)
+if [[ "$lastModified" != "$weekday" ]]; then ecal; fi

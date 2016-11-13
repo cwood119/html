@@ -3,6 +3,7 @@
 
 # Define Variables
 ecalPath=/var/www/html/source/src/app/air/earnings-calendar/data/
+dePath=/var/www/html/source/src/app/air/decision-engine/data/
 tradierApi=2IigxmuJp1Vzdq6nJKjxXwoXY9D6
 PIDFILE=~/ecalUpdate.pid
 
@@ -175,8 +176,8 @@ echo "vvv Getting 1yr chart data for "$symbol" vvv"
         if [ "$dataCheck" != "" ]; then
             oneYearNull=0
             sed 's/symbol/'$symbol'/g' symbol-1yr.php > $symbol"-1yr.php"
-            cp "$symbol"-1yr.csv /var/www/html/source/src/app/air/earnings-calendar/data/charts/
-            mv "$symbol"-1yr.php /var/www/html/source/src/app/air/earnings-calendar/data/charts/
+            cp "$symbol"-1yr.csv $ecalPath"charts/"
+            mv "$symbol"-1yr.php $ecalPath"charts/"
         else
             oneYearNull=1
         fi
@@ -190,8 +191,8 @@ echo "vvv Getting 1yr chart data for "$symbol" vvv"
         if [ "$dataCheck" != "" ]; then
             sixMonthNull=0
             sed 's/symbol/'$symbol'/g' symbol-6mo.php > $symbol"-6mo.php"
-            mv "$symbol"-6mo.csv /var/www/html/source/src/app/air/earnings-calendar/data/charts/
-            mv "$symbol"-6mo.php /var/www/html/source/src/app/air/earnings-calendar/data/charts/
+            mv "$symbol"-6mo.csv $ecalPath"charts/"
+            mv "$symbol"-6mo.php $ecalPath"charts/"
         else
             sixMonthNull=1
         fi
@@ -203,8 +204,8 @@ echo "vvv Getting 1yr chart data for "$symbol" vvv"
         if [ "$dataCheck" != "" ]; then
             threeMonthNull=0
             sed 's/symbol/'$symbol'/g' symbol-3mo.php > $symbol"-3mo.php"
-            mv "$symbol"-3mo.csv /var/www/html/source/src/app/air/earnings-calendar/data/charts/
-            mv "$symbol"-3mo.php /var/www/html/source/src/app/air/earnings-calendar/data/charts/
+            mv "$symbol"-3mo.csv $ecalPath"charts/"
+            mv "$symbol"-3mo.php $ecalPath"charts/"
         else
             threeMonthNull=1
         fi
@@ -225,8 +226,8 @@ echo "vvv Getting 1d chart data for "$symbol" vvv"
             wc=$(wc -l "$symbol"-1d.csv | cut -d' ' -f1)
             xTicks=$(($wc -2))
             sed -i 's/xTix/'$xTicks'/g' $symbol"-1d.php"
-            mv "$symbol"-1d.csv /var/www/html/source/src/app/air/earnings-calendar/data/charts/
-            mv "$symbol"-1d.php /var/www/html/source/src/app/air/earnings-calendar/data/charts/
+            mv "$symbol"-1d.csv $ecalPath"charts/"
+            mv "$symbol"-1d.php $ecalPath"charts/"
         else
             oneDayNull=1
         fi
@@ -257,8 +258,8 @@ sed -i '$ s/.$//' data.json
 echo ']' >> data.json
 
 # Clean up and prepare data for other scans
-cp data.json /var/www/html/source/src/app/air/decision-engine/data/ecal-intraday-data.json
-mv data.json /var/www/html/source/src/app/air/earnings-calendar/data/
+cp data.json $dePath"ecal-intraday-data.json"
+cat data.json > $ecalPath"data.json"
 mv today.new.csv $ecalPath"ecal-update-symbols" && rm today.sorted
 }
 

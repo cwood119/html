@@ -19,6 +19,7 @@
         $http.get('app/air/earnings-calendar/data/data.json')
             .then(function(response) {
                 vm.symbols = response.data;
+                vm.list = response.data[0].list;
                 vm.curPage = 1;
                 vm.limitOptions = [6,12,24];
                 vm.pageSize = 12;

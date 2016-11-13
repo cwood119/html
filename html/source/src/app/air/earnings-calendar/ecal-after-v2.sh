@@ -3,6 +3,7 @@
 
 # Define Variables
 ecalPath=/var/www/html/source/src/app/air/earnings-calendar/data/
+dePath=/var/www/html/source/src/app/air/decision-engine/data/
 tradierApi=2IigxmuJp1Vzdq6nJKjxXwoXY9D6
 yesterday=$(date --date="yesterday" "+%m/%d/%Y")
 regularHoursClose=15:55
@@ -46,6 +47,7 @@ do
     # If the last tick price was later (in epoch time) than the close of regular hours, it's a after-market tick.
     if [[ $afterTimestamp -gt $regularHoursEpoch ]] ; then
         if (( $(echo "$afterPrice > $price" | bc -l) )) ; then
+echo 'made it'
             # Calculate percent change
             change=$(echo $afterPrice - $price | bc | awk '{printf "%f", $0}')
             percentCalc=$(echo $change / $price | bc -l)
@@ -68,12 +70,12 @@ do
             if [ "$marketCap" = "" ]; then marketCap=0; fi
             if [ "$float" = "" ]; then float=0; fi
 
-            oneDayNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .oneDayNull' /var/www/html/source/src/app/air/decision-engine/data/ecal-intraday-data.json)
-            threeMonthNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .threeMonthNull' /var/www/html/source/src/app/air/decision-engine/data/ecal-intraday-data.json)
-            sixMonthNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .sixMonthNull' /var/www/html/source/src/app/air/decision-engine/data/ecal-intraday-data.json)
-            oneYearNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .oneYearNull' /var/www/html/source/src/app/air/decision-engine/data/ecal-intraday-data.json)
+            oneDayNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .oneDayNull' $dePath"data/ecal-intraday-data.json")
+            threeMonthNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .threeMonthNull' $dePath"data/ecal-intraday-data.json")
+            sixMonthNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .sixMonthNull' $dePath"data/ecal-intraday-data.json")
+            oneYearNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .oneYearNull' $dePath"data/ecal-intraday-data.json")
             # Build JSON
-            echo '{"list":"After Market Movers","symbol": "'$symbol'","name": "'$name'","price": '$afterPrice',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDayNull":'$oneDayNull',"oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonthNull":'$threeMonthNull',"threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonthNull":'$sixMonthNull',"sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYearNull":'$oneYearNull',"oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
+            echo '{"list":"After Market Movers","nullFlag":"","symbol": "'$symbol'","name": "'$name'","price": '$afterPrice',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDayNull":'$oneDayNull',"oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonthNull":'$threeMonthNull',"threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonthNull":'$sixMonthNull',"sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYearNull":'$oneYearNull',"oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
         fi
     fi
 done
@@ -81,9 +83,16 @@ done
 sed -i '$ s/.$//' data.json
 echo ']' >> data.json
 
-# Clean up and prepare data for other scans
-cp data.json /var/www/html/source/src/app/air/decision-engine/data/ecal-after-data.json
-mv data.json /var/www/html/source/src/app/air/earnings-calendar/data/
+# Check for empty data set
+head -1 data.json | if [ "$1" == "" ]; then 
+    rm data.json
+    ./ecal-v2.sh
+else
+    # Clean up and prepare data for other scans
+    cp data.json /var/www/html/source/src/app/air/decision-engine/data/ecal-after-data.json
+    cat data.json > /var/www/html/source/src/app/air/earnings-calendar/data/data.json
+fi
+
 }
 if [ -f $PIDFILE ]
 then

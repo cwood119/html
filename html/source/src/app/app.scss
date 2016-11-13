@@ -30,7 +30,7 @@ a{color:#03A9F4 !important;}
 .md-fab-toolbar-background{background-color:#03A9F4 !important;}
 .layout-margin.ng-scope{text-align:center;}
 .last-updated {text-align: right;width: 98%;display: block;color: #545454;font-size: 10pt;margin-top: -15px;}
-.showing {position:relative;top:5px;}
+.showing {padding:5px 0px 0px 0px;}
 // Symbol Cards
 .symbol-cards-include{margin:0;}
 .symbol-card {width: 32%;display: inline-block;text-align:left;margin: 8px;}
@@ -70,7 +70,7 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 md-icon.filter-long-up-arrow {vertical-align: baseline;text-align: right;padding-right: 2px;}
 // Sorts
 .sort-text-center {text-align:center;}
-.reset-menu-container {position: absolute;top: 40px;right: 20px;}
+.reset-menu-container {position: absolute;top: 60px;right: 20px;}
 // Pagination
 .symbol-pagination{margin-top:20px;}
 // Responsive

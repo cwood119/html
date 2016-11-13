@@ -3,6 +3,7 @@
 
 # Define Variables
 ecalPath=/var/www/html/source/src/app/air/earnings-calendar/data/
+dePath=/var/www/html/source/src/app/air/decision-engine/data/
 tradierApi=2IigxmuJp1Vzdq6nJKjxXwoXY9D6
 yesterday=$(date --date="yesterday" "+%m/%d/%Y")
 regularHoursClose=15:55
@@ -66,10 +67,10 @@ do
             if [ "$marketCap" = "" ]; then marketCap=0; fi
             if [ "$float" = "" ]; then float=0; fi
 
-            oneDayNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .oneDayNull' /var/www/html/source/src/app/air/decision-engine/data/ecal-daily-data.json)
-            threeMonthNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .threeMonthNull' /var/www/html/source/src/app/air/decision-engine/data/ecal-daily-data.json)
-            sixMonthNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .sixMonthNull' /var/www/html/source/src/app/air/decision-engine/data/ecal-daily-data.json)
-            oneYearNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .oneYearNull' /var/www/html/source/src/app/air/decision-engine/data/ecal-daily-data.json)
+            oneDayNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .oneDayNull' $dePath"ecal-daily-data.json")
+            threeMonthNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .threeMonthNull' $dePath"ecal-daily-data.json")
+            sixMonthNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .sixMonthNull' $dePath"ecal-daily-data.json")
+            oneYearNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .oneYearNull' $dePath"ecal-daily-data.json")
 
             # Build JSON
             echo '{"list":"Pre Market Movers","symbol": "'$symbol'","name": "'$name'","price": '$prePrice',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDayNull":'$oneDayNull',"oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonthNull":'$threeMonthNull',"threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonthNull":'$sixMonthNull',"sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYearNull":'$oneYearNull',"oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
@@ -80,9 +81,14 @@ done
 sed -i '$ s/.$//' data.json
 echo ']' >> data.json
 
-# Clean up and prepare data for other scans
-cp data.json /var/www/html/source/src/app/air/decision-engine/data/ecal-pre-data.json
-mv data.json /var/www/html/source/src/app/air/earnings-calendar/data/
+# Check for empty data set
+head -1 data.json | if [ "$1" == "" ]; then
+    rm data.json
+else
+    # Clean up and prepare data for other scans
+    cat data.json > $ecalPath"data.json"
+    mv data.json $dePath"ecal-pre-data.json"
+fi
 }
 if [ -f $PIDFILE ]
 then
@@ -100,7 +106,7 @@ then
       echo "Could not create PID file"
       exit 1
     fi
-    ecalAfter
+    ecalPre
   fi
 else
   echo $$ > $PIDFILE
@@ -110,4 +116,3 @@ else
     exit 1
   fi
 fi
-

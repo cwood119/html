@@ -1,7 +1,8 @@
 <div class="padded-content-page">
     <div ng-controller="dataController as vm" layout-margin>
-        <span class="last-updated">Last Updated: {{vm.updated}}</span>
-        <span class="last-updated showing">Showing: {{vm.filtered.length}} of {{vm.symbols.length}}</span>
+        <span class="last-updated">Updated: {{vm.updated}}</span>
+        <span class="last-updated showing">{{vm.list}}</span>
+        <span class="last-updated showing">{{vm.filtered.length}} of {{vm.symbols.length}}</span>
         <md-tabs class="md-primary filter-tabs" md-stretch-tabs="always">
             <md-tab label="Filter">
                 <md-content class="filter-group filter-tab" ng-include="'app/air/earnings-calendar/filters.tmpl.html'"> </md-content>
