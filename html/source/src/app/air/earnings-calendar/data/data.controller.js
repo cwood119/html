@@ -23,6 +23,7 @@
                 vm.curPage = 1;
                 vm.limitOptions = [6,12,24];
                 vm.pageSize = 12;
+                vm.layout = 'grid';
             });
         $http.get('app/air/earnings-calendar/data/data.json')
             .success(function(data, status, headers){
