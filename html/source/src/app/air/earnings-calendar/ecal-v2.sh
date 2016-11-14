@@ -156,6 +156,7 @@ sed -i 's/\"//g' tomorrow.new.csv
 
 # Pull headlines and other vitals, then convert to JSON
 echo '[' > data.json
+touch symbols.txt
 
 # Echo number of symbols for debugging and information purposes only
 wc -l tomorrow.new.csv
@@ -275,6 +276,8 @@ echo "vvv Getting 1d chart data for "$symbol" vvv"
         
         # Build JSON
         echo '{"list":"Earnings Calendar","symbol": "'$symbol'","name": "'$name'","price": '$price',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDayNull":"'$oneDayNull'","oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonthNull":"'$oneMonthNull'","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonthNull":"'$threeMonthNull'","threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonthNull":"'$sixMonthNull'","sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYearNull":"'$oneYearNull'","oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
+        # Copy symbol list for download
+        printf $symbol"\n" >> symbols.txt
 done
 # Remove , from data json
 sed -i '$ s/.$//' data.json
@@ -286,7 +289,7 @@ echo ']' >> headlines.json
 # Clean up and prepare data for other scans
 cat data.json > $ecalPath"data.json" && mv tomorrow.new.csv $ecalPath"ecal-daily-symbols" && mv headlines.json $ecalPath"headlines.json" && rm tomorrow.sorted
 mv data.json $dePath"ecal-daily-data.json"
-
+mv symbols.txt $ecalPath"symbols.txt"
 }
 
 # Check to see if the script has been executed already.  This would only happen if the after market script came up empty

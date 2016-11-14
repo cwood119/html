@@ -71,6 +71,8 @@ md-icon.filter-long-up-arrow {vertical-align: baseline;text-align: right;padding
 // Sorts
 .sort-text-center {text-align:center;}
 .reset-menu-container {position: absolute;top: 60px;right: 20px;}
+// Views
+md-icon.material-icons.ng-scope.md-light-blue-theme.md-font.zmdi.zmdi-view-list.view-icons{line-height:21px;}
 // Pagination
 .symbol-pagination{margin-top:20px;}
 // Responsive
@@ -104,6 +106,9 @@ md-icon.filter-long-up-arrow {vertical-align: baseline;text-align: right;padding
     .symbol-card md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {height: auto;}
     .filter-group label {display:block;}
 }
+
+@media all and (max-width:525px){ .views-buttons{display: block;margin: auto;}}
+
 @media all and (max-width:500px){ /* Nexus 6P, Nexus 5X */
     .symbol-card{width:97%;margin-bottom:5px;}
 }

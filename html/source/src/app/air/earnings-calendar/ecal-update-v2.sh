@@ -136,6 +136,7 @@ sed -i 's/\"//g' today.new.csv
 
 # Pull headlines and other vitals, then convert to JSON
 echo '[' > data.json
+touch symbols.txt
 cat today.new.csv | while read line || [ -n "$line" ]
 do
     # Define variables for symbol card and vitals
@@ -251,6 +252,8 @@ echo "vvv Getting 1d chart data for "$symbol" vvv"
 
         # Build JSON
         echo '{"list":"Calendar Movers","symbol": "'$symbol'","name": "'$name'","price": '$price',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDayNull":"'$oneDayNull'","oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonthNull":"'$oneMonthNull'","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonthNull":"'$threeMonthNull'","threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonthNull":"'$sixMonthNull'","sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYearNull":"'$oneYearNull'","oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
+        # Copy symbol list for download
+        printf $symbol"\n" >> symbols.txt
 
 done
 # Remove , from json
@@ -260,6 +263,7 @@ echo ']' >> data.json
 # Clean up and prepare data for other scans
 cp data.json $dePath"ecal-intraday-data.json"
 cat data.json > $ecalPath"data.json"
+mv symbols.txt $ecalPath"symbols.txt"
 mv today.new.csv $ecalPath"ecal-update-symbols" && rm today.sorted
 }
 

@@ -16,6 +16,7 @@ function ecalPre {
 # Iterate through symbols and request pre market price
 #
 echo '[' > data.json
+touch symbols.txt
 cat $ecalPath"ecal-daily-symbols" | while read line || [ -n "$line" ]
 do
     # Define variables for symbol card and vitals
@@ -74,6 +75,8 @@ do
 
             # Build JSON
             echo '{"list":"Pre Market Movers","symbol": "'$symbol'","name": "'$name'","price": '$prePrice',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDayNull":'$oneDayNull',"oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonthNull":'$threeMonthNull',"threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonthNull":'$sixMonthNull',"sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYearNull":'$oneYearNull',"oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
+        # Copy symbol list for download
+        printf $symbol"\n" >> symbols.txt
         fi
     fi
 rm $symbol"-1d.json"
@@ -84,13 +87,15 @@ echo ']' >> data.json
 
 # Check for empty data set
 wc=$(wc -l data.json | cut -d' ' -f1)
-if [ $wc -lt 2 ]; then
+if [ $wc -lt 5 ]; then
 #head -1 data.json | if [ "$1" == "" ]; then
     rm data.json
+    rm symbols.txt
 else
     # Clean up and prepare data for other scans
     cat data.json > $ecalPath"data.json"
     mv data.json $dePath"ecal-pre-data.json"
+    mv symbols.txt $ecalPath"symbols.txt"
 fi
 }
 if [ -f $PIDFILE ]
