@@ -76,13 +76,16 @@ do
             echo '{"list":"Pre Market Movers","symbol": "'$symbol'","name": "'$name'","price": '$prePrice',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDayNull":'$oneDayNull',"oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonthNull":'$threeMonthNull',"threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonthNull":'$sixMonthNull',"sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYearNull":'$oneYearNull',"oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
         fi
     fi
+rm $symbol"-1d.json"
 done
 # Remove , from json
 sed -i '$ s/.$//' data.json
 echo ']' >> data.json
 
 # Check for empty data set
-head -1 data.json | if [ "$1" == "" ]; then
+wc=$(wc -l data.json | cut -d' ' -f1)
+if [ $wc -lt 2 ]; then
+#head -1 data.json | if [ "$1" == "" ]; then
     rm data.json
 else
     # Clean up and prepare data for other scans
