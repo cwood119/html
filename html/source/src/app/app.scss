@@ -23,8 +23,8 @@ button, select, html, textarea, input {
 a{color:#03A9F4 !important;}
 .side-menu-badge {color:white !important;}
 .pointer {cursor:pointer;}
-.green {color:#4CAF50;}
-.red {color:#F44336;}
+.green {color:#4CAF50 !important;}
+.red {color:#F44336 !important;}
 .md-button.md-light-blue-theme.md-accent.md-raised, .md-button.md-light-blue-theme.md-accent.md-fab {color:white;}
 .md-button.md-light-blue-theme.md-primary.md-raised, .md-button.md-light-blue-theme.md-primary.md-fab{background-color:#03A9F4;}
 .md-fab-toolbar-background{background-color:#03A9F4 !important;}
@@ -50,6 +50,8 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .symbol-card md-tab-content, .symbol-card md-tabs-content-wrapper{height:auto;padding-top: 10px;}
 .symbol-card md-tabs:not(.md-no-tab-content):not(.md-dynamic-height){height:auto;}
 .symbol-card md-card-content.ng-scope{padding-bottom:0;}
+// Symbol Table
+.symbol-table {background-color:white;}
 // Headlines Dialog
 .headline-row1 {font-size: 13px !important; color: #9E9E9E;}
 // Vitals Dialog

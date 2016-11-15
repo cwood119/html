@@ -1,58 +1,35 @@
-<tri-widget flex flex-xs="100" ng-repeat="symbol in vm.filtered = (vm.symbols | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short | filter:vm.time) | orderBy: '-percentChange' | orderBy:vm.sortPrice | orderBy:vm.sortPercentChange | orderBy:vm.sortVolume | orderBy:vm.sortAvgVol | orderBy:vm.sortMktCap | orderBy:vm.sortFloat | orderBy:vm.sortShort | orderBy:vm.sortSymbol  | limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short | filter:vm.time" content-padding class="symbol-card">
-    <md-card-content>
-        <div class="symbol-card-table">
-            <div class="symbol-card-row symbol-card-row1">
-                <div class="symbol-card-cell"><span class="md-subhead">Symbol</span></div>
-                <div class="symbol-card-cell"><span class="md-subhead">List</span></div>
-                <div class="symbol-card-cell"><span class="md-subhead">View</span></div>
-            </div>
-            <div class="symbol-card-row">
-                <div class="symbol-card-cell symbol-card-symbol-container">
-                    <span class="md-headline">{{symbol.symbol}}</span><br>
-                    <span class="md-body-1">{{symbol.name}}</span><br>
-                </div>
-                <div class="symbol-card-cell">
-                    <span class="md-body-2" >{{symbol.price | number:2}}</span><br>
-                    <span class="md-body-1" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">{{symbol.dollarChange | number:2}} ({{symbol.percentChange | number:2}}%)</span><br>
-                </div>
-                <div class="symbol-card-cell">
-                    <span class="md-body-1 pointer" style="color:#03a9f4" data-symbol="{{symbol.symbol}}" data-open="{{symbol.vitals.open}}"  ng-disabled="dialogForm.$invalid" ng-click="vm.openVitals($event, symbol)">Vitals</span><br>
-                    <span class="md-body-1 pointer" style="color:#03a9f4" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event, symbol)">Headlines</span>
-                </div>
-            </div>
-        </div>
-        <md-tabs class="md-primary" md-selected="selectedTabIndex" md-stretch-tabs="always">
-            <md-tab label="1D">
-                <md-content ng-hide="{{symbol.oneDayNull == 1}}" class="md-padding chart-tab"><a style="border:none;"target="_blank" href="https://www.tradingview.com/widgetembed/?symbol={{symbol.symbol}}&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en"><img src="{{symbol.oneDay}}"></a>
-                </md-content>
-                <md-content ng-show="{{symbol.oneDayNull == 1}}" class="md-padding chart-tab">A one day chart is not available, check out an <a style="border:none;"target="_blank" href="https://www.tradingview.com/widgetembed/?symbol={{symbol.symbol}}&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en">interactive chart</a> instead.
-                </md-content>
-            </md-tab>
-            <!-- <md-tab label="1M">
-                <md-content class="md-padding chart-tab"><img src="{{symbol.oneMonth}}"></md-content>
-            </md-tab>-->
-            <md-tab label="3M">
-                <md-content ng-hide="{{symbol.threeMonthNull == 1}}" class="md-padding chart-tab">
-                    <a style="border:none;"target="_blank" href="https://www.tradingview.com/widgetembed/?symbol={{symbol.symbol}}&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en"><img ng-src="{{symbol.threeMonth}}"></a>
-                </md-content>
-                <md-content ng-show="{{symbol.threeMonthNull == 1}}" class="md-padding chart-tab">A three month chart is not available, check out an <a style="border:none;"target="_blank" href="https://www.tradingview.com/widgetembed/?symbol={{symbol.symbol}}&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en">interactive chart</a> instead.
-                </md-content>
-            </md-tab>
-            <md-tab label="6M">
-                <md-content ng-hide="{{symbol.sixMonthNull == 1}}" class="md-padding chart-tab">
-                    <a style="border:none;"target="_blank" href="https://www.tradingview.com/widgetembed/?symbol={{symbol.symbol}}&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en"><img src="{{symbol.sixMonth}}"></a>
-                </md-content>
-                <md-content ng-show="{{symbol.sixMonthNull == 1}}" class="md-padding chart-tab">A six month chart is not available, check out an <a style="border:none;"target="_blank" href="https://www.tradingview.com/widgetembed/?symbol={{symbol.symbol}}&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en">interactive chart</a> instead.
-                </md-content>
-            </md-tab>
-            <md-tab label="1YR">
-                <md-content ng-hide="{{symbol.oneYearNull == 1}}" class="md-padding chart-tab">
-                    <a style="border:none;"target="_blank" href="https://www.tradingview.com/widgetembed/?symbol={{symbol.symbol}}&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en"><img src="{{symbol.oneYear}}"></a>
-                </md-content>
-                <md-content ng-show="{{symbol.oneYearNull == 1}}" class="md-padding chart-tab">A one year chart is not available, check out an <a style="border:none;"target="_blank" href="https://www.tradingview.com/widgetembed/?symbol={{symbol.symbol}}&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en">interactive chart</a> instead.
-                </md-content>
-            </md-tab>
-        </md-tabs>
-    </md-card-content>
-</tri-widget>
+<md-table-container>
+    <table md-table class="md-primary md-data-table symbol-table">
+        <thead md-head>
+            <tr md-row>
+                <th md-column>Symbol</th>
+                <th md-column>Price</th>
+                <th md-column>Change</th>
+                <th md-column>Volume</th>
+                <th md-column>Avg Vol</th>
+                <th md-column>Short</th>
+                <th md-column>Short %</th>
+                <th md-column>Vitals</th>
+                <th md-column>Headlines</th>
+            </tr>
+        </thead>
+        <tbody md-body>
+            <tr md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short | filter:vm.time) | orderBy: '-percentChange' | orderBy:vm.sortPrice | orderBy:vm.sortPercentChange | orderBy:vm.sortVolume | orderBy:vm.sortAvgVol | orderBy:vm.sortMktCap | orderBy:vm.sortFloat | orderBy:vm.sortShort | orderBy:vm.sortSymbol  | limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short | filter:vm.time">
+                <td md-cell>{{symbol.symbol}}</td>
+                <td md-cell>{{symbol.price | number:2}}</td>
+                <td md-cell ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">{{symbol.dollarChange | number:2}} ({{symbol.percentChange | number:2}}%)</td>
+                <td md-cell ng-show="{{symbol.volume == 0}}">-</td>
+                <td md-cell ng-hide="{{symbol.volume == 0}}">{{symbol.volume | number:0}}</td>
+                <td md-cell ng-show="{{symbol.avgVol == 0}}">-</td>
+                <td md-cell ng-hide="{{symbol.avgVol == 0}}">{{symbol.avgVol | number:0}}</td>
+                <td md-cell ng-show="{{symbol.sharesShort == 0}}">-</td>
+                <td md-cell ng-hide="{{symbol.sharesShort == 0}}">{{symbol.sharesShort | number:0}}</td>
+                <td md-cell ng-show="{{symbol.shortPercent == 0}}">-</td>
+                <td md-cell ng-hide="{{symbol.shortPercent == 0}}">{{symbol.shortPercent | number:2}}</td>
+                <td md-cell><span class="pointer" style="color:#03a9f4" data-symbol="{{symbol.symbol}}" data-open="{{symbol.vitals.open}}"  ng-disabled="dialogForm.$invalid" ng-click="vm.openVitals($event, symbol)">Vitals</span></td>
+                <td md-cell><span class="pointer" style="color:#03a9f4" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event, symbol)">Headlines</span></td>
+            </tr>
+        </tbody>
+    </table>
+</md-table-container>
 <md-table-pagination md-limit="vm.pageSize" md-limit-options="vm.limitOptions"  md-page-select md-page="vm.curPage" md-total="{{vm.filtered.length}}" class="symbol-pagination"></md-table-pagination>
