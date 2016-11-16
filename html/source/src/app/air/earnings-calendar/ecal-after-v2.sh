@@ -70,10 +70,10 @@ do
             if [ "$marketCap" = "" ]; then marketCap=0; fi
             if [ "$float" = "" ]; then float=0; fi
 
-            oneDayNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .oneDayNull' $dePath"data/ecal-intraday-data.json")
-            threeMonthNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .threeMonthNull' $dePath"data/ecal-intraday-data.json")
-            sixMonthNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .sixMonthNull' $dePath"data/ecal-intraday-data.json")
-            oneYearNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .oneYearNull' $dePath"data/ecal-intraday-data.json")
+            oneDayNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .oneDayNull' $dePath"ecal-intraday-data.json")
+            threeMonthNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .threeMonthNull' $dePath"ecal-intraday-data.json")
+            sixMonthNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .sixMonthNull' $dePath"ecal-intraday-data.json")
+            oneYearNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .oneYearNull' $dePath"ecal-intraday-data.json")
             # Build JSON
             echo '{"list":"After Market Movers","nullFlag":"","symbol": "'$symbol'","name": "'$name'","price": '$afterPrice',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDayNull":'$oneDayNull',"oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonthNull":'$threeMonthNull',"threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonthNull":'$sixMonthNull',"sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYearNull":'$oneYearNull',"oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
             # Copy symbol list for download
@@ -93,8 +93,8 @@ if [ $wc -lt 5 ]; then
     ./ecal-v2.sh
 else
     # Clean up and prepare data for other scans
-    cp data.json $dePath"ecal-after-data.json"
     cat data.json > $ecalPath"data.json"
+    mv data.json $dePath"ecal-after-data.json"
     mv symbols.txt $ecalPath"symbols.txt"
 fi
 

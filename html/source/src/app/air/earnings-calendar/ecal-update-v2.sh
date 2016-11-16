@@ -261,8 +261,8 @@ sed -i '$ s/.$//' data.json
 echo ']' >> data.json
 
 # Clean up and prepare data for other scans
-cp data.json $dePath"ecal-intraday-data.json"
 cat data.json > $ecalPath"data.json"
+mv data.json $dePath"ecal-intraday-data.json"
 mv symbols.txt $ecalPath"symbols.txt"
 mv today.new.csv $ecalPath"ecal-update-symbols" && rm today.sorted
 }
