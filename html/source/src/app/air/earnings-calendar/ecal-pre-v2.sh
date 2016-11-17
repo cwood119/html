@@ -50,7 +50,7 @@ do
             # Calculate percent change
             change=$(echo $prePrice - $price | bc | awk '{printf "%f", $0}')
             percentCalc=$(echo $change / $price | bc -l)
-            changePercent=$(echo $percentCalc \* 100 | bc -l) 
+            changePercent=$(echo $percentCalc \* 100 | bc -l | awk '{printf "%f", $0}') 
             # Get headlines
             headlines="$(curl "https://api.intrinio.com/news?ticker="$symbol"" -u "506540ef71e2788714ac2bdd2255d337:1d3bce294c77797adefb8a602339ff21")"
             # Check for nulls and replace with 0
