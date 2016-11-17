@@ -90,7 +90,6 @@ wc=$(wc -l data.json | cut -d' ' -f1)
 if [ $wc -lt 5 ]; then
     rm data.json
     rm symbols.txt
-    ./ecal-v2.sh
 else
     # Clean up and prepare data for other scans
     cat data.json > $ecalPath"data.json"
