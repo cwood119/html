@@ -205,6 +205,7 @@ echo "vvv Getting 1yr chart data for "$symbol" vvv"
             mv "$symbol"-1yr.php $ecalPath"charts/"
         else
             oneYearNull=1 
+            rm $symbol"-1yr.csv"
         fi
         # Clean up
         rm date.txt && rm open.txt && rm high.txt && rm low.txt && rm close.txt && rm $symbol"-1yr.json"
@@ -220,6 +221,7 @@ echo "vvv Getting 1yr chart data for "$symbol" vvv"
             mv "$symbol"-6mo.php $ecalPath"charts/"
         else
             sixMonthNull=1
+            rm $symbol"-6mo.csv"
         fi
         
         # Generate 3 month chart
@@ -233,6 +235,7 @@ echo "vvv Getting 1yr chart data for "$symbol" vvv"
             mv "$symbol"-3mo.php $ecalPath"charts/"
         else
             threeMonthNull=1
+            rm $symbol"-3mo.csv"
         fi
 
         # Generate 1 day chart
@@ -255,6 +258,7 @@ echo "vvv Getting 1d chart data for "$symbol" vvv"
             mv "$symbol"-1d.php $ecalPath"charts/" 
         else
             oneDayNull=1
+            rm $symbol"-1d.csv"
         fi
         # Clean up
         rm date.txt && rm open.txt && rm high.txt && rm low.txt && rm close.txt && rm $symbol"-1d.json" && rm "$symbol"-1yr.csv 

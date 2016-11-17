@@ -13,7 +13,7 @@
         };
     });
     /* @ngInject */
-    function dataController($http, $mdDialog, $location, $document) {
+    function dataController($http, $mdDialog, $location, $document, $timeout, $mdToast, $interval, $window) {
         var vm = this;
         // Get data
         $http.get('app/air/earnings-calendar/data/data.json')
@@ -24,6 +24,7 @@
                 vm.limitOptions = [6,12,24];
                 vm.pageSize = 12;
                 vm.layout = 'grid';
+                vm.showToast = showToast;
             });
         $http.get('app/air/earnings-calendar/data/data.json')
             .success(function(data, status, headers){
@@ -31,6 +32,34 @@
                 var newModified = new Date(modified);
                 vm.updated = newModified.toLocaleString();
             });
+        
+        // Check for updated data and pop a toast
+        var showToast = function() {
+            var toast = $mdToast.simple()
+                .textContent('New data is available.')
+                .action('REFRESH')
+                .highlightAction(true)
+                .highlightClass('md-primary')
+                .position('bottom');
+
+            $mdToast.show(toast).then(function(response) {
+                if ( response == 'ok' ) {
+                    $window.location.reload();
+                }
+            });
+        };
+        var updateData =  function() { 
+            $http.get('app/air/earnings-calendar/data/data.json')
+                .success(function(data, status, headers){
+                    var modified = headers()['last-modified'];
+                    var newModified = new Date(modified);
+                    vm.modified = newModified.toLocaleString();
+                });
+            if (vm.modified > vm.updated) {
+                vm.showToast();
+            }
+        };
+        $interval(updateData, 60000); 
 
         // Vitals Modal
         vm.openVitals = function (e, symbol) {
@@ -83,8 +112,6 @@
                 if(vm.priceFilterActive) { return (entry.price < underPrice) ? true: false;}
                 return true;
             }
-
-
         };
         vm.priceFilter = function() {if (vm.price != 0){ return true;}};
 
