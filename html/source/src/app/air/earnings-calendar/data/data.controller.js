@@ -40,6 +40,7 @@
                 .action('REFRESH')
                 .highlightAction(true)
                 .highlightClass('md-primary')
+                .hideDelay(5000)
                 .position('bottom');
 
             $mdToast.show(toast).then(function(response) {
