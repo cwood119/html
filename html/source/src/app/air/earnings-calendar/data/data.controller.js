@@ -45,12 +45,12 @@
 
             $mdToast.show(toast).then(function(response) {
                 if ( response == 'ok' ) {
-                    $window.location.reload();
+                    $window.location.reload(true);
                 }
             });
         };
         var updateData =  function() { 
-            $http.get('app/air/earnings-calendar/data/data.json')
+            $http.get('app/air/earnings-calendar/data/data.json?rnd='+new Date().getTime())
                 .success(function(data, status, headers){
                     var modified = headers()['last-modified'];
                     var newModified = new Date(modified);
