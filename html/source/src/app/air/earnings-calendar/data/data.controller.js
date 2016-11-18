@@ -16,7 +16,7 @@
     function dataController($http, $mdDialog, $location, $document, $timeout, $mdToast, $interval, $window) {
         var vm = this;
         // Get data
-        $http.get('app/air/earnings-calendar/data/data.json')
+        $http.get('app/air/earnings-calendar/data/data.json?ts='+new Date().getTime())
             .then(function(response) {
                 vm.symbols = response.data;
                 vm.list = response.data[0].list;
@@ -26,7 +26,7 @@
                 vm.layout = 'grid';
                 vm.showToast = showToast;
             });
-        $http.get('app/air/earnings-calendar/data/data.json')
+        $http.get('app/air/earnings-calendar/data/data.json?ts='+new Date().getTime())
             .success(function(data, status, headers){
                 var modified = headers()['last-modified'];
                 var newModified = new Date(modified);
@@ -50,11 +50,12 @@
             });
         };
         var updateData =  function() { 
-            $http.get('app/air/earnings-calendar/data/data.json?rnd='+new Date().getTime())
+            $http.get('app/air/earnings-calendar/data/data.json?ts='+new Date().getTime())
                 .success(function(data, status, headers){
                     var modified = headers()['last-modified'];
                     var newModified = new Date(modified);
                     vm.modified = newModified.toLocaleString();
+                    console.log("last updated: "+vm.updated+" modified: "+vm.modified );
                 });
             if (vm.modified > vm.updated) {
                 vm.showToast();
