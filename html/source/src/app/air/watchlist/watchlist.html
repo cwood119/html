@@ -1,5 +1,30 @@
 <div class="padded-content-page">
-    <div layout="row" layout-align="center center">
-        <p>Watchlist</p>
+    <div ng-controller="watchlistController as vm" layout-margin>
+        <span class="last-updated">Updated: {{vm.updated}}</span>
+        <span class="last-updated showing">{{vm.list}}</span>
+        <span class="last-updated showing">{{vm.filtered.length}} of {{vm.symbols.length}}</span>
+        <md-tabs class="md-primary filter-tabs" md-stretch-tabs="always">
+            <md-tab label="Filter">
+                <md-content class="filter-group filter-tab" ng-include="'app/air/watchlist/filters.tmpl.html'"> </md-content>
+            </md-tab>
+            <md-tab label="Sort">
+                <md-content class="filter-group filter-tab" ng-include="'app/air/watchlist/sorts.tmpl.html'"> </md-content>
+            </md-tab>
+            <md-tab label="View">
+                <md-content class="filter-group filter-tab" ng-include="'app/air/watchlist/views.tmpl.html'"> </md-content>
+            </md-tab>
+        </md-tabs>
+        <md-content ng-show="vm.layout == 'grid'" class="symbol-cards-include" ng-include="'app/air/symbol-cards.tmpl.html'"></md-content>
+        <md-content ng-show="vm.layout == 'list'" class="symbol-cards-include" ng-include="'app/air/symbol-list.tmpl.html'"></md-content>
+        <md-menu class="reset-menu-container">
+            <md-button class="md-icon-button" aria-label="open menu" ng-click="$mdOpenMenu()">
+                <md-icon md-font-icon="zmdi zmdi-more-vert"></md-icon>
+            </md-button>
+            <md-menu-content width="3">
+                <md-menu-item>
+                    <md-button class="md-flat" ng-class="['md-warn','md-default-hue'] " ng-click="vm.reset();" aria-label="Reset Sort Button">Reset Sort</md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
     </div>
 </div>

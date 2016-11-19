@@ -103,17 +103,17 @@ echo "vvv Getting fundamentals data vvv"
         name="$(echo $line | cut -d, -f 4)"
         name="$(echo $name | cut -c1-20)"
         price="$(echo $line | cut -d, -f 5)"
-        change="$(echo $line | cut -d, -f 7)"
-        changePercent="$(echo $line | cut -d, -f 8)"
-        open="$(echo $line | cut -d, -f 9)"
-        high="$(echo $line | cut -d, -f 10)"
-        low="$(echo $line | cut -d, -f 11)"
-        volume="$(echo $line | cut -d, -f 12)"
-        marketCap="$(echo $line | cut -d, -f 13)"
-        sharesOutstanding="$(echo $line | cut -d, -f 14)"
-        insiderOwnership="$(echo $line | cut -d, -f 15)"
-        shortPercent="$(echo $line | cut -d, -f 16)"
-        float="$(echo $line | cut -d, -f 17)"
+        change="$(echo $line | cut -d, -f 6)"
+        changePercent="$(echo $line | cut -d, -f 7)"
+        open="$(echo $line | cut -d, -f 8)"
+        high="$(echo $line | cut -d, -f 9)"
+        low="$(echo $line | cut -d, -f 10)"
+        volume="$(echo $line | cut -d, -f 11)"
+        marketCap="$(echo $line | cut -d, -f 12)"
+        sharesOutstanding="$(echo $line | cut -d, -f 13)"
+        insiderOwnership="$(echo $line | cut -d, -f 14)"
+        shortPercent="$(echo $line | cut -d, -f 15)"
+        float="$(echo $line | cut -d, -f 16)"
         # Get headlines
         #headlines="$(curl "https://api.intrinio.com/news?ticker="$symbol"" -u "506540ef71e2788714ac2bdd2255d337:1d3bce294c77797adefb8a602339ff21")"
         headlines="$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .headlines' "$watchlistPath"headlines.json)"
@@ -209,7 +209,7 @@ echo "vvv Getting fundamentals data vvv"
         if [ "$float" = "" ]; then float=0; fi
 
         # Build JSON
-        echo '{"list":"Calendar Movers","symbol": "'$symbol'","name": "'$name'","price": '$price',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDayNull":"'$oneDayNull'","oneDay": "http://automatedinvestmentresearch.com/'$symbol'-1d.php","oneMonthNull":"'$oneMonthNull'","oneMonth": "http://automatedinvestmentresearch.com/'$symbol'-1mo.php","threeMonthNull":"'$threeMonthNull'","threeMonth": "http://automatedinvestmentresearch.com/'$symbol'-3mo.php","sixMonthNull":"'$sixMonthNull'","sixMonth": "http://automatedinvestmentresearch.com/'$symbol'-6mo.php","oneYearNull":"'$oneYearNull'","oneYear": "http://automatedinvestmentresearch.com/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
+        echo '{"list":"Watchlist","symbol": "'$symbol'","name": "'$name'","price": '$price',"dollarChange": '$change',"percentChange": '$changePercent',"oneDayNull":"'$oneDayNull'","oneDay": "http://automatedinvestmentresearch.com/'$symbol'-1d.php","oneMonthNull":"'$oneMonthNull'","oneMonth": "http://automatedinvestmentresearch.com/'$symbol'-1mo.php","threeMonthNull":"'$threeMonthNull'","threeMonth": "http://automatedinvestmentresearch.com/'$symbol'-3mo.php","sixMonthNull":"'$sixMonthNull'","sixMonth": "http://automatedinvestmentresearch.com/'$symbol'-6mo.php","oneYearNull":"'$oneYearNull'","oneYear": "http://automatedinvestmentresearch.com/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
         # Copy symbol list for download
         printf $symbol"\n" >> symbols.txt
 
@@ -223,7 +223,7 @@ echo "vvv Getting fundamentals data vvv"
         mv data.json $dePath"watchlist-data.json"
         mv symbols.txt $watchlistPath"symbols.txt"
         mv watchlist.symbols $watchlistPath"watchlist-symbols"
-        rm watchlist-fundamentals.json
+        cd ~ && rm -rf ~/watchlist
 }
 
 # Checks to see if watchlist.raw has been updated within the last 15 minutes
