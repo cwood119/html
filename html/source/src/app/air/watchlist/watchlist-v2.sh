@@ -2,14 +2,16 @@
 # This script checks to see if watchlist.raw has been updated within the last 15 minutes, and generates new data if it has.
 # Define Variables
 pub=~/public_html/
-wathclistPath=~/public_html/app/app/air/watchlist/data/
+watchlistPath=~/public_html/app/app/air/watchlist/data/
 dePath=~/public_html/app/app/air/decision-engine/data/
 tradierApi=2IigxmuJp1Vzdq6nJKjxXwoXY9D6
 
 # Define function
 function go {
     # Make temporary watchlist directory
-    mkdir ~/watchlist && cp jq-linux64 ~/watchlist/ && cp -r xml2json ~/watchlist/  && cp watchlist.raw ~/watchlist/ && cd ~/watchlist
+    mkdir ~/watchlist
+    ls | grep symbol-.*.php | while read file; do cp $file ~/watchlist/; done
+    cp jq-linux64 ~/watchlist/ && cp -r xml2json ~/watchlist/  && cp watchlist.raw ~/watchlist/ && cd ~/watchlist
     # Clean up thinkorswim export
     sed -i '1,4d' watchlist.raw
     # Generate symbol file
@@ -23,7 +25,13 @@ function go {
     done
     # File cleanup - Remove last , in the line
     sed -i '$ s/.$//' watchlist-symbols-list
+    # Define Variables
+    pub=~/public_html/
+    watchlistPath=~/public_html/app/app/air/watchlist/data/
+    dePath=~/public_html/app/app/air/decision-engine/data/
+    tradierApi=2IigxmuJp1Vzdq6nJKjxXwoXY9D6
     list=$(cat watchlist-symbols-list)
+
     # Get bulk quote data
 echo "vvv Getting quote data vvv"
     data="$(curl -X GET "https://api.tradier.com/v1/markets/quotes?symbols="$list"" -H "Accept: application/json" -H "Authorization: Bearer "$tradierApi"")"
@@ -38,68 +46,48 @@ echo "vvv Getting fundamentals data vvv"
     count=$(wc -l< watchlist.symbols)
     for (( i = 1; i <= count; ++i )) {
         jsonIndex=$(($jsonIndex-1))
-        # Get price and remove any symbols over $15
-        price=$(./jq-linux64 '.quotes.quote['$jsonIndex'].last' wathclist-data.json)
-        if (( $(echo "$price > 15" | bc -l) )) ; then
+        price=$(./jq-linux64 '.quotes.quote['$jsonIndex'].last' watchlist-data.json)
+        changePercent="$(./jq-linux64 '.quotes.quote['$jsonIndex'].change_percentage' watchlist-data.json)"
+        vol="$(./jq-linux64 '.quotes.quote['$jsonIndex'].volume' watchlist-data.json)"
+        symbol=$(./jq-linux64 '.quotes.quote['$jsonIndex'].symbol' watchlist-data.json | sed 's/\"//g')
+        # Calculate average volume 
+        echo "vvv Getting historical data for "$symbol" vvv"
+        historicalData="$(curl -H "Authorization: Bearer "$tradierApi"" https://api.tradier.com/v1/markets/history?symbol="$symbol" -H "Accept: application/json")"
+        historicalDataCheck=$(echo $historicalData | ./jq-linux64 '.history' $1)
+        if [ "$historicalDataCheck" = "null" ]; then
             jsonIndex=$(($jsonIndex + 2))
             continue
-        else
-            changePercent="$(./jq-linux64 '.quotes.quote['$jsonIndex'].change_percentage' wathclist-data.json)"
-            if (( $(echo "$changePercent < 1" | bc -l) )) ; then
-                jsonIndex=$(($jsonIndex + 2))
-                continue
-            else
-                vol="$(./jq-linux64 '.quotes.quote['$jsonIndex'].volume' wathclist-data.json)"
-                if (( $(echo "$vol < 100000" | bc -l) )) ; then
-                    jsonIndex=$(($jsonIndex + 2))
-                    continue
-                else
-                    symbol=$(./jq-linux64 '.quotes.quote['$jsonIndex'].symbol' wathclist-data.json | sed 's/\"//g')
-
-                    # Calculate average volume 
-                    echo "vvv Getting historical data for "$symbol" vvv"
-                    historicalData="$(curl -H "Authorization: Bearer "$tradierApi"" https://api.tradier.com/v1/markets/history?symbol="$symbol" -H "Accept: application/json")"
-                    historicalDataCheck=$(echo $historicalData | ./jq-linux64 '.history' $1)
-                    if [ "$historicalDataCheck" = "null" ]; then
-                        jsonIndex=$(($jsonIndex + 2))
-                        continue
-                    fi
-                    volume="$(echo $historicalData | ./jq-linux64 '.history.day[].volume' $1)"
-                    volume60=$(echo $volume | tr ' ' '\n' | tail -60)
-                    averageVolume="$(echo $volume60 | tr ' ' '\n' | awk '{ sum += $1 } END { if (NR > 0) printf("%f", sum / NR) }')"
-                    # Assign quotes data from watchlist-data.json file
-                    company="$(./jq-linux64 '.quotes.quote['$jsonIndex'].description' watchlist-data.json)"
-                    company="$(echo $company | sed 's/,//')"
-                    change="$(./jq-linux64 '.quotes.quote['$jsonIndex'].change' watchlist-data.json)"
-                    open="$(./jq-linux64 '.quotes.quote['$jsonIndex'].open' watchlist-data.json)"
-                    high="$(./jq-linux64 '.quotes.quote['$jsonIndex'].high' watchlist-data.json)"
-                    low="$(./jq-linux64 '.quotes.quote['$jsonIndex'].low' watchlist-data.json)"
-                    marketCap="$(./jq-linux64 '.['$jsonIndex'].results[1].tables.share_class_profile.market_cap' watchlist-fundamentals.json)"
-                    sharesOutstanding="$(./jq-linux64 '.['$jsonIndex'].results[1].tables.share_class_profile.shares_outstanding' watchlist-fundamentals.json)"
-                    insiderOwnership="$(./jq-linux64 '.['$jsonIndex'].results[1].tables.ownership_summary.insider_shares_owned' watchlist-fundamentals.json)"
-                    short="$(./jq-linux64 '.['$jsonIndex'].results[1].tables.ownership_summary.short_interest' watchlist-fundamentals.json)"
-                 
-                    if [ "$short" = "null" ]; then
-                        shortData="$(curl https://www.quandl.com/api/v3/datasets/SI/"$symbol"_SI.json?api_key=pDqgMz1TxeRQxoExz8VW)"
-                        short="$(echo $shortData | ./jq-linux64 '.dataset.data[0][1]' $1)"
-                    fi
-                    float=$((sharesOutstanding-insiderOwnership))
-                    shortPercent="$(./jq-linux64 '.['$jsonIndex'].results[1].tables.ownership_summary.short_percentage_of_float' watchlist-fundamentals.json)"
-                    if [ "$shortPercent" = "null" ]; then
-                        shortPercent=$(echo $short / $float | bc -l)
-                        shortPercent=$(echo $shortPercent \* 100 | bc -l | awk '{printf "%f", $0}')
-                    fi
-                    # Build csv spreadsheet
-                    echo $symbol","$short","$averageVolume","$company","$price","$change","$changePercent","$open","$high","$low","$vol","$marketCap","$sharesOutstanding","$insiderOwnership","$shortPercent","$float >> watchlist.new.csv
-
-                    jsonIndex=$(($jsonIndex + 2))
-                fi
-            fi
         fi
-
-    # Clean up
-    rm watchlist-fundamentals.json
-
+        volume="$(echo $historicalData | ./jq-linux64 '.history.day[].volume' $1)"
+        volume60=$(echo $volume | tr ' ' '\n' | tail -60)
+        averageVolume="$(echo $volume60 | tr ' ' '\n' | awk '{ sum += $1 } END { if (NR > 0) printf("%f", sum / NR) }')"
+        # Assign quotes data from watchlist-data.json file
+        company="$(./jq-linux64 '.quotes.quote['$jsonIndex'].description' watchlist-data.json)"
+        company="$(echo $company | sed 's/,//')"
+        change="$(./jq-linux64 '.quotes.quote['$jsonIndex'].change' watchlist-data.json)"
+        open="$(./jq-linux64 '.quotes.quote['$jsonIndex'].open' watchlist-data.json)"
+        high="$(./jq-linux64 '.quotes.quote['$jsonIndex'].high' watchlist-data.json)"
+        low="$(./jq-linux64 '.quotes.quote['$jsonIndex'].low' watchlist-data.json)"
+        marketCap="$(./jq-linux64 '.['$jsonIndex'].results[1].tables.share_class_profile.market_cap' watchlist-fundamentals.json)"
+        sharesOutstanding="$(./jq-linux64 '.['$jsonIndex'].results[1].tables.share_class_profile.shares_outstanding' watchlist-fundamentals.json)"
+        insiderOwnership="$(./jq-linux64 '.['$jsonIndex'].results[1].tables.ownership_summary.insider_shares_owned' watchlist-fundamentals.json)"
+        short="$(./jq-linux64 '.['$jsonIndex'].results[1].tables.ownership_summary.short_interest' watchlist-fundamentals.json)"
+                 
+        if [ "$short" = "null" ]; then
+            shortData="$(curl https://www.quandl.com/api/v3/datasets/SI/"$symbol"_SI.json?api_key=pDqgMz1TxeRQxoExz8VW)"
+            short="$(echo $shortData | ./jq-linux64 '.dataset.data[0][1]' $1)"
+        fi
+        float=$((sharesOutstanding-insiderOwnership))
+        shortPercent="$(./jq-linux64 '.['$jsonIndex'].results[1].tables.ownership_summary.short_percentage_of_float' watchlist-fundamentals.json)"
+        if [ "$shortPercent" = "null" ]; then
+            shortPercent=$(echo $short / $float | bc -l)
+            shortPercent=$(echo $shortPercent \* 100 | bc -l | awk '{printf "%f", $0}')
+        fi
+        # Build csv spreadsheet
+        echo $symbol","$short","$averageVolume","$company","$price","$change","$changePercent","$open","$high","$low","$vol","$marketCap","$sharesOutstanding","$insiderOwnership","$shortPercent","$float >> watchlist.new.csv
+    
+        jsonIndex=$(($jsonIndex + 2))
+    }
     # Remove double quotes
     sed -i 's/\"//g' watchlist.new.csv
 
@@ -235,7 +223,7 @@ echo "vvv Getting fundamentals data vvv"
         mv data.json $dePath"watchlist-data.json"
         mv symbols.txt $watchlistPath"symbols.txt"
         mv watchlist.symbols $watchlistPath"watchlist-symbols"
-    }
+        rm watchlist-fundamentals.json
 }
 
 # Checks to see if watchlist.raw has been updated within the last 15 minutes
