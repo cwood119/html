@@ -71,18 +71,12 @@ echo "vvv Getting fundamentals data vvv"
         marketCap="$(./jq-linux64 '.['$jsonIndex'].results[1].tables.share_class_profile.market_cap' watchlist-fundamentals.json)"
         sharesOutstanding="$(./jq-linux64 '.['$jsonIndex'].results[1].tables.share_class_profile.shares_outstanding' watchlist-fundamentals.json)"
         insiderOwnership="$(./jq-linux64 '.['$jsonIndex'].results[1].tables.ownership_summary.insider_shares_owned' watchlist-fundamentals.json)"
-        short="$(./jq-linux64 '.['$jsonIndex'].results[1].tables.ownership_summary.short_interest' watchlist-fundamentals.json)"
-                 
-        if [ "$short" = "null" ]; then
-            shortData="$(curl https://www.quandl.com/api/v3/datasets/SI/"$symbol"_SI.json?api_key=pDqgMz1TxeRQxoExz8VW)"
-            short="$(echo $shortData | ./jq-linux64 '.dataset.data[0][1]' $1)"
-        fi
+        shortData="$(curl https://www.quandl.com/api/v3/datasets/SI/"$symbol"_SI.json?api_key=pDqgMz1TxeRQxoExz8VW)"
+        short="$(echo $shortData | ./jq-linux64 '.dataset.data[0][1]' $1)"
         float=$((sharesOutstanding-insiderOwnership))
-        shortPercent="$(./jq-linux64 '.['$jsonIndex'].results[1].tables.ownership_summary.short_percentage_of_float' watchlist-fundamentals.json)"
-        if [ "$shortPercent" = "null" ]; then
-            shortPercent=$(echo $short / $float | bc -l)
-            shortPercent=$(echo $shortPercent \* 100 | bc -l | awk '{printf "%f", $0}')
-        fi
+        shortPercent=$(echo $short / $float | bc -l)
+        shortPercent=$(echo $shortPercent \* 100 | bc -l | awk '{printf "%f", $0}')
+
         # Build csv spreadsheet
         echo $symbol","$short","$averageVolume","$company","$price","$change","$changePercent","$open","$high","$low","$vol","$marketCap","$sharesOutstanding","$insiderOwnership","$shortPercent","$float >> watchlist.new.csv
     
@@ -203,7 +197,7 @@ echo "vvv Getting fundamentals data vvv"
         if [ "$low" = "" ]; then low=0; fi
         if [ "$volume" = "" ]; then volume=0; fi
         if [ "$avgVol" = "" ]; then avgVol=0; fi
-        if [ "$sharesShort" = "" ]; then sharesShort=0; fi
+        if [ "$sharesShort" = "null" ]; then sharesShort=0; fi
         if [ "$shortPercent" = "" ]; then shortPercent=0; fi
         if [ "$marketCap" = "" ]; then marketCap=0; fi
         if [ "$float" = "" ]; then float=0; fi
