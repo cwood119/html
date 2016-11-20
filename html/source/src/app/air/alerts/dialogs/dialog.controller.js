@@ -2,11 +2,11 @@
     'use strict';
 
     angular
-        .module('app.air.earnings-calendar')
-        .controller('ecalDialogController', ecalDialogController);
+        .module('app.air.alerts')
+        .controller('alertsDialogController', alertsDialogController);
 
     /* @ngInject */
-    function ecalDialogController($mdDialog) {
+    function alertsDialogController($mdDialog) {
         var vm = this;
         vm.cancelClick = cancelClick;
         function cancelClick() {

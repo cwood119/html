@@ -3,9 +3,8 @@
 
     angular
         .module('app.air', [
-            'app.air.earnings-calendar',
-            'app.air.decision-engine',
-            'app.air.market-movers',
-            'app.air.watchlist'
+            'app.air.watchlist',
+            'app.air.alerts',
+            'app.air.earnings-calendar'
         ]);
 })();
