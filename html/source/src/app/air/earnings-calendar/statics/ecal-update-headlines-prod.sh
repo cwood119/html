@@ -2,13 +2,12 @@
 # Get intraday headlines
 
 # Define Variables
-ecalPath=/var/www/html/source/src/app/air/earnings-calendar/data/
+ecalPath=~/public_html/app/app/air/earnings-calendar/data/
 PIDFILE=~/headlines.pid
 
 # Echo number of symbols for debugging and information purposes
 wc -l $ecalPath"ecal-daily-symbols"
 
-function headlines {
 # Iterate through symbols and request headlines
 echo '[' > headlines.json
 cat $ecalPath"ecal-daily-symbols" | while read line || [ -n "$line" ]
@@ -26,32 +25,4 @@ sed -i '$ s/.$//' headlines.json
 echo ']' >> headlines.json
 
 # Clean up and prepare data for other scans
-mv headlines.json /var/www/html/source/src/app/air/earnings-calendar/data/
-}
-if [ -f $PIDFILE ]
-then
-  PID=$(cat $PIDFILE)
-  ps -p $PID > /dev/null 2>&1
-  if [ $? -eq 0 ]
-  then
-    echo "Headline script is already running"
-    exit 1
-  else
-    # Process not found assume not running
-    echo $$ > $PIDFILE
-    if [ $? -ne 0 ]
-    then
-      echo "Could not create PID file"
-      exit 1
-    fi
-    headlines
-  fi
-else
-  echo $$ > $PIDFILE
-  if [ $? -ne 0 ]
-  then
-    echo "Could not create PID file"
-    exit 1
-  fi
-fi
-
+mv headlines.json $ecalPath

@@ -109,8 +109,8 @@ echo "vvv Getting fundamentals data vvv"
         shortPercent="$(echo $line | cut -d, -f 15)"
         float="$(echo $line | cut -d, -f 16)"
         # Get headlines
-        #headlines="$(curl "https://api.intrinio.com/news?ticker="$symbol"" -u "506540ef71e2788714ac2bdd2255d337:1d3bce294c77797adefb8a602339ff21")"
-        headlines="$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .headlines' "$watchlistPath"headlines.json)"
+        headlines="$(curl "https://api.intrinio.com/news?ticker="$symbol"" -u "506540ef71e2788714ac2bdd2255d337:1d3bce294c77797adefb8a602339ff21")"
+        #headlines="$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .headlines' "$watchlistPath"headlines.json)"
         # Generate 1 year  chart
         echo "vvv Getting 1yr chart data for "$symbol" vvv"
         twelveMonthsAgo="$(date -d "12 months ago" +%Y-%m-%d)"

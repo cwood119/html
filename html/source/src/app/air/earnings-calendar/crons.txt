@@ -1,4 +1,0 @@
-45,50,55 9  * * 1-5 cwood   cd ~/sandbox && ./ecal-update-v2.sh > ~/logs/ecal-update-v2.txt 2>&1
-*/5 10-13  * * 1-5 cwood   cd ~/sandbox && ./ecal-update-v2.sh > ~/logs/ecal-update-v2.txt 2>&1
-*/5 14  * * 1-5 cwood   cd ~/sandbox && ./ecal-update-v2.sh > ~/logs/ecal-update-v2.txt 2>&1
-*/5 15-18  * * 1-5 cwood   cd ~/sandbox && ./ecal-after-v2.sh > ~/logs/ecal-after-v2.txt 2>&1

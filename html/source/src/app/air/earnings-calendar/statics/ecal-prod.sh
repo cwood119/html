@@ -2,8 +2,9 @@
 # Daily Earnings Calendar Scanner
 
 # Define Variables
-ecalPath=/var/www/html/source/src/app/air/earnings-calendar/data/
-dePath=/var/www/html/source/src/app/air/decision-engine/data/
+pub=~/public_html/
+ecalPath=~/public_html/app/app/air/earnings-calendar/data/
+dePath=~/public_html/app/app/air/decision-engine/data/
 tradierApi=2IigxmuJp1Vzdq6nJKjxXwoXY9D6
 weekday=`date +%a`
 today=$(date --date="today" "+%Y%m%d")
@@ -15,7 +16,6 @@ else
     tomorrow=$(date --date="next day" "+%Y%m%d")
 fi
 
-function ecal {
 # Get Nightly Calendar and format
 wget https://www.quandl.com/api/v3/databases/ZEA/download?api_key=pDqgMz1TxeRQxoExz8VW
 mv download?api_key=pDqgMz1TxeRQxoExz8VW ZEA.zip && unzip ZEA.zip && rm ZEA.zip
@@ -125,13 +125,12 @@ echo "vvv Getting historical data for "$symbol" vvv"
                 marketCap="$(./jq-linux64 '.['$jsonIndex'].results[1].tables.share_class_profile.market_cap' ecal-fundamentals.json)"
                 sharesOutstanding="$(./jq-linux64 '.['$jsonIndex'].results[1].tables.share_class_profile.shares_outstanding' ecal-fundamentals.json)"
                 insiderOwnership="$(./jq-linux64 '.['$jsonIndex'].results[1].tables.ownership_summary.insider_shares_owned' ecal-fundamentals.json)"
-                short="$(./jq-linux64 '.['$jsonIndex'].results[1].tables.ownership_summary.short_interest' ecal-fundamentals.json)"
+                shortData="$(curl https://www.quandl.com/api/v3/datasets/SI/"$symbol"_SI.json?api_key=pDqgMz1TxeRQxoExz8VW)"
+                short="$(echo $shortData | ./jq-linux64 '.dataset.data[0][1]' $1)"
                 float=$((sharesOutstanding-insiderOwnership))
-                shortPercent="$(./jq-linux64 '.['$jsonIndex'].results[1].tables.ownership_summary.short_percentage_of_float' ecal-fundamentals.json)"
-                if [ "$shortPercent" = "null" ]; then 
-                    shortPercent=$(echo $short / $float | bc -l)
-                    shortPercent=$(echo $shortPercent \* 100 | bc -l | awk '{printf "%f", $0}')
-                fi
+                shortPercent=$(echo $short / $float | bc -l)
+                shortPercent=$(echo $shortPercent \* 100 | bc -l | awk '{printf "%f", $0}')
+
                 # Build csv spreadsheet
                 echo $symbol","$short","$averageVolume","$company","$price","$announce","$change","$changePercent","$open","$high","$low","$vol","$marketCap","$sharesOutstanding","$insiderOwnership","$shortPercent","$float >> tomorrow.new.csv
 
@@ -201,8 +200,8 @@ echo "vvv Getting 1yr chart data for "$symbol" vvv"
         if [ "$dataCheck" != "" ]; then
             oneYearNull=0
             sed 's/symbol/'$symbol'/g' symbol-1yr.php > $symbol"-1yr.php"
-            cp "$symbol"-1yr.csv $ecalPath"charts/"
-            mv "$symbol"-1yr.php $ecalPath"charts/"
+            cp "$symbol"-1yr.csv $pub
+            mv "$symbol"-1yr.php $pub
         else
             oneYearNull=1 
             rm $symbol"-1yr.csv"
@@ -217,8 +216,8 @@ echo "vvv Getting 1yr chart data for "$symbol" vvv"
         if [ "$dataCheck" != "" ]; then
             sixMonthNull=0
             sed 's/symbol/'$symbol'/g' symbol-6mo.php > $symbol"-6mo.php"
-            mv "$symbol"-6mo.csv $ecalPath"charts/"
-            mv "$symbol"-6mo.php $ecalPath"charts/"
+            mv "$symbol"-6mo.csv $pub
+            mv "$symbol"-6mo.php $pub
         else
             sixMonthNull=1
             rm $symbol"-6mo.csv"
@@ -231,8 +230,8 @@ echo "vvv Getting 1yr chart data for "$symbol" vvv"
         if [ "$dataCheck" != "" ]; then
             threeMonthNull=0
             sed 's/symbol/'$symbol'/g' symbol-3mo.php > $symbol"-3mo.php"
-            mv "$symbol"-3mo.csv $ecalPath"charts/"
-            mv "$symbol"-3mo.php $ecalPath"charts/"
+            mv "$symbol"-3mo.csv $pub
+            mv "$symbol"-3mo.php $pub
         else
             threeMonthNull=1
             rm $symbol"-3mo.csv"
@@ -254,8 +253,8 @@ echo "vvv Getting 1d chart data for "$symbol" vvv"
             wc=$(wc -l "$symbol"-1d.csv | cut -d' ' -f1)
             xTicks=$(($wc -2))
             sed -i 's/xTix/'$xTicks'/g' $symbol"-1d.php"
-            mv "$symbol"-1d.csv $ecalPath"charts/" 
-            mv "$symbol"-1d.php $ecalPath"charts/" 
+            mv "$symbol"-1d.csv $pub 
+            mv "$symbol"-1d.php $pub 
         else
             oneDayNull=1
             rm $symbol"-1d.csv"
@@ -273,13 +272,13 @@ echo "vvv Getting 1d chart data for "$symbol" vvv"
         if [ "$low" = "" ]; then low=0; fi
         if [ "$volume" = "" ]; then volume=0; fi
         if [ "$avgVol" = "" ]; then avgVol=0; fi
-        if [ "$sharesShort" = "" ]; then sharesShort=0; fi
+        if [ "$sharesShort" = "null" ]; then sharesShort=0; fi
         if [ "$shortPercent" = "" ]; then shortPercent=0; fi
         if [ "$marketCap" = "" ]; then marketCap=0; fi
         if [ "$float" = "" ]; then float=0; fi
         
         # Build JSON
-        echo '{"list":"Earnings Calendar","symbol": "'$symbol'","name": "'$name'","price": '$price',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDayNull":"'$oneDayNull'","oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonthNull":"'$oneMonthNull'","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonthNull":"'$threeMonthNull'","threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonthNull":"'$sixMonthNull'","sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYearNull":"'$oneYearNull'","oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
+        echo '{"list":"Earnings Calendar","symbol": "'$symbol'","name": "'$name'","price": '$price',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDayNull":"'$oneDayNull'","oneDay": "http://automatedinvestmentresearch.com/'$symbol'-1d.php","oneMonthNull":"'$oneMonthNull'","oneMonth": "http://automatedinvestmentresearch.com/'$symbol'-1mo.php","threeMonthNull":"'$threeMonthNull'","threeMonth": "http://automatedinvestmentresearch.com/'$symbol'-3mo.php","sixMonthNull":"'$sixMonthNull'","sixMonth": "http://automatedinvestmentresearch.com/'$symbol'-6mo.php","oneYearNull":"'$oneYearNull'","oneYear": "http://automatedinvestmentresearch.com/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
         # Copy symbol list for download
         printf $symbol"\n" >> symbols.txt
 done
@@ -294,8 +293,3 @@ echo ']' >> headlines.json
 cat data.json > $ecalPath"data.json" && mv tomorrow.new.csv $ecalPath"ecal-daily-symbols" && mv headlines.json $ecalPath"headlines.json" && rm tomorrow.sorted
 mv data.json $dePath"ecal-daily-data.json"
 mv symbols.txt $ecalPath"symbols.txt"
-}
-
-# Check to see if the script has been executed already.  This would only happen if the after market script came up empty
-lastModified=$(date -r $dePath"ecal-daily-data.json" | cut -d" " -f 1)
-if [[ "$lastModified" != "$weekday" ]]; then ecal; fi

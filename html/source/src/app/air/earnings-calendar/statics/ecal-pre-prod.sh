@@ -2,17 +2,16 @@
 # Pre-market earnings calendar scanner
 
 # Define Variables
-ecalPath=/var/www/html/source/src/app/air/earnings-calendar/data/
-dePath=/var/www/html/source/src/app/air/decision-engine/data/
+pub=~/public_html/
+ecalPath=~/public_html/app/app/air/earnings-calendar/data/
+dePath=~/public_html/app/app/air/decision-engine/data/
 tradierApi=2IigxmuJp1Vzdq6nJKjxXwoXY9D6
 yesterday=$(date --date="yesterday" "+%m/%d/%Y")
 regularHoursClose=15:55
 afterHoursClose=20:00
 afterHoursEpoch=$(date -d "$yesterday $afterHoursClose" +%s)
 regularHoursEpoch=$(date -d "$yesterday $regularHoursClose" +%s)
-PIDFILE=~/ecalPre.pid
 
-function ecalPre {
 # Iterate through symbols and request pre market price
 #
 echo '[' > data.json
@@ -74,7 +73,7 @@ do
             oneYearNull=$(./jq-linux64 '.[] | select(.symbol == "'$symbol'") | .oneYearNull' $dePath"ecal-daily-data.json")
 
             # Build JSON
-            echo '{"list":"Pre Market Movers","symbol": "'$symbol'","name": "'$name'","price": '$prePrice',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDayNull":'$oneDayNull',"oneDay": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1d.php","oneMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1mo.php","threeMonthNull":'$threeMonthNull',"threeMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-3mo.php","sixMonthNull":'$sixMonthNull',"sixMonth": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-6mo.php","oneYearNull":'$oneYearNull',"oneYear": "http://localhost/source/src/app/air/earnings-calendar/data/charts/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
+            echo '{"list":"Pre Market Movers","symbol": "'$symbol'","name": "'$name'","price": '$prePrice',"dollarChange": '$change',"percentChange": '$changePercent',"time":'$time',"oneDayNull":'$oneDayNull',"oneDay": "http://automatedinvestmentresearch.com/'$symbol'-1d.php","oneMonth": "http://automatedinvestmentresearch.com/'$symbol'-1mo.php","threeMonthNull":'$threeMonthNull',"threeMonth": "http://automatedinvestmentresearch.com/'$symbol'-3mo.php","sixMonthNull":'$sixMonthNull',"sixMonth": "http://automatedinvestmentresearch.com/'$symbol'-6mo.php","oneYearNull":'$oneYearNull',"oneYear": "http://automatedinvestmentresearch.com/'$symbol'-1yr.php","open": '$open',"high": '$high',"low":'$low',"volume": '$volume',"avgVol": '$avgVol',"sharesShort": '$sharesShort',"shortPercent": '$shortPercent',"marketCap": '$marketCap',"float": '$float',"headlines":'$headlines'},' >> data.json
         # Copy symbol list for download
         printf $symbol"\n" >> symbols.txt
         fi
@@ -87,7 +86,7 @@ echo ']' >> data.json
 
 # Check for empty data set
 wc=$(wc -l data.json | cut -d' ' -f1)
-if [ $wc -lt 5 ]; then
+if [ $wc -lt 3 ]; then
 #head -1 data.json | if [ "$1" == "" ]; then
     rm data.json
     rm symbols.txt
@@ -96,31 +95,4 @@ else
     cat data.json > $ecalPath"data.json"
     mv data.json $dePath"ecal-pre-data.json"
     mv symbols.txt $ecalPath"symbols.txt"
-fi
-}
-if [ -f $PIDFILE ]
-then
-  PID=$(cat $PIDFILE)
-  ps -p $PID > /dev/null 2>&1
-  if [ $? -eq 0 ]
-  then
-    echo "Ecal Pre is already running"
-    exit 1
-  else
-    # Process not found assume not running
-    echo $$ > $PIDFILE
-    if [ $? -ne 0 ]
-    then
-      echo "Could not create PID file"
-      exit 1
-    fi
-    ecalPre
-  fi
-else
-  echo $$ > $PIDFILE
-  if [ $? -ne 0 ]
-  then
-    echo "Could not create PID file"
-    exit 1
-  fi
 fi
