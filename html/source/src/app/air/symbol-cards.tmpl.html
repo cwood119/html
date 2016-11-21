@@ -3,13 +3,17 @@
         <div class="symbol-card-table">
             <div class="symbol-card-row symbol-card-row1">
                 <div class="symbol-card-cell"><span class="md-subhead">Symbol</span></div>
+                <div class="symbol-card-cell" ng-show="vm.currentPath === '/alerts'"><span class="md-subhead">Alert</span></div>
                 <div class="symbol-card-cell"><span class="md-subhead">Price</span></div>
                 <div class="symbol-card-cell"><span class="md-subhead">Quick View</span></div>
             </div>
             <div class="symbol-card-row">
                 <div class="symbol-card-cell symbol-card-symbol-container">
                     <span class="md-headline">{{symbol.symbol}}</span><br>
-                    <span class="md-body-1">{{symbol.name}}</span><br>
+                    <span ng-hide="vm.currentPath === '/alerts'" class="md-body-1">{{symbol.name}}</span><br>
+                </div>
+                <div ng-show="vm.currentPath === '/alerts'" class="symbol-card-cell symbol-card-symbol-container">
+                    <span class="md-body-2"> {{symbol.triggerPrice}}</span><br>
                 </div>
                 <div class="symbol-card-cell">
                     <span class="md-body-2" >{{symbol.price | number:2}}</span><br>

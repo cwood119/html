@@ -4,6 +4,7 @@
             <tr md-row>
                 <th md-column>Symbol</th>
                 <th md-column>Price</th>
+                <th md-column ng-show="vm.currentPath === '/alerts'">Alert</th>
                 <th md-column>Change</th>
                 <th md-column>Volume</th>
                 <th md-column>Avg Vol</th>
@@ -16,6 +17,7 @@
         <tbody md-body>
             <tr md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short | filter:vm.time) | orderBy: '-percentChange' | orderBy:vm.sortPrice | orderBy:vm.sortPercentChange | orderBy:vm.sortVolume | orderBy:vm.sortAvgVol | orderBy:vm.sortMktCap | orderBy:vm.sortFloat | orderBy:vm.sortShort | orderBy:vm.sortSymbol  | limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short | filter:vm.time">
                 <td md-cell>{{symbol.symbol}}</td>
+                <td md-cell ng-show="vm.currentPath === '/alerts'">{{symbol.triggerPrice}}</td>
                 <td md-cell>{{symbol.price | number:2}}</td>
                 <td md-cell ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">{{symbol.dollarChange | number:2}} ({{symbol.percentChange | number:2}}%)</td>
                 <td md-cell ng-show="{{symbol.volume == 0}}">-</td>
