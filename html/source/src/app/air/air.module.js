@@ -5,6 +5,7 @@
         .module('app.air', [
             'app.air.watchlist',
             'app.air.alerts',
-            'app.air.earnings-calendar'
+            'app.air.earnings-calendar',
+            'app.air.market-movers'
         ]);
 })();
