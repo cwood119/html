@@ -3,15 +3,12 @@
         <span class="last-updated">Updated: {{vm.updated}}</span>
         <span class="last-updated showing">{{vm.list}}</span>
         <span class="last-updated showing">{{vm.filtered.length}} of {{vm.symbols.length}}</span>
-        <md-tabs class="md-primary filter-tabs" md-stretch-tabs="always">
+        <md-tabs class="md-primary filter-tabs md-whiteframe-z1" md-stretch-tabs="always">
             <md-tab label="Filter">
                 <md-content class="filter-group filter-tab" ng-include="'app/air/market-movers/filters.tmpl.html'"> </md-content>
             </md-tab>
             <md-tab label="Sort">
                 <md-content class="filter-group filter-tab" ng-include="'app/air/market-movers/sorts.tmpl.html'"> </md-content>
-            </md-tab>
-            <md-tab label="View">
-                <md-content class="filter-group filter-tab" ng-include="'app/air/market-movers/views.tmpl.html'"> </md-content>
             </md-tab>
         </md-tabs>
         <md-content ng-show="vm.layout == 'grid'" class="symbol-cards-include" ng-include="'app/air/symbol-cards.tmpl.html'"></md-content>
@@ -26,5 +23,32 @@
                 </md-menu-item>
             </md-menu-content>
         </md-menu>
+        <div layout="row" layout-align="center center" flex ng-cloak>
+        <md-fab-speed-dial ng-cloak md-open="false" md-direction="up" class="md-scale md-fab-bottom-right">
+            <md-fab-trigger>
+                <md-button aria-label="View Options" class="md-fab md-warn">
+                    <md-icon md-font-icon="zmdi zmdi-plus"></md-icon>
+                </md-button>
+            </md-fab-trigger>
+            <md-fab-actions>
+        <!--        <md-button aria-label="filter" class="md-fab md-raised md-mini" ng-click="vm.openFilters($event)">
+                    <md-icon md-font-icon="zmdi zmdi-filter-list"></md-icon>
+                </md-button>
+                <md-button aria-label="sort" class="md-fab md-raised md-mini" ng-click="vm.share('Shared on Facebook', $event)">
+                    <md-icon md-font-icon="zmdi zmdi-sort-asc"></md-icon>
+                </md-button>-->
+                <md-button aria-label="grid view" class="md-fab md-raised md-mini" ng-class="{active: vm.layout == 'grid'}" ng-click="vm.layout = 'grid'">
+                    <md-icon md-font-icon="zmdi zmdi-view-module"></md-icon>
+                </md-button>
+                <md-button aria-label="list view" class="md-fab md-raised md-mini" ng-class="{active: vm.layout == 'list'}" ng-click="vm.layout = 'list'">
+                    <md-icon md-font-icon="zmdi zmdi-view-list"></md-icon>
+                </md-button>
+                <md-button aria-label="download symbols" class="md-fab md-raised md-mini" download="symbols.txt" ng-href="http://automatedinvestmentresearch.com/app/app/air/market-movers/data/symbols.txt">
+                    <md-icon md-font-icon="zmdi zmdi-download"></md-icon>
+                </md-button>
+            </md-fab-actions>
+        </md-fab-speed-dial>
+    </div>
+
     </div>
 </div>

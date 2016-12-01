@@ -2,7 +2,7 @@
     'use strict';
     angular
         .module('app.air.earnings-calendar')
-        .controller('dataController', dataController);
+        .controller('ecalController', ecalController);
 
     // Pagination
     angular.module('app.air.earnings-calendar').filter('pagination', function(){ 
@@ -13,7 +13,7 @@
         };
     });
     /* @ngInject */
-    function dataController($http, $mdDialog, $location, $document, $timeout, $mdToast, $interval, $window) {
+    function ecalController($http, $mdDialog, $location, $document, $timeout, $mdToast, $interval, $window) {
         var vm = this;
         // Get data
         $http.get('app/air/earnings-calendar/data/data.json?ts='+new Date().getTime())
@@ -55,7 +55,6 @@
                     var modified = headers()['last-modified'];
                     var newModified = new Date(modified);
                     vm.modified = newModified.toLocaleString();
-                    console.log("last updated: "+vm.updated+" modified: "+vm.modified );
                 });
             if (vm.modified > vm.updated) {
                 vm.showToast();
@@ -100,7 +99,21 @@
                 targetEvent: e
             });
         };
- 
+
+        // Filters Modal
+        vm.openFilters = function (e) {
+            $mdDialog.show({
+                clickOutsideToClose: true,
+                controller: function ($mdDialog) {
+                    vm.cancelClick = function () {
+                        $mdDialog.cancel();
+                    };
+                },
+                templateUrl: 'app/air/earnings-calendar/dialogs/filters-dialog.tmpl.html',
+                parent: angular.element($document.body),
+                targetEvent: e
+            });
+        };
         // Price Filters
         vm.priceFilterActive = false;  
         vm.price = function(entry) {

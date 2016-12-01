@@ -31,6 +31,7 @@ a{color:#03A9F4 !important;}
 .layout-margin.ng-scope{text-align:center;}
 .last-updated {text-align: right;width: 98%;display: block;color: #545454;font-size: 10pt;margin-top: -15px;}
 .showing {padding:5px 0px 0px 0px;}
+md-fab-speed-dial.md-fab-bottom-right{position:fixed;}
 // Symbol Cards
 .symbol-cards-include{margin:0;}
 .symbol-card {width: 32%;display: inline-block;text-align:left;margin: 8px;}
@@ -90,8 +91,8 @@ md-icon.material-icons.ng-scope.md-light-blue-theme.md-font.zmdi.zmdi-view-list.
     .vitals-line-item{display:none;}
 }
 @media all and (max-width:830px){
-    .filter-group md-select {display:block;} 
-    .filter-tabs {min-height: 135px !important;}
+    .filter-group md-select {width:45%} 
+    .filter-tabs {min-height: 200px !important;}
 }
 @media all and (max-width:800px){ /* Nexus 10 */
     .symbol-card{width: 95%;height:500px;}
@@ -117,6 +118,7 @@ md-icon.material-icons.ng-scope.md-light-blue-theme.md-font.zmdi.zmdi-view-list.
 
 @media all and (max-width: 450px){
     .padded-content-page{padding: 16px 0 !important}
+    .reset-menu-container {right: 0px;}
 }
 @media all and (max-width:414px){ /* iPhone 6 Plus, Nexus 5X */
 

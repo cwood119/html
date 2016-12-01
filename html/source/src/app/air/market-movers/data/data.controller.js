@@ -99,7 +99,21 @@
                 targetEvent: e
             });
         };
- 
+
+        // Filters Modal
+        vm.openFilters = function (e) {
+            $mdDialog.show({
+                clickOutsideToClose: true,
+                controller: function ($mdDialog) {
+                    vm.cancelClick = function () {
+                        $mdDialog.cancel();
+                    };
+                },
+                templateUrl: 'app/air/market-movers/dialogs/filters-dialog.tmpl.html',
+                parent: angular.element($document.body),
+                targetEvent: e
+            });
+        };
         // Price Filters
         vm.priceFilterActive = false;  
         vm.price = function(entry) {
