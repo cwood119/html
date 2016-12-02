@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.air.decision-engine')
+        .module('app.air.decision')
         .controller('ninetyController', ninetyController);
 
     /* @ngInject */
@@ -18,7 +18,7 @@
             ],
             options: {
                 chart: {
-                    title: '90 Day Forecast',
+                    title: '90 Day Forecast'
                 },
                 bars: 'vertical',
                 width: '100%',

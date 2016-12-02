@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.air.decision-engine', [
+        .module('app.air.decision', [
 
         ]);
 })();

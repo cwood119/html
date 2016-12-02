@@ -1,0 +1,9 @@
+<div class="padded-content-page" ng-controller="decisionController as vm">
+    <div layout="row" layout-xs="column" layout-wrap>
+        <counter-widget flex flex-sm="50" title="Announcements" count="vm.ecalDaily.length" icon="zmdi zmdi-calendar-check" background="red-400" color="white"></counter-widget>
+        <counter-widget flex flex-sm="50" title="Pre Market" count="vm.ecalPre.length" icon="wi wi-horizon-alt"  background="blue-A100" color="white"></counter-widget>
+        <counter-widget flex flex-sm="50" title="After Market" count="vm.ecalAfter.length" icon="wi wi-night-clear"  background="blue-900" color="white"></counter-widget>
+        <counter-widget flex flex-sm="50" title="Market Movers" count="vm.gainersIntraday.length" icon="zmdi zmdi-trending-up"  background="green-500" color="white"></counter-widget>
+
+    </div>
+</div>

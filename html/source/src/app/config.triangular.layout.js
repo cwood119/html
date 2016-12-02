@@ -40,6 +40,6 @@
 
         triLayoutProvider.setDefaultOption('showToolbar', true);
 
-        triLayoutProvider.setDefaultOption('footer', true);
+        triLayoutProvider.setDefaultOption('footer', false);
     }
 })();

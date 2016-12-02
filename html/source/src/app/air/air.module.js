@@ -3,6 +3,7 @@
 
     angular
         .module('app.air', [
+            'app.air.decision',
             'app.air.watchlist',
             'app.air.alerts',
             'app.air.earnings-calendar',

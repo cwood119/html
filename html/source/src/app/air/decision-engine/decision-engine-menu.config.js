@@ -1,7 +1,7 @@
 (function() {
     'use strict';
     angular
-        .module('app.air.decision-engine')
+        .module('app.air.decision')
         .config(routeConfig);
     /* @ngInject */
     function routeConfig($stateProvider, triMenuProvider) {
@@ -16,9 +16,11 @@
             url: '/pattern-recognition',
             templateUrl: 'app/air/decision-engine/pattern-recognition.html'
         })
-        .state('triangular.calculators', {
-            url: '/calculators',
-            templateUrl: 'app/air/decision-engine/calculators.html'
+        .state('triangular.dashboard', {
+            url: '/dashboard',
+            templateUrl: 'app/air/decision-engine/dashboard.html',
+            controller: 'decisionController',
+            controllerAs: 'vm'
         });
         // next add the menu item that points to the above state.
         triMenuProvider.addMenu({
@@ -27,6 +29,11 @@
             type: 'dropdown',
             priority: 1.1,
             children: [{
+                name: 'Dashboard',
+                type: 'link',
+                state: 'triangular.dashboard'
+            },
+            {
                 name: 'Forecast',
                 type: 'link',
                 state: 'triangular.forecast'
@@ -35,11 +42,6 @@
                 name: 'Pattern Recognition',
                 type: 'link',
                 state: 'triangular.pattern-recognition'
-            },
-            {
-                name: 'Calculators',
-                type: 'link',
-                state: 'triangular.calculators'
             }]
         });
     }

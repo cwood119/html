@@ -1,67 +1,14 @@
 <div class="padded-content-page">
-
-<div layout="row" layout-xs="column" layout-margin>
-        <tri-widget flex flex-xs="100"  content-padding>
-            <md-card-content ng-controller="ninetyController as vm" ng-include="'app/air/decision-engine/charts/90-day-forecast.html'"></md-card-content>
-        </tri-widget>
-
-
-
-
-
-        <div flex="30" flex-sm="100" class="drag-container" layout="column" layout-margin dragula='"drag-server-container"'>
-            <tri-widget palette-background="triCyan:500" background="primary" content-layout="row" content-layout-align="space-between center" content-padding>
-                <div class="show-gt-md">
-                    <md-icon class="font-size-5 opacity-50" md-font-icon="zmdi zmdi-gps-dot"></md-icon>
-                </div>
-                <div layout="column" layout-align="center end">
-                    <p class="md-display-1 font-weight-100 margin-top-0 margin-bottom-0 text-ellipsis">192.168.1.1</p>
-                    <p class="md-body-2 opacity-60 margin-top-0 margin-bottom-0" translate>IP Address</p>
-                </div>
-            </tri-widget>
-            <tri-widget palette-background="triCyan:600" background="primary" content-layout="row" content-layout-align="space-between center" content-padding>
-                <div>
-                    <md-icon class="font-size-5 opacity-50" md-font-icon="zmdi zmdi-memory"></md-icon>
-                </div>
-                <div layout="column" layout-align="center end">
-                    <p class="md-display-1 font-weight-100 margin-top-0 margin-bottom-0 text-ellipsis" countupto="2" decimals="0" options="{suffix: 'Gb'}"></p>
-                    <p class="md-body-2 opacity-60 margin-top-0 margin-bottom-0" translate>Memory</p>
-                </div>
-            </tri-widget>
-            <tri-widget palette-background="triCyan:700" background="primary" content-layout="row" content-layout-align="space-between center" content-padding>
-                <div>
-                    <md-icon class="font-size-5 opacity-50" md-font-icon="zmdi zmdi-storage"></md-icon>
-                </div>
-                <div layout="column" layout-align="center end">
-                    <p class="md-display-1 font-weight-100 margin-top-0 margin-bottom-0" countupto="30" decimals="0" options="{suffix: 'Gb'}"></p>
-                    <p class="md-body-2 opacity-60 margin-top-0 margin-bottom-0" translate>Disk</p>
-                </div>
-            </tri-widget>
-            <tri-widget palette-background="triCyan:800" background="primary" content-layout="row" content-layout-align="space-between center" content-padding>
-                <div>
-                    <md-icon class="font-size-5 opacity-50" md-font-icon="zmdi zmdi-pin"></md-icon>
-                </div>
-                <div layout="column" layout-align="center end">
-                    <p class="md-display-1 font-weight-100 margin-top-0 margin-bottom-0">London</p>
-                    <p class="md-body-2 opacity-60 margin-top-0 margin-bottom-0" translate>Location</p>
-                </div>
-            </tri-widget>
-        </div>
-
-
-
-
-<!--    <tri-widget flex flex-xs="100" title="Another Card" content-padding> 
-	
-        </tri-widget>
--->
-    </div>
-
-
-
-<!--
-    <md-card>
-        <md-card-content ng-controller="ninety-controller as vm" ng-include="'app/decision-engine/90-day-forecast.html'"></md-card-content>
-    </md-card>
--->
+    <tri-widget flex flex-xs="100"  content-padding style="margin-bottom:20px;">
+        <md-card-content><a href="https://github.com/g1eb/angular-calendar-heatmap" target="_blank">Calendar Heatmap</a>
+        </md-card-content>
+    </tri-widget>
+    <tri-widget flex flex-xs="100"  content-padding style="margin-bottom:20px;">
+        <md-card-content ng-controller="ninetyController as vm" ng-include="'app/air/decision-engine/charts/90-day-forecast.html'">
+        </md-card-content>
+    </tri-widget>
+    <tri-widget flex flex-xs="100"  content-padding>
+        <md-card-content><a href="http://automatedinvestmentresearch.com/opportunity-forecast/" target="_blank">5 Day Forecast</a>
+        </md-card-content>
+    </tri-widget>
 </div>
