@@ -11,11 +11,10 @@
         $http.get('app/air/decision-engine/data/ecal-daily-data.json?ts='+new Date().getTime())
         .then(function(ecalResponse) {
             vm.ecalDaily = ecalResponse.data;
-            vm.ecalDaily.push(vm.ecalDaily);
             vm.ecalList = ecalResponse.data[0].list;
             vm.ecalCurPage = 1;
-            vm.ecalLimitOptions = [6,12,24];
-            vm.ecalPageSize = 12;
+            vm.ecalLimitOptions = [5,10,15];
+            vm.ecalPageSize = 5;
         });
     }
 })();

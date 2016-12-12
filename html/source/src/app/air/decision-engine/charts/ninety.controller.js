@@ -18,11 +18,10 @@
             ],
             options: {
                 chart: {
-                    title: '90 Day Forecast'
+                    title: 'Number of Announcements'
                 },
                 bars: 'vertical',
                 width: '100%',
-                height: '400',
                 legend: { position: 'none' }
             }
         };

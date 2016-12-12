@@ -26,23 +26,9 @@
         triMenuProvider.addMenu({
             name: 'Decision Engine',
             icon: 'zmdi zmdi-assignment-check',
-            type: 'dropdown',
-            priority: 1.1,
-            children: [{
-                name: 'Dashboard',
-                type: 'link',
-                state: 'triangular.dashboard'
-            },
-            {
-                name: 'Forecast',
-                type: 'link',
-                state: 'triangular.forecast'
-            },
-            {
-                name: 'Pattern Recognition',
-                type: 'link',
-                state: 'triangular.pattern-recognition'
-            }]
+            priority: 1,
+            type: 'link',
+            state: 'triangular.dashboard'
         });
     }
 })();

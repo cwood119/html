@@ -30,44 +30,14 @@
                     values: [],
                     area: true
                 }],
-                usersLineChartData: [{
-                    key: 'Users',
-                    values: [],
-                    area: true
-                }],
-                pageviewsLineChartData: [{
-                    key: 'Users',
-                    values: [],
-                    area: true
-                }],
-                pagesSessionsLineChartData: [{
-                    key: 'Pages / Session',
-                    values: [],
-                    area: true
-                }],
-                avgSessionLineChartData: [{
-                    key: 'Avg. Session Duration',
-                    values: [],
-                    area: true
-                }],
-                bounceLineChartData: [{
-                    key: 'Bounce Rate',
-                    values: [],
-                    area: true
-                }],
                 totals: {
-                    ecal: 0,
-                    users: 0,
-                    pageviews: 0,
-                    pagesessions: 0.0,
-                    avgsessions: 0,
-                    bounces: 0
+                    ecal: 0
                 }
             };
 
             // 30 Day Calendar Retro
             var dataset;
-            d3.csv('app/air/decision-engine/data/ecal-history.csv', function(error, data) {
+            d3.csv('app/air/decision-engine/data/ecal-history.csv?ts='+new Date().getTime(), function(error, data) {
                 dataset = data.map(function(d) { return [ +d['date'], +d['count'] ]; });
                 loop();
             });

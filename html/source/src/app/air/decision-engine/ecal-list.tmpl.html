@@ -1,0 +1,27 @@
+<h3 class="md-subhead">Earnings Announcements</h3>
+<md-table-container>
+    <table md-table class="md-primary md-data-table symbol-table">
+        <thead md-head>
+            <tr md-row>
+                <th md-column>Symbol</th>
+                <th md-column>Price</th>
+                <th md-column>Volume</th>
+                <th md-column>Time</th>
+                <th md-column>Vitals</th>
+                <th md-column>Headlines</th>
+            </tr>
+        </thead>
+        <tbody md-body>
+            <tr md-row ng-repeat="symbol in vm.ecalDaily |  orderBy:vm.sortPrice | orderBy:vm.sortSymbol  | limitTo: vm.ecalPageSize : (vm.ecalCurPage - 1) * vm.ecalPageSize">
+                <td md-cell>{{symbol.symbol}}</td>
+                <td md-cell>{{symbol.price | number:2}}</td>
+                <td md-cell ng-show="{{symbol.volume == 0}}">-</td>
+                <td md-cell ng-hide="{{symbol.volume == 0}}">{{symbol.volume | number:0}}</td>
+                <td md-cell>{{symbol.time}}</td>
+                <td md-cell><span class="pointer" style="color:#03a9f4" data-symbol="{{symbol.symbol}}" data-open="{{symbol.vitals.open}}"  ng-disabled="dialogForm.$invalid" ng-click="vm.openVitals($event, symbol)">Vitals</span></td>
+                <td md-cell><span class="pointer" style="color:#03a9f4" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event, symbol)">Headlines</span></td>
+            </tr>
+        </tbody>
+    </table>
+</md-table-container>
+<md-table-pagination md-limit="vm.ecalPageSize" md-limit-options="vm.ecalLimitOptions"  md-page-select md-page="vm.ecalCurPage" md-total="{{vm.ecalDaily.length}}"></md-table-pagination>

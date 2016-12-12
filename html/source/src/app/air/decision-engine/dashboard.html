@@ -1,34 +1,37 @@
 <div class="padded-content-page">
     <div layout="row" layout-xs="column" layout-wrap>
-        <div flex flex-sm="50"  ng-controller="ecalDEController as vm">
+        <div flex flex-sm="50" ng-controller="ecalDEController as vm">
             <counter-widget flex flex-sm="50" title="Announcements" count="vm.ecalDaily.length" icon="zmdi zmdi-calendar-check" background="red-400" color="white"></counter-widget>
         </div>
-        <div flex flex-sm="50"  ng-controller="ecalPreDEController as vm">
+        <div flex flex-sm="50" ng-controller="ecalPreDEController as vm">
             <counter-widget flex flex-sm="50" title="Pre Market" count="vm.ecalPre.length" icon="wi wi-horizon-alt"  background="blue-A100" color="white"></counter-widget>
         </div>
-        <div flex flex-sm="50"  ng-controller="ecalAfterDEController as vm">
+        <div flex flex-sm="50" ng-controller="ecalAfterDEController as vm">
             <counter-widget flex flex-sm="50" title="After Market" count="vm.ecalAfter.length" icon="wi wi-night-clear"  background="blue-900" color="white"></counter-widget>
         </div>
-        <div flex flex-sm="50"  ng-controller="gainersDEController as vm">
+        <div flex flex-sm="50" ng-controller="gainersDEController as vm">
             <counter-widget flex flex-sm="50" title="Market Movers" count="vm.gainersIntraday.length" icon="zmdi zmdi-trending-up"  background="green-500" color="white"></counter-widget>
         </div>
     </div>
     <div layout="row" ng-controller="decisionController as vm">
         <line-chart-widget flex start="vm.start" end="vm.end" time-spans="vm.timeSpans" on-time-change="vm.timeSpanChanged(span)" data="vm.data.ecalLineChartData" options="vm.overviewLineChartOptions"></line-chart-widget>
     </div>
-    <div layout="row" layout-xs="column" ng-controller="decisionController as vm">
-        <div flex flex-xs="100" layout="column">
-            <div flex layout="row">
-                <!--<stat-chart-widget flex name="Calendar Movers" statistic="{{vm.data.totals.ecal | number}}" data="vm.data.ecalLineChartData" options="vm.statLineChartOptions"></stat-chart-widget>
-                <stat-chart-widget flex name="Market Movers" statistic="{{vm.data.totals.users | number}}" data="vm.data.usersLineChartData" options="vm.statLineChartOptions"></stat-chart-widget>-->
-            </div>`
+    <div layout="row" layout-xs="column">
+        <div flex="50" flex-xs="100" layout="column">
+        <md-card style="height:100%;">
+            <md-card-content style="height:100%;" ng-controller="ChartJsBarController as vm" ng-include="'app/air/decision-engine/charts/ninety.tmpl.html'"></md-card-content>
+        </md-card>
         </div>
-        <div flex="40" flex-xs="100" layout="column">
+        <div flex="50" flex-xs="100" layout="column">
             <md-card>
                 <md-card-content ng-controller="ChartJsPieController as vm" ng-include="'app/air/decision-engine/chartjs-pie.tmpl.html'"></md-card-content>
             </md-card>
 
         </div>
     </div>
-
+    <div flex flex="100" layout="row">
+        <md-card flex flex="100">
+            <md-card-content ng-controller="ecalDEController as vm" ng-include="'app/air/decision-engine/ecal-list.tmpl.html'"></md-card-content>
+        </md-card>
+    </div>
 </div>
