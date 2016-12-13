@@ -5,8 +5,8 @@
             <tr md-row>
                 <th md-column>Symbol</th>
                 <th md-column>Price</th>
-                <th md-column>Volume</th>
-                <th md-column>Time</th>
+                <th md-column>Avg Volume</th>
+                <th md-column>When</th>
                 <th md-column>Vitals</th>
                 <th md-column>Headlines</th>
             </tr>
@@ -15,9 +15,12 @@
             <tr md-row ng-repeat="symbol in vm.ecalDaily |  orderBy:vm.sortPrice | orderBy:vm.sortSymbol  | limitTo: vm.ecalPageSize : (vm.ecalCurPage - 1) * vm.ecalPageSize">
                 <td md-cell>{{symbol.symbol}}</td>
                 <td md-cell>{{symbol.price | number:2}}</td>
-                <td md-cell ng-show="{{symbol.volume == 0}}">-</td>
-                <td md-cell ng-hide="{{symbol.volume == 0}}">{{symbol.volume | number:0}}</td>
-                <td md-cell>{{symbol.time}}</td>
+                <td md-cell ng-show="{{symbol.avgVol == 0}}">-</td>
+                <td md-cell ng-hide="{{symbol.avgVol == 0}}">{{symbol.avgVol | number:0}}</td>
+                <td md-cell ng-show="{{symbol.time == 1}}">After Market</td>
+                <td md-cell ng-show="{{symbol.time == 2}}">Pre Market</td>
+                <td md-cell ng-show="{{symbol.time == 3}}">Intraday</td>
+                <td md-cell ng-show="{{symbol.time == 4}}">Not Specified</td>
                 <td md-cell><span class="pointer" style="color:#03a9f4" data-symbol="{{symbol.symbol}}" data-open="{{symbol.vitals.open}}"  ng-disabled="dialogForm.$invalid" ng-click="vm.openVitals($event, symbol)">Vitals</span></td>
                 <td md-cell><span class="pointer" style="color:#03a9f4" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event, symbol)">Headlines</span></td>
             </tr>
