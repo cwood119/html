@@ -39,4 +39,21 @@
             <md-card-content ng-controller="ecalDEController as vm" ng-include="'app/air/decision-engine/ecal-list.tmpl.html'"></md-card-content>
         </md-card>
     </div>
+    <div flex flex="100" layout="row">
+        <md-card flex flex="100">
+            <md-card-content ng-controller="ecalIntradayDEController as vm" ng-include="'app/air/decision-engine/ecal-intraday-list.tmpl.html'"></md-card-content>
+        </md-card>
+    </div>
+    <div layout="row" layour-xs="column"> 
+        <div flex="50" flex-xs="100">
+            <md-card flex flex="100" ng-controller="ecalPreDEController as vm">
+                <md-card-content ng-include="'app/air/decision-engine/ecal-pre-list.tmpl.html'"></md-card-content>
+            </md-card>
+        </div>
+        <div flex="50" flex-xs="100">
+            <md-card flex flex="100" ng-controller="ecalAfterDEController as vm">
+                <md-card-content ng-include="'app/air/decision-engine/ecal-after-list.tmpl.html'"></md-card-content>
+            </md-card>
+        </div>
+    </div>
 </div>
