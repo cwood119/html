@@ -6,7 +6,7 @@
         .factory('NinetyDayForecastService', NinetyDayForecastService);
 
     /* @ngInject */
-    function NinetyDayForecastService($http) {
+    function NinetyDayForecastService() {
         var service = {
             getForecastData: getForecastData
         };

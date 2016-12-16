@@ -13,7 +13,12 @@
             <counter-widget flex flex-sm="50" title="Market Movers" count="vm.gainersIntraday.length" icon="zmdi zmdi-trending-up"  background="green-500" color="white"></counter-widget>
         </div>
     </div>
-    <div layout="row" layour-xs="column"> 
+<!--    <div flex flex="100" layout="row">
+        <md-card flex flex="100" ng-controller="decisionController as vm">
+            <calendar-heatmap data="example_data" color="color" width="100%" overview="overview" handler="print"></calendar-heatmap>
+        </md-card>
+    </div>-->
+    <div id="ninety-day-outlook" layout="row" layour-xs="column"> 
         <div flex="50" flex-xs="100" ng-controller="ninetyDayLookbackController as vm">
             <ninety-day-lookback-widget flex flex="50" layout="column" start="vm.start" end="vm.end" time-spans="vm.timeSpans" on-time-change="vm.ninetyDayLookbackTimeSpanChanged(span)" data="vm.lookbackData.ninetyDayLookbackData" options="vm.ninetyDayLookbackOptions"></ninety-day-lookback-widget>
         </div>
@@ -21,6 +26,17 @@
             <ninety-day-forecast-widget flex flex="50" layout="column" start="vm.start" end="vm.end" time-spans="vm.timeSpans" on-time-change="vm.ninetyDayForecastTimeSpanChanged(span)" data="vm.forecastData.ninetyDayForecastData" options="vm.ninetyDayForecastOptions"></ninety-day-forecast-widget>
         </div>
     </div>
+    <div class="ninety-day-outlook-responsive" layout="row" layour-xs="column"> 
+        <div flex="100" flex-xs="100" ng-controller="ninetyDayLookbackController as vm">
+            <ninety-day-lookback-widget flex flex="50" layout="column" start="vm.start" end="vm.end" time-spans="vm.timeSpans" on-time-change="vm.ninetyDayLookbackTimeSpanChanged(span)" data="vm.lookbackData.ninetyDayLookbackData" options="vm.ninetyDayLookbackOptions"></ninety-day-lookback-widget>
+        </div>
+    </div>
+    <div class="ninety-day-outlook-responsive" layout="row" layour-xs="column"> 
+        <div flex="100" flex-xs="100" ng-controller="ninetyDayForecastController as vm">
+            <ninety-day-forecast-widget flex flex="50" layout="column" start="vm.start" end="vm.end" time-spans="vm.timeSpans" on-time-change="vm.ninetyDayForecastTimeSpanChanged(span)" data="vm.forecastData.ninetyDayForecastData" options="vm.ninetyDayForecastOptions"></ninety-day-forecast-widget>
+        </div>
+    </div>
+
     <!--<div layout="row" layout-xs="column">
         <div flex="50" flex-xs="100" layout="column">
             <md-card style="height:100%;">
@@ -34,24 +50,26 @@
 
         </div>
     </div>-->
-    <div flex flex="100" layout="row">
+    <div flex flex="100" layout="row" ng-controller="ecalDEController as vm" ng-hide="vm.ecalToggle == 0" ng-hide="vm.ecalDaily.length = 0">
         <md-card flex flex="100">
-            <md-card-content ng-controller="ecalDEController as vm" ng-include="'app/air/decision-engine/ecal-list.tmpl.html'"></md-card-content>
+            <md-card-content ng-include="'app/air/decision-engine/ecal-list.tmpl.html'"></md-card-content>
         </md-card>
     </div>
-    <div flex flex="100" layout="row">
+    <div flex flex="100" layout="row" ng-controller="ecalIntradayDEController as vm" ng-hide="vm.ecalIntradayToggle == 0" ng-hide="vm.ecalIntraday.length = 0">
         <md-card flex flex="100">
-            <md-card-content ng-controller="ecalIntradayDEController as vm" ng-include="'app/air/decision-engine/ecal-intraday-list.tmpl.html'"></md-card-content>
+            <md-card-content ng-include="'app/air/decision-engine/ecal-intraday-list.tmpl.html'"></md-card-content>
         </md-card>
     </div>
-    <div layout="row" layour-xs="column"> 
-        <div flex="50" flex-xs="100">
-            <md-card flex flex="100" ng-controller="ecalPreDEController as vm">
+    <div layout="row" layour-xs="column" ng-controller="ecalPreDEController as vm" ng-hide="vm.ecalPreToggle == 0" ng-hide="vm.ecalPre.length = 0" > 
+        <div flex="100" flex-xs="100">
+            <md-card flex flex="100">
                 <md-card-content ng-include="'app/air/decision-engine/ecal-pre-list.tmpl.html'"></md-card-content>
             </md-card>
         </div>
-        <div flex="50" flex-xs="100">
-            <md-card flex flex="100" ng-controller="ecalAfterDEController as vm">
+    </div>
+    <div layout="row" layour-xs="column" ng-controller="ecalAfterDEController as vm" ng-hide="vm.ecalAfterToggle == 0" ng-hide="vm.ecalAfter.length = 0"> 
+        <div flex="100" flex-xs="100">
+            <md-card flex flex="100">
                 <md-card-content ng-include="'app/air/decision-engine/ecal-after-list.tmpl.html'"></md-card-content>
             </md-card>
         </div>

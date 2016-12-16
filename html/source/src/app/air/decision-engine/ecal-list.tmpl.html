@@ -1,20 +1,22 @@
-<h3 class="md-subhead">Earnings Announcements</h3>
+<h3 class="md-subhead">Earnings Announcements<md-subhead class="list-subhead">{{vm.updated}}</md-subhead></h3>
 <md-table-container>
     <table md-table class="md-primary md-data-table symbol-table">
-        <thead md-head>
+        <thead md-head md-order="vm.query.order">
             <tr md-row>
-                <th md-column>Symbol</th>
-                <th md-column>Price</th>
-                <th md-column>Avg Volume</th>
-                <th md-column>When</th>
+                <th md-column md-order-by="symbol">Symbol</th>
+                <th md-column md-order-by="price">Price</th>
+                <th md-column md-order-by="percentChange">Change</th>
+                <th md-column md-order-by="avgVol">Avg Volume</th>
+                <th md-column md-order-by="time">When</th>
                 <th md-column>Vitals</th>
                 <th md-column>Headlines</th>
             </tr>
         </thead>
         <tbody md-body>
-            <tr md-row ng-repeat="symbol in vm.ecalDaily |  orderBy:vm.sortPrice | orderBy:vm.sortSymbol  | limitTo: vm.ecalPageSize : (vm.ecalCurPage - 1) * vm.ecalPageSize">
+            <tr md-row ng-repeat="symbol in vm.ecalDaily | orderBy: vm.query.order | limitTo: vm.ecalPageSize : (vm.ecalCurPage - 1) * vm.ecalPageSize">
                 <td md-cell>{{symbol.symbol}}</td>
                 <td md-cell>{{symbol.price | number:2}}</td>
+                <td md-cell ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">{{symbol.dollarChange | number:2}} ({{symbol.percentChange | number:2}}%)</td>
                 <td md-cell ng-show="{{symbol.avgVol == 0}}">-</td>
                 <td md-cell ng-hide="{{symbol.avgVol == 0}}">{{symbol.avgVol | number:0}}</td>
                 <td md-cell ng-show="{{symbol.time == 1}}">After Market</td>

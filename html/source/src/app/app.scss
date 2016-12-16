@@ -80,17 +80,26 @@ md-icon.material-icons.ng-scope.md-light-blue-theme.md-font.zmdi.zmdi-view-list.
 .symbol-pagination{margin-top:20px;margin-bottom:40px;}
 // Dashboard
 .dashboard-trophy{font-size: 18px !important;text-align: center;line-height: 22px !important;}
+.calendar-heatmap > svg.svg {width:100% !important;}
+.list-subhead{float:right;color: rgba(0,0,0,0.54);font-size: 14px;}
+.ninety-day-outlook-responsive{display:none;}
 // Responsive
 @media all and (max-width:1280px){ /* Laptop */
     .symbol-card{margin:7px !important;}
 }
 @media all and (max-width:1175px){.symbol-card{width: 48%;}} /* Laptop */
+@media all and (max-width:1110px){.calendar-heatmap {display:none;}} /* Laptop */
+
 @media all and (max-width:1024px){ /* Laptop */
 	
 }
 @media all and (max-width:900px){ 
     .vitals-line-item-responsive{display:block;}
     .vitals-line-item{display:none;}
+}
+@media all and (max-width:880px){
+    .ninety-day-outlook-responsive{display: block;}
+    #ninety-day-outlook{display:none;}
 }
 @media all and (max-width:830px){
     .filter-group md-select {width:45%} 
@@ -124,6 +133,9 @@ md-icon.material-icons.ng-scope.md-light-blue-theme.md-font.zmdi.zmdi-view-list.
 }
 @media all and (max-width:414px){ /* iPhone 6 Plus, Nexus 5X */
 
+}
+@media all and (max-width:395px){
+.list-subhead{float:none;display:block;}
 }
 @media all and (max-width:375px){ /* iPhone 6 */
 

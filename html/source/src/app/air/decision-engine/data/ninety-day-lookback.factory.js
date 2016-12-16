@@ -6,14 +6,14 @@
         .factory('NinetyDayLookbackService', NinetyDayLookbackService);
 
     /* @ngInject */
-    function NinetyDayLookbackService($http) {
+    function NinetyDayLookbackService() {
         var service = {
             getLookbackData: getLookbackData
             //getWidgetLookbackData: getWidgetLookbackData
         };
 
         return service;
-        function getWidgetLookbackData() {
+/*        function getWidgetLookbackData() {
             var ecalData = $http.get('app/air/decision-engine/data/ecal-daily-data.json?ts='+new Date().getTime())
             .then(function(ecalResponse) {
                 var ecalDaily = ecalResponse.data;
@@ -21,6 +21,7 @@
             });
             return ecalData;
         }
+*/
         function getLookbackData(start, end, span) {
             var startTime = angular.copy(start);
             var endTime = angular.copy(end);

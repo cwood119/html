@@ -5,9 +5,8 @@
         .controller('ninetyDayForecastController', ninetyDayForecastController);
 
     /* @ngInject */
-    function ninetyDayForecastController($http, $mdDialog, $location, $document, $timeout, $mdToast, $interval, NinetyDayForecastService) {
+    function ninetyDayForecastController($mdDialog, $location, $document, NinetyDayForecastService) {
         var vm = this;
-
         vm.timeSpans = [{
             name: 'Daily',
             value: 'days'
