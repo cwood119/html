@@ -2,11 +2,11 @@
     'use strict';
 
     angular
-        .module('app.air.alerts')
-        .controller('alertsDialogController', alertsDialogController);
+        .module('app.air')
+        .controller('dialogController', dialogController);
 
     /* @ngInject */
-    function alertsDialogController($mdDialog) {
+    function dialogController($mdDialog) {
         var vm = this;
         vm.cancelClick = cancelClick;
         function cancelClick() {

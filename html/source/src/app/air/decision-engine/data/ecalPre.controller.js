@@ -9,28 +9,27 @@
         var vm = this;
         vm.ecalPre = [];
         vm.query = {order: 'Symbol'};
+        vm.ecalPreLength=null;
+        vm.ecalPreToggle=1;
         $http.get('app/air/decision-engine/data/ecal-pre-data.json?ts='+new Date().getTime())
-        .then(function(ecalPreResponse) {
-            vm.ecalPre = ecalPreResponse.data;
-            vm.ecalPreList = ecalPreResponse.data[0].list;
+        .success(function(data, status, headers) {
+            vm.ecalPre = data;
+            vm.ecalPreLength = data.length;
             vm.ecalPreCurPage = 1;
             vm.ecalPreLimitOptions = [5,10,15];
             vm.ecalPrePageSize = 5;
-        });
-        $http.get('app/air/earnings-calendar/data/data.json?ts='+new Date().getTime())
-        .then(function(response) {
-            vm.data = response.data;
-            vm.list = response.data[0].list;
-            vm.ecalPreToggle=1;
-            if (vm.list == 'Pre Market Movers') {vm.ecalPreToggle=0;}
-        });
-        $http.get('app/air/decision-engine/data/ecal-pre-data.json?ts='+new Date().getTime())
-        .success(function(data, status, headers){
             vm.modified = headers()['last-modified'];
             vm.newModified = new Date(vm.modified);
             vm.updated = vm.newModified.toLocaleString();
             vm.today = moment().startOf('day').toDate();
             if (vm.newModified < vm.today){vm.ecalPreToggle=0;vm.ecalPre=[];}
+            if (vm.ecalPreLength == 0) {vm.ecalPreToggle=0;}
+        });
+        $http.get('app/air/earnings-calendar/data/data.json?ts='+new Date().getTime())
+        .then(function(response) {
+            vm.data = response.data;
+            vm.list = response.data[0].list;
+            if (vm.list == 'Pre Market Movers') {vm.ecalPreToggle=0;}
         });
         // Vitals Modal
         vm.openVitals = function (e, symbol) {
@@ -45,7 +44,7 @@
                     };
                 },
                 controllerAs: 'modal',
-                templateUrl: 'app/air/earnings-calendar/dialogs/vitals-dialog.tmpl.html',
+                templateUrl: 'app/air/templates/dialogs/vitals-dialog.tmpl.html',
                 parent: angular.element($document.body),
                 targetEvent: e
             });
@@ -64,7 +63,7 @@
                     };
                 },
                 controllerAs: 'modal',
-                templateUrl: 'app/air/earnings-calendar/dialogs/headlines-dialog.tmpl.html',
+                templateUrl: 'app/air/templates/dialogs/headlines-dialog.tmpl.html',
                 parent: angular.element($document.body),
                 targetEvent: e
             });

@@ -75,7 +75,7 @@
                     };
                 },
                 controllerAs: 'modal',
-                templateUrl: 'app/air/market-movers/dialogs/vitals-dialog.tmpl.html',            
+                templateUrl: 'app/air/templates/dialogs/vitals-dialog.tmpl.html',            
                 parent: angular.element($document.body),
                 targetEvent: e
             });
@@ -94,7 +94,7 @@
                     };
                 },
                 controllerAs: 'modal',
-                templateUrl: 'app/air/market-movers/dialogs/headlines-dialog.tmpl.html',            
+                templateUrl: 'app/air/templates/dialogs/headlines-dialog.tmpl.html',            
                 parent: angular.element($document.body),
                 targetEvent: e
             });
@@ -109,7 +109,7 @@
                         $mdDialog.cancel();
                     };
                 },
-                templateUrl: 'app/air/market-movers/dialogs/filters-dialog.tmpl.html',
+                templateUrl: 'app/air/templates/dialogs/filters-dialog.tmpl.html',
                 parent: angular.element($document.body),
                 targetEvent: e
             });
