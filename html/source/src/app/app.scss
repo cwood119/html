@@ -133,11 +133,11 @@ md-icon.material-icons.ng-scope.md-light-blue-theme.md-font.zmdi.zmdi-view-list.
     .padded-content-page{padding: 16px 0 !important}
     .reset-menu-container {right: 0px;}
 }
+@media all and (max-width:425px){
+    .list-subhead{float:none;display:block;}
+}
 @media all and (max-width:414px){ /* iPhone 6 Plus, Nexus 5X */
 
-}
-@media all and (max-width:395px){
-.list-subhead{float:none;display:block;}
 }
 @media all and (max-width:375px){ /* iPhone 6 */
 
