@@ -26,7 +26,7 @@
                 vm.layout = 'grid';
                 vm.showToast = showToast;
             });
-        $http.get('app/air/alerts/data/data.json?ts='+new Date().getTime())
+        $http.get('app/air/alerts/data/symbols.txt?ts='+new Date().getTime())
             .success(function(data, status, headers){
                 var modified = headers()['last-modified'];
                 var newModified = new Date(modified);
