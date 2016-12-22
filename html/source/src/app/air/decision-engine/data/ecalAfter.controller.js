@@ -21,10 +21,10 @@
             vm.modified = headers()['last-modified'];
             vm.newModified = new Date(vm.modified);
             vm.updated = vm.newModified.toLocaleString();
-            vm.twoDaysAgo = moment().startOf('day').subtract(2, 'days').toDate();
+            vm.yesterday = moment().startOf('day').subtract(1, 'days').toDate();
             vm.thisDay = moment().weekday();
-            if (vm.newModified < vm.twoDaysAgo){vm.ecalAfterToggle=0;vm.ecalAfter=[];}
             if (vm.ecalAfterLength == 0) {vm.ecalAfterToggle=0;}
+            if (vm.newModified < vm.yesterday){vm.ecalAfterToggle=0;vm.ecalAfter=[];}
         });
         $http.get('app/air/earnings-calendar/data/data.json?ts='+new Date().getTime())
         .then(function(response) {

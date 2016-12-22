@@ -22,8 +22,8 @@
             vm.newModified = new Date(vm.modified);
             vm.updated = vm.newModified.toLocaleString();
             vm.today = moment().startOf('day').toDate();
-            if (vm.newModified < vm.today){vm.ecalPreToggle=0;vm.ecalPre=[];}
             if (vm.ecalPreLength == 0) {vm.ecalPreToggle=0;}
+            if (vm.newModified < vm.today){vm.ecalPreToggle=0;vm.ecalPre=[];}
         });
         $http.get('app/air/earnings-calendar/data/data.json?ts='+new Date().getTime())
         .then(function(response) {
