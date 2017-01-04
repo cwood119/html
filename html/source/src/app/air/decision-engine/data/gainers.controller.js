@@ -16,7 +16,7 @@
             vm.gainersCurPage = 1;
             vm.gainersLimitOptions = [6,12,24];
             vm.gainersPageSize = 12;
-            if (symbol == "") {vm.gainersIntradayToggle=0;vm.gainersIntraday = [];}
+            if (symbol == '') {vm.gainersIntradayToggle=0;vm.gainersIntraday = [];}
         });
     }
 })();
