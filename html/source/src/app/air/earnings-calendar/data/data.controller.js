@@ -18,15 +18,18 @@
         // Get data
         $http.get('app/air/earnings-calendar/data/data.json?ts='+new Date().getTime())
             .then(function(response) {
-                vm.symbols = response.data;
-                var symbol = response.data[0].symbol;
-                vm.list = response.data[0].list;
+                vm.symbols=[];
+                if (response.data.length != 0) {
+                    vm.symbols = response.data;
+                    var symbol = response.data[0].symbol;
+                    vm.list = response.data[0].list;
+                    if (symbol == '') {vm.symbols = [];}
+                }
                 vm.curPage = 1;
                 vm.limitOptions = [6,12,24];
                 vm.pageSize = 12;
                 vm.layout = 'grid';
                 vm.showToast = showToast;
-                if (symbol == '') {vm.symbols = [];}
             });
         $http.get('app/air/earnings-calendar/data/data.json?ts='+new Date().getTime())
             .success(function(data, status, headers){
