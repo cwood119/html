@@ -53,6 +53,11 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .symbol-card md-tab-content, .symbol-card md-tabs-content-wrapper{height:auto;padding-top: 10px;}
 .symbol-card md-tabs:not(.md-no-tab-content):not(.md-dynamic-height){height:auto;}
 .symbol-card md-card-content.ng-scope{padding-bottom:0;}
+.external-links-menu-container{position: absolute;top: -5px;right: -15px;color: #9E9E9E;}
+.external-links-menu-container-list > button > md-icon.md-light-blue-theme{color: #9E9E9E !important;}
+.external-links-menu-item{height: auto;min-height: auto;}
+.external-links-button{width: 100%;margin: auto;}
+
 // Symbol Table
 .symbol-table {background-color:white;}
 // Headlines Dialog

@@ -25,6 +25,35 @@
                 </div>
             </div>
         </div>
+
+        <md-menu class="external-links-menu-container">
+            <md-button class="md-icon-button" aria-label="open menu" ng-click="$mdOpenMenu()">
+                <md-icon md-font-icon="zmdi zmdi-more-vert"></md-icon>
+            </md-button>
+            <md-menu-content width="3">
+                <md-menu-item class="external-links-menu-item">
+                    <a ng-href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={{symbol.symbol}}&type=&dateb=&owner=include&count=100" target="_blank">
+                        <md-button class="md-flat external-links-button" ng-class="['md-primary','md-default-hue']" aria-label="SEC Filings">SEC Filings</md-button>
+                    </a>
+                </md-menu-item>
+                <md-menu-item class="external-links-menu-item">
+                    <a ng-href="http://finance.yahoo.com/q/ks?s={{symbol.symbol}}+Key+Statistics" target="_blank">
+                        <md-button class="md-flat external-links-button" ng-class="['md-primary','md-default-hue']" aria-label="Yahoo Finance Statistics">Yahoo! Stats</md-button>
+                    </a>
+                </md-menu-item>
+                <md-menu-item class="external-links-menu-item">
+                    <a ng-href="http://shortsqueeze.com/?symbol={{symbol.symbol}}" target="_blank">
+                        <md-button class="md-flat external-links-button" ng-class="['md-primary','md-default-hue']" aria-label="Short Interest">Short Interest</md-button>
+                    </a>
+                </md-menu-item>
+                <md-menu-item class="external-links-menu-item">
+                    <a ng-href="http://finviz.com/quote.ashx?t={{symbol.symbol}}" target="_blank">
+                        <md-button class="md-flat external-links-button" ng-class="['md-primary','md-default-hue']" aria-label="Finviz">Finviz</md-button>
+                    </a>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
+
         <md-tabs class="md-primary" md-selected="selectedTabIndex" md-stretch-tabs="always">
             <md-tab label="1D">
                 <md-content ng-hide="{{symbol.oneDayNull == 1}}" class="md-padding chart-tab"><a style="border:none;"target="_blank" href="https://www.tradingview.com/widgetembed/?symbol={{symbol.symbol}}&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en"><img src="{{symbol.oneDay}}"></a>

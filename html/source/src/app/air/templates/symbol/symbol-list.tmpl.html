@@ -12,6 +12,7 @@
                 <th md-column>Short %</th>
                 <th md-column>Vitals</th>
                 <th md-column>Headlines</th>
+                <th md-column></th>
             </tr>
         </thead>
         <tbody md-body>
@@ -30,6 +31,35 @@
                 <td md-cell ng-hide="{{symbol.shortPercent == 0}}">{{symbol.shortPercent | number:2}}</td>
                 <td md-cell><span class="pointer" style="color:#03a9f4" data-symbol="{{symbol.symbol}}" data-open="{{symbol.vitals.open}}"  ng-disabled="dialogForm.$invalid" ng-click="vm.openVitals($event, symbol)">Vitals</span></td>
                 <td md-cell><span class="pointer" style="color:#03a9f4" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event, symbol)">Headlines</span></td>
+                <td md-cell>
+                    <md-menu class="external-links-menu-container-list">
+                        <md-button class="md-icon-button" aria-label="open menu" ng-click="$mdOpenMenu()">
+                            <md-icon md-font-icon="zmdi zmdi-more-vert"></md-icon>
+                        </md-button>
+                        <md-menu-content width="3">
+                            <md-menu-item class="external-links-menu-item">
+                                <a ng-href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={{symbol.symbol}}&type=&dateb=&owner=include&count=100" target="_blank">
+                                    <md-button class="md-flat external-links-button" ng-class="['md-primary','md-default-hue']" aria-label="SEC Filings">SEC Filings</md-button>
+                                </a>
+                            </md-menu-item>
+                            <md-menu-item class="external-links-menu-item">
+                                <a ng-href="http://finance.yahoo.com/q/ks?s={{symbol.symbol}}+Key+Statistics" target="_blank">
+                                    <md-button class="md-flat external-links-button" ng-class="['md-primary','md-default-hue']" aria-label="Yahoo Finance Statistics">Yahoo! Stats</md-button>
+                                </a>
+                            </md-menu-item>
+                            <md-menu-item class="external-links-menu-item">
+                                <a ng-href="http://shortsqueeze.com/?symbol={{symbol.symbol}}" target="_blank">
+                                    <md-button class="md-flat external-links-button" ng-class="['md-primary','md-default-hue']" aria-label="Short Interest">Short Interest</md-button>
+                                </a>
+                            </md-menu-item>
+                            <md-menu-item class="external-links-menu-item">
+                                <a ng-href="http://finviz.com/quote.ashx?t={{symbol.symbol}}" target="_blank">
+                                    <md-button class="md-flat external-links-button" ng-class="['md-primary','md-default-hue']" aria-label="Finviz">Finviz</md-button>
+                                </a>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </td>
             </tr>
         </tbody>
     </table>
