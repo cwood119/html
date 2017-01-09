@@ -35,7 +35,7 @@ md-fab-speed-dial.md-fab-bottom-right{position:fixed;}
 .attributions{font-size: 12px; color: rgba(0, 0, 0, 0.54);}
 .attributions a{color: inherit !important;}
 // Symbol Cards
-.symbol-cards-include{margin:0;}
+.symbol-cards-include{margin: 8px 0px 8px 0px;}
 .symbol-card {width: 32%;display: inline-block;text-align:left;margin: 8px;}
 .symbol-card-table {display:table;width:100%;}
 .symbol-card-row {display:table-row;}
@@ -60,6 +60,10 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 
 // Symbol Table
 .symbol-table {background-color:white;}
+.symbol-table-container {background-color:white;}
+// Symbol Table Pagination
+//.symbol-pagination{margin-top:20px;margin-bottom:40px;}
+.symbol-pagination{border-top:none;}
 // Headlines Dialog
 .headline-row1 {font-size: 13px !important; color: #9E9E9E;}
 // Vitals Dialog
@@ -83,8 +87,6 @@ md-icon.filter-long-up-arrow {vertical-align: baseline;text-align: right;padding
 .reset-menu-container {position: absolute;top: 60px;right: 20px;}
 // Views
 md-icon.material-icons.ng-scope.md-light-blue-theme.md-font.zmdi.zmdi-view-list.view-icons{line-height:21px;}
-// Pagination
-.symbol-pagination{margin-top:20px;margin-bottom:40px;}
 // Dashboard
 .dashboard-trophy{font-size: 18px !important;text-align: center;line-height: 22px !important;}
 .calendar-heatmap > svg.svg {width:100% !important;}

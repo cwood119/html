@@ -12,7 +12,12 @@
             </md-tab>
         </md-tabs>
         <md-content ng-show="vm.layout == 'grid'" class="symbol-cards-include" ng-include="'app/air/templates/symbol/symbol-cards.tmpl.html'"></md-content>
-        <md-content ng-show="vm.layout == 'list'" class="symbol-cards-include" ng-include="'app/air/templates/symbol/symbol-list.tmpl.html'"></md-content>
+    <div flex flex="100" layout="row" ng-show="vm.layout == 'list'" class="symbol-cards-include">
+        <md-card flex flex="100" class="symbol-cards-include">
+            <md-card-content ng-include="'app/air/templates/symbol/symbol-list.tmpl.html'"></md-card-content>
+        </md-card>
+    </div>
+    <div class="attributions">Data from <a href="http://www.zacksdata.com/" target="_blank">Zacks</a> &middot; Intrinio &middot; Tradier</div>
         <md-menu class="reset-menu-container">
             <md-button class="md-icon-button" aria-label="open menu" ng-click="$mdOpenMenu()">
                 <md-icon md-font-icon="zmdi zmdi-more-vert"></md-icon>

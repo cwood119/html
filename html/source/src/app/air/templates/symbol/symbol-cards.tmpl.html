@@ -37,18 +37,18 @@
                     </a>
                 </md-menu-item>
                 <md-menu-item class="external-links-menu-item">
+                    <a ng-href="https://www.google.com/finance?q={{symbol.symbol}}&fstype=ii" target="_blank">
+                        <md-button class="md-flat external-links-button" ng-class="['md-primary','md-default-hue']" aria-label="Financial Statements">Statements</md-button>
+                    </a>
+                </md-menu-item>
+                <md-menu-item class="external-links-menu-item">
                     <a ng-href="http://finance.yahoo.com/q/ks?s={{symbol.symbol}}+Key+Statistics" target="_blank">
                         <md-button class="md-flat external-links-button" ng-class="['md-primary','md-default-hue']" aria-label="Yahoo Finance Statistics">Yahoo! Stats</md-button>
                     </a>
                 </md-menu-item>
                 <md-menu-item class="external-links-menu-item">
-                    <a ng-href="http://shortsqueeze.com/?symbol={{symbol.symbol}}" target="_blank">
+                    <a ng-href="https://www.quandl.com/data/SI/{{symbol.symbol}}_SI" target="_blank">
                         <md-button class="md-flat external-links-button" ng-class="['md-primary','md-default-hue']" aria-label="Short Interest">Short Interest</md-button>
-                    </a>
-                </md-menu-item>
-                <md-menu-item class="external-links-menu-item">
-                    <a ng-href="http://finviz.com/quote.ashx?t={{symbol.symbol}}" target="_blank">
-                        <md-button class="md-flat external-links-button" ng-class="['md-primary','md-default-hue']" aria-label="Finviz">Finviz</md-button>
                     </a>
                 </md-menu-item>
             </md-menu-content>
@@ -88,5 +88,3 @@
         </md-tabs>
     </md-card-content>
 </tri-widget>
-<md-table-pagination md-limit="vm.pageSize" md-limit-options="vm.limitOptions"  md-page-select md-page="vm.curPage" md-total="{{vm.filtered.length}}" class="symbol-pagination"></md-table-pagination>
-<div class="attributions">Data from <a href="http://www.zacksdata.com/" target="_blank">Zacks</a> &middot; Intrinio &middot; Tradier</div>
