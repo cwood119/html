@@ -12,7 +12,7 @@
         /////////
 
         function goHome() {
-            $state.go('triangular.dashboard-analytics');
+            $state.go('triangular.dashboard');
         }
     }
 })();
