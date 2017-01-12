@@ -224,7 +224,7 @@
         vm.timeFilter = function() {if (vm.time != 0){ return true;}};
 
         // Filter Data
-        vm.filterPrice = ['5','10'];
+        vm.filterPrice = ['5','10','15'];
         vm.filterVolume = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
         vm.filterAdv = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
         vm.filterMktOver = [{'value':'50000000','text':'50M'},{'value':'300000000','text':'300M'},{'value':'2000000000','text':'2B'},{'value':'10000000000','text':'10B'}];

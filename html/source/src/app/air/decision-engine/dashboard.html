@@ -50,24 +50,24 @@
 
         </div>
     </div>-->
-    <div flex flex="100" layout="row" ng-controller="ecalDEController as vm" ng-hide="vm.ecalToggle == 0">
+    <div flex flex="100" layout="row" ng-controller="ecalDEController as vm" ng-show="vm.ecalToggle != 0">
         <md-card flex flex="100">
             <md-card-content ng-include="'app/air/decision-engine/ecal-list.tmpl.html'"></md-card-content>
         </md-card>
     </div>
-    <div flex flex="100" layout="row" ng-controller="ecalIntradayDEController as vm" ng-hide="vm.ecalIntradayToggle == 0">
+    <div flex flex="100" layout="row" ng-controller="ecalIntradayDEController as vm" ng-show="vm.ecalIntradayToggle != 0">
         <md-card flex flex="100">
             <md-card-content ng-include="'app/air/decision-engine/ecal-intraday-list.tmpl.html'"></md-card-content>
         </md-card>
     </div>
-    <div layout="row" layour-xs="column" ng-controller="ecalPreDEController as vm" ng-hide="vm.ecalPreToggle == 0"> 
+    <div layout="row" layour-xs="column" ng-controller="ecalPreDEController as vm" ng-show="vm.ecalPreToggle != 0"> 
         <div flex="100" flex-xs="100">
             <md-card flex flex="100">
                 <md-card-content ng-include="'app/air/decision-engine/ecal-pre-list.tmpl.html'"></md-card-content>
             </md-card>
         </div>
     </div>
-    <div layout="row" layour-xs="column" ng-controller="ecalAfterDEController as vm" ng-hide="vm.ecalAfterToggle == 0"> 
+    <div layout="row" layour-xs="column" ng-controller="ecalAfterDEController as vm" ng-show="vm.ecalAfterToggle != 0"> 
         <div flex="100" flex-xs="100">
             <md-card flex flex="100">
                 <md-card-content ng-include="'app/air/decision-engine/ecal-after-list.tmpl.html'"></md-card-content>
