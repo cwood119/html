@@ -92,6 +92,16 @@ md-icon.material-icons.ng-scope.md-light-blue-theme.md-font.zmdi.zmdi-view-list.
 .calendar-heatmap > svg.svg {width:100% !important;}
 .list-subhead{float:right;color: rgba(0,0,0,0.54);font-size: 14px;}
 .ninety-day-outlook-responsive{display:none;}
+// Symbol Lookup
+.lookup-card {width: 60%;min-width: 300px;margin: auto;padding: 0px 5px 0px 5px;}
+.lookup-container {margin-bottom:0;}
+.lookup-vitals-table-container {padding:25px;}
+.lookup-vitals-table-container table {width:100%;}
+.lookup-vitals-table-container tr {border-bottom:1px solid #EEEEEE; padding:10px;}
+.lookup-vitals-table-container tr:last-child {border-bottom:none;}
+.lookup-vitals-table-container tr:hover{background:#EEEEEE;}
+.lookup-vitals-table-container td {color:#616161;padding:5px 0px 5px 0px;font-size: 19px;line-height: 45px}
+.lookup-vitals-table-container td:first-child {padding-left:5px;}
 // Responsive
 @media all and (max-width:1280px){ /* Laptop */
     .symbol-card{margin:7px !important;}

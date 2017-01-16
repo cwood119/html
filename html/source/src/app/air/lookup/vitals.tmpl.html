@@ -1,0 +1,69 @@
+<h3 flex><span translate>{{vm.symbol}} Vitals</span></h3>
+<div class="lookup-vitals-table-container">
+    <table>
+        <tr>
+            <td class="vitals-line-item">Open</td>
+            <td>
+                <span ng-show="{{vm.quotes.open == 0}}">-</span>
+                <span ng-hide="{{vm.quotes.open == 0}}">{{vm.quotes.open | number:2}}</span>
+                <span class="vitals-line-item-responsive">Open</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="vitals-line-item">Day Range</td>
+            <td>
+                <span ng-show="{{vm.quotes.low == 0}} || {{vm.quotes.high == 0}}">-</span>
+                <span ng-hide="{{vm.quotes.low == 0}} || {{vm.quotes.high == 0}}">{{vm.quotes.low | number:2}} - {{vm.quotes.high | number:2}}</span>
+                <span class="vitals-line-item-responsive">Day Range</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="vitals-line-item">Volume</td>
+            <td>
+                <span ng-show="{{vm.quotes.volume == 0}}">-</span>
+                <span ng-hide="{{vm.quotes.volume == 0}}">{{vm.quotes.volume | number:0}}</span>
+                <span class="vitals-line-item-responsive">Volume</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="vitals-line-item">Avg Vol (3mo)</td>
+            <td>
+                <span ng-show="{{vm.quotes.avgVol == 0}}">-</span>
+                <span ng-hide="{{vm.quotes.avgVol == 0}}">{{vm.quotes.average_volume | number:0}}</span>
+                <span class="vitals-line-item-responsive">Avg Vol</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="vitals-line-item">Shares Short</td>
+            <td>
+                <span ng-show="{{vm.quotes.sharesShort == 0}}">-</span>
+                <span ng-hide="{{vm.quotes.sharesShort == 0}}">{{vm.quotes.sharesShort | number:0}}</span>
+                <span class="vitals-line-item-responsive">Shares Short</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="vitals-line-item">Short Percent</td>
+            <td>
+                <span ng-show="{{vm.quotes.shortPercent == 0}}">-</span>
+                <span ng-hide="{{vm.quotes.shortPercent == 0}}">{{vm.quotes.shortPercent | number:2}}</span>
+                <span class="vitals-line-item-responsive">Short Percent</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="vitals-line-item">Market Cap</td>
+            <td>
+                <span ng-show="{{vm.quotes.marketCap == 0}}">-</span>
+                <span ng-hide="{{vm.quotes.marketCap == 0}}">{{vm.quotes.marketCap | number:0}}</span>
+                <span class="vitals-line-item-responsive">Market Cap</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="vitals-line-item">Float</td>
+            <td>
+                <span ng-show="{{vm.quotes.float == 0}}">-</span>
+                <span ng-hide="{{vm.quotes.float == 0}}">{{vm.quotes.float | number:0}}</span>
+                <span class="vitals-line-item-responsive">Float</span>
+            </td>
+        </tr>
+    </table>
+</div>

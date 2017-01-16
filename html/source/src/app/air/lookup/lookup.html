@@ -1,0 +1,24 @@
+<div class="padded-content-page" ng-controller="lookupController as vm">
+    <md-card class="lookup-card">
+        <form name="vm.symbolLookup" ng-submit="vm.lookup();">
+            <md-input-container class="md-block lookup-container">
+                <label>Symbol</label>
+                <input type="text" ng-model="vm.symbol" md-maxlength="5" ng-change="vm.symbol=vm.symbol.toUpperCase();">
+            </md-input-container>
+            <div layout="row" layout-align="end center">
+                <md-button type="submit" class="md-primary" ng-disabled="!vm.symbolLookup.$valid">Lookup</md-button>
+                <md-button ng-click="vm.reset();">Clear</md-button>
+            </div>
+        </form>
+    </md-card>
+    <div layout="row" layout-align="center">
+        <md-card style="width:90%;height:500px;" ng-show="vm.toggle == true">Chart placeholder</md-card>
+    </div>
+    <div layout="row" layour-xs="column" ng-show="vm.toggle == true"> 
+        <md-card flex="50" flex-xs="100" ng-include="'app/air/lookup/vitals.tmpl.html'"></md-card>
+        <md-card flex="50" flex-xs="100">
+            <h3 flex><span translate>External Links</span></h3>
+        </md-card>
+    </div>
+
+</div>
