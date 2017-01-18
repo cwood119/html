@@ -15,6 +15,7 @@
             vm.symbol = null;
             var timer = $timeout(function() {
                 vm.symbol = '';
+                vm.toggle = false;
                 $timeout.cancel(timer);
             });
         };
@@ -32,15 +33,17 @@
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
             };
-            var quotes = $http.get('https://api.tradier.com/v1/markets/quotes?symbols=' + vm.symbol, tradier);
-            var headlines = $http.get('https://api.intrinio.com/news?ticker=' + vm.symbol, intrinio);
-            $q.all([quotes, headlines]).then(function(data){ 
-                //console.log(data[0]); 
-                vm.quotes = data[0].data.quotes.quote;
-                //console.log(data[1]); 
-                vm.toggle = true;
-            });
-
+            if (vm.symbol != '') {
+                var quotes = $http.get('https://api.tradier.com/v1/markets/quotes?symbols=' + vm.symbol, tradier);
+                var fundamentals = $http.get('https://api.tradier.com/beta/markets/fundamentals/company?symbols=' + vm.symbol, tradier);
+                var headlines = $http.get('https://api.intrinio.com/news?ticker=' + vm.symbol, intrinio);
+                $q.all([quotes, fundamentals, headlines]).then(function(data){ 
+                    vm.quotes = data[0].data.quotes.quote;
+                    vm.fundamentals = data[1].data[0].results[1].tables;
+                    vm.headlines = data[2].data.data;
+                    vm.toggle = true;
+                });
+            }
 
             // Get current path
             vm.currentPath = $location.path();
