@@ -12,13 +12,10 @@
         </form>
     </md-card>
     <div layout="row" layout-align="center">
-        <md-card style="width:90%;height:500px;" ng-show="vm.toggle == true">Chart placeholder</md-card>
+        <md-card class="lookup-chart-card" ng-show="vm.toggle == true"><iframe class="lookup-chart" ng-src="{{vm.chart}}"></iframe></md-card>
     </div>
+    <div ng-show="vm.toggle == true" ng-include="'app/air/lookup/resources.tmpl.html'"></div>
     <div layout="row" layour-xs="column" ng-show="vm.toggle == true"> 
-        <md-card flex="50" flex-xs="100" ng-include="'app/air/lookup/vitals.tmpl.html'"></md-card>
-        <md-card flex="50" flex-xs="100">
-            <h3 flex><span translate>External Links</span></h3>
-        </md-card>
+        <md-card flex="100" flex-xs="100" ng-include="'app/air/lookup/vitals.tmpl.html'"></md-card>
     </div>
-
 </div>

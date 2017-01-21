@@ -95,6 +95,8 @@ md-icon.material-icons.ng-scope.md-light-blue-theme.md-font.zmdi.zmdi-view-list.
 // Symbol Lookup
 .lookup-card {width: 60%;min-width: 300px;margin: auto;padding: 0px 5px 0px 5px;}
 .lookup-container {margin-bottom:0;}
+.lookup-chart-card {width:100%;height:500px;}
+.lookup-chart {height:500px;}
 .lookup-vitals-table-container {padding:25px;}
 .lookup-vitals-table-container table {width:100%;}
 .lookup-vitals-table-container tr {border-bottom:1px solid #EEEEEE; padding:10px;}
@@ -102,16 +104,29 @@ md-icon.material-icons.ng-scope.md-light-blue-theme.md-font.zmdi.zmdi-view-list.
 .lookup-vitals-table-container tr:hover{background:#EEEEEE;}
 .lookup-vitals-table-container td {color:#616161;padding:5px 0px 5px 0px;font-size: 19px;line-height: 45px}
 .lookup-vitals-table-container td:first-child {padding-left:5px;}
+.lookup-widget {background-size: 122px !important;background-repeat: no-repeat;background-position-y: -6px;background-position-x: 10px;text-align: right;}
+.lookup-sec{background-image: url(../../../assets/images/sec-logo.png);}
+.lookup-google{background-image: url(../../../assets/images/google.png);}
+.lookup-quandl{background-image: url(../../../assets/images/quandl.svg);}
+.lookup-yahoo{background-image: url(../../../assets/images/yahoo.png);}
+#lookup-resources a:hover{text-decoration:none;}
+
 // Responsive
 @media all and (max-width:1280px){ /* Laptop */
     .symbol-card{margin:7px !important;}
 }
 @media all and (max-width:1175px){.symbol-card{width: 48%;}} /* Laptop */
+@media all and (max-width:1125px){.lookup-widget {background-size: 112px !important;background-position-y: -2px;}}
 @media all and (max-width:1110px){.calendar-heatmap {display:none;}} /* Laptop */
-
+@media all and (max-width:1085px){.lookup-widget {background-size: 100px !important;background-position-y: 4px;}}
+@media all and (max-width:1050px){.lookup-widget {background-size: 90px !important;background-position-y: 8px;}}
 @media all and (max-width:1024px){ /* Laptop */
-	
+    .lookup-card {width: 85%;}
+    .lookup-chart-card {height:400px;}
+    .lookup-chart {height:400px;}
 }
+@media all and (max-width:1000px){.lookup-widget {background-size: 80px !important;background-position-y: 12px;}}
+@media all and (max-width:959px){.lookup-widget {background-size: 122px !important;background-position-y: -6px;}}
 @media all and (max-width:900px){ 
     .vitals-line-item-responsive{display:block;}
     .vitals-line-item{display:none;}
@@ -130,7 +145,9 @@ md-icon.material-icons.ng-scope.md-light-blue-theme.md-font.zmdi.zmdi-view-list.
     .symbol-card md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {height: 400px;}
 }
 @media all and (max-width:768px){ /* Generic Tablet */
-
+    .lookup-card {width: 95%;}
+    .lookup-chart-card {width:100%;height:375px;}
+    .lookup-chart {width:100%;height:375px;}
 }
 
 @media all and (max-width:730px){
@@ -144,6 +161,8 @@ md-icon.material-icons.ng-scope.md-light-blue-theme.md-font.zmdi.zmdi-view-list.
 
 @media all and (max-width:500px){ /* Nexus 6P, Nexus 5X */
     .symbol-card{width:97%;margin-bottom:5px;}
+    .lookup-chart-card {height:350px;}
+    .lookup-chart {height:350px;}
 }
 
 @media all and (max-width: 450px){
@@ -165,6 +184,8 @@ md-icon.material-icons.ng-scope.md-light-blue-theme.md-font.zmdi.zmdi-view-list.
 }
 @media all and (max-width:325px){ /* iPhone 4, iPhone 5 */
     .symbol-card-row1 .md-subhead{font-size:10px;}
+    .lookup-chart-card {height:300px;}
+    .lookup-chart {height:300px;}
 }
 
 
