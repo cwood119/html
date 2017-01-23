@@ -1,5 +1,11 @@
 <div id="lookup-resources" layout="row" layout-xs="column" layout-wrap> 
     <div flex flex-sm="50">
+        <a href="{{vm.quandlUrl}}" target="_blank">
+            <tri-widget layout-margin flex class="lookup-widget lookup-quandl" palette-background="deep-orange:600" title="Short Interest" subtitle="Quandl" title-position="top">
+            </tri-widget>
+        </a>
+    </div>
+    <div flex flex-sm="50">
         <a href="{{vm.secUrl}}" target="_blank">
             <tri-widget layout-margin flex class="lookup-widget lookup-sec" palette-background="yellow:500" title="SEC Filings" subtitle="EDGAR Search" title-position="top">
             </tri-widget>
@@ -8,12 +14,6 @@
     <div flex flex-sm="50">
         <a href="{{vm.googleUrl}}" target="_blank">
             <tri-widget layout-margin flex class="lookup-widget lookup-google" palette-background="white:50" title="Statements" subtitle="Google Finance" title-position="top">
-            </tri-widget>
-        </a>
-    </div>
-    <div flex flex-sm="50">
-        <a href="{{vm.quandlUrl}}" target="_blank">
-            <tri-widget layout-margin flex class="lookup-widget lookup-quandl" palette-background="deep-orange:600" title="Short Interest" subtitle="Quandl" title-position="top">
             </tri-widget>
         </a>
     </div>

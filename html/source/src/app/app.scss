@@ -105,7 +105,7 @@ md-icon.material-icons.ng-scope.md-light-blue-theme.md-font.zmdi.zmdi-view-list.
 .lookup-vitals-table-container td {color:#616161;padding:5px 0px 5px 0px;font-size: 19px;line-height: 45px}
 .lookup-vitals-table-container td:first-child {padding-left:5px;}
 .lookup-widget {background-size: 122px !important;background-repeat: no-repeat;background-position-y: -6px;background-position-x: 10px;text-align: right;}
-.lookup-sec{background-image: url(../../../assets/images/sec-logo.png);}
+.lookup-sec{background-image: url(../../../assets/images/sec-logo.png);background-blend-mode: difference;color:rgb(136, 106, 58) !important}
 .lookup-google{background-image: url(../../../assets/images/google.png);}
 .lookup-quandl{background-image: url(../../../assets/images/quandl.svg);}
 .lookup-yahoo{background-image: url(../../../assets/images/yahoo.png);}
