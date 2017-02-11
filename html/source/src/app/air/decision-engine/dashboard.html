@@ -1,15 +1,15 @@
 <div class="padded-content-page">
-    <div layout="row" layout-xs="column" layout-wrap>
-        <div flex flex-sm="50" ng-controller="ecalIntradayDEController as vm">
+    <div layout="row" layout-xs="column" layout-wrap ng-controller="counterWidgetsController as vm">
+        <div flex flex-sm="50">
             <counter-widget flex flex-sm="50" title="Calendar Movers" count="vm.ecalIntraday.length" icon="zmdi zmdi-calendar-check" background="red-400" color="white"></counter-widget>
         </div>
-        <div flex flex-sm="50" ng-controller="ecalPreDEController as vm">
+        <div flex flex-sm="50">
             <counter-widget flex flex-sm="50" title="Pre Market" count="vm.ecalPre.length" icon="wi wi-horizon-alt"  background="blue-A100" color="white"></counter-widget>
         </div>
-        <div flex flex-sm="50" ng-controller="ecalAfterDEController as vm">
+        <div flex flex-sm="50">
             <counter-widget flex flex-sm="50" title="After Market" count="vm.ecalAfter.length" icon="wi wi-night-clear"  background="blue-900" color="white"></counter-widget>
         </div>
-        <div flex flex-sm="50" ng-controller="gainersDEController as vm">
+        <div flex flex-sm="50">
             <counter-widget flex flex-sm="50" title="Market Movers" count="vm.gainersIntraday.length" icon="zmdi zmdi-trending-up"  background="green-500" color="white"></counter-widget>
         </div>
     </div>
