@@ -1,7 +1,7 @@
 <h3 class="md-subhead">After Market Calendar Movers<md-subhead class="list-subhead">{{vm.updated}}</md-subhead></h3>
 <md-table-container>
     <table md-table class="md-primary md-data-table symbol-table">
-        <thead md-head>
+        <thead md-head md-order="vm.query.order">
             <tr md-row>
                 <th md-column md-order-by="symbol">Symbol</th>
                 <th md-column md-order-by="price">Price</th>

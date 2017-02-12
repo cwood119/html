@@ -1,7 +1,7 @@
 <h3 class="md-subhead">Pre Market Calendar Movers<md-subhead class="list-subhead">{{vm.updated}}</md-subhead></h3>
 <md-table-container>
     <table md-table class="md-primary md-data-table symbol-table">
-        <thead md-head>
+        <thead md-head md-order="vm.query.order">
             <tr md-row>
                 <th md-column md-order-by="symbol">Symbol</th>
                 <th md-column md-order-by="price">Price</th>
@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody md-body>
-            <tr md-row ng-repeat="symbol in vm.ecalPre | orderBy: vm.order.query  | limitTo: vm.ecalPrePageSize : (vm.ecalPreCurPage - 1) * vm.ecalPrePageSize">
+            <tr md-row ng-repeat="symbol in vm.ecalPre | orderBy: vm.query.order | limitTo: vm.ecalPrePageSize : (vm.ecalPreCurPage - 1) * vm.ecalPrePageSize">
                 <td md-cell>{{symbol.symbol}}</td>
                 <td md-cell>{{symbol.price | number:2}}</td>
                 <td md-cell ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">{{symbol.dollarChange | number:2}} ({{symbol.percentChange | number:2}}%)</td>

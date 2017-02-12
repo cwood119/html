@@ -34,6 +34,7 @@ a{color:#03A9F4 !important;}
 md-fab-speed-dial.md-fab-bottom-right{position:fixed;}
 .attributions{font-size: 12px; color: rgba(0, 0, 0, 0.54);}
 .attributions a{color: inherit !important;}
+
 // Symbol Cards
 .symbol-cards-include{margin: 8px;}
 .symbol-card {width: 32%;display: inline-block;text-align:left;margin: 8px;}
@@ -61,11 +62,16 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 // Symbol Table
 .symbol-table {background-color:white;}
 .symbol-table-container {background-color:white;}
+.symbol-table > thead > tr > th {font-size: 15px !important;}
+.symbol-table.md-table th.md-column md-icon {height: 18px;min-height: 0px;}
+.symbol-table.md-table td.md-cell {font-size:14px;}
+
 // Symbol Table Pagination
-//.symbol-pagination{margin-top:20px;margin-bottom:40px;}
 .symbol-pagination{border-top:none;}
+
 // Headlines Dialog
 .headline-row1 {font-size: 13px !important; color: #9E9E9E;}
+
 // Vitals Dialog
 .vitals-table-container {width:50%;float:left;}
 .vitals-table-container table {width:95%;}
@@ -75,6 +81,7 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .vitals-table-container td {color:#616161;padding:5px 0px 5px 0px;font-size: 19px;line-height: 45px}
 .vitals-table-container td:first-child {padding-left:5px;}
 .vitals-line-item-responsive {display:none;color: #9E9E9E !important;font-size: 13px !important;line-height: .1;padding-bottom: 10px;}
+
 // Filters
 .filter-tabs{min-height: 125px !important;overflow: hidden;background: white;padding-top: 0px;}
 .filter-tabs md-tab-item.md-tab {width: 65px;padding: 12px 0px 0px 0px;flex-grow: 0;}
@@ -82,16 +89,24 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .filter-group md-select {margin-top:0;display: inline-block;padding: 0px 5px 0px 5px;}
 .filter-group label {color:rgba(0,0,0,0.38);}
 md-icon.filter-long-up-arrow {vertical-align: baseline;text-align: right;padding-right: 2px;}
+
 // Sorts
 .sort-text-center {text-align:center;}
 .reset-menu-container {position: absolute;top: 60px;right: 20px;}
+
 // Views
 md-icon.material-icons.ng-scope.md-light-blue-theme.md-font.zmdi.zmdi-view-list.view-icons{line-height:21px;}
+
+//////////
+
 // Dashboard
 .dashboard-trophy{font-size: 18px !important;text-align: center;line-height: 22px !important;}
 .calendar-heatmap > svg.svg {width:100% !important;}
 .list-subhead{float:right;color: rgba(0,0,0,0.54);font-size: 14px;}
 .ninety-day-outlook-responsive{display:none;}
+
+//////////
+
 // Symbol Lookup
 .lookup-card {width: 60%;min-width: 300px;margin: auto;padding: 0px 5px 0px 5px;}
 .lookup-container {margin-bottom:0;}
@@ -110,6 +125,8 @@ md-icon.material-icons.ng-scope.md-light-blue-theme.md-font.zmdi.zmdi-view-list.
 .lookup-quandl{background-image: url(../../../assets/images/quandl.svg);}
 .lookup-yahoo{background-image: url(../../../assets/images/yahoo.png);}
 #lookup-resources a:hover{text-decoration:none;}
+
+//////////
 
 // Responsive
 @media all and (max-width:1280px){ /* Laptop */
