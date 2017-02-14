@@ -13,10 +13,13 @@
         };
     });
     /* @ngInject */
-    function ecalController($http, $mdDialog, $location, $document, $timeout, $mdToast, $interval, $window, $mdSidenav) {
+    function ecalController($http, $mdDialog, $location, $document, $timeout, $mdToast, $interval, $window, $mdSidenav, $scope) {
         var vm = this;
         vm.openSidebar = function(id) {$mdSidenav(id).toggle();};
-
+      $scope.min = 0;
+      $scope.max = 20;
+      $scope.lower = 0;
+      $scope.upper = 20;
         // Get data
         $http.get('app/air/earnings-calendar/data/data.json?ts='+new Date().getTime())
             .then(function(response) {

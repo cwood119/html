@@ -1,3 +1,5 @@
+<div class="padded-content-page">
+    <div ng-controller="ecalController as vm" layout-margin>
 <!-- sort sidebar -->
 <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="sort-sidebar">
     <md-toolbar class="md-theme-light">
@@ -14,10 +16,10 @@
     </md-toolbar>
     <md-content class="md-padding">
         <p>This is the filter sidebar</p>
+        <p>Price: {{lower|currency}}-{{upper|currency}}</p>
+        <range-slider lower-value="lower" upper-value="upper" min-gap="1" step="1" min="min" max="max" ></range-slider>
     </md-content>
 </md-sidenav>
-<div class="padded-content-page">
-    <div ng-controller="ecalController as vm" layout-margin>
         <md-button aria-label="sort" class="md-fab md-raised sort-filter" ng-click="vm.openSidebar('sort-sidebar')">
             <md-icon md-font-icon="zmdi zmdi-sort-asc"></md-icon>
         </md-button>

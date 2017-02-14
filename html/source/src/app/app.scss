@@ -39,6 +39,10 @@ md-toolbar.md-light-blue-white-theme:not(.md-menu-toolbar) {background-color: #0
 md-toolbar.md-light-blue-white-theme:not(.md-menu-toolbar) md-icon {color:rgb(250, 250, 250);fill: rgb(250, 250, 250);}
 // Sort and Filter Buttons
 .sort-filter{float: left;border: 1px solid #E0E0E0;margin:0 5px 0 5px;box-shadow:none !important;}
+// Range Slider
+.range-slider-right md-slider .md-track-container .md-track.md-track-fill {background-color: #03A9F4 !important;}
+md-slider.md-light-blue-theme .md-thumb:after {cursor:-webkit-grab;border-color: #03A9F4;background-color: #03A9F4;}
+.range-slider-container:active{cursor:-webkit-grabbing}
 
 // Symbol Cards
 .symbol-cards-include{margin: 8px;}
