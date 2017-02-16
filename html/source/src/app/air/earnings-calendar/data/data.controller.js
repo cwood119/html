@@ -15,11 +15,22 @@
     /* @ngInject */
     function ecalController($http, $mdDialog, $location, $document, $timeout, $mdToast, $interval, $window, $mdSidenav, $scope) {
         var vm = this;
-        vm.openSidebar = function(id) {$mdSidenav(id).toggle();};
-      $scope.min = 0;
-      $scope.max = 20;
-      $scope.lower = 0;
-      $scope.upper = 20;
+        vm.openSidebar = function(id) {$mdSidenav(id).toggle();vm.refreshSlider();};
+
+// slider
+$scope.slider = {
+  min: 0,
+  max: 20,
+  options: {
+    floor: 0,
+    ceil: 20
+  }
+};
+vm.refreshSlider = function () {
+    $timeout(function () {
+        $scope.$broadcast('rzSliderForceRender');
+    });
+};
         // Get data
         $http.get('app/air/earnings-calendar/data/data.json?ts='+new Date().getTime())
             .then(function(response) {

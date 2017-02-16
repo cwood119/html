@@ -16,11 +16,16 @@
     </md-toolbar>
     <md-content class="md-padding">
         <p>This is the filter sidebar</p>
-        <p>Price: {{lower|currency}}-{{upper|currency}}</p>
-        <range-slider lower-value="lower" upper-value="upper" min-gap="1" step="1" min="min" max="max" ></range-slider>
+        <p>Price: {{slider.min|currency}}-{{slider.max|currency}}</p>
+
+<rzslider
+    rz-slider-model="slider.min"
+    rz-slider-high="slider.max"
+    rz-slider-options="slider.options"></rzslider>
+
     </md-content>
 </md-sidenav>
-        <md-button aria-label="sort" class="md-fab md-raised sort-filter" ng-click="vm.openSidebar('sort-sidebar')">
+        <md-button aria-label="sort" class="md-fab md-raised sort-filter" ng-click="vm.openSidebar('sort-sidebar') ">
             <md-icon md-font-icon="zmdi zmdi-sort-asc"></md-icon>
         </md-button>
         <md-button aria-label="filter" class="md-fab md-raised sort-filter" ng-click="vm.openSidebar('filter-sidebar')">
