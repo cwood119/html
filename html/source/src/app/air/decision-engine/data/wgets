@@ -1,0 +1,5 @@
+wget http://automatedinvestmentresearch.com/app/app/air/decision-engine/data/ecal-after-data.json
+wget http://automatedinvestmentresearch.com/app/app/air/decision-engine/data/ecal-pre-data.json
+wget http://automatedinvestmentresearch.com/app/app/air/decision-engine/data/ecal-daily-data.json
+wget http://automatedinvestmentresearch.com/app/app/air/decision-engine/data/gainers-intraday-data.json
+wget http://automatedinvestmentresearch.com/app/app/air/decision-engine/data/ecal-intraday-data.json

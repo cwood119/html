@@ -9,7 +9,7 @@
         var vm = this;
         vm.ecalIntraday = [];
         vm.query = {order: 'Symbol'};
-        vm.ecalPreLength=null;
+        vm.ecalIntradayLength=null;
         vm.ecalIntradayToggle=1;
         $http.get('app/air/decision-engine/data/ecal-intraday-data.json?ts='+new Date().getTime())
         .success(function(data, status, headers) {

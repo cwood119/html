@@ -16,7 +16,7 @@ button, select, html, textarea, input {
 @import "scss/material-backgrounds";
 
 // Add your CSS here
-// Custom CSS starts here 
+// Custom CSS starts here
 // By cwood - cwood@automatedinvestmentresearch.com 2016
 
 // Global App Styles
@@ -32,13 +32,13 @@ a{color:#03A9F4 !important;}
 .last-updated {text-align: right;width: 98%;display: block;color: #545454;font-size: 10pt;margin-top: -15px;}
 .showing {padding:5px 0px 0px 0px;}
 md-fab-speed-dial.md-fab-bottom-right{position:fixed;}
-.attributions{font-size: 12px; color: rgba(0, 0, 0, 0.54);}
+.attributions{font-size: 12px; color: rgba(0, 0, 0, 0.54);text-align: center;margin-top:25px;}
 .attributions a{color: inherit !important;}
+
 // Top toolbar
 md-toolbar.md-light-blue-white-theme:not(.md-menu-toolbar) {background-color: #03A9F4;color: rgb(250, 250, 250);}
 md-toolbar.md-light-blue-white-theme:not(.md-menu-toolbar) md-icon {color:rgb(250, 250, 250);fill: rgb(250, 250, 250);}
-// Sort and Filter Buttons
-.sort-filter{float: left;border: 1px solid #E0E0E0;margin:0 5px 0 5px;box-shadow:none !important;}
+
 // Range Slider
 .rzslider .rz-pointer {outline:0;background-color: #03A9F4 !important;cursor:-webkit-grab !important;}
 .rzslider .rz-pointer:active{cursor:-webkit-grabbing}
@@ -46,7 +46,7 @@ md-toolbar.md-light-blue-white-theme:not(.md-menu-toolbar) md-icon {color:rgb(25
 
 
 // Symbol Cards
-.symbol-cards-include{margin: 8px;}
+.symbol-cards-include{margin: 8px;text-align: center;}
 .symbol-card {width: 32%;display: inline-block;text-align:left;margin: 8px;}
 .symbol-card-table {display:table;width:100%;}
 .symbol-card-row {display:table-row;}
@@ -154,7 +154,7 @@ md-icon.material-icons.ng-scope.md-light-blue-theme.md-font.zmdi.zmdi-view-list.
 }
 @media all and (max-width:1000px){.lookup-widget {background-size: 80px !important;background-position-y: 12px;}}
 @media all and (max-width:959px){.lookup-widget {background-size: 122px !important;background-position-y: -6px;}}
-@media all and (max-width:900px){ 
+@media all and (max-width:900px){
     .vitals-line-item-responsive{display:block;}
     .vitals-line-item{display:none;}
 }
@@ -163,7 +163,7 @@ md-icon.material-icons.ng-scope.md-light-blue-theme.md-font.zmdi.zmdi-view-list.
     #ninety-day-outlook{display:none;}
 }
 @media all and (max-width:830px){
-    .filter-group md-select {width:45%} 
+    .filter-group md-select {width:45%}
     .filter-tabs {min-height: 235px !important;}
 }
 @media all and (max-width:800px){ /* Nexus 10 */

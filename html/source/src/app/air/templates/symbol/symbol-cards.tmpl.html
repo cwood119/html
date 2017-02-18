@@ -1,4 +1,9 @@
-<tri-widget flex flex-xs="100" ng-repeat="symbol in vm.filtered = (vm.symbols | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short | filter:vm.time) | orderBy: '-percentChange' | orderBy:vm.sortPrice | orderBy:vm.sortPercentChange | orderBy:vm.sortVolume | orderBy:vm.sortAvgVol | orderBy:vm.sortMktCap | orderBy:vm.sortFloat | orderBy:vm.sortShort | orderBy:vm.sortSymbol  | limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short | filter:vm.time" content-padding class="symbol-card">
+
+<tri-widget flex flex-xs="100" ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn()) |
+orderBy: '-percentChange' | orderBy:vm.sortPrice | orderBy:vm.sortPercentChange | orderBy:vm.sortVolume |
+orderBy:vm.sortAvgVol | orderBy:vm.sortMktCap | orderBy:vm.sortFloat | orderBy:vm.sortShort | orderBy:vm.sortSymbol |
+limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize" content-padding class="symbol-card">
+
     <md-card-content>
         <div class="symbol-card-table">
             <div class="symbol-card-row symbol-card-row1">
@@ -88,3 +93,7 @@
         </md-tabs>
     </md-card-content>
 </tri-widget>
+<div class="attributions">
+    Showing: {{vm.filtered.length}} of {{vm.symbols.length}} &middot; List: {{vm.list}} &middot; Updated: {{vm.updated}}<br />
+    Data from <a href="http://www.zacksdata.com/" target="_blank">Zacks</a> &middot; Intrinio &middot; Tradier
+</div>

@@ -31,7 +31,7 @@
             if (response.data.length != 0) {
                 vm.list = response.data[0].list;
                 if (vm.list == 'Pre Market Movers') {vm.ecalPreToggle=0;}
-           } 
+            } 
         });
         // Vitals Modal
         vm.openVitals = function (e, symbol) {

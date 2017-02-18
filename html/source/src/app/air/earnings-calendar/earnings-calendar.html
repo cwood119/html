@@ -1,65 +1,67 @@
-<div class="padded-content-page">
-    <div ng-controller="ecalController as vm" layout-margin>
-<!-- sort sidebar -->
-<md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="sort-sidebar">
-    <md-toolbar class="md-theme-light">
-        <h1 class="md-toolbar-tools">Sort</h1>
-    </md-toolbar>
-    <md-content class="md-padding">
-        <p>This is the sort sidebar</p>
-    </md-content>
-</md-sidenav>
-<!-- filter sidebar -->
-<md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="filter-sidebar">
-    <md-toolbar class="md-theme-light">
-        <h1 class="md-toolbar-tools">Filter</h1>
-    </md-toolbar>
-    <md-content class="md-padding">
-        <p>This is the filter sidebar</p>
-        <p>Price: {{slider.min|currency}}-{{slider.max|currency}}</p>
+<div ng-controller="ecalController as vm">
+    <!-- Symbols -->
+    <div class="padded-content-page">
+        <div layout-margin>
+            <!-- Grid View -->
+            <md-content ng-show="vm.layout == 'grid'" class="symbol-cards-include" ng-include="'app/air/templates/symbol/symbol-cards.tmpl.html'"></md-content>
+            <!-- List View -->
+            <div flex flex="100" layout="row" ng-show="vm.layout == 'list'" class="symbol-cards-include">
+                <md-card flex flex="100" class="symbol-cards-include">
+                    <md-card-content ng-include="'app/air/templates/symbol/symbol-list.tmpl.html'"></md-card-content>
+                </md-card>
+            </div>
+            <!-- Fab -->
+            <div layout="row" layout-align="center center" flex ng-cloak>
+                <md-fab-speed-dial ng-cloak md-open="false" md-direction="up" class="md-scale md-fab-bottom-right">
+                    <md-fab-trigger>
+                        <md-button aria-label="View Options" class="md-fab md-warn">
+                            <md-icon md-font-icon="zmdi zmdi-plus"></md-icon>
+                        </md-button>
+                    </md-fab-trigger>
+                    <md-fab-actions>
+                        <md-button aria-label="filter" class="md-fab md-raised md-mini" ng-click="vm.openSidebar('filter-sidebar')">
+                            <md-icon md-font-icon="zmdi zmdi-filter-list"></md-icon>
+                        </md-button>
+                        <md-button aria-label="sort" class="md-fab md-raised md-mini" ng-click="vm.openSidebar('sort-sidebar') ">
+                            <md-icon md-font-icon="zmdi zmdi-sort-asc"></md-icon>
+                        </md-button>
+                        <md-button aria-label="grid view" class="md-fab md-raised md-mini" ng-class="{active: vm.layout == 'grid'}" ng-click="vm.layout = 'grid'">
+                            <md-icon md-font-icon="zmdi zmdi-view-module"></md-icon>
+                        </md-button>
+                        <md-button aria-label="list view" class="md-fab md-raised md-mini" ng-class="{active: vm.layout == 'list'}" ng-click="vm.layout = 'list'">
+                            <md-icon md-font-icon="zmdi zmdi-view-list"></md-icon>
+                        </md-button>
+                        <md-button aria-label="download symbols" class="md-fab md-raised md-mini" download="symbols.txt" ng-href="http://automatedinvestmentresearch.com/app/app/air/earnings-calendar/data/symbols.txt">
+                            <md-icon md-font-icon="zmdi zmdi-download"></md-icon>
+                        </md-button>
+                    </md-fab-actions>
+                </md-fab-speed-dial>
+            </div>
 
-<rzslider
-    rz-slider-model="slider.min"
-    rz-slider-high="slider.max"
-    rz-slider-options="slider.options"></rzslider>
-
-    </md-content>
-</md-sidenav>
-        <md-button aria-label="sort" class="md-fab md-raised sort-filter" ng-click="vm.openSidebar('sort-sidebar') ">
-            <md-icon md-font-icon="zmdi zmdi-sort-asc"></md-icon>
-        </md-button>
-        <md-button aria-label="filter" class="md-fab md-raised sort-filter" ng-click="vm.openSidebar('filter-sidebar')">
-            <md-icon md-font-icon="zmdi zmdi-filter-list"></md-icon>
-        </md-button>
-        <span class="last-updated">Updated: {{vm.updated}}</span>
-        <span class="last-updated showing">{{vm.list}}</span>
-        <span class="last-updated showing">{{vm.filtered.length}} of {{vm.symbols.length}}</span>
-        <md-content ng-show="vm.layout == 'grid'" class="symbol-cards-include" ng-include="'app/air/templates/symbol/symbol-cards.tmpl.html'"></md-content>
-        <div flex flex="100" layout="row" ng-show="vm.layout == 'list'" class="symbol-cards-include">
-            <md-card flex flex="100" class="symbol-cards-include">
-                <md-card-content ng-include="'app/air/templates/symbol/symbol-list.tmpl.html'"></md-card-content>
-            </md-card>
-        </div>
-        <div class="attributions">Data from <a href="http://www.zacksdata.com/" target="_blank">Zacks</a> &middot; Intrinio &middot; Tradier</div>
-        <div layout="row" layout-align="center center" flex ng-cloak>
-            <md-fab-speed-dial ng-cloak md-open="false" md-direction="up" class="md-scale md-fab-bottom-right">
-                <md-fab-trigger>
-                    <md-button aria-label="View Options" class="md-fab md-warn">
-                        <md-icon md-font-icon="zmdi zmdi-plus"></md-icon>
-                    </md-button>
-                </md-fab-trigger>
-                <md-fab-actions>
-                    <md-button aria-label="grid view" class="md-fab md-raised md-mini" ng-class="{active: vm.layout == 'grid'}" ng-click="vm.layout = 'grid'">
-                        <md-icon md-font-icon="zmdi zmdi-view-module"></md-icon>
-                    </md-button>
-                    <md-button aria-label="list view" class="md-fab md-raised md-mini" ng-class="{active: vm.layout == 'list'}" ng-click="vm.layout = 'list'">
-                        <md-icon md-font-icon="zmdi zmdi-view-list"></md-icon>
-                    </md-button>
-                    <md-button aria-label="download symbols" class="md-fab md-raised md-mini" download="symbols.txt" ng-href="http://automatedinvestmentresearch.com/app/app/air/earnings-calendar/data/symbols.txt">
-                        <md-icon md-font-icon="zmdi zmdi-download"></md-icon>
-                    </md-button>
-                </md-fab-actions>
-            </md-fab-speed-dial>
         </div>
     </div>
+
+    <!-- Sort Sidebar -->
+    <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="sort-sidebar">
+        <md-toolbar class="md-theme-light">
+            <h1 class="md-toolbar-tools">Sort</h1>
+        </md-toolbar>
+        <md-content class="md-padding">
+            <p>This is the sort sidebar</p>
+        </md-content>
+    </md-sidenav>
+
+    <!-- Filter Sidebar -->
+    <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="filter-sidebar">
+        <md-toolbar class="md-theme-light">
+            <h1 class="md-toolbar-tools">Filter</h1>
+        </md-toolbar>
+        <md-content class="md-padding">
+            <p>Price: {{vm.slider.min}} - {{vm.slider.max}}</p>
+        <rzslider
+            rz-slider-model="vm.slider.min"
+            rz-slider-high="vm.slider.max"
+            rz-slider-options="vm.slider.options"></rzslider>
+        </md-content>
+    </md-sidenav>
 </div>
