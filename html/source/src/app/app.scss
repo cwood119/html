@@ -41,9 +41,8 @@ md-toolbar.md-light-blue-white-theme:not(.md-menu-toolbar) md-icon {color:rgb(25
 
 // Range Slider
 .rzslider .rz-pointer {outline:0;background-color: #03A9F4 !important;cursor:-webkit-grab !important;}
-.rzslider .rz-pointer:active{cursor:-webkit-grabbing}
+.rzslider .rz-pointer:active{cursor:-webkit-grabbing !important}
 .rzslider .rz-pointer:after {cursor:-webkit-grab;border-color: #03A9F4;background: #03A9F4 !important;}
-
 
 // Symbol Cards
 .symbol-cards-include{margin: 8px;text-align: center;}
@@ -99,6 +98,8 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .filter-group md-select {margin-top:0;display: inline-block;padding: 0px 5px 0px 5px;}
 .filter-group label {color:rgba(0,0,0,0.38);}
 md-icon.filter-long-up-arrow {vertical-align: baseline;text-align: right;padding-right: 2px;}
+
+.filterToggles {height:inherit;float:right;margin:0;}
 
 // Sorts
 .sort-text-center {text-align:center;}

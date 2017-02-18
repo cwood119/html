@@ -11,8 +11,10 @@
         ////////////////
 
         function filterFilter(input, start) {
-            start = +start;
-            return input.slice(start);
+            if (input && input.length > 0) {
+                start = +start;
+                return input.slice(start);
+            }
         }
     }
 

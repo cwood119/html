@@ -19,6 +19,8 @@
         vm.layout = 'grid';
         vm.limitOptions = [6,12,24];
         vm.pageSize = 12;
+        vm.priceDisabled = true;
+        vm.priceToggle = false;
         vm.symbols=[];
         vm.openSidebar = function(id) {$mdSidenav(id).toggle();vm.refreshSlider();};
 
@@ -28,7 +30,13 @@
             max: 20,
             options: {
                 floor: 0,
-                ceil: 20
+                ceil: 20,
+                ticksArray: [0, 5, 10, 15, 20],
+                translate: function(value) {return '$' + value;},
+                onEnd: function () {
+                if (vm.slider.min != 0 || vm.slider.max != 20) {vm.priceToggle=true;vm.priceDisabled=false;}
+                else {vm.priceToggle=false;vm.priceDisabled=true;}
+                }
             }
         };
 
@@ -61,6 +69,13 @@
                 $scope.$broadcast('rzSliderForceRender');
             });
         };
+        vm.priceFilterCheck = function (state) {
+            if (state == false) {
+              vm.slider.min = 0;
+              vm.slider.max = 20;
+              vm.priceDisabled=true;
+            }
+        }
 
         // Filter
         vm.filterFn = function()

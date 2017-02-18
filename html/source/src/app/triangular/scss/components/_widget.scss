@@ -79,7 +79,7 @@
     }
   }
   .chart-container {
-    flex: 1 1;
+    flex: 1;
     canvas {
       height: auto !important;
     }
@@ -99,6 +99,11 @@
       @include fadeOut();
     }
   }
+}
+
+// Ie fix for widgets
+.os-windows .widget.layout-column .widget-content {
+  display: block;
 }
 
 .widget[background] {

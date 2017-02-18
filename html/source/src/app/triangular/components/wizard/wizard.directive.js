@@ -25,8 +25,7 @@
         var vm = this;
 
         var forms = [];
-        var totalErrors = 0;
-        var fixedErrors = 0;
+        var totalRequiredFields = 0;
 
         vm.currentStep = 0;
         vm.getForm = getForm;
@@ -78,31 +77,37 @@
         }
 
         function updateProgress() {
-            var errors = calculateErrors();
-            fixedErrors = totalErrors - errors;
+            var filledRequiredFields = calculateFilledFields();
 
             // calculate percentage process for completing the wizard
-            vm.progress = Math.floor((fixedErrors / totalErrors) * 100);
+            vm.progress = Math.floor((filledRequiredFields / totalRequiredFields) * 100);
         }
 
-        function calculateErrors() {
-            var errorCount = 0;
+        function calculateFilledFields() {
+            var filledValidFields = 0;
             for (var form = forms.length - 1; form >= 0; form--) {
-                if(angular.isDefined(forms[form].$error)) {
-                    for(var error in forms[form].$error) {
-                        errorCount += forms[form].$error[error].length;
+                angular.forEach(forms[form], function(field) {
+                    if(angular.isObject(field) && field.hasOwnProperty('$modelValue') && field.$valid === true){
+                        filledValidFields = filledValidFields + 1;
                     }
-                }
+                });
             }
-            return errorCount;
+            return filledValidFields;
         }
 
         // init
 
         // wait until this tri wizard is ready (all forms registered)
-        // then calculate the total errors
+        // then calculate the total form fields
         $timeout(function() {
-            totalErrors = calculateErrors();
+            for (var form = forms.length - 1; form >= 0; form--) {
+                angular.forEach(forms[form], function(field) {
+                    if(angular.isObject(field) && field.hasOwnProperty('$modelValue')){
+                        totalRequiredFields = totalRequiredFields + 1;
+                    }
+                });
+            }
+            updateProgress();
         });
     }
 })();

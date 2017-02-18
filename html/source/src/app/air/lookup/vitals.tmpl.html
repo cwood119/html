@@ -1,69 +1,60 @@
-<h3 flex><span translate>{{vm.symbol}} Vitals</span></h3>
-<div class="lookup-vitals-table-container">
-    <table>
-        <tr>
-            <td class="vitals-line-item">Open</td>
-            <td>
-                <span ng-show="{{vm.quotes.open == 0}}">-</span>
-                <span ng-hide="{{vm.quotes.open == 0}}">{{vm.quotes.open | number:2}}</span>
-                <span class="vitals-line-item-responsive">Open</span>
-            </td>
-        </tr>
-        <tr>
-            <td class="vitals-line-item">Day Range</td>
-            <td>
-                <span ng-show="{{vm.quotes.low == 0}} || {{vm.quotes.high == 0}}">-</span>
-                <span ng-hide="{{vm.quotes.low == 0}} || {{vm.quotes.high == 0}}">{{vm.quotes.low | number:2}} - {{vm.quotes.high | number:2}}</span>
-                <span class="vitals-line-item-responsive">Day Range</span>
-            </td>
-        </tr>
-        <tr>
-            <td class="vitals-line-item">Volume</td>
-            <td>
-                <span ng-show="{{vm.quotes.volume == 0}}">-</span>
-                <span ng-hide="{{vm.quotes.volume == 0}}">{{vm.quotes.volume | number:0}}</span>
-                <span class="vitals-line-item-responsive">Volume</span>
-            </td>
-        </tr>
-        <tr>
-            <td class="vitals-line-item">Avg Vol (3mo)</td>
-            <td>
-                <span ng-show="{{vm.quotes.avgVol == 0}}">-</span>
-                <span ng-hide="{{vm.quotes.avgVol == 0}}">{{vm.quotes.average_volume | number:0}}</span>
-                <span class="vitals-line-item-responsive">Avg Vol</span>
-            </td>
-        </tr>
-        <tr>
-            <td class="vitals-line-item">Shares Short</td>
-            <td>
-                <span ng-show="{{vm.quotes.sharesShort == 0}}">-</span>
-                <span ng-hide="{{vm.quotes.sharesShort == 0}}">{{vm.quotes.sharesShort | number:0}}</span>
-                <span class="vitals-line-item-responsive">Shares Short</span>
-            </td>
-        </tr>
-        <tr>
-            <td class="vitals-line-item">Short Percent</td>
-            <td>
-                <span ng-show="{{vm.quotes.shortPercent == 0}}">-</span>
-                <span ng-hide="{{vm.quotes.shortPercent == 0}}">{{vm.quotes.shortPercent | number:2}}</span>
-                <span class="vitals-line-item-responsive">Short Percent</span>
-            </td>
-        </tr>
-        <tr>
-            <td class="vitals-line-item">Market Cap</td>
-            <td>
-                <span ng-show="{{vm.quotes.marketCap == 0}}">-</span>
-                <span ng-hide="{{vm.quotes.marketCap == 0}}">{{vm.quotes.marketCap | number:0}}</span>
-                <span class="vitals-line-item-responsive">Market Cap</span>
-            </td>
-        </tr>
-        <tr>
-            <td class="vitals-line-item">Float</td>
-            <td>
-                <span ng-show="{{vm.quotes.float == 0}}">-</span>
-                <span ng-hide="{{vm.quotes.float == 0}}">{{vm.quotes.float | number:0}}</span>
-                <span class="vitals-line-item-responsive">Float</span>
-            </td>
-        </tr>
+<md-table-container>
+    <table md-table class="md-primary md-data-table symbol-table">
+        <thead md-head>
+            <tr md-row>
+                <th md-column>Symbol</th>
+                <th md-column>Price</th>
+                <th md-column>Change</th>
+                <th md-column>Open</th>
+                <th md-column>High</th>
+                <th md-column>Low</th>
+                <th md-column>Volume</th>
+            </tr>
+        </thead>
+        <tbody md-body>
+            <tr md-row>
+                <td md-cell>{{vm.quotes.symbol}}</td>
+                <td md-cell>{{vm.quotes.last | number:2}}</td>
+                <td md-cell ng-class="{'green': vm.quotes.change > 0,'red': vm.quotes.change < 0}">
+                    {{vm.quotes.change | number:2}} ({{vm.quotes.change_percent | number:2}}%)
+                </td>
+                <td md-cell ng-show="{{vm.quotes.open == 0}}">-</span>
+                <td md-cell ng-hide="{{vm.quotes.open == 0}}">{{vm.quotes.open | number:2}}</span>
+                <td md-cell ng-show="{{vm.quotes.high == 0}}">-</span>
+                <td md-cell ng-hide="{{vm.quotes.high == 0}}">{{vm.quotes.high | number:2}}</span>
+                <td md-cell ng-show="{{vm.quotes.low == 0}}">-</span>
+                <td md-cell ng-hide="{{vm.quotes.low == 0}}">{{vm.quotes.low | number:2}}</span>
+                <td md-cell ng-show="{{vm.quotes.volume == 0}}">-</span>
+                <td md-cell ng-hide="{{vm.quotes.volume == 0}}">{{vm.quotes.volume | number:0}}</span>
+            </tr>
+        </tbody>
+        <thead md-head>
+            <tr md-row>
+                <th md-column></th>
+                <th md-column>Mkt Cap</th>
+                <th md-column>Shares</th>
+                <th md-column></th>
+                <th md-column></th>
+                <th md-column></th>
+                <th md-column>Avg Vol</th>
+            </tr>
+        </thead>
+        <tbody md-body>
+            <tr md-row>
+                <td md-cell></td>
+                <td md-cell>{{vm.quotes.last | number:2}}</td>
+                <td md-cell ng-class="{'green': vm.quotes.change > 0,'red': vm.quotes.change < 0}">
+                    {{vm.quotes.change | number:2}} ({{vm.quotes.change_percent | number:2}}%)
+                </td>
+                <td md-cell ng-show="{{vm.quotes.open == 0}}">-</span>
+                <td md-cell ng-hide="{{vm.quotes.open == 0}}">{{vm.quotes.open | number:2}}</span>
+                <td md-cell ng-show="{{vm.quotes.high == 0}}">-</span>
+                <td md-cell ng-hide="{{vm.quotes.high == 0}}">{{vm.quotes.high | number:2}}</span>
+                <td md-cell ng-show="{{vm.quotes.low == 0}}">-</span>
+                <td md-cell ng-hide="{{vm.quotes.low == 0}}">{{vm.quotes.low | number:2}}</span>
+                <td md-cell ng-show="{{vm.quotes.average_volume == 0}}">-</span>
+                <td md-cell ng-hide="{{vm.quotes.average_volume == 0}}">{{vm.quotes.average_volume | number:0}}</span>
+            </tr>
+        </tbody>
     </table>
-</div>
+</md-table-container>
