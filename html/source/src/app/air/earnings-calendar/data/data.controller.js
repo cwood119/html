@@ -15,30 +15,31 @@
     /* @ngInject */
     function ecalController($http, $mdDialog, $location, $document, $timeout, $interval, $window, $mdSidenav, $scope, ecalService) {
         var vm = this;
+        // Page Variables
+        vm.symbols=[];
+        vm.openSidebar = function(id) {$mdSidenav(id).toggle();vm.refreshSlider();};
+        // Pagination Variables
         vm.curPage = 1;
         vm.layout = 'grid';
         vm.limitOptions = [6,12,24];
         vm.pageSize = 12;
+
+        // Price Filter Variables
         vm.priceDisabled = true;
         vm.priceToggle = false;
-        vm.symbols=[];
-        vm.openSidebar = function(id) {$mdSidenav(id).toggle();vm.refreshSlider();};
 
-        // slider
-        vm.slider = {
-            min: 0,
-            max: 20,
-            options: {
-                floor: 0,
-                ceil: 20,
-                ticksArray: [0, 5, 10, 15, 20],
-                translate: function(value) {return '$' + value;},
-                onEnd: function () {
-                if (vm.slider.min != 0 || vm.slider.max != 20) {vm.priceToggle=true;vm.priceDisabled=false;}
-                else {vm.priceToggle=false;vm.priceDisabled=true;}
-                }
-            }
-        };
+        // Volume Filter Viarables
+        vm.volumeIndicator = 'Any Vol';
+        vm.volumeLow = 500000;
+        vm.volumeMid = 1000000;
+        vm.volumeHigh = 5000000;
+        vm.volumeDisabled = true;
+        vm.volumeLowDisabled = false;
+        vm.volumeMidDisabled = false;
+        vm.volumeHighDisabled = false;
+        vm.volumeLowToggle = false;
+        vm.volumeMidToggle = false;
+        vm.volumeHighToggle = false;
 
         activate();
 
@@ -63,20 +64,37 @@
                 });
         }
 
+
+        // Price Filter
+        // slider
+        vm.slider = {
+            min: 0,
+            max: 20,
+            options: {
+                floor: 0,
+                ceil: 20,
+                ticksArray: [0, 5, 10, 15, 20],
+                translate: function(value) {return '$' + value;},
+                onEnd: function () {
+                    if (vm.slider.min != 0 || vm.slider.max != 20) {vm.priceToggle=true;vm.priceDisabled=false;}
+                    else {vm.priceToggle=false;vm.priceDisabled=true;}
+                }
+            }
+        };
         // Slider starts out hidden, this rebuilds it when the button is clicked
         vm.refreshSlider = function () {
             $timeout(function () {
                 $scope.$broadcast('rzSliderForceRender');
             });
         };
+        // Master Price Toggle
         vm.priceFilterCheck = function (state) {
             if (state == false) {
-              vm.slider.min = 0;
-              vm.slider.max = 20;
-              vm.priceDisabled=true;
+                vm.slider.min = 0;
+                vm.slider.max = 20;
+                vm.priceDisabled=true;
             }
-        }
-
+        };
         // Filter
         vm.filterFn = function()
         {
@@ -84,6 +102,39 @@
                 return item['price'] >= vm.slider.min && item['price'] <= vm.slider.max;
             };
         };
+
+        // Volume Filters
+        vm.volume = function()
+        {
+            if (vm.volumeLowToggle == true || vm.volumeMidToggle == true || vm.volumeHighToggle == true ) {
+                vm.volumeDisabled=false;
+                vm.volumeToggle=true;
+                return function(item){
+                    if (vm.volumeLowToggle == true){return item.volume >= vm.volumeLow;}
+                    if (vm.volumeMidToggle == true){return item.volume >= vm.volumeMid;}
+                    if (vm.volumeHighToggle == true){return item.volume >= vm.volumeHigh;}
+                };
+            }
+            else {vm.volumeDisabled=true;vm.volumeToggle=false;}
+        };
+        vm.volumeFilter = function() {  // On-Change
+            if (vm.volumeLowToggle == true){vm.volumeMidToggle = true;  vm.volumeHighToggle = true; vm.volumeIndicator = '500K';}
+            if (vm.volumeMidToggle == true && vm.volumeLowToggle == false){vm.volumeHighToggle = true; vm.volumeIndicator = '1M';}
+            if (vm.volumeHighToggle == true && vm.volumeMidToggle == false){ vm.volumeIndicator = '5M';}
+            if (vm.volume != 0){ return true;}
+        };
+        // Master Volume Toggle
+
+        vm.volumeFilterCheck = function (state) {
+            if (state == false) {
+                vm.volumeLowToggle=false;
+                vm.volumeMidToggle=false;
+                vm.volumeHighToggle=false;
+                vm.volumeDisabled=true;
+                vm.volumeIndicator='Any Vol';
+            }
+        };
+
 
         // Vitals Modal
         vm.openVitals = function (e, symbol) {

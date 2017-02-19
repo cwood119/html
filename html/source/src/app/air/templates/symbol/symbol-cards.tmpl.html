@@ -1,5 +1,5 @@
 
-<tri-widget flex flex-xs="100" ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn()) |
+<tri-widget flex flex-xs="100" ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter: vm.volume()) |
 orderBy: '-percentChange' | orderBy:vm.sortPrice | orderBy:vm.sortPercentChange | orderBy:vm.sortVolume |
 orderBy:vm.sortAvgVol | orderBy:vm.sortMktCap | orderBy:vm.sortFloat | orderBy:vm.sortShort | orderBy:vm.sortSymbol |
 limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize" content-padding class="symbol-card">

@@ -56,15 +56,34 @@
         <md-toolbar class="md-theme-light">
             <h1 class="md-toolbar-tools">Filter</h1>
         </md-toolbar>
-        <md-content class="md-padding">
-            <p>
+        <md-content>
+            <!-- Price Filter -->
+            <md-subheader class="md-primary">
                 Price: ${{vm.slider.min}} - ${{vm.slider.max}}
                 <md-switch class="md-accent filterToggles" ng-disabled="vm.priceDisabled" ng-model="vm.priceToggle" aria-label="Price Toggle" ng-change="vm.priceFilterCheck(vm.priceToggle)"></md-switch>
-            </p>
-        <rzslider
-            rz-slider-model="vm.slider.min"
-            rz-slider-high="vm.slider.max"
-            rz-slider-options="vm.slider.options"></rzslider>
+            </md-subheader>
+            <div class="md-padding">
+                <rzslider
+                    rz-slider-model="vm.slider.min"
+                    rz-slider-high="vm.slider.max"
+                    rz-slider-options="vm.slider.options">
+                </rzslider>
+            </div>
+            <!-- Volume Filter -->
+            <md-subheader class="md-primary">
+                Volume: <md-icon class=" material-icons zmdi zmdi-long-arrow-up volume-filter-long-up-arrow" aria-hidden="true" ng-hide="vm.volumeIndicator == 'Any Vol'"></md-icon> {{vm.volumeIndicator}}
+                <md-switch class="md-accent filterToggles" ng-disabled="vm.volumeDisabled" ng-model="vm.volumeToggle" aria-label="Volume Toggle" ng-change="vm.volumeFilterCheck(vm.volumeToggle)"></md-switch>
+            </md-subheader>
+            <div class="md-padding">
+                <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 500K
+                <md-switch class="md-accent filterToggles" aria-label="Toggle volume over 500K" ng-disabled="vm.volumeLowDisabled" ng-model="vm.volumeLowToggle" ng-change="vm.volumeFilter(vm.volumeLowToggle)"></md-switch> <br />
+
+                <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 1M
+                <md-switch class="md-accent filterToggles" aria-label="Toggle volume over 1M" ng-disabled="vm.volumeMidDisabled" ng-model="vm.volumeMidToggle" ng-change="vm.volumeFilter(vm.volumeMidToggle)"></md-switch><br />
+
+                <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 5M
+                <md-switch class="md-accent filterToggles" aria-label="Toggle volume over 5M" ng-disabled="vm.volumeHighDisabled" ng-model="vm.volumeHighToggle" ng-change="vm.volumeFilter(vm.volumeHighToggle)"></md-switch><br />
+            </div>
         </md-content>
     </md-sidenav>
 </div>

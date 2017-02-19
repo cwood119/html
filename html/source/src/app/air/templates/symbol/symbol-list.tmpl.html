@@ -16,7 +16,10 @@
             </tr>
         </thead>
         <tbody md-body>
-            <tr md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short | filter:vm.time) | orderBy: '-percentChange' | orderBy:vm.sortPrice | orderBy:vm.sortPercentChange | orderBy:vm.sortVolume | orderBy:vm.sortAvgVol | orderBy:vm.sortMktCap | orderBy:vm.sortFloat | orderBy:vm.sortShort | orderBy:vm.sortSymbol  | limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize | filter:vm.price | filter:vm.volume | filter:vm.avgVol | filter:vm.mktCap | filter:vm.float | filter:vm.short | filter:vm.time">
+            <tr md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter:vm.volume()) |
+            orderBy: '-percentChange' | orderBy:vm.sortPrice | orderBy:vm.sortPercentChange | orderBy:vm.sortVolume |
+            orderBy:vm.sortAvgVol | orderBy:vm.sortMktCap | orderBy:vm.sortFloat | orderBy:vm.sortShort | orderBy:vm.sortSymbol  |
+            limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize">
                 <td md-cell>{{symbol.symbol}}</td>
                 <td md-cell>{{symbol.price | number:2}}</td>
                 <td md-cell ng-show="vm.currentPath === '/alerts'">{{symbol.triggerPrice}}</td>
