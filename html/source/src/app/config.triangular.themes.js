@@ -61,9 +61,13 @@
 
         // CYAN CLOUD SKIN
         triThemingProvider.theme('light-blue')
-        .primaryPalette('triCyan')
-        .accentPalette('deep-orange')
-        .warnPalette('red');
+        .primaryPalette('white')
+        .accentPalette('deep-orange', {
+            'default':'500'
+        })
+        .warnPalette('red', {
+            'default':'500'
+        });
 
         triThemingProvider.theme('light-blue-white')
         .primaryPalette('white')

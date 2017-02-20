@@ -41,9 +41,23 @@
         vm.volumeMidToggle = false;
         vm.volumeHighToggle = false;
 
+        // Avg Vol Filter Viarables
+        vm.avgVolIndicator = 'Any Vol';
+        vm.avgVolLow = 500000;
+        vm.avgVolMid = 1000000;
+        vm.avgVolHigh = 5000000;
+        vm.avgVolDisabled = true;
+        vm.avgVolLowDisabled = false;
+        vm.avgVolMidDisabled = false;
+        vm.avgVolHighDisabled = false;
+        vm.avgVolLowToggle = false;
+        vm.avgVolMidToggle = false;
+        vm.avgVolHighToggle = false;
+
+
         activate();
 
-        /////
+        //////////
 
         function activate() {
             return getEcalData().then(function(data) {
@@ -66,7 +80,13 @@
 
 
         // Price Filter
-        // slider
+        vm.filterFn = function()
+        {
+            return function(item){
+                return item['price'] >= vm.slider.min && item['price'] <= vm.slider.max;
+            };
+        };
+        // Slider
         vm.slider = {
             min: 0,
             max: 20,
@@ -75,7 +95,7 @@
                 ceil: 20,
                 ticksArray: [0, 5, 10, 15, 20],
                 translate: function(value) {return '$' + value;},
-                onEnd: function () {
+                onChange: function () {
                     if (vm.slider.min != 0 || vm.slider.max != 20) {vm.priceToggle=true;vm.priceDisabled=false;}
                     else {vm.priceToggle=false;vm.priceDisabled=true;}
                 }
@@ -95,13 +115,7 @@
                 vm.priceDisabled=true;
             }
         };
-        // Filter
-        vm.filterFn = function()
-        {
-            return function(item){
-                return item['price'] >= vm.slider.min && item['price'] <= vm.slider.max;
-            };
-        };
+
 
         // Volume Filters
         vm.volume = function()
@@ -117,14 +131,14 @@
             }
             else {vm.volumeDisabled=true;vm.volumeToggle=false;}
         };
-        vm.volumeFilter = function() {  // On-Change
+        // On-Change
+        vm.volumeFilter = function() {
             if (vm.volumeLowToggle == true){vm.volumeMidToggle = true;  vm.volumeHighToggle = true; vm.volumeIndicator = '500K';}
             if (vm.volumeMidToggle == true && vm.volumeLowToggle == false){vm.volumeHighToggle = true; vm.volumeIndicator = '1M';}
             if (vm.volumeHighToggle == true && vm.volumeMidToggle == false){ vm.volumeIndicator = '5M';}
             if (vm.volume != 0){ return true;}
         };
         // Master Volume Toggle
-
         vm.volumeFilterCheck = function (state) {
             if (state == false) {
                 vm.volumeLowToggle=false;
@@ -135,6 +149,37 @@
             }
         };
 
+        // avgVol Filters
+        vm.avgVol = function()
+        {
+            if (vm.avgVolLowToggle == true || vm.avgVolMidToggle == true || vm.avgVolHighToggle == true ) {
+                vm.avgVolDisabled=false;
+                vm.avgVolToggle=true;
+                return function(item){
+                    if (vm.avgVolLowToggle == true){return item.avgVol >= vm.avgVolLow;}
+                    if (vm.avgVolMidToggle == true){return item.avgVol >= vm.avgVolMid;}
+                    if (vm.avgVolHighToggle == true){return item.avgVol >= vm.avgVolHigh;}
+                };
+            }
+            else {vm.avgVolDisabled=true;vm.avgVolToggle=false;}
+        };
+        // On-Change
+        vm.avgVolFilter = function() {
+            if (vm.avgVolLowToggle == true){vm.avgVolMidToggle = true;  vm.avgVolHighToggle = true; vm.avgVolIndicator = '500K';}
+            if (vm.avgVolMidToggle == true && vm.avgVolLowToggle == false){vm.avgVolHighToggle = true; vm.avgVolIndicator = '1M';}
+            if (vm.avgVolHighToggle == true && vm.avgVolMidToggle == false){ vm.avgVolIndicator = '5M';}
+            if (vm.avgVol != 0){ return true;}
+        };
+        // Master avgVol Toggle
+        vm.avgVolFilterCheck = function (state) {
+            if (state == false) {
+                vm.avgVolLowToggle=false;
+                vm.avgVolMidToggle=false;
+                vm.avgVolHighToggle=false;
+                vm.avgVolDisabled=true;
+                vm.avgVolIndicator='Any Vol';
+            }
+        };
 
         // Vitals Modal
         vm.openVitals = function (e, symbol) {

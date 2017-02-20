@@ -14,7 +14,7 @@
         // next add the menu item that points to the above state.
         triMenuProvider.addMenu({
             name: 'Watchlist',
-            icon: 'fa fa-list-alt',
+            icon: 'zmdi zmdi-bookmark',
             type: 'link',
             state: 'triangular.watchlist',
             priority: 1.1

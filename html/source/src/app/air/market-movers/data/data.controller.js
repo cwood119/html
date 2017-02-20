@@ -5,7 +5,7 @@
         .controller('moversController', moversController);
 
     // Pagination
-    angular.module('app.air.market-movers').filter('pagination', function(){ 
+    angular.module('app.air.market-movers').filter('pagination', function(){
         return function(input, start) {
             if (!input || !input.length) { return; }
             start = +start;
@@ -37,7 +37,7 @@
                 var newModified = new Date(modified);
                 vm.updated = newModified.toLocaleString();
             });
-        
+
         // Check for updated data and pop a toast
         var showToast = function() {
             var toast = $mdToast.simple()
@@ -54,7 +54,7 @@
                 }
             });
         };
-        var updateData =  function() { 
+        var updateData =  function() {
             $http.get('app/air/market-movers/data/data.json?ts='+new Date().getTime())
                 .success(function(data, status, headers){
                     var modified = headers()['last-modified'];
@@ -65,7 +65,7 @@
                 vm.showToast();
             }
         };
-        $interval(updateData, 60000); 
+        $interval(updateData, 60000);
 
         // Vitals Modal
         vm.openVitals = function (e, symbol) {
@@ -80,7 +80,7 @@
                     };
                 },
                 controllerAs: 'modal',
-                templateUrl: 'app/air/templates/dialogs/vitals-dialog.tmpl.html',            
+                templateUrl: 'app/air/templates/dialogs/vitals-dialog.tmpl.html',
                 parent: angular.element($document.body),
                 targetEvent: e
             });
@@ -99,28 +99,14 @@
                     };
                 },
                 controllerAs: 'modal',
-                templateUrl: 'app/air/templates/dialogs/headlines-dialog.tmpl.html',            
+                templateUrl: 'app/air/templates/dialogs/headlines-dialog.tmpl.html',
                 parent: angular.element($document.body),
                 targetEvent: e
             });
         };
 
-        // Filters Modal
-        vm.openFilters = function (e) {
-            $mdDialog.show({
-                clickOutsideToClose: true,
-                controller: function ($mdDialog) {
-                    vm.cancelClick = function () {
-                        $mdDialog.cancel();
-                    };
-                },
-                templateUrl: 'app/air/templates/dialogs/filters-dialog.tmpl.html',
-                parent: angular.element($document.body),
-                targetEvent: e
-            });
-        };
         // Price Filters
-        vm.priceFilterActive = false;  
+        vm.priceFilterActive = false;
         vm.price = function(entry) {
             if(vm.priceFilterActive >= 0 ) {
                 if(vm.priceFilterActive) { return (entry.price > vm.priceFilterActive) ? true: false;}
@@ -136,8 +122,8 @@
         vm.priceFilter = function() {if (vm.price != 0){ return true;}};
 
         // Volume Filters
-        vm.volumeFilterActive = false; 
-        vm.volume = function(entry) {
+        vm.volumeFilterActive = false; // toggle state
+        vm.volume = function(entry) { // this is the filter
             if(vm.volumeFilterActive >= 0 ) {
                 if(vm.volumeFilterActive) { return (entry.volume > vm.volumeFilterActive) ? true: false;}
                 return true;
@@ -149,10 +135,10 @@
                 return true;
             }
         };
-        vm.volumeFilter = function() {if (vm.volume != 0){ return true;}};
-    
+        vm.volumeFilter = function() {if (vm.volume != 0){ return true;}}; // on-change
+
         // Average Volume Filters
-        vm.avgVolFilterActive = false; 
+        vm.avgVolFilterActive = false;
         vm.avgVol = function(entry) {
             if(vm.avgVolFilterActive >= 0 ) {
                 if(vm.avgVolFilterActive) { return (entry.avgVol > vm.avgVolFilterActive) ? true: false;}
@@ -166,7 +152,7 @@
             }
         };
         vm.avgVolFilter = function() {if (vm.avgVol != 0){ return true;}};
-    
+
         // Market Cap Filters
         vm.mktCapFilterActive = false;
         vm.mktCap = function(entry) {
@@ -208,7 +194,7 @@
             }
         };
         vm.shortFilter = function() {if (vm.short != 0){ return true;}};
-    
+
         // Announcement Time Filters
         vm.timeFilterActive = false;
         vm.time = function(entry) {

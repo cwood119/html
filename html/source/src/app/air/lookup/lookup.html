@@ -6,7 +6,7 @@
                 <input type="text" ng-model="vm.symbol" md-maxlength="5" ng-change="vm.symbol=vm.symbol.toUpperCase();">
             </md-input-container>
             <div layout="row" layout-align="end center">
-                <md-button type="submit" class="md-primary" ng-disabled="!vm.symbolLookup.$valid">Lookup</md-button>
+                <md-button type="submit" class="md-primary blue" ng-disabled="!vm.symbolLookup.$valid">Lookup</md-button>
                 <md-button ng-click="vm.reset();">Clear</md-button>
             </div>
         </form>
@@ -15,7 +15,7 @@
         <md-card class="lookup-chart-card" ng-show="vm.toggle == true"><iframe class="lookup-chart" ng-src="{{vm.chart}}"></iframe></md-card>
     </div>
     <div ng-show="vm.toggle == true" ng-include="'app/air/lookup/resources.tmpl.html'"></div>
-    <div layout="row" layour-xs="column" ng-show="vm.toggle == true"> 
+    <div layout="row" layour-xs="column" ng-show="vm.toggle == true">
         <md-card flex="100" flex-xs="100" ng-include="'app/air/lookup/vitals.tmpl.html'"></md-card>
     </div>
 </div>

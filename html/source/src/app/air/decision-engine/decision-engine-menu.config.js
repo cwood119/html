@@ -25,7 +25,7 @@
         // next add the menu item that points to the above state.
         triMenuProvider.addMenu({
             name: 'Decision Engine',
-            icon: 'zmdi zmdi-assignment-check',
+            icon: 'zmdi zmdi-compass',
             priority: 1,
             type: 'link',
             state: 'triangular.dashboard'

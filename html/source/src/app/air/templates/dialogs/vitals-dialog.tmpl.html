@@ -1,11 +1,11 @@
 <md-dialog class="order-dialog mobile-fullwidth-dialog" flex="60" flex-xs="100">
-    <md-toolbar>
+    <md-toolbar class="dialog-toolbar white blue-background">
         <div class="md-toolbar-tools">
             <h2 flex >
                 <span translate>{{modal.symbol.symbol}} Vitals</span>
             </h2>
             <md-button class="md-icon-button" ng-controller="dialogController as vm" ng-click="vm.cancelClick()" aria-label="cancel">
-                <md-icon md-font-icon="zmdi zmdi-close"></md-icon>
+                <md-icon class="white" md-font-icon="zmdi zmdi-close"></md-icon>
             </md-button>
         </div>
     </md-toolbar>
@@ -48,7 +48,7 @@
                    </td>
                 </tr>
             </table>
-        </div> 
+        </div>
         <div class="vitals-table-container">
             <table style="margin-left:5%;">
                 <tr>
@@ -84,6 +84,6 @@
                    </td>
                 </tr>
             </table>
-       </div> 
+       </div>
     </md-dialog-content>
 </md-dialog>

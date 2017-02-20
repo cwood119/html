@@ -1,5 +1,5 @@
 
-<tri-widget flex flex-xs="100" ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter: vm.volume()) |
+<tri-widget flex flex-xs="100" ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter: vm.volume() | filter: vm.avgVol()) |
 orderBy: '-percentChange' | orderBy:vm.sortPrice | orderBy:vm.sortPercentChange | orderBy:vm.sortVolume |
 orderBy:vm.sortAvgVol | orderBy:vm.sortMktCap | orderBy:vm.sortFloat | orderBy:vm.sortShort | orderBy:vm.sortSymbol |
 limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize" content-padding class="symbol-card">
@@ -38,22 +38,22 @@ limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize" content-padding class="sy
             <md-menu-content width="3">
                 <md-menu-item class="external-links-menu-item">
                     <a ng-href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={{symbol.symbol}}&type=&dateb=&owner=include&count=100" target="_blank">
-                        <md-button class="md-flat external-links-button" ng-class="['md-primary','md-default-hue']" aria-label="SEC Filings">SEC Filings</md-button>
+                        <md-button class="md-flat external-links-button blue" ng-class="['md-primary','md-default-hue']" aria-label="SEC Filings">SEC Filings</md-button>
                     </a>
                 </md-menu-item>
                 <md-menu-item class="external-links-menu-item">
                     <a ng-href="https://www.google.com/finance?q={{symbol.symbol}}&fstype=ii" target="_blank">
-                        <md-button class="md-flat external-links-button" ng-class="['md-primary','md-default-hue']" aria-label="Financial Statements">Statements</md-button>
+                        <md-button class="md-flat external-links-button blue" ng-class="['md-primary','md-default-hue']" aria-label="Financial Statements">Statements</md-button>
                     </a>
                 </md-menu-item>
                 <md-menu-item class="external-links-menu-item">
                     <a ng-href="http://finance.yahoo.com/q/ks?s={{symbol.symbol}}+Key+Statistics" target="_blank">
-                        <md-button class="md-flat external-links-button" ng-class="['md-primary','md-default-hue']" aria-label="Yahoo Finance Statistics">Yahoo! Stats</md-button>
+                        <md-button class="md-flat external-links-button blue" ng-class="['md-primary','md-default-hue']" aria-label="Yahoo Finance Statistics">Yahoo! Stats</md-button>
                     </a>
                 </md-menu-item>
                 <md-menu-item class="external-links-menu-item">
                     <a ng-href="https://www.quandl.com/data/SI/{{symbol.symbol}}_SI" target="_blank">
-                        <md-button class="md-flat external-links-button" ng-class="['md-primary','md-default-hue']" aria-label="Short Interest">Short Interest</md-button>
+                        <md-button class="md-flat external-links-button blue" ng-class="['md-primary','md-default-hue']" aria-label="Short Interest">Short Interest</md-button>
                     </a>
                 </md-menu-item>
             </md-menu-content>
