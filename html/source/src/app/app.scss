@@ -3,10 +3,7 @@ $sidenav-desktop-width: 300px;
 
 // import angular material scss
 @import "angular-material/angular-material.scss";
-body {
-  color: #616161;
-}
-::-webkit-scrollbar {display:none;}
+
 // set template font family
 button, select, html, textarea, input {
   font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif;
@@ -20,40 +17,51 @@ button, select, html, textarea, input {
 
 // Variables
 $blue: #03A9F4;
+$dark-gray: #424242;
+$medium-gray: #616161;
+$light-gray: #9E9E9E;
+$lighter-gray: #EEEEEE;
 
 // Global App Styles
+body {color: $medium-gray;}
+::-webkit-scrollbar {display:none;}
 a{color:$blue !important;}
 .pointer {cursor:pointer;}
 .green {color:#4CAF50 !important;}
 .red {color:#F44336 !important;}
 .white {color:white !important;}
 .blue{color:$blue !important;}
+.light-gray{color:$light-gray !important;}
+.medium-gray{color:$medium-gray !important;}
+.dark-gray{color:$dark-gray !important;}
 .blue-background{background-color: $blue !important;}
+.float-right{float:right;}
+.float-left{float:left;}
+.no-padding{padding: 0 !important;}
 .layout-margin.ng-scope{text-align:center;}
-
 
 ////////// Elements
 
 // Toolbars
-md-toolbar.md-light-blue-theme{color:#616161}
-.md-subheader.md-light-blue-theme.md-primary {color: $blue}
+md-toolbar.md-light-blue-theme{color:$medium-gray;z-index: 0;}
+.md-subheader.md-light-blue-theme.md-primary {color: $dark-gray; background-color:white;border-top:1px solid #e1e1e1;padding-top:5px;}
 
 // Top Toolbar
 .side-menu-badge {color:white !important;}
 .side-menu-icon[md-font-icon], .menu-toggle-icon[md-font-icon] {font-size: 22px !important;margin-right: 25px;margin-left: 5px;text-align:center;}
-md-toolbar.md-light-blue-white-theme:not(.md-menu-toolbar) {background-color: $blue;color: white;}
-md-toolbar.md-light-blue-white-theme:not(.md-menu-toolbar) md-icon {color:white;fill: white;}
+md-toolbar.md-light-blue-white-theme:not(.md-menu-toolbar) {color: $medium-gray;}
+md-toolbar.md-light-blue-white-theme:not(.md-menu-toolbar) md-icon {color:$medium-gray;fill: $medium-gray;}
 
 // Left Side Toolbar
-md-toolbar.sidebar-left-toolbar.ng-scope._md.md-light-blue-theme._md-toolbar-transitions {color: #616161;}
+md-toolbar.sidebar-left-toolbar.ng-scope._md.md-light-blue-theme._md-toolbar-transitions {color: $medium-gray;}
 
 // Side Menus
-.inner-sidenav{top:1px;}
-.inner-sidenav > md-toolbar > h1 {color: #616161;}
+.inner-sidenav > md-toolbar > h1 {color: $dark-gray;}
+md-sidenav, md-backdrop {position: fixed;}
 
 // Left Side Menu
 button.md-primary.md-raised.side-menu-link.md-button.ng-scope.md-light-blue-theme.md-ink-ripple.md-hue-1{color:$blue;}
-.md-button.md-light-blue-theme.md-primary.md-raised:not([disabled]) md-icon, .md-button.md-light-blue-theme.md-primary.md-fab:not([disabled]) md-icon{color:#616161;}
+.md-button.md-light-blue-theme.md-primary.md-raised:not([disabled]) md-icon, .md-button.md-light-blue-theme.md-primary.md-fab:not([disabled]) md-icon{color:$medium-gray;}
 .md-button.md-light-blue-theme.md-hue-1.md-primary.md-raised:not([disabled]) md-icon, .md-button.md-light-blue-theme.md-hue-1.md-primary.md-fab:not([disabled]) md-icon{color:$blue;}
 .md-button.md-light-blue-theme.md-primary.md-raised:hover {background-color: #EEEEEE !important;}
 
@@ -65,6 +73,9 @@ md-input-container.md-light-blue-theme:not(.md-input-invalid).md-input-focused .
 //.md-button.md-light-blue-theme.md-accent.md-raised, .md-button.md-light-blue-theme.md-accent.md-fab {color:white;}
 //.md-button.md-light-blue-theme.md-primary.md-raised, .md-button.md-light-blue-theme.md-primary.md-fab{background-color:$blue;}
 
+// Checkboxes
+md-checkbox.md-light-blue-theme:not(.md-checked) .md-icon {border-color: $light-gray;}
+
 // Fabs
 .md-fab-toolbar-background{background-color:$blue !important;}
 md-fab-speed-dial.md-fab-bottom-right{position:fixed;}
@@ -75,7 +86,7 @@ md-icon.material-icons.ng-scope.md-light-blue-theme.md-font.zmdi.zmdi-view-list.
 // Tabs
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active {color:$blue;}
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper {background-color: transparent;}
-md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {color: #9E9E9E;border-bottom: 1px solid #fafafa;}
+md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {color: $light-gray;border-bottom: 1px solid #fafafa;}
 md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 
 ////////// Templates
@@ -86,7 +97,7 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .symbol-card-table {display:table;width:100%;}
 .symbol-card-row {display:table-row;}
 .symbol-card-row1 {border-bottom: 1px solid #EEEEEE;}
-.symbol-card-row1 .md-subhead {text-transform: uppercase;color: #9E9E9E;font-size: 13px;}
+.symbol-card-row1 .md-subhead {text-transform: uppercase;color: $light-gray;font-size: 13px;}
 .symbol-card-cell {display:table-cell;}
 .symbol-card-symbol-container {padding-bottom:15px;}
 .symbol-card img {max-width: 100%;min-height: 210px;max-height: 225px;}
@@ -95,31 +106,45 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .symbol-card md-tab-content, .symbol-card md-tabs-content-wrapper{height:auto;padding-top: 10px;}
 .symbol-card md-tabs:not(.md-no-tab-content):not(.md-dynamic-height){height:auto;}
 .symbol-card md-card-content.ng-scope{padding-bottom:0;}
-.external-links-menu-container{position: absolute;top: -5px;right: -15px;color: #9E9E9E;}
-.external-links-menu-container-list > button > md-icon.md-light-blue-theme{color: #9E9E9E !important;}
+.external-links-menu-container{position: absolute;top: -5px;right: -15px;color: $light-gray;}
+.external-links-menu-container-list > button > md-icon.md-light-blue-theme{color: $light-gray !important;}
 .external-links-menu-item{height: auto;min-height: auto;}
-.external-links-button{width: 100%;margin: auto;}
+.external-links-button{width: 100%;margin: auto;text-transform:none;}
 
 // Symbol Table
+.list-cell{padding-top:10px !important;padding-bottom:10px !important;}
+.list-symbol{font-size: 20px;font-weight: 400;letter-spacing: 0.005em;color: $blue;}
+.list-template-container{padding-bottom: 0;}
+.list-buttons{position: absolute;top: 13px;right: 0;}
+.list-buttons-icon {font-size: 22px !important;}
 .symbol-table {background-color:white;}
 .symbol-table-container {background-color:white;}
 .symbol-table > thead > tr > th {font-size: 15px !important;}
 .symbol-table.md-table th.md-column md-icon {height: 18px;min-height: 0px;}
-.symbol-table.md-table td.md-cell {font-size:14px;}
+.symbol-table.md-table td.md-cell {font-size:14px; color: $medium-gray;}
+.price-container {width:140px;}
+.chart-container {min-width:140px;padding:10px 25px !important;}
+
+// Symbol Table chart
+.x-value {display:none;}
+.legend-color-guide {display:none;}
+.nvtooltip {background:white; border:1px solid lightgray;}
+.nvd3 .nv-groups path.nv-line {stroke-width:2px;}
 
 // Symbol Table Pagination
 .symbol-pagination{border-top:none;}
+.symbol-card-pagination{justify-content: center;}
 md-select-menu.md-light-blue-theme md-content md-option[selected]{color:$blue !important}
 
 // List Metadata
 .last-updated {text-align: right;width: 98%;display: block;color: #545454;font-size: 10pt;margin-top: -15px;}
 .showing {padding:5px 0px 0px 0px;}
-.attributions-list-view{position: absolute;left: 0;width: 100%;padding: 25px 0px 32px 0px;}
+.attributions-list-view{position: absolute;left: 0;width: 100%;}
 .attributions{font-size: 12px; color: rgba(0, 0, 0, 0.54);text-align: center;margin-top:25px;}
 .attributions a{color: inherit !important;}
 
 // Headlines Dialog
-.headline-row1 {font-size: 13px !important; color: #9E9E9E;}
+.headline-row1 {font-size: 13px !important; color: $light-gray;}
 
 // Vitals Dialog
 .vitals-table-container {width:50%;float:left;}
@@ -127,14 +152,11 @@ md-select-menu.md-light-blue-theme md-content md-option[selected]{color:$blue !i
 .vitals-table-container tr {border-bottom:1px solid #EEEEEE; padding:10px;}
 .vitals-table-container tr:last-child {border-bottom:none;}
 .vitals-table-container tr:hover{background:#EEEEEE;}
-.vitals-table-container td {color:#616161;padding:5px 0px 5px 0px;font-size: 19px;line-height: 45px}
+.vitals-table-container td {color:$medium-gray;padding:5px 0px 5px 0px;font-size: 19px;line-height: 45px}
 .vitals-table-container td:first-child {padding-left:5px;}
-.vitals-line-item-responsive {display:none;color: #9E9E9E !important;font-size: 13px !important;line-height: .1;padding-bottom: 10px;}
+.vitals-line-item-responsive {display:none;color: $light-gray !important;font-size: 13px !important;line-height: .1;padding-bottom: 10px;}
 
-// Old Filters
-.filter-tabs{min-height: 125px !important;overflow: hidden;background: white;padding-top: 0px;}
-.filter-tabs md-tab-item.md-tab {width: 65px;padding: 12px 0px 0px 0px;flex-grow: 0;}
-.filter-tab{background-color: white !important;font-size: 13pt;padding-top:15px;}
+// Old Filters`
 .filter-group md-select {margin-top:0;display: inline-block;padding: 0px 5px 0px 5px;}
 .filter-group label {color:rgba(0,0,0,0.38);}
 
@@ -142,13 +164,13 @@ md-select-menu.md-light-blue-theme md-content md-option[selected]{color:$blue !i
 .filterToggles {height:inherit;float:right;margin:0;}
 md-icon.filter-long-up-arrow {vertical-align: baseline;text-align: right;padding-right: 2px;}
 .volume-filter-long-up-arrow {min-height: inherit;min-width: inherit;width: inherit;padding-left: 2px;color: inherit !important;height: inherit;vertical-align: baseline;text-align: right;}
-.filter-options{color:#616161;}
+.filter-options{color:$medium-gray;}
 
 // Range Slider
 .rzslider .rz-pointer {outline:0;background-color: $blue !important;cursor:-webkit-grab !important;}
 .rzslider .rz-pointer:active{cursor:-webkit-grabbing !important}
 .rzslider .rz-pointer:after {cursor:-webkit-grab;border-color: $blue;background: $blue !important;}
-.rzslider .rz-bubble {color:#616161 !important;}
+.rzslider .rz-bubble {color:$medium-gray !important;}
 // Sorts
 .sort-text-center {text-align:center;}
 .reset-menu-container {position: absolute;top: 60px;right: 20px;}
@@ -172,7 +194,7 @@ md-icon.filter-long-up-arrow {vertical-align: baseline;text-align: right;padding
 .lookup-vitals-table-container tr {border-bottom:1px solid #EEEEEE; padding:10px;}
 .lookup-vitals-table-container tr:last-child {border-bottom:none;}
 .lookup-vitals-table-container tr:hover{background:#EEEEEE;}
-.lookup-vitals-table-container td {color:#616161;padding:5px 0px 5px 0px;font-size: 19px;line-height: 45px}
+.lookup-vitals-table-container td {color:$medium-gray;padding:5px 0px 5px 0px;font-size: 19px;line-height: 45px}
 .lookup-vitals-table-container td:first-child {padding-left:5px;}
 .lookup-widget {background-size: 122px !important;background-repeat: no-repeat;background-position-y: -6px;background-position-x: 10px;text-align: right;}
 .lookup-sec{background-image: url(../../../assets/images/sec-logo.png);background-blend-mode: difference;color:rgb(136, 106, 58) !important}
@@ -209,12 +231,9 @@ md-icon.filter-long-up-arrow {vertical-align: baseline;text-align: right;padding
 }
 @media all and (max-width:830px){
     .filter-group md-select {width:45%}
-    .filter-tabs {min-height: 235px !important;}
 }
 @media all and (max-width:800px){ /* Nexus 10 */
-    .symbol-card{width: 95%;height:500px;}
-    .symbol-card img {max-height:none;}
-    .symbol-card md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {height: 400px;}
+    .symbol-card{width: 95%;}
 }
 @media all and (max-width:768px){ /* Generic Tablet */
     .lookup-card {width: 95%;}
@@ -223,9 +242,7 @@ md-icon.filter-long-up-arrow {vertical-align: baseline;text-align: right;padding
 }
 
 @media all and (max-width:730px){
-    .symbol-card{width: 95%;height:auto;}
-    .symbol-card img {max-width: 100%;min-height: 210px;max-height: 225px;}
-    .symbol-card md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {height: auto;}
+    .symbol-card{width: 95%;}
     .filter-group label {display:block;}
 }
 
@@ -263,7 +280,7 @@ md-icon.filter-long-up-arrow {vertical-align: baseline;text-align: right;padding
 
 
 /**
- *  Do not remove this comments bellow. It's the markers used by gulp-inject to inject
+ *  Do not remove this comments below. It's the markers used by gulp-inject to inject
  *  all your sass files automatically
  */
 

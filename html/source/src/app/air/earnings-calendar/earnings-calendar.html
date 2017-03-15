@@ -1,44 +1,17 @@
 <div ng-controller="ecalController as vm">
-    <!-- Symbols -->
-    <div class="padded-content-page">
-        <div layout-margin>
-            <!-- Grid View -->
-            <md-content ng-show="vm.layout == 'grid'" class="symbol-cards-include" ng-include="'app/air/templates/symbol/symbol-cards.tmpl.html'"></md-content>
-            <!-- List View -->
-            <div flex flex="100" layout="row" ng-show="vm.layout == 'list'" class="symbol-cards-include">
-                <md-card flex flex="100" class="symbol-cards-include">
-                    <md-card-content ng-include="'app/air/templates/symbol/symbol-list.tmpl.html'"></md-card-content>
-                </md-card>
-            </div>
-            <!-- Fab -->
-            <div layout="row" layout-align="center center" flex ng-cloak>
-                <md-fab-speed-dial ng-cloak md-open="false" md-direction="up" class="md-scale md-fab-bottom-right">
-                    <md-fab-trigger>
-                        <md-button aria-label="View Options" class="md-fab md-accent">
-                            <md-icon md-font-icon="zmdi zmdi-plus"></md-icon>
-                        </md-button>
-                    </md-fab-trigger>
-                    <md-fab-actions>
-                        <md-button aria-label="filter" class="md-fab md-raised md-mini" ng-click="vm.openSidebar('filter-sidebar')">
-                            <md-icon md-font-icon="zmdi zmdi-filter-list"></md-icon>
-                        </md-button>
-                        <md-button aria-label="sort" class="md-fab md-raised md-mini" ng-click="vm.openSidebar('sort-sidebar') ">
-                            <md-icon md-font-icon="zmdi zmdi-sort-asc"></md-icon>
-                        </md-button>
-                        <md-button ng-hide="vm.layout == 'grid'" aria-label="grid view" class="md-fab md-raised md-mini" ng-class="{active: vm.layout == 'grid'}" ng-click="vm.layout = 'grid'">
-                            <md-icon md-font-icon="zmdi zmdi-view-module"></md-icon>
-                        </md-button>
-                        <md-button ng-hide="vm.layout == 'list'" aria-label="list view" class="md-fab md-raised md-mini" ng-class="{active: vm.layout == 'list'}" ng-click="vm.layout = 'list'">
-                            <md-icon md-font-icon="zmdi zmdi-view-list"></md-icon>
-                        </md-button>
-                        <md-button aria-label="download symbols" class="md-fab md-raised md-mini" download="symbols.txt" ng-href="http://automatedinvestmentresearch.com/app/app/air/earnings-calendar/data/symbols.txt">
-                            <md-icon md-font-icon="zmdi zmdi-download"></md-icon>
-                        </md-button>
-                    </md-fab-actions>
-                </md-fab-speed-dial>
-            </div>
+    <div layout-margin>
+        <!-- Grid View -->
+        <!-- <md-content ng-show="vm.layout == 'grid'" class="symbol-cards-include" ng-include="'app/air/templates/symbol/symbol-cards.tmpl.html'"></md-content> -->
 
+        <!-- List View -->
+        <div flex flex="100" layout="row" ng-show="vm.layout == 'list'">
+            <md-card flex flex="100">
+                <md-card-content class="list-template-container" ng-include="'app/air/templates/symbol/symbol-list.tmpl.html'"></md-card-content>
+            </md-card>
         </div>
+
+        <!-- Fab -->
+        <div layout="row" layout-align="center center" ng-include="'app/air/templates/elements/fab.tmpl.html'" flex ng-cloak hide-gt-xs></div>
     </div>
 
     <!-- Sort Sidebar -->
@@ -46,9 +19,8 @@
         <md-toolbar class="md-theme-light">
             <h1 class="md-toolbar-tools">Sort</h1>
         </md-toolbar>
-        <md-content class="md-padding">
-            <p>This is the sort sidebar</p>
-        </md-content>
+        <!-- Sorts -->
+        <md-content class="md-padding" ng-include="'app/air/templates/elements/sorts.tmpl.html'"></md-content>
     </md-sidenav>
 
     <!-- Filter Sidebar -->
@@ -56,50 +28,7 @@
         <md-toolbar class="md-theme-light">
             <h1 class="md-toolbar-tools">Filter</h1>
         </md-toolbar>
-        <md-content>
-            <!-- Price Filter -->
-            <md-subheader class="md-primary">
-                Price: ${{vm.slider.min}} - ${{vm.slider.max}}
-                <md-switch class="md-accent filterToggles" ng-disabled="vm.priceDisabled" ng-model="vm.priceToggle" aria-label="Price Toggle" ng-change="vm.priceFilterCheck(vm.priceToggle)"></md-switch>
-            </md-subheader>
-            <div class="md-padding">
-                <rzslider
-                    rz-slider-model="vm.slider.min"
-                    rz-slider-high="vm.slider.max"
-                    rz-slider-options="vm.slider.options">
-                </rzslider>
-            </div>
-            <!-- Volume Filter -->
-            <md-subheader class="md-primary">
-                Volume: <md-icon class=" material-icons zmdi zmdi-long-arrow-up volume-filter-long-up-arrow" aria-hidden="true" ng-hide="vm.volumeIndicator == 'Any Vol'"></md-icon> {{vm.volumeIndicator}}
-                <md-switch class="md-accent filterToggles" ng-disabled="vm.volumeDisabled" ng-model="vm.volumeToggle" aria-label="Volume Toggle" ng-change="vm.volumeFilterCheck(vm.volumeToggle)"></md-switch>
-            </md-subheader>
-            <div class="md-padding filter-options">
-                <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 500K
-                <md-switch class="md-accent filterToggles" aria-label="Toggle volume over 500K" ng-disabled="vm.volumeLowDisabled" ng-model="vm.volumeLowToggle" ng-change="vm.volumeFilter(vm.volumeLowToggle)"></md-switch> <br />
-
-                <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 1M
-                <md-switch class="md-accent filterToggles" aria-label="Toggle volume over 1M" ng-disabled="vm.volumeMidDisabled" ng-model="vm.volumeMidToggle" ng-change="vm.volumeFilter(vm.volumeMidToggle)"></md-switch><br />
-
-                <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 5M
-                <md-switch class="md-accent filterToggles" aria-label="Toggle volume over 5M" ng-disabled="vm.volumeHighDisabled" ng-model="vm.volumeHighToggle" ng-change="vm.volumeFilter(vm.volumeHighToggle)"></md-switch><br />
-            </div>
-
-            <!-- avgVol Filter -->
-            <md-subheader class="md-primary">
-                Avg Vol: <md-icon class=" material-icons zmdi zmdi-long-arrow-up volume-filter-long-up-arrow" aria-hidden="true" ng-hide="vm.avgVolIndicator == 'Any Vol'"></md-icon> {{vm.avgVolIndicator}}
-                <md-switch class="md-accent filterToggles" ng-disabled="vm.avgVolDisabled" ng-model="vm.avgVolToggle" aria-label="avgVol Toggle" ng-change="vm.avgVolFilterCheck(vm.avgVolToggle)"></md-switch>
-            </md-subheader>
-            <div class="md-padding filter-options">
-                <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 500K
-                <md-switch class="md-accent filterToggles" aria-label="Toggle avgVol over 500K" ng-disabled="vm.avgVolLowDisabled" ng-model="vm.avgVolLowToggle" ng-change="vm.avgVolFilter(vm.avgVolLowToggle)"></md-switch> <br />
-
-                <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 1M
-                <md-switch class="md-accent filterToggles" aria-label="Toggle avgVol over 1M" ng-disabled="vm.avgVolMidDisabled" ng-model="vm.avgVolMidToggle" ng-change="vm.avgVolFilter(vm.avgVolMidToggle)"></md-switch><br />
-
-                <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 5M
-                <md-switch class="md-accent filterToggles" aria-label="Toggle avgVol over 5M" ng-disabled="vm.avgVolHighDisabled" ng-model="vm.avgVolHighToggle" ng-change="vm.avgVolFilter(vm.avgVolHighToggle)"></md-switch><br />
-            </div>
-        </md-content>
+        <!-- Filters -->
+        <md-content ng-include="'app/air/templates/elements/filters.tmpl.html'"></md-content>
     </md-sidenav>
 </div>

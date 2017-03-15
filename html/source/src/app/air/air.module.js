@@ -8,6 +8,6 @@
             'app.air.alerts',
             'app.air.earnings-calendar',
             'app.air.market-movers',
-            'app.air.lookup'
+            //'app.air.lookup'
         ]);
 })();

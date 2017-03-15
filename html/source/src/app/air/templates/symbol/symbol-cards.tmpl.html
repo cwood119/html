@@ -66,9 +66,6 @@ limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize" content-padding class="sy
                 <md-content ng-show="{{symbol.oneDayNull == 1}}" class="md-padding chart-tab">A one day chart is not available, check out an <a style="border:none;"target="_blank" href="https://www.tradingview.com/widgetembed/?symbol={{symbol.symbol}}&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en">interactive chart</a> instead.
                 </md-content>
             </md-tab>
-            <!-- <md-tab label="1M">
-                <md-content class="md-padding chart-tab"><img src="{{symbol.oneMonth}}"></md-content>
-            </md-tab>-->
             <md-tab label="3M">
                 <md-content ng-hide="{{symbol.threeMonthNull == 1}}" class="md-padding chart-tab">
                     <a style="border:none;"target="_blank" href="https://www.tradingview.com/widgetembed/?symbol={{symbol.symbol}}&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en"><img ng-src="{{symbol.threeMonth}}"></a>
@@ -93,6 +90,8 @@ limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize" content-padding class="sy
         </md-tabs>
     </md-card-content>
 </tri-widget>
+<md-table-pagination md-limit="vm.pageSize" md-limit-options="vm.limitOptions"  md-page-select md-page="vm.curPage" md-total="{{vm.filtered.length}}" class="symbol-pagination"></md-table-pagination>
+
 <div class="attributions">
     Showing: {{vm.filtered.length}} of {{vm.symbols.length}} &middot; List: {{vm.list}} &middot; Updated: {{vm.updated}}<br />
     Data from <a href="http://www.zacksdata.com/" target="_blank">Zacks</a> &middot; Intrinio &middot; Tradier

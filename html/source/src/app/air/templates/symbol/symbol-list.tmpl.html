@@ -1,39 +1,98 @@
+<md-toolbar class="md-table-toolbar md-default">
+  <div class="md-toolbar-tools">
+    <h2-class="md-title">{{vm.list}}</h2>
+    <div class="list-buttons" hide-gt-xs>
+        <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
+            <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw zmdi-hc-flip-horizontal animated infinite pulse" ></md-icon>
+        </md-button>
+    </div>
+    <div class="list-buttons" hide-xs>
+        <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
+            <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw zmdi-hc-flip-horizontal animated infinite pulse" ></md-icon>
+        </md-button>
+        <md-button aria-label="sort" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.openSidebar('sort-sidebar') ">
+            <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-sort-asc"></md-icon>
+        </md-button>
+        <md-button aria-label="filter" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.openSidebar('filter-sidebar')">
+            <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-filter-list"></md-icon>
+        </md-button>
+        <md-button aria-label="download symbols" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" download="symbols.txt" ng-href="http://automatedinvestmentresearch.com/app/app/air{{vm.currentPath}}/data/symbols.txt">
+            <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-download"></md-icon>
+        </md-button>
+    </div>
+
+
+  </div>
+</md-toolbar>
 <md-table-container>
     <table md-table class="md-primary md-data-table symbol-table">
         <thead md-head>
             <tr md-row>
-                <th md-column>Symbol</th>
-                <th md-column>Price</th>
+                <th md-column class="md-subhead">Symbol</th>
+                <th md-column class="md-subhead">Price</th>
+                <th md-column class="md-subhead">Chart</th>
                 <th md-column ng-show="vm.currentPath === '/alerts'">Alert</th>
-                <th md-column>Change</th>
-                <th md-column>Volume</th>
-                <th md-column>Avg Vol</th>
-                <th md-column>Short</th>
-                <th md-column>Short %</th>
-                <th md-column>Vitals</th>
-                <th md-column>Headlines</th>
-                <th md-column></th>
+
+                <th md-column class="md-subhead">Volume</th>
+                <th md-column class="md-subhead">Avg Vol</th>
+                <th md-column class="md-subhead">Short</th>
+                <th md-column class="md-subhead">Short %</th>
+                <th md-column class="md-subhead">Vitals</th>
+                <th md-column class="md-subhead">Headlines</th>
+                <th md-column md-subhead></th>
             </tr>
         </thead>
         <tbody md-body>
             <tr md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter:vm.volume() | filter: vm.avgVol()) |
             orderBy: '-percentChange' | orderBy:vm.sortPrice | orderBy:vm.sortPercentChange | orderBy:vm.sortVolume |
             orderBy:vm.sortAvgVol | orderBy:vm.sortMktCap | orderBy:vm.sortFloat | orderBy:vm.sortShort | orderBy:vm.sortSymbol  |
-            limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize">
-                <td md-cell>{{symbol.symbol}}</td>
-                <td md-cell>{{symbol.price | number:2}}</td>
-                <td md-cell ng-show="vm.currentPath === '/alerts'">{{symbol.triggerPrice}}</td>
-                <td md-cell ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">{{symbol.dollarChange | number:2}} ({{symbol.percentChange | number:2}}%)</td>
-                <td md-cell ng-show="{{symbol.volume == 0}}">-</td>
-                <td md-cell ng-hide="{{symbol.volume == 0}}">{{symbol.volume | number:0}}</td>
-                <td md-cell ng-show="{{symbol.avgVol == 0}}">-</td>
-                <td md-cell ng-hide="{{symbol.avgVol == 0}}">{{symbol.avgVol | number:0}}</td>
-                <td md-cell ng-show="{{symbol.sharesShort == 0}}">-</td>
-                <td md-cell ng-hide="{{symbol.sharesShort == 0}}">{{symbol.sharesShort | number:0}}</td>
-                <td md-cell ng-show="{{symbol.shortPercent == 0}}">-</td>
-                <td md-cell ng-hide="{{symbol.shortPercent == 0}}">{{symbol.shortPercent | number:2}}</td>
-                <td md-cell><span class="pointer" style="color:#03a9f4" data-symbol="{{symbol.symbol}}" data-open="{{symbol.vitals.open}}"  ng-disabled="dialogForm.$invalid" ng-click="vm.openVitals($event, symbol)">Vitals</span></td>
-                <td md-cell><span class="pointer" style="color:#03a9f4" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event, symbol)">Headlines</span></td>
+            limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize track by symbol.id">
+                <td md-cell class="list-cell">
+                    <div class="list-symbol">{{symbol.symbol}}</div>
+                    <div class="md-body-1">{{symbol.name}}</div>
+                </td>
+                <td md-cell class="no-padding price-container">
+                    <div class="md-body-2">
+                        {{symbol.price | number:2}}
+                    </div>
+                    <div class="md-body-1" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">
+                        {{symbol.dollarChange | number:2}} ({{symbol.percentChange | number:2}}%)
+                    </div>
+                </td>
+
+                <td md-cell class="chart-container">
+                    <!-- <div google-chart chart="vm.chartData"></div> -->
+                        <nvd3 ng-show="vm.chartToggle != 0" options="vm.lineChartOptions" data="symbol.chart"></nvd3>
+
+                </td>
+
+                <td md-cell ng-show="vm.currentPath === '/alerts'">
+                    <div class="md-body-1">{{symbol.triggerPrice}}</div>
+                </td>
+
+                <td md-cell>
+                    <div class="md-body-1" ng-show="{{symbol.volume == 0}}">-</div>
+                    <div class="md-body-1" ng-hide="{{symbol.volume == 0}}">{{symbol.volume | number:0}}</div>
+                </td>
+                <td md-cell>
+                    <div class="md-body-1" ng-show="{{symbol.avgVol == 0}}">-</div>
+                    <div class="md-body-1" ng-hide="{{symbol.avgVol == 0}}">{{symbol.avgVol | number:0}}</div>
+                </td>
+                <td md-cell>
+                    <div class="md-body-1" ng-show="{{symbol.sharesShort == 0}}">-</div>
+                    <div class="md-body-1" ng-hide="{{symbol.sharesShort == 0}}">{{symbol.sharesShort | number:0}}</div>
+                </td>
+                <td md-cell>
+                    <div class="md-body-1" ng-show="{{symbol.shortPercent == 0}}">-</div>
+                    <div class="md-body-1" ng-hide="{{symbol.shortPercent == 0}}">{{symbol.shortPercent | number:2}}%</div>
+                </td>
+                <td md-cell>
+                    <div class="md-body-1 pointer blue" ng-disabled="dialogForm.$invalid" ng-click="vm.openVitals($event, symbol)">Vitals</div>
+                </td>
+                <td md-cell>
+                    <div class="md-body-1 pointer blue" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event, symbol)">Headlines</div>
+                </td>
+
                 <td md-cell>
                     <md-menu class="external-links-menu-container-list">
                         <md-button class="md-icon-button" aria-label="open menu" ng-click="$mdOpenMenu()">
@@ -69,6 +128,6 @@
 </md-table-container>
 <md-table-pagination md-limit="vm.pageSize" md-limit-options="vm.limitOptions"  md-page-select md-page="vm.curPage" md-total="{{vm.filtered.length}}" class="symbol-pagination"></md-table-pagination>
 <div class="attributions attributions-list-view">
-    Showing: {{vm.filtered.length}} of {{vm.symbols.length}} &middot; List: {{vm.list}} &middot; Updated: {{vm.updated}}<br />
+    Updated: {{vm.updated}}<br />
     Data from <a href="http://www.zacksdata.com/" target="_blank">Zacks</a> &middot; Intrinio &middot; Tradier
 </div>
