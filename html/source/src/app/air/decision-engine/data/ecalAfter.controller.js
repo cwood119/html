@@ -5,35 +5,65 @@
         .controller('ecalAfterDEController', ecalAfterDEController);
 
     /* @ngInject */
-    function ecalAfterDEController($http, $mdDialog, $document) {
+
+    function ecalAfterDEController($http, $mdDialog, $document, ecalAfterService) {
         var vm = this;
-        vm.ecalAfter = [];
-        vm.query = {order: 'Symbol'};
+
+        // Page Variables
+        vm.ecalAfter=[];
         vm.ecalAfterLength=null;
         vm.ecalAfterToggle=1;
-        $http.get('app/air/decision-engine/data/ecal-after-data.json?ts='+new Date().getTime())
-        .success(function(data, status, headers){
-            vm.ecalAfter = data;
-            vm.ecalAfterLength = data.length;
-            vm.ecalAfterCurPage = 1;
-            vm.ecalAfterLimitOptions = [5,10,15];
-            vm.ecalAfterPageSize = 5;
-            vm.modified = headers()['last-modified'];
-            vm.newModified = new Date(vm.modified);
-            vm.updated = vm.newModified.toLocaleString();
-            vm.yesterday = moment().startOf('day').subtract(1, 'days').toDate();
-            vm.thisDay = moment().weekday();
-            if (vm.ecalAfterLength == 0) {vm.ecalAfterToggle=0;}
-            if (vm.newModified < vm.yesterday){vm.ecalAfterToggle=0;vm.ecalAfter=[];}
-        });
-        $http.get('app/air/earnings-calendar/data/data.json?ts='+new Date().getTime())
-        .then(function(response) {
-            vm.data = response.data;
-            if (response.data.length != 0) {
-                vm.list = response.data[0].list;
-                if (vm.list == 'After Market Movers') {vm.ecalAfterToggle=0;}
-            }
-        });
+
+        // Pagination Variables
+        vm.ecalAfterCurPage = 1;
+        vm.ecalAfterLimitOptions = [5,10,15];
+        vm.ecalAfterPageSize = 5;
+        vm.query = {order: '-percentChange'};
+
+        activate();
+
+        //////////
+
+        function activate() {
+            return getEcalAfterData().then(function(data) {
+                if (data[0].data.length != 0) {
+
+                    // Get Symbol and Check for Empty Data Set
+                    vm.ecalAfter = data[0].data;
+                    var symbol = data[0].data[0].symbol;
+                    if (symbol == '') {vm.symbols = [];}
+
+                    // Get List
+                    vm.list = data[0].data[0].list;
+
+                    // Get Data Time Stamp
+                    vm.updated = new Date(data[0].headers()['last-modified']).toLocaleString();
+                    vm.modified = moment(vm.updated, 'MM/DD/YYYY');
+
+                    // Hide Stale List
+                    vm.yesterday = moment().startOf('day').subtract(1, 'days').toDate();
+                    if (moment(vm.modified).isBefore(vm.yesterday,'day')){
+                        vm.ecalAfterToggle=0;
+                        vm.ecalAfter=[];
+                    }
+
+                } else {vm.ecalAfterToggle=0;}
+                // Hide if Active on Ecal Page
+                if (data[1].data.length != 0) {
+                    var list = data[1].data.list;
+                    if (list == 'After Market Movers') {vm.ecalAfterToggle=0;}
+                }
+            });
+        }
+
+        // Get Data from Service
+        function getEcalAfterData() {
+            return ecalAfterService.getData()
+                .then(function(data) {
+                    return data;
+                });
+        }
+
         // Vitals Modal
         vm.openVitals = function (e, symbol) {
             $mdDialog.show({

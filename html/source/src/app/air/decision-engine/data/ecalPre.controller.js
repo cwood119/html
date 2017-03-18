@@ -5,34 +5,64 @@
         .controller('ecalPreDEController', ecalPreDEController);
 
     /* @ngInject */
-    function ecalPreDEController($http, $mdDialog, $document) {
+    function ecalPreDEController($http, $mdDialog, $document, ecalPreService) {
         var vm = this;
-        vm.ecalPre = [];
-        vm.query = {order: 'Symbol'};
+
+        // Page Variables
+        vm.ecalPre=[];
         vm.ecalPreLength=null;
         vm.ecalPreToggle=1;
-        $http.get('app/air/decision-engine/data/ecal-pre-data.json?ts='+new Date().getTime())
-        .success(function(data, status, headers) {
-            vm.ecalPre = data;
-            vm.ecalPreLength = data.length;
-            vm.ecalPreCurPage = 1;
-            vm.ecalPreLimitOptions = [5,10,15];
-            vm.ecalPrePageSize = 5;
-            vm.modified = headers()['last-modified'];
-            vm.newModified = new Date(vm.modified);
-            vm.updated = vm.newModified.toLocaleString();
-            vm.today = moment().startOf('day').toDate();
-            if (vm.ecalPreLength == 0) {vm.ecalPreToggle=0;}
-            if (vm.newModified < vm.today){vm.ecalPreToggle=0;vm.ecalPre=[];}
-        });
-        $http.get('app/air/earnings-calendar/data/data.json?ts='+new Date().getTime())
-        .then(function(response) {
-            vm.data = response.data;
-            if (response.data.length != 0) {
-                vm.list = response.data[0].list;
-                if (vm.list == 'Pre Market Movers') {vm.ecalPreToggle=0;}
-            } 
-        });
+
+        // Pagination Variables
+        vm.ecalPreCurPage = 1;
+        vm.ecalPreLimitOptions = [5,10,15];
+        vm.ecalPrePageSize = 5;
+        vm.query = {order: '-percentChange'};
+
+        activate();
+
+        //////////
+
+        function activate() {
+            return getEcalPreData().then(function(data) {
+                if (data[0].data.length != 0) {
+
+                    // Get Symbol and Check for Empty Data Set
+                    vm.ecalPre = data[0].data;
+                    var symbol = data[0].data[0].symbol;
+                    if (symbol == '') {vm.symbols = [];}
+
+                    // Get List
+                    vm.list = data[0].data[0].list;
+
+                    // Get Data Time Stamp
+                    vm.updated = new Date(data[0].headers()['last-modified']).toLocaleString();
+                    vm.modified = moment(vm.updated, 'MM/DD/YYYY');
+
+                    // Hide Stale List
+                    vm.today = moment().startOf('day').toDate();
+                    if (moment(vm.modified).isBefore(vm.today,'day')){
+                        vm.ecalPreToggle=0;
+                        vm.ecalPre=[];
+                    }
+
+                } else {vm.ecalPreToggle=0;}
+                // Hide if Active on Ecal Page
+                if (data[1].data.length != 0) {
+                    var list = data[1].data.list;
+                    if (list == 'Pre Market Movers') {vm.ecalPreToggle=0;}
+                }
+            });
+        }
+
+        // Get Data from Service
+        function getEcalPreData() {
+            return ecalPreService.getData()
+                .then(function(data) {
+                    return data;
+                });
+        }
+
         // Vitals Modal
         vm.openVitals = function (e, symbol) {
             $mdDialog.show({

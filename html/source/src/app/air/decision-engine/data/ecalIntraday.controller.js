@@ -5,36 +5,67 @@
         .controller('ecalIntradayDEController', ecalIntradayDEController);
 
     /* @ngInject */
-    function ecalIntradayDEController($interval, $http, $mdDialog, $document) {
+    function ecalIntradayDEController($interval, $http, $mdDialog, $document, ecalIntradayService) {
         var vm = this;
-        vm.ecalIntraday = [];
-        vm.query = {order: 'Symbol'};
+
+        // Page Variables
+        vm.ecalIntraday=[];
         vm.ecalIntradayLength=null;
         vm.ecalIntradayToggle=1;
-        $http.get('app/air/decision-engine/data/ecal-intraday-data.json?ts='+new Date().getTime())
-        .success(function(data, status, headers) {
-            vm.ecalIntraday = data;
-            vm.ecalIntradayLength = data.length;
-            vm.ecalIntradayCurPage = 1;
-            vm.ecalIntradayLimitOptions = [5,10,15];
-            vm.ecalIntradayPageSize = 5;
-            vm.modified = headers()['last-modified'];
-            vm.newModified = new Date(vm.modified);
-            vm.updated = vm.newModified.toLocaleString();
-            vm.yesterday = moment().startOf('day').subtract(1, 'days').toDate();
-            if (data == '[]') {vm.ecalIntraday = [];vm.ecalIntradayToggle=0;}
-            if (vm.newModified < vm.yesterday){vm.ecalIntraday=[];vm.ecalIntradayToggle=0;}
-            if (vm.ecalIntradayLength == 0) {vm.ecalIntradayToggle=0;}
-        });
-        $http.get('app/air/earnings-calendar/data/data.json?ts='+new Date().getTime())
-        .then(function(response) {
-            vm.data = response.data;
-            if (response.data.length != 0) {
-                vm.list = response.data[0].list;
-                if (vm.list == 'Calendar Movers') {vm.ecalIntradayToggle=0;vm.ecalIntraday=[];}
-                if (vm.list == 'Pre Market Movers') {vm.ecalIntradayToggle=0;vm.ecalIntraday=[];}
-            }
-        });
+
+        // Pagination Variables
+        vm.ecalIntradayCurPage = 1;
+        vm.ecalIntradayLimitOptions = [5,10,15];
+        vm.ecalIntradayPageSize = 5;
+        vm.query = {order: '-percentChange'};
+
+        activate();
+
+        //////////
+
+        function activate() {
+            return getEcalIntradayData().then(function(data) {
+                if (data[0].data.length != 0) {
+
+                    // Get Symbol and Check for Empty Data Set
+                    vm.ecalIntraday = data[0].data;
+                    var symbol = data[0].data[0].symbol;
+                    if (symbol == '') {vm.symbols = [];}
+
+                    // Get List
+                    vm.list = data[0].data[0].list;
+
+                    // Get Data Time Stamp
+                    vm.updated = new Date(data[0].headers()['last-modified']).toLocaleString();
+                    vm.modified = moment(vm.updated, 'MM/DD/YYYY');
+
+                    // Hide Stale List
+                    vm.yesterday = moment().startOf('day').subtract(1, 'days').toDate();
+                    if (moment(vm.modified).isBefore(vm.yesterday,'day')){
+                        vm.ecalIntraday=[];
+                        vm.ecalIntradayToggle=0;
+                    }
+                } else {
+                    vm.ecalIntraday = [];
+                    vm.ecalIntradayToggle=0;
+                }
+                // Hide if Active on Ecal Page
+                if (data[1].data.length != 0) {
+                    var list = data[1].data.list;
+                    if (list == 'Calendar Movers') {vm.ecalIntradayToggle=0;}
+                    if (list == 'Pre Market Movers') {vm.ecalIntradayToggle=0;}
+                }
+            });
+        }
+
+        // Get Data from Service
+        function getEcalIntradayData() {
+            return ecalIntradayService.getData()
+                .then(function(data) {
+                    return data;
+                });
+        }
+
         // Vitals Modal
         vm.openVitals = function (e, symbol) {
             $mdDialog.show({
