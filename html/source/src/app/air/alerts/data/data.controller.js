@@ -4,22 +4,25 @@
         .module('app.air.alerts')
         .controller('alertsController', alertsController);
 
-    // Pagination
-    angular.module('app.air.alerts').filter('pagination', function(){
-        return function(input, start) {
-            if (!input || !input.length) { return; }
-            start = +start;
-            return input.slice(start);
-        };
-    });
+    // // Grid View Pagination
+    // angular.module('app.air.alerts').filter('pagination', function(){
+    //     return function(input, start) {
+    //         if (!input || !input.length) { return; }
+    //         start = +start;
+    //         return input.slice(start);
+    //     };
+    // });
+
     /* @ngInject */
     function alertsController($http, $mdDialog, $location, $document, $timeout, $interval, $window, $mdSidenav, $scope, alertsService) {
         var vm = this;
 
         // Page Variables
-        vm.symbols=[];
+        vm.activate = function(){activate();};
+        vm.currentPath = $location.path();
         vm.layout = 'list';
         vm.openSidebar = function(id) {$mdSidenav(id).toggle();vm.refreshSlider();};
+        vm.symbols=[];
 
         // Pagination Variables
         vm.curPage = 1;
@@ -76,21 +79,33 @@
         function activate() {
             return getAlertsData().then(function(data) {
                 if (data[0].data.length != 0) {
+
+                    // Get Symbol and Check for Empty Data Set
                     vm.symbols = data[0].data;
                     var symbol = data[0].data[0].symbol;
                     if (symbol == '') {vm.symbols = [];}
+
+                    // Get List
                     vm.list = data[0].data[0].list;
+
+                    // Auto Hide Refresh Button
+                    vm.refreshToggle=0;
+
+                    // Get Data Time Stamp
                     vm.updated = new Date(data[0].headers()['last-modified']).toLocaleString();
-                    // Chart
-                    vm.chartToggle = 0;
+
+                    // Auto Hide Chart
+                    vm.chartToggle = 1;
+
+                    // Build Line Chart
                     vm.lineChartOptions = {
                         chart: {
                             type: 'lineChart',
                             showXAxis: false,
                             showYAxis: false,
                             showLegend: false,
-                            useInteractiveGuideline: true,
-                            interactive: true,
+                            //useInteractiveGuideline: true,
+                            interactive: false,
                             duration: 0,
                             height: 90,
                             margin : {top: 0,right: 0,bottom: 0,left: 0},
@@ -112,6 +127,7 @@
             });
         }
 
+        // Get Data from Service
         function getAlertsData() {
             return alertsService.getData()
                 .then(function(data) {
@@ -119,6 +135,7 @@
                 });
         }
 
+        // Check for New Data
         var updateCheck =  function() {
             return getAlertsData().then(function(data) {
                 if (data[0].data.length != 0) {
@@ -130,9 +147,10 @@
             });
         };
 
+        // Check for New Data Every 60 Seconds
         $interval(updateCheck, 60000);
 
-        // Price Filter
+        // Price Filter and Controls
         vm.filterFn = function()
         {
             return function(item){
@@ -170,7 +188,7 @@
         };
 
 
-        // Volume Filters
+        // Volume Filters and Controls
         vm.volume = function()
         {
             if (vm.volumeLowToggle == true || vm.volumeMidToggle == true || vm.volumeHighToggle == true ) {
@@ -178,8 +196,8 @@
                 vm.volumeToggle=true;
                 return function(item){
                     if (vm.volumeLowToggle == true){return item.volume >= vm.volumeLow;}
-                    if (vm.volumeMidToggle == true){return item.volume >= vm.volumeMid;}
-                    if (vm.volumeHighToggle == true){return item.volume >= vm.volumeHigh;}
+                    else if (vm.volumeMidToggle == true){return item.volume >= vm.volumeMid;}
+                    else if (vm.volumeHighToggle == true){return item.volume >= vm.volumeHigh;}
                 };
             }
             else {vm.volumeDisabled=true;vm.volumeToggle=false;}
@@ -202,7 +220,7 @@
             }
         };
 
-        // avgVol Filters
+        // Average Volume Filters and Controls
         vm.avgVol = function()
         {
             if (vm.avgVolLowToggle == true || vm.avgVolMidToggle == true || vm.avgVolHighToggle == true ) {
@@ -210,8 +228,8 @@
                 vm.avgVolToggle=true;
                 return function(item){
                     if (vm.avgVolLowToggle == true){return item.avgVol >= vm.avgVolLow;}
-                    if (vm.avgVolMidToggle == true){return item.avgVol >= vm.avgVolMid;}
-                    if (vm.avgVolHighToggle == true){return item.avgVol >= vm.avgVolHigh;}
+                    else if (vm.avgVolMidToggle == true){return item.avgVol >= vm.avgVolMid;}
+                    else if (vm.avgVolHighToggle == true){return item.avgVol >= vm.avgVolHigh;}
                 };
             }
             else {vm.avgVolDisabled=true;vm.avgVolToggle=false;}
@@ -223,7 +241,7 @@
             if (vm.avgVolHighToggle == true && vm.avgVolMidToggle == false){ vm.avgVolIndicator = '5M';}
             if (vm.avgVol != 0){ return true;}
         };
-        // Master avgVol Toggle
+        // Master Average Volume Toggle
         vm.avgVolFilterCheck = function (state) {
             if (state == false) {
                 vm.avgVolLowToggle=false;
@@ -271,63 +289,10 @@
                 targetEvent: e
             });
         };
-        // Market Cap Filters
-        vm.mktCapFilterActive = false;
-        vm.mktCap = function(entry) {
-            if(vm.mktCapFilterActive >= 0 ) {
-                if(vm.mktCapFilterActive) { return (entry.marketCap > vm.mktCapFilterActive) ? true: false;}
-                return true;
-            }
-            if(vm.mktCapFilterActive < 0 ) {
-                var underMktCap = vm.mktCapFilterActive;
-                underMktCap = underMktCap * -1;
-                if(vm.mktCapFilterActive) { return (entry.marketCap < underMktCap) ? true: false;}
-                return true;
-            }
-        };
-        vm.mktCapFilter = function() {if (vm.mktCap != 0){ return true;}};
 
-        // Float Filters
-        vm.floatFilterActive = false;
-        vm.float = function(entry) {
-            if(vm.floatFilterActive >= 0 ) {
-                if(vm.floatFilterActive) { return (entry.float > vm.floatFilterActive) ? true: false;}
-                return true;
-            }
-            if(vm.floatFilterActive < 0 ) {
-                var underfloat = vm.floatFilterActive;
-                underfloat = underfloat * -1;
-                if(vm.floatFilterActive) { return (entry.float < underfloat) ? true: false;}
-                return true;
-            }
-        };
-        vm.floatFilter = function() {if (vm.float != 0){ return true;}};
 
-        // Short Filters
-        vm.shortFilterActive = false;
-        vm.short = function(entry) {
-            if(vm.shortFilterActive >= 0 ) {
-                if(vm.shortFilterActive) { return (entry.shortPercent > vm.shortFilterActive) ? true: false;}
-                return true;
-            }
-        };
-        vm.shortFilter = function() {if (vm.short != 0){ return true;}};
 
-        // Announcement Time Filters
-        vm.timeFilterActive = false;
-        vm.time = function(entry) {
-            if(vm.timeFilterActive > 0 ) {
-                if(vm.timeFilterActive) { return (entry.time == vm.timeFilterActive) ? true: false;}
-                return true;
-            }
-            if(vm.timeFilterActive < 1 ) {
-                if(vm.timeFilterActive) { return (entry.time > vm.timeFilterActive) ? true: false;}
-                return true;
-            }
-        };
-        vm.timeFilter = function() {if (vm.time != 0){ return true;}};
-
-        // Filter Data
+        // Legacy Filter Data
         vm.filterPrice = ['5','10','15'];
         vm.filterVolume = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
         vm.filterAdv = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
@@ -337,6 +302,7 @@
         vm.filterShort = [{'value':'5','text':'5%'},{'value':'15','text':'15%'},{'value':'25','text':'25%'}];
         vm.filterTime = [{'value':'2','text':'Before Market'},{'value':'1','text':'After Market'},{'value':'3','text':'Intraday'},{'value':'4','text':'Unknown'}];
 
+        // Legacy Sort Reset Function
         vm.reset =  function reset() {
             vm.sortPrice = {};
             vm.sortPercentChange = {};
@@ -347,7 +313,5 @@
             vm.sortShort = {};
             vm.sortSymbol = {};
         };
-        // Get current path.  Using this to show/hide before/after market announcement filter
-        vm.currentPath = $location.path();
     }
 })();

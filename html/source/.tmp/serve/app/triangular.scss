@@ -1191,7 +1191,7 @@ $tri-badge-size: 2.2rem;
     }
   }
   .chart-container {
-    flex: 1 1;
+    flex: 1;
     canvas {
       height: auto !important;
     }
@@ -1211,6 +1211,11 @@ $tri-badge-size: 2.2rem;
       @include fadeOut();
     }
   }
+}
+
+// Ie fix for widgets
+.os-windows .widget.layout-column .widget-content {
+  display: block;
 }
 
 .widget[background] {
@@ -1415,14 +1420,14 @@ $shadow-ambient-shadow-opacity: 0.12;
 }
 
 // Side menu Bar
-.admin-sidebar-left {
+.admin-sidebar-left, .triangular-sidenav-left {
   overflow-x:hidden;
   md-content {
-    height: 100%;
+    min-height: 100%;
     overflow-x:hidden;
   }
 }
-.admin-sidebar-left.md-locked-open {
+.admin-sidebar-left.md-locked-open, .triangular-sidenav-left.md-locked-open {
   width: 260px;
   min-width: 260px;
   max-width: 260px;

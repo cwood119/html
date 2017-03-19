@@ -1,0 +1,40 @@
+{
+  "name": "triangular-seed",
+  "version": "0.0.0",
+  "authors": [
+    "John Langan <john.langan@oxygenna.com>"
+  ],
+  "description": "",
+  "moduleType": [],
+  "license": "Themeforest",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "resolutions": {
+    "angular": "1.5.5",
+    "angular-material": "1.1.0-rc4",
+    "angular-material-data-table": "0.10.5",
+    "angular-animate": "1.5.5",
+    "angular-cookies": "1.5.5",
+    "angular-messages": "1.5.5",
+    "angular-resource": "1.5.5",
+    "angular-sanitize": "1.5.5"
+  },
+  "dependencies": {
+    "triangular": "git@github.com:oxygenna/triangular-bower.git#~2.7.1"
+  },
+  "overrides": {
+    "triangular": {
+      "main": [
+        "triangular.js",
+        "triangular.scss"
+      ]
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
   "name": "angular-digest-hud",
   "main": "digest-hud.js",
-  "version": "0.1.14",
+  "version": "0.1.16",
   "homepage": "https://github.com/pkaminski/digest-hud",
   "authors": [
     "Piotr Kaminski <piotr@ideanest.com>"
@@ -26,11 +26,11 @@
   "dependencies": {
     "angular": "^1.3"
   },
-  "_release": "0.1.14",
+  "_release": "0.1.16",
   "_resolution": {
     "type": "version",
-    "tag": "0.1.14",
-    "commit": "83c35a02606441999aa6155886b379d20ac60052"
+    "tag": "0.1.16",
+    "commit": "91fe07076a493f1e73e8864f5f3b8e225b1206e6"
   },
   "_source": "https://github.com/pkaminski/digest-hud.git",
   "_target": "~0.1.13",

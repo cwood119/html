@@ -60,7 +60,7 @@
                     </div>
                 </td>
 
-                <td md-cell class="chart-container">
+                <td md-cell class="chart-container" ng-mouseLeave="vm.hideInteractive();">
                     <!-- <div google-chart chart="vm.chartData"></div> -->
                         <nvd3 ng-show="vm.chartToggle != 0" options="vm.lineChartOptions" data="symbol.chart"></nvd3>
 

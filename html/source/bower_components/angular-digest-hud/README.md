@@ -3,14 +3,14 @@
 Digest performance analysis HUD for AngularJS.
 
 ```js
-angular.module('myApp', ['digestHud']).config(function(digestHudProvider) {
+angular.module('myApp', ['digestHud']).config(['digestHudProvider', function(digestHudProvider) {
   digestHudProvider.enable();
     
   // Optional configuration settings:
   digestHudProvider.setHudPosition('top right'); // setup hud position on the page: top right, bottom left, etc. corner
   digestHudProvider.numTopWatches = 20;  // number of items to display in detailed table
   digestHudProvider.numDigestStats = 25;  // number of most recent digests to use for min/med/max stats
-});
+}]);
 ```
 
 The Digest HUD will have a performance impact on your code and there's no way to disable it once enabled, so as a rule you probably don't want to turn it on in production.  When it's enabled you'll see a small digest summary fixed in the lower-right corner of the window:
@@ -19,7 +19,7 @@ The Digest HUD will have a performance impact on your code and there's no way to
 
 The numbers show the minimum, median, and maximum running time of the last 25 (or `numDigestStats`) digests.  At the end of the line a dot blinks on or off every time a digest runs.  Together this gives you a quick idea of how hard your app's digest cycle is working.
 
-You can click on the summary to show a snapshot of more detailed stats (this example is taken from [Reviewable](https://reviewable.io):
+You can click on the summary to show a snapshot of more detailed stats (this example is taken from [Reviewable](https://reviewable.io)):
 
 ![collapsed Digest HUD](https://raw.githubusercontent.com/pkaminski/digest-hud/master/readme_images/expanded.png)
 

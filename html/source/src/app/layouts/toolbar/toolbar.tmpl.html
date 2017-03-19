@@ -3,12 +3,14 @@
         <md-icon md-font-icon="zmdi zmdi-menu"></md-icon>
     </md-button>
 
-    <h2 hide-xs flex>
+<!--    <h2 hide-xs flex>
         <span ng-repeat="crumb in vm.breadcrumbs.crumbs">
             <span translate>{{crumb.name}}</span>
             <md-icon md-font-icon="zmdi zmdi-chevron-right" ng-if="!$last"></md-icon>
         </span>
     </h2>
+-->
+        <h2 flex class="sidebar-left-title">Air <span class="blue">App</span></h2>
 
     <md-button class="md-icon-button toolbar-button" ng-click="vm.toggleFullScreen()" aria-label="toggle fullscreen">
         <md-icon md-font-icon ng-class="vm.fullScreenIcon"></md-icon>

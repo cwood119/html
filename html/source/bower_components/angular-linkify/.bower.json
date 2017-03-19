@@ -1,6 +1,6 @@
 {
   "name": "angular-linkify",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "main": "angular-linkify.js",
   "description": "Angular filter to linkify urls, \"@\" usernames, and hashtags.",
   "ignore": [
@@ -12,11 +12,11 @@
     "tests"
   ],
   "homepage": "https://github.com/scottcorgan/angular-linkify",
-  "_release": "1.2.0",
+  "_release": "1.2.1",
   "_resolution": {
     "type": "version",
-    "tag": "1.2.0",
-    "commit": "4e5221d1fe7df752e07b94f47d7eb46552335e3e"
+    "tag": "1.2.1",
+    "commit": "e5709a9fbdee6e3c4a49422588b5e98b6d114275"
   },
   "_source": "https://github.com/scottcorgan/angular-linkify.git",
   "_target": "~1.2.0",

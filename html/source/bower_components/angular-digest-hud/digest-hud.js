@@ -78,19 +78,23 @@ angular.module('digestHud', [])
     var toggle = false;
     var detailsText = '';
 
-    hudElement = $('<div></div>');
-    var buttonsElement = $(
-      '<div>' +
-      '<span id="digestHud-refresh">refresh</span> &bull; ' +
-      '<span id="digestHud-reset">reset</span> ' +
-      '</div>').appendTo(hudElement);
-    var summaryElement = $('<div></div>').appendTo(hudElement);
-    var detailsElement = $('<div></div>').appendTo(hudElement);
+    hudElement = angular.element('<div class="digestHud"></div>');
+    var buttonsElement = angular.element('<div class="digestHud-buttons"></div>');
+    var refreshElement = angular.element('<span class="digestHud-refresh">refresh</span>');
+    var resetElement = angular.element('<span class="digestHud-reset">reset</span>');
+    buttonsElement.append(refreshElement);
+    buttonsElement.append(angular.element('<span class="digestHud-button-separator"> &bull; </span>'));
+    buttonsElement.append(resetElement);
+    hudElement.append(buttonsElement);
+    var summaryElement = angular.element('<div class="digestHud-summary"></div>');
+    hudElement.append(summaryElement);
+    var detailsElement = angular.element('<div class="digestHud-details"></div>');
+    hudElement.append(detailsElement);
     var showDetails = false;
     hudElement.on('click', function() {
       showDetails = !showDetails;
-      buttonsElement.toggle(showDetails);
-      detailsElement.toggle(showDetails);
+      buttonsElement[0].style.display = showDetails ? '' : 'none';
+      detailsElement[0].style.display = showDetails ? '' : 'none';
       if (showDetails) refreshDetails();
     });
 
@@ -99,8 +103,8 @@ angular.module('digestHud', [])
       ev.preventDefault();
     });
 
-    buttonsElement.find('#digestHud-refresh').on('click', refreshDetails);
-    buttonsElement.find('#digestHud-reset').on('click', resetTimings);
+    refreshElement.on('click', refreshDetails);
+    resetElement.on('click', resetTimings);
     buttonsElement.on('click', function(ev) {ev.stopPropagation();});
 
     hudElement.on('mousedown mouseup click', function(ev) {ev.stopPropagation();});
@@ -129,7 +133,7 @@ angular.module('digestHud', [])
       maxWidth: '50em',
       display: 'none'
     });
-    $('body').append(hudElement);
+    angular.element(document.body).append(hudElement);
 
     function refreshDetails() {
       var grandTotal = 0, topTotal = 0;
@@ -149,7 +153,7 @@ angular.module('digestHud', [])
         return timing.format(grandTotal);
       });
       var rows = lines.map(function(text) {
-        var row = $('<div></div>');
+        var row = angular.element('<div class="digestHud-row"></div>');
         row.css({
           overflow: 'hidden',
           textOverflow: 'ellipsis'
@@ -159,12 +163,16 @@ angular.module('digestHud', [])
         return row;
       });
       detailsElement.empty();
-      $('<div>\u2007Total\u2007\u2007\u2007Watch\u2007Work\u2007Overhead\u2007\u2007Function</div>')
-        .css({borderBottom: '1px solid'}).appendTo(detailsElement);
-      detailsElement.append(rows);
+      var headerElement = angular.element('<div class="digestHud-header">\u2007Total\u2007\u2007\u2007Watch\u2007Work\u2007Overhead\u2007\u2007Function</div>')
+        .css({borderBottom: '1px solid'});
+      detailsElement.append(headerElement);
+      rows.forEach(function(row) {
+        detailsElement.append(row);
+      });
       var footer = 'Top ' + topWatchTimings.length + ' items account for ' +
         percentage(topTotal / grandTotal) + ' of ' + grandTotal + 'ms of digest processing time.';
-      $('<div></div>').text(footer).appendTo(detailsElement);
+      var footerElement = angular.element('<div class="digestHud-footer"></div>').text(footer);
+      detailsElement.append(footerElement);
       detailsText = 'Total  Watch   Work Overhead  Function\n' + lines.map(function(text) {
         return text.replace(/[ \n]+/g, ' ');
       }).join('\n') + '\n' + footer + '\n';

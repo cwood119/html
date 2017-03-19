@@ -1,0 +1,229 @@
+<!doctype html>
+<html ng-app="app">
+    <head>
+        <meta charset="utf-8">
+        <title>Triangular Seed App</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+
+        <!-- load fonts   -->
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=RobotoDraft:100,100italic,300,300italic,400,500,700,900,400italic">
+
+        <!-- inject:css -->
+        <link rel="stylesheet" href="app/app.css">
+        <!-- endinject -->
+
+        <!-- bower:css -->
+        <link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.css" />
+        <link rel="stylesheet" href="bower_components/angular-dragula/dist/dragula.css" />
+
+        <link rel="stylesheet" href="bower_components/angular-material-data-table/dist/md-data-table.css" />
+        <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css" />
+        <link rel="stylesheet" href="bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" />
+        <link rel="stylesheet" href="bower_components/textAngular/dist/textAngular.css" />
+        <link rel="stylesheet" href="bower_components/weather-icons/css/weather-icons.css" />
+        <link rel="stylesheet" href="bower_components/weather-icons/css/weather-icons.min.css" />
+        <link rel="stylesheet" href="bower_components/triangular/triangular.css" />
+        <!-- endbower -->
+
+    </head>
+
+    <body translate-cloak ng-class="bodyClasses">
+        <!-- main app view  -->
+        <div layout="row" class="full-height" ui-view="root"></div>
+
+        <!-- bower:js -->
+        <script src="bower_components/highlightjs/highlight.pack.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-animate/angular-animate.js"></script>
+        <script src="bower_components/Chart.js/Chart.js"></script>
+        <script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
+        <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+        <script src="bower_components/angular-digest-hud/digest-hud.js"></script>
+        <script src="bower_components/angular-dragula/dist/angular-dragula.js"></script>
+        <script src="bower_components/angular-google-chart/ng-google-chart.js"></script>
+        <script src="bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
+        <script src="bower_components/lodash/lodash.js"></script>
+        <script src="bower_components/angular-google-maps/dist/angular-google-maps.js"></script>
+        <script src="bower_components/angular-highlightjs/build/angular-highlightjs.js"></script>
+        <script src="bower_components/angular-linkify/angular-linkify.js"></script>
+        <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+        <script src="bower_components/angular-aria/angular-aria.js"></script>
+        <script src="bower_components/angular-messages/angular-messages.js"></script>
+        <script src="bower_components/angular-material/angular-material.js"></script>
+        <script src="bower_components/angular-material-data-table/dist/md-data-table.js"></script>
+        <script src="bower_components/moment/moment.js"></script>
+        <script src="bower_components/angular-moment/angular-moment.js"></script>
+        <script src="bower_components/angular-resource/angular-resource.js"></script>
+        <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+        <script src="bower_components/angular-translate/angular-translate.js"></script>
+        <script src="bower_components/angular-translate-loader-partial/angular-translate-loader-partial.js"></script>
+        <script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
+        <script src="bower_components/angular-translate-storage-local/angular-translate-storage-local.js"></script>
+        <script src="bower_components/jquery/dist/jquery.js"></script>
+        <script src="bower_components/fullcalendar/dist/fullcalendar.js"></script>
+        <script src="bower_components/angular-ui-calendar/src/calendar.js"></script>
+        <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="bower_components/countUp.js/dist/countUp.min.js"></script>
+        <script src="bower_components/rangy/rangy-core.js"></script>
+        <script src="bower_components/rangy/rangy-classapplier.js"></script>
+        <script src="bower_components/rangy/rangy-highlighter.js"></script>
+        <script src="bower_components/rangy/rangy-selectionsaverestore.js"></script>
+        <script src="bower_components/rangy/rangy-serializer.js"></script>
+        <script src="bower_components/rangy/rangy-textrange.js"></script>
+        <script src="bower_components/textAngular/dist/textAngular.js"></script>
+        <script src="bower_components/textAngular/dist/textAngular-sanitize.js"></script>
+        <script src="bower_components/textAngular/dist/textAngularSetup.js"></script>
+        <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
+        <script src="bower_components/angular-permission/dist/angular-permission.js"></script>
+        <script src="bower_components/triangular/triangular.js"></script>
+        <!-- endbower -->
+
+        <!-- inject:js -->
+        <script src="app/examples/email/email.module.js"></script>
+        <script src="app/examples/email/layout/toolbar/toolbar.controller.js"></script>
+        <script src="app/examples/calendar/calendar.module.js"></script>
+        <script src="app/examples/calendar/layouts/toolbar/toolbar.controller.js"></script>
+        <script src="app/examples/menu/menu.module.js"></script>
+        <script src="app/examples/menu/examples/dynamic-menu.controller.js"></script>
+        <script src="app/examples/maps/maps.module.js"></script>
+        <script src="app/examples/maps/examples/map-terrain-demo.controller.js"></script>
+        <script src="app/examples/maps/examples/map-label-demo.controller.js"></script>
+        <script src="app/examples/forms/forms.module.js"></script>
+        <script src="app/examples/forms/examples/binding-1.controller.js"></script>
+        <script src="app/examples/forms/examples/autocomplete-1.controller.js"></script>
+        <script src="app/examples/elements/elements.module.js"></script>
+        <script src="app/examples/elements/examples/upload-animate.controller.js"></script>
+        <script src="app/examples/elements/examples/upload-1.controller.js"></script>
+        <script src="app/examples/elements/examples/toast-1.controller.js"></script>
+        <script src="app/examples/elements/examples/table-advanced.controller.js"></script>
+        <script src="app/examples/elements/examples/table-advanced-service.js"></script>
+        <script src="app/examples/elements/examples/table-1.controller.js"></script>
+        <script src="app/examples/elements/examples/loader-1.controller.js"></script>
+        <script src="app/examples/elements/examples/grids-1.controller.js"></script>
+        <script src="app/examples/elements/examples/fab-speed-1.controller.js"></script>
+        <script src="app/examples/elements/examples/dialog-1.controller.js"></script>
+        <script src="app/examples/elements/examples/chips.controller.js"></script>
+        <script src="app/examples/dashboards/dashboards.module.js"></script>
+        <script src="app/examples/dashboards/widgets/widget-weather.directive.js"></script>
+        <script src="app/examples/dashboards/widgets/widget-twitter.directive.js"></script>
+        <script src="app/examples/dashboards/widgets/widget-todo.directive.js"></script>
+        <script src="app/examples/dashboards/widgets/widget-server.directive.js"></script>
+        <script src="app/examples/dashboards/widgets/widget-load-data.directive.js"></script>
+        <script src="app/examples/dashboards/widgets/widget-google-geochart.js"></script>
+        <script src="app/examples/dashboards/widgets/widget-contacts.directive.js"></script>
+        <script src="app/examples/dashboards/widgets/widget-chat.directive.js"></script>
+        <script src="app/examples/dashboards/widgets/widget-chartjs-ticker.directive.js"></script>
+        <script src="app/examples/dashboards/widgets/widget-chartjs-pie.directive.js"></script>
+        <script src="app/examples/dashboards/widgets/widget-chartjs-line.directive.js"></script>
+        <script src="app/examples/dashboards/widgets/widget-calendar.directive.js"></script>
+        <script src="app/examples/dashboards/social/dashboard-social.controller.js"></script>
+        <script src="app/examples/dashboards/server/dashboard-server.controller.js"></script>
+        <script src="app/examples/dashboards/sales/sales.service.js"></script>
+        <script src="app/examples/dashboards/sales/order-dialog.controller.js"></script>
+        <script src="app/examples/dashboards/sales/fab-button.controller.js"></script>
+        <script src="app/examples/dashboards/sales/date-change-dialog.controller.js"></script>
+        <script src="app/examples/dashboards/sales/dashboard-sales.controller.js"></script>
+        <script src="app/examples/dashboards/analytics/dashboard-analytics.controller.js"></script>
+        <script src="app/examples/charts/charts.module.js"></script>
+        <script src="app/examples/charts/examples/google-scatter.controller.js"></script>
+        <script src="app/examples/charts/examples/google-line.controller.js"></script>
+        <script src="app/examples/charts/examples/google-bar.controller.js"></script>
+        <script src="app/examples/charts/examples/chartjs-ticker.controller.js"></script>
+        <script src="app/examples/charts/examples/chartjs-pie.controller.js"></script>
+        <script src="app/examples/charts/examples/chartjs-line.controller.js"></script>
+        <script src="app/examples/charts/examples/chartjs-bar.controller.js"></script>
+        <script src="app/examples/authentication/authentication.module.js"></script>
+        <script src="app/examples/authentication/signup/signup.controller.js"></script>
+        <script src="app/examples/authentication/profile/profile.controller.js"></script>
+        <script src="app/examples/authentication/login/login.controller.js"></script>
+        <script src="app/examples/authentication/lock/lock.controller.js"></script>
+        <script src="app/examples/authentication/forgot/forgot.controller.js"></script>
+        <script src="app/permission/permission.module.js"></script>
+        <script src="app/permission/pages/permission.controller.js"></script>
+        <script src="app/layouts/toolbar/toolbar.controller.js"></script>
+        <script src="app/layouts/rightsidenav/rightsidenav.controller.js"></script>
+        <script src="app/app.js"></script>
+        <script src="app/layouts/loader/loader.controller.js"></script>
+        <script src="app/layouts/leftsidenav/leftsidenav.controller.js"></script>
+        <script src="app/layouts/footer/footer.controller.js"></script>
+        <script src="app/examples/ui/webfont-loader-module.js"></script>
+        <script src="app/examples/ui/ui.module.js"></script>
+        <script src="app/examples/ui/weather-icons.controller.js"></script>
+        <script src="app/examples/ui/ui.run.js"></script>
+        <script src="app/examples/ui/ui.config.js"></script>
+        <script src="app/examples/ui/typography.controller.js"></script>
+        <script src="app/examples/ui/typography-switcher.service.js"></script>
+        <script src="app/examples/ui/skins.controller.js"></script>
+        <script src="app/examples/ui/material-icons.controller.js"></script>
+        <script src="app/examples/ui/fa-icons.controller.js"></script>
+        <script src="app/examples/ui/colors.controller.js"></script>
+        <script src="app/examples/ui/color-dialog.controller.js"></script>
+        <script src="app/examples/todo/todo.module.js"></script>
+        <script src="app/examples/todo/todo.controller.js"></script>
+        <script src="app/examples/todo/todo.config.js"></script>
+        <script src="app/examples/todo/fab-button.controller.js"></script>
+        <script src="app/examples/todo/dialog.controller.js"></script>
+        <script src="app/examples/menu/menu.config.js"></script>
+        <script src="app/examples/menu/level.controller.js"></script>
+        <script src="app/examples/menu/dynamicMenu.service.js"></script>
+        <script src="app/examples/maps/maps.config.js"></script>
+        <script src="app/examples/maps/map.controller.js"></script>
+        <script src="app/examples/layouts/layouts.module.js"></script>
+        <script src="app/examples/layouts/layouts.config.js"></script>
+        <script src="app/examples/layouts/composer.controller.js"></script>
+        <script src="app/examples/github/github.module.js"></script>
+        <script src="app/examples/github/github.controller.js"></script>
+        <script src="app/examples/github/github.config.js"></script>
+        <script src="app/examples/forms/forms.config.js"></script>
+        <script src="app/examples/forms/form-wizard.controller.js"></script>
+        <script src="app/examples/extras/extras.module.js"></script>
+        <script src="app/examples/extras/timeline.controller.js"></script>
+        <script src="app/examples/extras/replace-with.directive.js"></script>
+        <script src="app/examples/extras/gallery.controller.js"></script>
+        <script src="app/examples/extras/gallery-dialog.controller.js"></script>
+        <script src="app/examples/extras/extras.config.js"></script>
+        <script src="app/examples/extras/avatars.controller.js"></script>
+        <script src="app/examples/extras/animate-element.directive.js"></script>
+        <script src="app/examples/email/inbox.controller.js"></script>
+        <script src="app/examples/email/emailgroup.filter.js"></script>
+        <script src="app/examples/email/email.controller.js"></script>
+        <script src="app/examples/email/email.config.textangular.js"></script>
+        <script src="app/examples/email/email.config.js"></script>
+        <script src="app/examples/email/email-search.filter.js"></script>
+        <script src="app/examples/email/email-dialog.controller.js"></script>
+        <script src="app/examples/email/cut.filter.js"></script>
+        <script src="app/examples/elements/progress.controller.js"></script>
+        <script src="app/examples/elements/icons.controller.js"></script>
+        <script src="app/examples/elements/elements.config.js"></script>
+        <script src="app/examples/elements/buttons.controller.js"></script>
+        <script src="app/examples/dashboards/dashboards.config.js"></script>
+        <script src="app/examples/dashboards/dashboard-draggable-controller.js"></script>
+        <script src="app/examples/charts/charts.config.js"></script>
+        <script src="app/examples/calendar/padding.filter.js"></script>
+        <script src="app/examples/calendar/event-dialog.controller.js"></script>
+        <script src="app/examples/calendar/calendar.controller.js"></script>
+        <script src="app/examples/calendar/calendar.config.js"></script>
+        <script src="app/examples/calendar/calendar-fabs.controller.js"></script>
+        <script src="app/examples/authentication/authentication.config.js"></script>
+        <script src="app/translate/translate.module.js"></script>
+        <script src="app/translate/translate.config.js"></script>
+        <script src="app/seed-module/seed.module.js"></script>
+        <script src="app/seed-module/seed.config.js"></script>
+        <script src="app/seed-module/seed-page.controller.js"></script>
+        <script src="app/permission/user.factory.js"></script>
+        <script src="app/permission/permission.run.js"></script>
+        <script src="app/permission/permission.config.js"></script>
+        <script src="app/examples/examples.module.js"></script>
+        <script src="app/value.googlechart.js"></script>
+        <script src="app/translate.filter.js"></script>
+        <script src="app/error-page.controller.js"></script>
+        <script src="app/config.triangular.themes.js"></script>
+        <script src="app/config.triangular.settings.js"></script>
+        <script src="app/config.triangular.layout.js"></script>
+        <script src="app/config.translate.js"></script>
+        <script src="app/config.route.js"></script>
+        <script src="app/config.chartjs.js"></script>
+        <!-- endinject -->
+    </body>
+</html>

@@ -162,8 +162,8 @@
         $http({
             method: 'GET',
             url: API_CONFIG.url + 'email/inbox'
-        }).success(function(data) {
-            vm.emails = data.slice(1,20);
+        }).then(function(response) {
+            vm.emails = response.data.slice(1,20);
         });
 
         function openMail() {
