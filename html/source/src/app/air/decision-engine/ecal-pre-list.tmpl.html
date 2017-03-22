@@ -16,7 +16,7 @@
             <tr md-row ng-repeat="symbol in vm.ecalPre | orderBy: vm.query.order | limitTo: vm.ecalPrePageSize : (vm.ecalPreCurPage - 1) * vm.ecalPrePageSize">
                 <td md-cell>{{symbol.symbol}}</td>
                 <td md-cell>{{symbol.price | number:2}}</td>
-                <td md-cell ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">{{symbol.dollarChange | number:2}} ({{symbol.percentChange | number:2}}%)</td>
+                <td md-cell class="no-padding" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">{{symbol.dollarChange | number:2}} ({{symbol.percentChange | number:2}}%)</td>
                 <td md-cell ng-show="{{symbol.avgVol == 0}}">-</td>
                 <td md-cell ng-hide="{{symbol.avgVol == 0}}">{{symbol.avgVol | number:0}}</td>
                 <td md-cell ng-show="{{symbol.time == 1}}">After Market</td>
