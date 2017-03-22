@@ -113,7 +113,6 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .external-links-button{width: 100%;margin: auto;text-transform:none;}
 
 // Symbol Table
-.list-cell{padding-top:10px !important;padding-bottom:10px !important;}
 .list-symbol{font-size: 20px;font-weight: 400;letter-spacing: 0.005em;color: $blue;}
 .list-template-container{padding-bottom: 0;}
 .list-card{max-width:1550px;margin:auto;}
@@ -124,6 +123,7 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .symbol-table > thead > tr > th {font-size: 15px !important;}
 .symbol-table.md-table th.md-column md-icon {height: 18px;min-height: 0px;}
 .symbol-table.md-table td.md-cell {font-size:14px; color: $medium-gray;}
+.symbol-container {padding-top:10px !important;padding-bottom:10px !important;min-width:85px;}
 .price-container {width:140px;text-align: center !important;}
 .chart-container {min-width:140px;max-width:150px;padding:10px 40px 10px 0px!important}
 

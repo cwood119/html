@@ -26,19 +26,19 @@
 </md-toolbar>
 <md-table-container>
     <table md-table class="md-primary md-data-table symbol-table">
-        <thead md-head>
+        <thead md-head md-order="vm.query.order">
             <tr md-row>
                 <!-- <th md-column class="md-subhead">Symbol</th>
                 <th md-column class="md-subhead">Price</th>
                 <th md-column class="md-subhead">Chart</th> -->
                 <th md-column class="md-subhead"></th>
                 <th md-column class="md-subhead"></th>
-                <th md-column class="md-subhead">Change</th>
+                <th md-column class="md-subhead" md-order-by="percentChange">Change</th>
                 <th md-column ng-show="vm.currentPath === '/alerts'">Alert</th>
-                <th md-column class="md-subhead">Volume</th>
-                <th md-column class="md-subhead">Avg Vol</th>
-                <th md-column class="md-subhead">Short</th>
-                <th md-column class="md-subhead">Short %</th>
+                <th md-column class="md-subhead" md-order-by="volume">Volume</th>
+                <th md-column class="md-subhead" md-order-by="avgVol">Avg Vol</th>
+                <th md-column class="md-subhead" md-order-by="sharesShort">Short</th>
+                <th md-column class="md-subhead" md-order-by="shortPercent">Short %</th>
                 <th md-column class="md-subhead">Vitals</th>
                 <th md-column class="md-subhead">Headlines</th>
                 <th md-column md-subhead></th>
@@ -46,10 +46,8 @@
         </thead>
         <tbody md-body>
             <tr md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter:vm.volume() | filter: vm.avgVol()) |
-            orderBy: '-percentChange' | orderBy:vm.sortPrice | orderBy:vm.sortPercentChange | orderBy:vm.sortVolume |
-            orderBy:vm.sortAvgVol | orderBy:vm.sortMktCap | orderBy:vm.sortFloat | orderBy:vm.sortShort | orderBy:vm.sortSymbol  |
-            limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize track by symbol.id">
-                <td md-cell class="list-cell">
+            orderBy: vm.query.order| limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize track by symbol.id">
+                <td md-cell class="symbol-container">
                     <div class="list-symbol">{{symbol.symbol}}<md-tooltip>{{symbol.name}}</md-tooltip></div>
                     <div class="md-body-2">
                         {{symbol.price | number:2}}
