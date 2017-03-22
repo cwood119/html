@@ -28,11 +28,13 @@
     <table md-table class="md-primary md-data-table symbol-table">
         <thead md-head>
             <tr md-row>
-                <th md-column class="md-subhead">Symbol</th>
+                <!-- <th md-column class="md-subhead">Symbol</th>
                 <th md-column class="md-subhead">Price</th>
-                <th md-column class="md-subhead">Chart</th>
+                <th md-column class="md-subhead">Chart</th> -->
+                <th md-column class="md-subhead"></th>
+                <th md-column class="md-subhead"></th>
+                <th md-column class="md-subhead">Change</th>
                 <th md-column ng-show="vm.currentPath === '/alerts'">Alert</th>
-
                 <th md-column class="md-subhead">Volume</th>
                 <th md-column class="md-subhead">Avg Vol</th>
                 <th md-column class="md-subhead">Short</th>
@@ -48,22 +50,25 @@
             orderBy:vm.sortAvgVol | orderBy:vm.sortMktCap | orderBy:vm.sortFloat | orderBy:vm.sortShort | orderBy:vm.sortSymbol  |
             limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize track by symbol.id">
                 <td md-cell class="list-cell">
-                    <div class="list-symbol">{{symbol.symbol}}</div>
-                    <div class="md-body-1">{{symbol.name}}</div>
-                </td>
-                <td md-cell class="no-padding price-container">
+                    <div class="list-symbol">{{symbol.symbol}}<md-tooltip>{{symbol.name}}</md-tooltip></div>
                     <div class="md-body-2">
                         {{symbol.price | number:2}}
-                    </div>
-                    <div class="md-body-1" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">
-                        {{symbol.dollarChange | number:2}} ({{symbol.percentChange | number:2}}%)
+                        <span class="md-body-1" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">
+                           <span ng-show="symbol.dollarChange > 0"> +</span>{{symbol.dollarChange | number:2}}
+                        </span>
                     </div>
                 </td>
 
                 <td md-cell class="chart-container" ng-mouseLeave="vm.hideInteractive();">
                     <!-- <div google-chart chart="vm.chartData"></div> -->
                         <nvd3 ng-show="vm.chartToggle != 0" options="vm.lineChartOptions" data="symbol.chart"></nvd3>
+                </td>
+                <td md-cell class="no-padding">
 
+                    <div class="md-body-1" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">
+                      <!--<md-icon md-font-icon="zmdi zmdi-long-arrow-up" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}" class="long-arrow"></md-icon>-->
+                      <span ng-show="symbol.dollarChange > 0"> +</span>{{symbol.percentChange | number:2}}%
+                    </div>
                 </td>
 
                 <td md-cell ng-show="vm.currentPath === '/alerts'">

@@ -39,6 +39,7 @@ a{color:$blue !important;}
 .float-left{float:left;}
 .no-padding{padding: 0 !important;}
 .layout-margin.ng-scope{text-align:center;}
+.long-arrow {width: 10px !important;min-width: 10px;font-size: 15px !important;}
 
 ////////// Elements
 
@@ -115,6 +116,7 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .list-cell{padding-top:10px !important;padding-bottom:10px !important;}
 .list-symbol{font-size: 20px;font-weight: 400;letter-spacing: 0.005em;color: $blue;}
 .list-template-container{padding-bottom: 0;}
+.list-card{max-width:1550px;margin:auto;}
 .list-buttons{position: absolute;top: 13px;right: 0;}
 .list-buttons-icon {font-size: 22px !important;}
 .symbol-table {background-color:white;}
@@ -122,8 +124,8 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .symbol-table > thead > tr > th {font-size: 15px !important;}
 .symbol-table.md-table th.md-column md-icon {height: 18px;min-height: 0px;}
 .symbol-table.md-table td.md-cell {font-size:14px; color: $medium-gray;}
-.price-container {width:140px;}
-.chart-container {min-width:140px;padding:10px 25px !important;}
+.price-container {width:140px;text-align: center !important;}
+.chart-container {min-width:140px;max-width:150px;padding:10px 40px 10px 0px!important}
 
 // Symbol Table chart
 .x-value {display:none;}
