@@ -49,7 +49,7 @@
                 } else {vm.ecalPreToggle=0;}
                 // Hide if Active on Ecal Page
                 if (data[1].data.length != 0) {
-                    var list = data[1].data.list;
+                    var list = data[1].data[1].list;
                     if (list == 'Pre Market Movers') {vm.ecalPreToggle=0;}
                 }
             });
