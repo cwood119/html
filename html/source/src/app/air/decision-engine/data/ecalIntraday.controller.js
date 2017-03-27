@@ -50,7 +50,7 @@
                     vm.ecalIntradayToggle=0;
                 }
                 // Hide if Active on Ecal Page
-                if (data[1].data.length != 0) {
+                if (data[1].data[1].length != 0) {
                     var list = data[1].data[1].list;
                     if (list == 'Calendar Movers') {vm.ecalIntradayToggle=0;}
                     if (list == 'Pre Market Movers') {vm.ecalIntradayToggle=0;}
