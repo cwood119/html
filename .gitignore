@@ -24,3 +24,4 @@ source/.tmp/partials/
 source/dist/app/air/
 source/dist/scripts/app.js
 source/dist/styles/app.css
+source/dist/index.html
