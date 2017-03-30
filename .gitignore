@@ -20,3 +20,7 @@ source/src/app/air/update-data.sh
 source/src/app/air/watchlist/data/data.json
 source/src/app/air/watchlist/data/headlines.json
 source/src/app/air/watchlist/data/symbols.txt
+source/.tmp/partials/
+source/dist/app/air/
+source/dist/scripts/app.js
+source/dist/styles/app.css
