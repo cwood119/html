@@ -1,5 +1,5 @@
 /var/www/html/source/.tmp/*
-source/src/app/air/update-data.sh
+/var/www/html/source/src/app/air/update-data.sh
 /var/www/html/source/src/app/air/decision-engine/data/*.csv
 /var/www/html/source/src/app/air/alerts/data/*.json
 /var/www/html/source/src/app/air/watchlist/data/*.json
