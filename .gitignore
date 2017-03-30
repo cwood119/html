@@ -12,3 +12,4 @@
 /var/www/html/source/src/app/air/market-movers/data/data.json
 /var/www/html/source/src/app/air/market-movers/data/headlines.json
 /var/www/html/source/src/app/air/market-movers/data/symbols.txt
+/var/www/html/source/.tmp/*
