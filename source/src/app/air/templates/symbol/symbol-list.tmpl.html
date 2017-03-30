@@ -1,0 +1,143 @@
+<md-toolbar class="md-table-toolbar md-default">
+  <div class="md-toolbar-tools">
+    <span ng-show="!vm.showSearch"><h2-class="md-title">{{vm.list}}</h2></span>
+    <!-- Symbol Filter -->
+    <md-input-container class="no-margin search-container" ng-show="vm.showSearch">
+        <label>Search</label>
+        <input type="text" ng-model="search">
+    </md-input-container>
+    <div class="list-buttons" hide-gt-xs>
+        <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
+            <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw zmdi-hc-flip-horizontal animated infinite pulse" ></md-icon>
+        </md-button>
+    </div>
+    <div class="list-buttons" hide-xs>
+        <md-button aria-label="search" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.showSearch = !vm.showSearch">
+            <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-search" ></md-icon>
+        </md-button>
+        <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
+            <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw zmdi-hc-flip-horizontal animated infinite pulse" ></md-icon>
+        </md-button>
+        <md-button aria-label="sort" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.openSidebar('sort-sidebar') ">
+            <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-sort-asc"></md-icon>
+        </md-button>
+        <md-button aria-label="filter" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.openSidebar('filter-sidebar')">
+            <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-filter-list"></md-icon>
+        </md-button>
+        <md-button aria-label="download symbols" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" download="symbols.txt" ng-href="http://automatedinvestmentresearch.com/app/app/air{{vm.currentPath}}/data/symbols.txt">
+            <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-download"></md-icon>
+        </md-button>
+    </div>
+  </div>
+</md-toolbar>
+
+<md-table-container>
+    <table md-table class="md-primary md-data-table symbol-table">
+        <thead md-head md-order="vm.query.order">
+            <tr md-row>
+                <!-- <th md-column class="md-subhead">Symbol</th>
+                <th md-column class="md-subhead">Price</th>
+                <th md-column class="md-subhead">Chart</th> -->
+                <th md-column class="md-subhead"></th>
+                <th md-column class="md-subhead"></th>
+                <th md-column class="md-subhead" md-order-by="percentChange">Change</th>
+                <th md-column ng-show="vm.currentPath === '/alerts'">Alert</th>
+                <th md-column class="md-subhead" md-order-by="volume">Volume</th>
+                <th md-column class="md-subhead" md-order-by="avgVol">Avg Vol</th>
+                <th md-column class="md-subhead" md-order-by="sharesShort">Short</th>
+                <th md-column class="md-subhead" md-order-by="shortPercent">Short %</th>
+                <th md-column class="md-subhead">Vitals</th>
+                <th md-column class="md-subhead">Headlines</th>
+                <th md-column md-subhead></th>
+            </tr>
+        </thead>
+        <tbody md-body>
+            <tr md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter:vm.volume() | filter: vm.avgVol() | filter: {symbol:search}) |
+            orderBy: vm.query.order| limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize track by symbol.id">
+                <td md-cell class="symbol-container">
+                    <div class="list-symbol">{{symbol.symbol}}<md-tooltip>{{symbol.name}}</md-tooltip></div>
+                    <div class="md-body-2">
+                        {{symbol.price | number:2}}
+                        <span class="md-body-1" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">
+                           <span ng-show="symbol.dollarChange > 0"> +</span>{{symbol.dollarChange | number:2}}
+                        </span>
+                    </div>
+                </td>
+
+                <td md-cell class="chart-container" ng-mouseLeave="vm.hideInteractive();">
+                    <!-- <div google-chart chart="vm.chartData"></div> -->
+                        <nvd3 ng-show="vm.chartToggle != 0" options="vm.lineChartOptions" data="symbol.chart"></nvd3>
+                </td>
+                <td md-cell class="no-padding">
+
+                    <div class="md-body-1" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">
+                      <!--<md-icon md-font-icon="zmdi zmdi-long-arrow-up" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}" class="long-arrow"></md-icon>-->
+                      <span ng-show="symbol.dollarChange > 0"> +</span>{{symbol.percentChange | number:2}}%
+                    </div>
+                </td>
+
+                <td md-cell ng-show="vm.currentPath === '/alerts'">
+                    <div class="md-body-1">{{symbol.triggerPrice}}</div>
+                </td>
+
+                <td md-cell>
+                    <div class="md-body-1" ng-show="{{symbol.volume == 0}}">-</div>
+                    <div class="md-body-1" ng-hide="{{symbol.volume == 0}}">{{symbol.volume | number:0}}</div>
+                </td>
+                <td md-cell>
+                    <div class="md-body-1" ng-show="{{symbol.avgVol == 0}}">-</div>
+                    <div class="md-body-1" ng-hide="{{symbol.avgVol == 0}}">{{symbol.avgVol | number:0}}</div>
+                </td>
+                <td md-cell>
+                    <div class="md-body-1" ng-show="{{symbol.sharesShort == 0}}">-</div>
+                    <div class="md-body-1" ng-hide="{{symbol.sharesShort == 0}}">{{symbol.sharesShort | number:0}}</div>
+                </td>
+                <td md-cell>
+                    <div class="md-body-1" ng-show="{{symbol.shortPercent == 0}}">-</div>
+                    <div class="md-body-1" ng-hide="{{symbol.shortPercent == 0}}">{{symbol.shortPercent | number:2}}%</div>
+                </td>
+                <td md-cell>
+                    <div class="md-body-1 pointer blue" ng-disabled="dialogForm.$invalid" ng-click="vm.openVitals($event, symbol)">Vitals</div>
+                </td>
+                <td md-cell>
+                    <div class="md-body-1 pointer blue" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event, symbol)">Headlines</div>
+                </td>
+
+                <td md-cell>
+                    <md-menu class="external-links-menu-container-list">
+                        <md-button class="md-icon-button" aria-label="open menu" ng-click="$mdOpenMenu()">
+                            <md-icon md-font-icon="zmdi zmdi-more-vert"></md-icon>
+                        </md-button>
+                        <md-menu-content width="3">
+                            <md-menu-item class="external-links-menu-item">
+                                <a ng-href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={{symbol.symbol}}&type=&dateb=&owner=include&count=100" target="_blank">
+                                    <md-button class="md-flat external-links-button blue" ng-class="['md-primary','md-default-hue']" aria-label="SEC Filings">SEC Filings</md-button>
+                                </a>
+                            </md-menu-item>
+                            <md-menu-item class="external-links-menu-item">
+                                <a ng-href="https://www.google.com/finance?q={{symbol.symbol}}&fstype=ii" target="_blank">
+                                    <md-button class="md-flat external-links-button blue" ng-class="['md-primary','md-default-hue']" aria-label="Financial Statements">Statements</md-button>
+                                </a>
+                            </md-menu-item>
+                            <md-menu-item class="external-links-menu-item">
+                                <a ng-href="http://finance.yahoo.com/q/ks?s={{symbol.symbol}}+Key+Statistics" target="_blank">
+                                    <md-button class="md-flat external-links-button blue" ng-class="['md-primary','md-default-hue']" aria-label="Yahoo Finance Statistics">Yahoo! Stats</md-button>
+                                </a>
+                            </md-menu-item>
+                            <md-menu-item class="external-links-menu-item">
+                                <a ng-href="https://www.quandl.com/data/SI/{{symbol.symbol}}_SI" target="_blank">
+                                    <md-button class="md-flat external-links-button blue" ng-class="['md-primary','md-default-hue']" aria-label="Short Interest">Short Interest</md-button>
+                                </a>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</md-table-container>
+<md-table-pagination md-limit="vm.pageSize" md-limit-options="vm.limitOptions"  md-page-select md-page="vm.curPage" md-total="{{vm.filtered.length}}" class="symbol-pagination"></md-table-pagination>
+<div class="attributions attributions-list-view">
+    Updated: {{vm.updated}}<br />
+    Data from <a href="http://www.zacksdata.com/" target="_blank">Zacks</a> &middot; Intrinio &middot; Tradier
+</div>

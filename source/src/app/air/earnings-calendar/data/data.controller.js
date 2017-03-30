@@ -22,6 +22,7 @@
         vm.currentPath = $location.path();
         vm.layout = 'list';
         vm.openSidebar = function(id) {$mdSidenav(id).toggle();vm.refreshSlider();};
+        vm.toggleSearch = function() {vm.showSearch = !vm.showSearch;};
         vm.symbols=[];
 
         // Pagination Variables

@@ -38,6 +38,7 @@ a{color:$blue !important;}
 .float-right{float:right;}
 .float-left{float:left;}
 .no-padding{padding: 0 !important;}
+.no-margin{margin: 0 !important;}
 .layout-margin.ng-scope{text-align:center;}
 .long-arrow {width: 10px !important;min-width: 10px;font-size: 15px !important;}
 
@@ -126,6 +127,7 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .symbol-container {padding-top:10px !important;padding-bottom:10px !important;min-width:85px;}
 .price-container {width:140px;text-align: center !important;}
 .chart-container {min-width:140px;max-width:150px;padding:10px 40px 10px 0px!important}
+.search-container {top:15px;}
 
 // Symbol Table chart
 .x-value {display:none;}

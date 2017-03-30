@@ -1,0 +1,69 @@
+
+<!-- Price Filter -->
+<md-subheader class="md-primary">
+    Price: ${{vm.slider.min}} - ${{vm.slider.max}}
+    <md-switch class="md-accent filterToggles" ng-disabled="vm.priceDisabled" ng-model="vm.priceToggle" aria-label="Price Toggle" ng-change="vm.priceFilterCheck(vm.priceToggle)"></md-switch>
+</md-subheader>
+<div class="md-padding">
+    <rzslider
+        rz-slider-model="vm.slider.min"
+        rz-slider-high="vm.slider.max"
+        rz-slider-options="vm.slider.options">
+    </rzslider>
+</div>
+<!-- Volume Filter -->
+<md-subheader class="md-primary">
+    Volume: <md-icon class=" material-icons zmdi zmdi-long-arrow-up volume-filter-long-up-arrow" aria-hidden="true" ng-hide="vm.volumeIndicator == 'Any Vol'"></md-icon> {{vm.volumeIndicator}}
+    <md-switch class="md-accent filterToggles" ng-disabled="vm.volumeDisabled" ng-model="vm.volumeToggle" aria-label="Volume Toggle" ng-change="vm.volumeFilterCheck(vm.volumeToggle)"></md-switch>
+</md-subheader>
+<div class="md-padding filter-options">
+    <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 500K
+    <md-checkbox class="md-accent filterToggles" aria-label="Toggle volume over 500K" ng-disabled="vm.volumeLowDisabled" ng-model="vm.volumeLowToggle" ng-change="vm.volumeFilter(vm.volumeLowToggle)"></md-checkbox> <br />
+
+    <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 1M
+    <md-checkbox class="md-accent filterToggles" aria-label="Toggle volume over 1M" ng-disabled="vm.volumeMidDisabled" ng-model="vm.volumeMidToggle" ng-change="vm.volumeFilter(vm.volumeMidToggle)"></md-checkbox><br />
+
+    <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 5M
+    <md-checkbox class="md-accent filterToggles" aria-label="Toggle volume over 5M" ng-disabled="vm.volumeHighDisabled" ng-model="vm.volumeHighToggle" ng-change="vm.volumeFilter(vm.volumeHighToggle)"></md-checkbox><br />
+</div>
+
+<!-- avgVol Filter -->
+<md-subheader class="md-primary">
+    Avg Vol: <md-icon class=" material-icons zmdi zmdi-long-arrow-up volume-filter-long-up-arrow" aria-hidden="true" ng-hide="vm.avgVolIndicator == 'Any Vol'"></md-icon> {{vm.avgVolIndicator}}
+    <md-switch class="md-accent filterToggles" ng-disabled="vm.avgVolDisabled" ng-model="vm.avgVolToggle" aria-label="avgVol Toggle" ng-change="vm.avgVolFilterCheck(vm.avgVolToggle)"></md-switch>
+</md-subheader>
+<div class="md-padding filter-options">
+    <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 500K
+    <md-checkbox class="md-accent filterToggles" aria-label="Toggle avgVol over 500K" ng-disabled="vm.avgVolLowDisabled" ng-model="vm.avgVolLowToggle" ng-change="vm.avgVolFilter(vm.avgVolLowToggle)"></md-checkbox> <br />
+
+    <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 1M
+    <md-checkbox class="md-accent filterToggles" aria-label="Toggle avgVol over 1M" ng-disabled="vm.avgVolMidDisabled" ng-model="vm.avgVolMidToggle" ng-change="vm.avgVolFilter(vm.avgVolMidToggle)"></md-checkbox><br />
+
+    <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 5M
+    <md-checkbox class="md-accent filterToggles" aria-label="Toggle avgVol over 5M" ng-disabled="vm.avgVolHighDisabled" ng-model="vm.avgVolHighToggle" ng-change="vm.avgVolFilter(vm.avgVolHighToggle)"></md-checkbox><br />
+</div>
+
+<!-- Float Filter -->
+<md-subheader class="md-primary">
+    Float: <md-icon class=" material-icons zmdi zmdi-long-arrow-up volume-filter-long-up-arrow" aria-hidden="true" ng-hide="vm.floatIndicator == 'Any Float'"></md-icon> {{vm.floatIndicator}}
+    <md-switch class="md-accent filterToggles" ng-disabled="vm.floatDisabled" ng-model="vm.floatToggle" aria-label="float Toggle" ng-change="vm.floatFilterCheck(vm.floatToggle)"></md-switch>
+</md-subheader>
+<div class="md-padding filter-options">
+    <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 500K
+    <md-checkbox class="md-accent filterToggles" aria-label="Toggle float over 500K" ng-disabled="vm.floatLowDisabled" ng-model="vm.floatLowToggle" ng-change="vm.floatFilter(vm.floatLowToggle)"></md-checkbox> <br />
+
+    <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 1M
+    <md-checkbox class="md-accent filterToggles" aria-label="Toggle float over 1M" ng-disabled="vm.floatMidDisabled" ng-model="vm.floatMidToggle" ng-change="vm.floatFilter(vm.floatMidToggle)"></md-checkbox><br />
+
+    <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 5M
+    <md-checkbox class="md-accent filterToggles" aria-label="Toggle float over 5M" ng-disabled="vm.floatHighDisabled" ng-model="vm.floatHighToggle" ng-change="vm.floatFilter(vm.floatHighToggle)"></md-checkbox><br />
+
+    <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true"></md-icon> 500K
+    <md-checkbox class="md-accent filterToggles" aria-label="Toggle float over 500K" ng-disabled="vm.floatLowDisabled" ng-model="vm.floatLowToggle" ng-change="vm.floatFilter(vm.floatLowToggle)"></md-checkbox> <br />
+
+    <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true"></md-icon> 1M
+    <md-checkbox class="md-accent filterToggles" aria-label="Toggle float over 1M" ng-disabled="vm.floatMidDisabled" ng-model="vm.floatMidToggle" ng-change="vm.floatFilter(vm.floatMidToggle)"></md-checkbox><br />
+
+    <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true"></md-icon> 5M
+    <md-checkbox class="md-accent filterToggles" aria-label="Toggle float over 5M" ng-disabled="vm.floatHighDisabled" ng-model="vm.floatHighToggle" ng-change="vm.floatFilter(vm.floatHighToggle)"></md-checkbox><br />
+</div>
