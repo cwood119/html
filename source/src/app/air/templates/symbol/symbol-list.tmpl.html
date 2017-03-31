@@ -1,34 +1,34 @@
 <md-toolbar class="md-table-toolbar md-default">
-  <div class="md-toolbar-tools">
-    <span ng-show="!vm.showSearch"><h2-class="md-title">{{vm.list}}</h2></span>
-    <!-- Symbol Filter -->
-    <md-input-container class="no-margin search-container" ng-show="vm.showSearch">
-        <label>Search</label>
-        <input type="text" ng-model="search" show-focus="vm.showSearch">
-    </md-input-container>
-    <div class="list-buttons" hide-gt-xs>
-        <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
-            <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw zmdi-hc-flip-horizontal animated infinite pulse" ></md-icon>
-        </md-button>
+    <div class="md-toolbar-tools">
+        <span ng-show="!vm.showSearch"><h2-class="md-title">{{vm.list}}</h2></span>
+        <!-- Symbol Filter -->
+        <md-input-container class="no-margin search-container" ng-show="vm.showSearch">
+            <label>Search</label>
+            <input type="text" ng-model="search" show-focus="vm.showSearch">
+        </md-input-container>
+        <div class="list-buttons" hide-gt-xs ng-show="!vm.showSearch">
+            <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw zmdi-hc-flip-horizontal animated infinite pulse" ></md-icon>
+            </md-button>
+        </div>
+        <div class="list-buttons" hide-xs>
+            <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw zmdi-hc-flip-horizontal animated infinite pulse" ></md-icon>
+            </md-button>
+            <md-button aria-label="search" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.showSearch = !vm.showSearch">
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-search" ></md-icon>
+            </md-button>
+            <md-button aria-label="sort" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.openSidebar('sort-sidebar') ">
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-sort-asc"></md-icon>
+            </md-button>
+            <md-button aria-label="filter" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.openSidebar('filter-sidebar')">
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-filter-list"></md-icon>
+            </md-button>
+            <md-button aria-label="download symbols" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" download="symbols.txt" ng-href="http://automatedinvestmentresearch.com/app/app/air{{vm.currentPath}}/data/symbols.txt">
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-download"></md-icon>
+            </md-button>
+        </div>
     </div>
-    <div class="list-buttons" hide-xs>
-        <md-button aria-label="search" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.showSearch = !vm.showSearch">
-            <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-search" ></md-icon>
-        </md-button>
-        <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
-            <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw zmdi-hc-flip-horizontal animated infinite pulse" ></md-icon>
-        </md-button>
-        <md-button aria-label="sort" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.openSidebar('sort-sidebar') ">
-            <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-sort-asc"></md-icon>
-        </md-button>
-        <md-button aria-label="filter" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.openSidebar('filter-sidebar')">
-            <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-filter-list"></md-icon>
-        </md-button>
-        <md-button aria-label="download symbols" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" download="symbols.txt" ng-href="http://automatedinvestmentresearch.com/app/app/air{{vm.currentPath}}/data/symbols.txt">
-            <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-download"></md-icon>
-        </md-button>
-    </div>
-  </div>
 </md-toolbar>
 
 <md-table-container>
