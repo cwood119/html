@@ -103,6 +103,7 @@
                     vm.lineChartOptions = {
                         chart: {
                             type: 'lineChart',
+                            //color: function(d){ return (d.x > 10) ? 'red' : 'green'},
                             showXAxis: false,
                             showYAxis: false,
                             showLegend: false,
@@ -111,24 +112,17 @@
                             duration: 0,
                             height: 90,
                             margin : {top: 0,right: 0,bottom: 0,left: 0},
-
                             x: function(d){ return d.x; },
                             y: function(d){ return d.y; },
-                            yAxis: {
-                                tickFormat: function(d){
-                                    return d3.format('.02f')(d);
-                                }
-                            },
                             callback: function(){
                                 window.dispatchEvent(new Event('resize'));
                                 vm.chartToggle=1;
                             }
-                        }
+                        },
                     };
                 }
             });
         }
-
         // Get Data from Service
         function getWatchlistData() {
             return watchlistService.getData()

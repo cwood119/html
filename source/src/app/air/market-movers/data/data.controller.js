@@ -114,11 +114,6 @@
 
                             x: function(d){ return d.x; },
                             y: function(d){ return d.y; },
-                            yAxis: {
-                                tickFormat: function(d){
-                                    return d3.format('.02f')(d);
-                                }
-                            },
                             callback: function(){
                                 window.dispatchEvent(new Event('resize'));
                                 vm.chartToggle=1;
