@@ -165,10 +165,13 @@ md-select-menu.md-light-blue-theme md-content md-option[selected]{color:$blue !i
 .filter-group label {color:rgba(0,0,0,0.38);}
 
 // New Filters
-.filterToggles {height:inherit;float:right;margin:0;}
+.filter-toggles {height:inherit;float:right;margin:0;}
 md-icon.filter-long-up-arrow {vertical-align: baseline;text-align: right;padding-right: 2px;}
 .volume-filter-long-up-arrow {min-height: inherit;min-width: inherit;width: inherit;padding-left: 2px;color: inherit !important;height: inherit;vertical-align: baseline;text-align: right;}
 .filter-options{color:$medium-gray;}
+.filter-radio-group{width: 95px;display: inline-block;}
+.filter-radio-buttons{height:inherit;margin:0;}
+md-radio-button.filter-radio-buttons .md-label{margin-left:15px;}
 
 // Range Slider
 .rzslider .rz-pointer {outline:0;background-color: $blue !important;cursor:-webkit-grab !important;}

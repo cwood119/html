@@ -36,17 +36,9 @@
         vm.priceToggle = false;
 
         // Volume Filter Viarables
+        vm.volume = 0;
         vm.volumeIndicator = 'Any Vol';
-        vm.volumeLow = 500000;
-        vm.volumeMid = 1000000;
-        vm.volumeHigh = 5000000;
         vm.volumeDisabled = true;
-        vm.volumeLowDisabled = false;
-        vm.volumeMidDisabled = false;
-        vm.volumeHighDisabled = false;
-        vm.volumeLowToggle = false;
-        vm.volumeMidToggle = false;
-        vm.volumeHighToggle = false;
 
         // Avg Vol Filter Viarables
         vm.avgVolIndicator = 'Any Vol';
@@ -184,34 +176,27 @@
             }
         };
 
-
-        // Volume Filters and Controls
-        vm.volume = function()
+        // Volume Filter
+        vm.volumeFilter = function()
         {
-            if (vm.volumeLowToggle == true || vm.volumeMidToggle == true || vm.volumeHighToggle == true ) {
-                vm.volumeDisabled=false;
-                vm.volumeToggle=true;
-                return function(item){
-                    if (vm.volumeLowToggle == true){return item.volume >= vm.volumeLow;}
-                    else if (vm.volumeMidToggle == true){return item.volume >= vm.volumeMid;}
-                    else if (vm.volumeHighToggle == true){return item.volume >= vm.volumeHigh;}
-                };
-            }
-            else {vm.volumeDisabled=true;vm.volumeToggle=false;}
+            if (vm.volume < 0) {return function(item){ return item['volume'] <= vm.volume * -1; };}
+            else {return function(item){ return item['volume'] >= vm.volume; };}
         };
-        // On-Change
-        vm.volumeFilter = function() {
-            if (vm.volumeLowToggle == true){vm.volumeMidToggle = true;  vm.volumeHighToggle = true; vm.volumeIndicator = '500K';}
-            if (vm.volumeMidToggle == true && vm.volumeLowToggle == false){vm.volumeHighToggle = true; vm.volumeIndicator = '1M';}
-            if (vm.volumeHighToggle == true && vm.volumeMidToggle == false){ vm.volumeIndicator = '5M';}
-            if (vm.volume != 0){ return true;}
+
+        // On Volume Radio Change
+        vm.volumeChange = function() {
+            vm.volumeToggle=true;
+            vm.volumeDisabled=false;
+            if (vm.volume < 0) {vm.volumeIndicator = vm.volume * -1;}
+            else {vm.volumeIndicator = vm.volume;}
+
         };
-        // Master Volume Toggle
+
+        // On Volume Toggle Change
         vm.volumeFilterCheck = function (state) {
             if (state == false) {
-                vm.volumeLowToggle=false;
-                vm.volumeMidToggle=false;
-                vm.volumeHighToggle=false;
+                vm.volume=0;
+                vm.volumeRadio=false;
                 vm.volumeDisabled=true;
                 vm.volumeIndicator='Any Vol';
             }
@@ -289,7 +274,7 @@
 
 
 
-        // Legacy Filter Data
+        // Filter Data
         vm.filterPrice = ['5','10','15'];
         vm.filterVolume = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
         vm.filterAdv = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
