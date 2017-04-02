@@ -36,43 +36,29 @@
         vm.priceToggle = false;
 
         // Volume Filter Viarables
-        vm.volumeIndicator = 'Any Vol';
-        vm.volumeLow = 500000;
-        vm.volumeMid = 1000000;
-        vm.volumeHigh = 5000000;
+        vm.volume = 0;
+        vm.volumeIndicator = 'Any';
         vm.volumeDisabled = true;
-        vm.volumeLowDisabled = false;
-        vm.volumeMidDisabled = false;
-        vm.volumeHighDisabled = false;
-        vm.volumeLowToggle = false;
-        vm.volumeMidToggle = false;
-        vm.volumeHighToggle = false;
 
         // Avg Vol Filter Viarables
-        vm.avgVolIndicator = 'Any Vol';
-        vm.avgVolLow = 500000;
-        vm.avgVolMid = 1000000;
-        vm.avgVolHigh = 5000000;
+        vm.avgVol = 0;
+        vm.avgVolIndicator = 'Any';
         vm.avgVolDisabled = true;
-        vm.avgVolLowDisabled = false;
-        vm.avgVolMidDisabled = false;
-        vm.avgVolHighDisabled = false;
-        vm.avgVolLowToggle = false;
-        vm.avgVolMidToggle = false;
-        vm.avgVolHighToggle = false;
 
         // Float Filter Viarables
-        vm.floatIndicator = 'Any Float';
-        vm.floatLow = 50000000;
-        vm.floatMid = 100000000;
-        vm.floatHigh = 500000000;
+        vm.float = 0;
+        vm.floatIndicator = 'Any';
         vm.floatDisabled = true;
-        vm.floatLowDisabled = false;
-        vm.floatMidDisabled = false;
-        vm.floatHighDisabled = false;
-        vm.floatLowToggle = false;
-        vm.floatMidToggle = false;
-        vm.floatHighToggle = false;
+
+        // Market Cap Filter Viarables
+        vm.marketCap = 0;
+        vm.marketCapIndicator = 'Any';
+        vm.marketCapDisabled = true;
+
+        // Short Filter Viarables
+        vm.short = 0;
+        vm.shortIndicator = 'Any';
+        vm.shortDisabled = true;
 
         activate();
 
@@ -184,68 +170,133 @@
             }
         };
 
-
-        // Volume Filters and Controls
-        vm.volume = function()
+        // Volume Filter
+        vm.volumeFilter = function()
         {
-            if (vm.volumeLowToggle == true || vm.volumeMidToggle == true || vm.volumeHighToggle == true ) {
-                vm.volumeDisabled=false;
-                vm.volumeToggle=true;
-                return function(item){
-                    if (vm.volumeLowToggle == true){return item.volume >= vm.volumeLow;}
-                    else if (vm.volumeMidToggle == true){return item.volume >= vm.volumeMid;}
-                    else if (vm.volumeHighToggle == true){return item.volume >= vm.volumeHigh;}
-                };
-            }
-            else {vm.volumeDisabled=true;vm.volumeToggle=false;}
+            if (vm.volume < 0) {return function(item){ return item['volume'] <= vm.volume * -1; };}
+            else {return function(item){ return item['volume'] >= vm.volume; };}
         };
-        // On-Change
-        vm.volumeFilter = function() {
-            if (vm.volumeLowToggle == true){vm.volumeMidToggle = true;  vm.volumeHighToggle = true; vm.volumeIndicator = '500K';}
-            if (vm.volumeMidToggle == true && vm.volumeLowToggle == false){vm.volumeHighToggle = true; vm.volumeIndicator = '1M';}
-            if (vm.volumeHighToggle == true && vm.volumeMidToggle == false){ vm.volumeIndicator = '5M';}
-            if (vm.volume != 0){ return true;}
+
+        // On Volume Radio Change
+        vm.volumeChange = function() {
+            vm.volumeToggle=true;
+            vm.volumeDisabled=false;
+            if (vm.volume < 0) {vm.volumeIndicator = vm.volume * -1;}
+            else {vm.volumeIndicator = vm.volume;}
+
         };
-        // Master Volume Toggle
+
+        // On Volume Toggle Change
         vm.volumeFilterCheck = function (state) {
             if (state == false) {
-                vm.volumeLowToggle=false;
-                vm.volumeMidToggle=false;
-                vm.volumeHighToggle=false;
+                vm.volume=0;
+                vm.volumeRadio=false;
                 vm.volumeDisabled=true;
-                vm.volumeIndicator='Any Vol';
+                vm.volumeIndicator='Any';
             }
         };
 
-        // Average Volume Filters and Controls
-        vm.avgVol = function()
+        // Average Volume Filter
+        vm.avgVolFilter = function()
         {
-            if (vm.avgVolLowToggle == true || vm.avgVolMidToggle == true || vm.avgVolHighToggle == true ) {
-                vm.avgVolDisabled=false;
-                vm.avgVolToggle=true;
-                return function(item){
-                    if (vm.avgVolLowToggle == true){return item.avgVol >= vm.avgVolLow;}
-                    else if (vm.avgVolMidToggle == true){return item.avgVol >= vm.avgVolMid;}
-                    else if (vm.avgVolHighToggle == true){return item.avgVol >= vm.avgVolHigh;}
-                };
-            }
-            else {vm.avgVolDisabled=true;vm.avgVolToggle=false;}
+            if (vm.avgVol < 0) {return function(item){ return item['avgVol'] <= vm.avgVol * -1; };}
+            else {return function(item){ return item['avgVol'] >= vm.avgVol; };}
         };
-        // On-Change
-        vm.avgVolFilter = function() {
-            if (vm.avgVolLowToggle == true){vm.avgVolMidToggle = true;  vm.avgVolHighToggle = true; vm.avgVolIndicator = '500K';}
-            if (vm.avgVolMidToggle == true && vm.avgVolLowToggle == false){vm.avgVolHighToggle = true; vm.avgVolIndicator = '1M';}
-            if (vm.avgVolHighToggle == true && vm.avgVolMidToggle == false){ vm.avgVolIndicator = '5M';}
-            if (vm.avgVol != 0){ return true;}
+
+        // On Average Volume Radio Change
+        vm.avgVolChange = function() {
+            vm.avgVolToggle=true;
+            vm.avgVolDisabled=false;
+            if (vm.avgVol < 0) {vm.avgVolIndicator = vm.avgVol * -1;}
+            else {vm.avgVolIndicator = vm.avgVol;}
+
         };
-        // Master Average Volume Toggle
+
+        // On Average Volume Toggle Change
         vm.avgVolFilterCheck = function (state) {
             if (state == false) {
-                vm.avgVolLowToggle=false;
-                vm.avgVolMidToggle=false;
-                vm.avgVolHighToggle=false;
+                vm.avgVol=0;
+                vm.avgVolRadio=false;
                 vm.avgVolDisabled=true;
-                vm.avgVolIndicator='Any Vol';
+                vm.avgVolIndicator='Any';
+            }
+        };
+
+        // Float Filter
+        vm.floatFilter = function()
+        {
+            if (vm.float < 0) {return function(item){ return item['float'] <= vm.float * -1; };}
+            else {return function(item){ return item['float'] >= vm.float; };}
+        };
+
+        // On Float Radio Change
+        vm.floatChange = function() {
+            vm.floatToggle=true;
+            vm.floatDisabled=false;
+            if (vm.float < 0) {vm.floatIndicator = vm.float * -1;}
+            else {vm.floatIndicator = vm.float;}
+
+        };
+
+        // On Float Toggle Change
+        vm.floatFilterCheck = function (state) {
+            if (state == false) {
+                vm.float=0;
+                vm.floatRadio=false;
+                vm.floatDisabled=true;
+                vm.floatIndicator='Any';
+            }
+        };
+
+        // Market Cap Filter
+        vm.marketCapFilter = function()
+        {
+            if (vm.marketCap < 0) {return function(item){ return item['marketCap'] <= vm.marketCap * -1; };}
+            else {return function(item){ return item['marketCap'] >= vm.marketCap; };}
+        };
+
+        // On Market Cap Radio Change
+        vm.marketCapChange = function() {
+            vm.marketCapToggle=true;
+            vm.marketCapDisabled=false;
+            if (vm.marketCap < 0) {vm.marketCapIndicator = vm.marketCap * -1;}
+            else {vm.marketCapIndicator = vm.marketCap;}
+
+        };
+
+        // On Market Cap Toggle Change
+        vm.marketCapFilterCheck = function (state) {
+            if (state == false) {
+                vm.marketCap=0;
+                vm.marketCapRadio=false;
+                vm.marketCapDisabled=true;
+                vm.marketCapIndicator='Any';
+            }
+        };
+
+        // Short Filter
+        vm.shortFilter = function()
+        {
+            if (vm.short < 0) {return function(item){ return item['shortPercent'] <= vm.short * -1; };}
+            else {return function(item){ return item['shortPercent'] >= vm.short; };}
+        };
+
+        // On Short Radio Change
+        vm.shortChange = function() {
+            vm.shortToggle=true;
+            vm.shortDisabled=false;
+            if (vm.short < 0) {vm.shortIndicator = vm.short * -1;}
+            else {vm.shortIndicator = vm.short;}
+
+        };
+
+        // On Short Toggle Change
+        vm.shortFilterCheck = function (state) {
+            if (state == false) {
+                vm.short=0;
+                vm.shortRadio=false;
+                vm.shortDisabled=true;
+                vm.shortIndicator='Any';
             }
         };
 

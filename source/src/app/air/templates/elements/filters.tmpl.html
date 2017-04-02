@@ -30,43 +30,78 @@
     </md-radio-button>
 </md-radio-group>
 
-<!-- avgVol Filter -->
+<!-- Average Volume Filter -->
 <md-subheader class="md-primary">
-    Avg Vol: <md-icon class=" material-icons zmdi zmdi-long-arrow-up volume-filter-long-up-arrow" aria-hidden="true" ng-hide="vm.avgVolIndicator == 'Any Vol'"></md-icon> {{vm.avgVolIndicator}}
-    <md-switch class="md-accent filter-toggles" ng-disabled="vm.avgVolDisabled" ng-model="vm.avgVolToggle" aria-label="avgVol Toggle" ng-change="vm.avgVolFilterCheck(vm.avgVolToggle)"></md-switch>
+    Avg Vol:
+    <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true" ng-show="vm.avgVol > 0"></md-icon>
+    <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true" ng-show="vm.avgVol < 0"></md-icon>
+    {{vm.avgVolIndicator}}
+    <md-switch class="md-accent filter-toggles" ng-disabled="vm.avgVolDisabled" ng-model="vm.avgVolToggle" aria-label="Average Volume Filter Toggle" ng-change="vm.avgVolFilterCheck(vm.avgVolDisabled)"></md-switch>
 </md-subheader>
-<div class="md-padding filter-options">
-    <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 500K
-    <md-checkbox class="md-accent filter-toggles" aria-label="Toggle avgVol over 500K" ng-disabled="vm.avgVolLowDisabled" ng-model="vm.avgVolLowToggle" ng-change="vm.avgVolFilter(vm.avgVolLowToggle)"></md-checkbox> <br />
-
-    <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 1M
-    <md-checkbox class="md-accent filter-toggles" aria-label="Toggle avgVol over 1M" ng-disabled="vm.avgVolMidDisabled" ng-model="vm.avgVolMidToggle" ng-change="vm.avgVolFilter(vm.avgVolMidToggle)"></md-checkbox><br />
-
-    <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 5M
-    <md-checkbox class="md-accent filter-toggles" aria-label="Toggle avgVol over 5M" ng-disabled="vm.avgVolHighDisabled" ng-model="vm.avgVolHighToggle" ng-change="vm.avgVolFilter(vm.avgVolHighToggle)"></md-checkbox><br />
-</div>
+<md-radio-group class="md-padding filter-options filter-radio-group" ng-model="vm.avgVol" ng-change="vm.avgVolChange()">
+    <md-radio-button class="md-accent filter-radio-buttons" ng-repeat="filterAdv in vm.filterAdv"  ng-model="vm.avgVolRadio" value="{{filterAdv.value}}" aria-label="Show symbols over {{filterAdv.text}}" >
+        <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> {{filterAdv.text}}
+    </md-radio-button>
+</md-radio-group>
+<md-radio-group class="md-padding filter-options filter-radio-group" ng-model="vm.avgVol" ng-change="vm.avgVolChange()">
+    <md-radio-button class="md-accent filter-radio-buttons" ng-repeat="filterAdv in vm.filterAdv"  ng-model="vm.avgVolRadio" value="{{filterAdv.value * -1}}" aria-label="Show symbols over {{filterAdv.text}}" >
+        <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true"></md-icon> {{filterAdv.text}}
+    </md-radio-button>
+</md-radio-group>
 
 <!-- Float Filter -->
 <md-subheader class="md-primary">
-    Float: <md-icon class=" material-icons zmdi zmdi-long-arrow-up volume-filter-long-up-arrow" aria-hidden="true" ng-hide="vm.floatIndicator == 'Any Float'"></md-icon> {{vm.floatIndicator}}
-    <md-switch class="md-accent filter-toggles" ng-disabled="vm.floatDisabled" ng-model="vm.floatToggle" aria-label="float Toggle" ng-change="vm.floatFilterCheck(vm.floatToggle)"></md-switch>
+    Float:
+    <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true" ng-show="vm.float > 0"></md-icon>
+    <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true" ng-show="vm.float < 0"></md-icon>
+    {{vm.floatIndicator}}
+    <md-switch class="md-accent filter-toggles" ng-disabled="vm.floatDisabled" ng-model="vm.floatToggle" aria-label="Float Filter Toggle" ng-change="vm.floatFilterCheck(vm.floatDisabled)"></md-switch>
 </md-subheader>
-<div class="md-padding filter-options">
-    <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 500K
-    <md-checkbox class="md-accent filter-toggles" aria-label="Toggle float over 500K" ng-disabled="vm.floatLowDisabled" ng-model="vm.floatLowToggle" ng-change="vm.floatFilter(vm.floatLowToggle)"></md-checkbox> <br />
+<md-radio-group class="md-padding filter-options filter-radio-group" ng-model="vm.float" ng-change="vm.floatChange()">
+    <md-radio-button class="md-accent filter-radio-buttons" ng-repeat="filterFloat in vm.filterFloat"  ng-model="vm.floatRadio" value="{{filterFloat.value}}" aria-label="Show symbols over {{filterFloat.text}}">
+        <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> {{filterFloat.text}}
+    </md-radio-button>
+</md-radio-group>
+<md-radio-group class="md-padding filter-options filter-radio-group" ng-model="vm.float" ng-change="vm.floatChange()">
+    <md-radio-button class="md-accent filter-radio-buttons" ng-repeat="filterFloat in vm.filterFloat"  ng-model="vm.floatRadio" value="{{filterFloat.value * -1}}" aria-label="Show symbols over {{filterFloat.text}}">
+        <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true"></md-icon> {{filterFloat.text}}
+    </md-radio-button>
+</md-radio-group>
 
-    <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 1M
-    <md-checkbox class="md-accent filter-toggles" aria-label="Toggle float over 1M" ng-disabled="vm.floatMidDisabled" ng-model="vm.floatMidToggle" ng-change="vm.floatFilter(vm.floatMidToggle)"></md-checkbox><br />
+<!-- Market Cap Filter -->
+<md-subheader class="md-primary">
+    Mkt Cap:
+    <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true" ng-show="vm.marketCap > 0"></md-icon>
+    <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true" ng-show="vm.marketCap < 0"></md-icon>
+    {{vm.marketCapIndicator}}
+    <md-switch class="md-accent filter-toggles" ng-disabled="vm.marketCapDisabled" ng-model="vm.marketCapToggle" aria-label="Market Cap Filter Toggle" ng-change="vm.marketCapFilterCheck(vm.marketCapDisabled)"></md-switch>
+</md-subheader>
+<md-radio-group class="md-padding filter-options filter-radio-group" ng-model="vm.marketCap" ng-change="vm.marketCapChange()">
+    <md-radio-button class="md-accent filter-radio-buttons" ng-repeat="filterMktOver in vm.filterMktOver"  ng-model="vm.marketCapRadio" value="{{filterMktOver.value}}" aria-label="Show symbols over {{filterMktOver.text}}">
+        <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> {{filterMktOver.text}}
+    </md-radio-button>
+</md-radio-group>
+<md-radio-group class="md-padding filter-options filter-radio-group" ng-model="vm.marketCap" ng-change="vm.marketCapChange()">
+    <md-radio-button class="md-accent filter-radio-buttons" ng-repeat="filterMktUnder in vm.filterMktUnder"  ng-model="vm.marketCapRadio" value="{{filterMktUnder.value * -1}}" aria-label="Show symbols over {{filterMktUnder.text}}">
+        <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true"></md-icon> {{filterMktUnder.text}}
+    </md-radio-button>
+</md-radio-group>
 
-    <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> 5M
-    <md-checkbox class="md-accent filter-toggles" aria-label="Toggle float over 5M" ng-disabled="vm.floatHighDisabled" ng-model="vm.floatHighToggle" ng-change="vm.floatFilter(vm.floatHighToggle)"></md-checkbox><br />
-
-    <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true"></md-icon> 500K
-    <md-checkbox class="md-accent filter-toggles" aria-label="Toggle float over 500K" ng-disabled="vm.floatLowDisabled" ng-model="vm.floatLowToggle" ng-change="vm.floatFilter(vm.floatLowToggle)"></md-checkbox> <br />
-
-    <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true"></md-icon> 1M
-    <md-checkbox class="md-accent filter-toggles" aria-label="Toggle float over 1M" ng-disabled="vm.floatMidDisabled" ng-model="vm.floatMidToggle" ng-change="vm.floatFilter(vm.floatMidToggle)"></md-checkbox><br />
-
-    <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true"></md-icon> 5M
-    <md-checkbox class="md-accent filter-toggles" aria-label="Toggle float over 5M" ng-disabled="vm.floatHighDisabled" ng-model="vm.floatHighToggle" ng-change="vm.floatFilter(vm.floatHighToggle)"></md-checkbox><br />
-</div>
+<!-- Short Filter -->
+<md-subheader class="md-primary">
+    Short:
+    <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true" ng-show="vm.short > 0"></md-icon>
+    <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true" ng-show="vm.short < 0"></md-icon>
+    {{vm.shortIndicator}}
+    <md-switch class="md-accent filter-toggles" ng-disabled="vm.shortDisabled" ng-model="vm.shortToggle" aria-label="Short Filter Toggle" ng-change="vm.shortFilterCheck(vm.shortDisabled)"></md-switch>
+</md-subheader>
+<md-radio-group class="md-padding filter-options filter-radio-group" ng-model="vm.short" ng-change="vm.shortChange()">
+    <md-radio-button class="md-accent filter-radio-buttons" ng-repeat="filterShort in vm.filterShort"  ng-model="vm.shortRadio" value="{{filterShort.value}}" aria-label="Show symbols over {{filterShort.text}}">
+        <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> {{filterShort.text}}
+    </md-radio-button>
+</md-radio-group>
+<md-radio-group class="md-padding filter-options filter-radio-group" ng-model="vm.short" ng-change="vm.shortChange()">
+    <md-radio-button class="md-accent filter-radio-buttons" ng-repeat="filterShort in vm.filterShort"  ng-model="vm.shortRadio" value="{{filterShort.value * -1}}" aria-label="Show symbols over {{filterShort.text}}">
+        <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true"></md-icon> {{filterShort.text}}
+    </md-radio-button>
+</md-radio-group>

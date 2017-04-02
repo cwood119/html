@@ -52,7 +52,8 @@
             </tr>
         </thead>
         <tbody md-body>
-            <tr md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter:vm.volumeFilter() | filter: vm.avgVol() | filter: {symbol:search}) |
+            <tr md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter:vm.volumeFilter() | filter: vm.avgVolFilter() |
+            filter: vm.floatFilter() | filter: vm.marketCapFilter() | filter: vm.shortFilter() | filter: {symbol:search}) |
             orderBy: vm.query.order| limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize track by symbol.id">
                 <td md-cell class="symbol-container">
                     <div class="list-symbol">{{symbol.symbol}}<md-tooltip>{{symbol.name}}</md-tooltip></div>
