@@ -35,7 +35,8 @@
     "weather-icons": "https://github.com/chk1/weather-icons.git#master",
     "textAngular": "~1.5.0",
     "ng-file-upload": "~12.0.1",
-    "angularjs-slider": "^6.0.1"
+    "angularjs-slider": "^6.0.1",
+    "angular-numeraljs": "^2.0"
 
   },
   "devDependencies": {

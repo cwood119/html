@@ -170,7 +170,7 @@ md-icon.filter-long-up-arrow {vertical-align: baseline;text-align: right;padding
 .toggle-filter-long-up-arrow {min-height: inherit;min-width: inherit;width: inherit;padding-left: 2px;color: inherit !important;height: inherit;vertical-align: baseline;text-align: right;}
 .filter-options{color:$medium-gray;}
 .filter-radio-group{width: 95px;display: inline-block;}
-.filter-radio-buttons{height:inherit;margin:0;}
+.filter-radio-buttons{height:inherit;margin:0;text-transform: lowercase;}
 md-radio-button.filter-radio-buttons .md-label{margin-left:15px;}
 
 // Range Slider

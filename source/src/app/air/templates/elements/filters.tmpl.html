@@ -16,7 +16,7 @@
     Volume:
     <md-icon class=" material-icons zmdi zmdi-long-arrow-up toggle-filter-long-up-arrow" aria-hidden="true" ng-show="vm.volume > 0"></md-icon>
     <md-icon class=" material-icons zmdi zmdi-long-arrow-down toggle-filter-long-up-arrow" aria-hidden="true" ng-show="vm.volume < 0"></md-icon>
-    {{vm.volumeIndicator}}
+    <span ng-hide="vm.volumeIndicator =='Any'">{{vm.volumeIndicator | numeraljs:'0a'}}</span>
     <md-switch class="md-accent filter-toggles" ng-disabled="vm.volumeDisabled" ng-model="vm.volumeToggle" aria-label="Volume Filter Toggle" ng-change="vm.volumeFilterCheck(vm.volumeDisabled)"></md-switch>
 </md-subheader>
 <md-radio-group class="md-padding filter-options filter-radio-group" ng-model="vm.volume" ng-change="vm.volumeChange()">
@@ -35,7 +35,7 @@
     Avg Vol:
     <md-icon class=" material-icons zmdi zmdi-long-arrow-up toggle-filter-long-up-arrow" aria-hidden="true" ng-show="vm.avgVol > 0"></md-icon>
     <md-icon class=" material-icons zmdi zmdi-long-arrow-down toggle-filter-long-up-arrow" aria-hidden="true" ng-show="vm.avgVol < 0"></md-icon>
-    {{vm.avgVolIndicator}}
+    <span ng-hide="vm.avgVolIndicator =='Any'">{{vm.avgVolIndicator | numeraljs:'0a'}}</span>
     <md-switch class="md-accent filter-toggles" ng-disabled="vm.avgVolDisabled" ng-model="vm.avgVolToggle" aria-label="Average Volume Filter Toggle" ng-change="vm.avgVolFilterCheck(vm.avgVolDisabled)"></md-switch>
 </md-subheader>
 <md-radio-group class="md-padding filter-options filter-radio-group" ng-model="vm.avgVol" ng-change="vm.avgVolChange()">
@@ -54,7 +54,7 @@
     Float:
     <md-icon class=" material-icons zmdi zmdi-long-arrow-up toggle-filter-long-up-arrow" aria-hidden="true" ng-show="vm.float > 0"></md-icon>
     <md-icon class=" material-icons zmdi zmdi-long-arrow-down toggle-filter-long-up-arrow" aria-hidden="true" ng-show="vm.float < 0"></md-icon>
-    {{vm.floatIndicator}}
+    <span ng-hide="vm.floatIndicator =='Any'">{{vm.floatIndicator | numeraljs:'0a'}}</span>
     <md-switch class="md-accent filter-toggles" ng-disabled="vm.floatDisabled" ng-model="vm.floatToggle" aria-label="Float Filter Toggle" ng-change="vm.floatFilterCheck(vm.floatDisabled)"></md-switch>
 </md-subheader>
 <md-radio-group class="md-padding filter-options filter-radio-group" ng-model="vm.float" ng-change="vm.floatChange()">
@@ -73,7 +73,7 @@
     Mkt Cap:
     <md-icon class=" material-icons zmdi zmdi-long-arrow-up toggle-filter-long-up-arrow" aria-hidden="true" ng-show="vm.marketCap > 0"></md-icon>
     <md-icon class=" material-icons zmdi zmdi-long-arrow-down toggle-filter-long-up-arrow" aria-hidden="true" ng-show="vm.marketCap < 0"></md-icon>
-    {{vm.marketCapIndicator}}
+    <span ng-hide="vm.marketCapIndicator =='Any'">{{vm.marketCapIndicator | numeraljs:'0a'}}</span>
     <md-switch class="md-accent filter-toggles" ng-disabled="vm.marketCapDisabled" ng-model="vm.marketCapToggle" aria-label="Market Cap Filter Toggle" ng-change="vm.marketCapFilterCheck(vm.marketCapDisabled)"></md-switch>
 </md-subheader>
 <md-radio-group class="md-padding filter-options filter-radio-group" ng-model="vm.marketCap" ng-change="vm.marketCapChange()">
@@ -92,7 +92,7 @@
     Short:
     <md-icon class=" material-icons zmdi zmdi-long-arrow-up toggle-filter-long-up-arrow" aria-hidden="true" ng-show="vm.short > 0"></md-icon>
     <md-icon class=" material-icons zmdi zmdi-long-arrow-down toggle-filter-long-up-arrow" aria-hidden="true" ng-show="vm.short < 0"></md-icon>
-    {{vm.shortIndicator}}
+    <span ng-hide="vm.shortIndicator =='Any'">{{vm.shortIndicator}}%</span>
     <md-switch class="md-accent filter-toggles" ng-disabled="vm.shortDisabled" ng-model="vm.shortToggle" aria-label="Short Filter Toggle" ng-change="vm.shortFilterCheck(vm.shortDisabled)"></md-switch>
 </md-subheader>
 <md-radio-group class="md-padding filter-options filter-radio-group" ng-model="vm.short" ng-change="vm.shortChange()">

@@ -1,3 +1,4 @@
+source/.tmp/partials/
 source/.tmp/serve/app/
 source/.tmp/serve/index.html
 source/src/app/air/alerts/data/data.json
@@ -20,8 +21,3 @@ source/src/app/air/update-data.sh
 source/src/app/air/watchlist/data/data.json
 source/src/app/air/watchlist/data/headlines.json
 source/src/app/air/watchlist/data/symbols.txt
-source/.tmp/partials/
-source/dist/app/air/
-source/dist/scripts/app.js
-source/dist/styles/app.css
-source/dist/index.html
