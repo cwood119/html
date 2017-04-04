@@ -35,7 +35,7 @@
                    <td class="vitals-line-item">Volume</td>
                    <td>
                        <span ng-show="{{modal.symbol.volume == 0}}">-</span>
-                       <span ng-hide="{{modal.symbol.volume == 0}}">{{modal.symbol.volume | numeraljs:'0a'}}</span>
+                       <span ng-hide="{{modal.symbol.volume == 0}}">{{modal.symbol.volume | numeraljs:'0.0a'}}</span>
                        <span class="vitals-line-item-responsive">Volume</span>
                    </td>
                 </tr>
@@ -43,7 +43,7 @@
                    <td class="vitals-line-item">Avg Vol (3mo)</td>
                    <td>
                        <span ng-show="{{modal.symbol.avgVol == 0}}">-</span>
-                       <span ng-hide="{{modal.symbol.avgVol == 0}}">{{modal.symbol.avgVol | numeraljs:'0a'}}</span>
+                       <span ng-hide="{{modal.symbol.avgVol == 0}}">{{modal.symbol.avgVol | numeraljs:'0.0a'}}</span>
                        <span class="vitals-line-item-responsive">Avg Vol (3mo)</span>
                    </td>
                 </tr>
@@ -55,7 +55,7 @@
                    <td class="vitals-line-item">Shares Short</td>
                    <td>
                        <span ng-show="{{modal.symbol.sharesShort == 0}}">-</span>
-                       <span ng-hide="{{modal.symbol.sharesShort == 0}}">{{modal.symbol.sharesShort | numeraljs:'0a'}}</span>
+                       <span ng-hide="{{modal.symbol.sharesShort == 0}}">{{modal.symbol.sharesShort | numeraljs:'0.0a'}}</span>
                        <span class="vitals-line-item-responsive">Shares Short</span>
                    </td>
                 </tr>
