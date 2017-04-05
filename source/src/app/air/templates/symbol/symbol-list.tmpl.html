@@ -42,12 +42,15 @@
                 <th md-column class="md-subhead"></th>
                 <th md-column class="md-subhead" md-order-by="percentChange">Change</th>
                 <th md-column ng-show="vm.currentPath === '/alerts'">Alert</th>
+                <th md-column ng-show="vm.currentPath === '/alerts'" md-order-by="distance">Distance</th>
+                <th md-column ng-show="vm.currentPath === '/alerts'" md-order-by="date">Added</th>
                 <th md-column class="md-subhead" md-order-by="volume">Volume</th>
                 <th md-column class="md-subhead" md-order-by="avgVol">Avg Vol</th>
                 <th md-column class="md-subhead" md-order-by="sharesShort">Short</th>
-                <th md-column class="md-subhead" md-order-by="shortPercent">Short %</th>
-                <th md-column class="md-subhead">Vitals</th>
-                <th md-column class="md-subhead">Headlines</th>
+                <th md-column class="md-subhead no-padding" ng-show="vm.currentPath === '/alerts'" md-order-by="shortPercent">Short %</th>
+                <th md-column class="md-subhead" ng-hide="vm.currentPath === '/alerts'" md-order-by="shortPercent">Short %</th>
+                <th md-column class="md-subhead" ng-hide="vm.currentPath === '/alerts'">Vitals</th>
+                <th md-column class="md-subhead" ng-hide="vm.currentPath === '/alerts'">Headlines</th>
                 <th md-column md-subhead></th>
             </tr>
         </thead>
@@ -77,8 +80,20 @@
                     </div>
                 </td>
 
+                <td md-cell class="min-width-50" ng-show="vm.currentPath === '/alerts'">
+                    <div class="md-body-1">
+                        <md-icon class=" material-icons zmdi zmdi-long-arrow-up toggle-filter-long-up-arrow" aria-hidden="true"></md-icon>
+                        {{symbol.triggerPrice}}
+                    </div>
+                </td>
+
                 <td md-cell ng-show="vm.currentPath === '/alerts'">
-                    <div class="md-body-1">{{symbol.triggerPrice}}</div>
+                    <div class="md-body-1" ng-show="{{symbol.distance == 0}}">Triggered</div>
+                    <div class="md-body-1" ng-show="symbol.distance > 0">{{symbol.distance}}</div>
+                </td>
+
+                <td md-cell ng-show="vm.currentPath === '/alerts'">
+                    <div class="md-body-1">{{symbol.date}}</div>
                 </td>
 
                 <td md-cell>
@@ -93,14 +108,14 @@
                     <div class="md-body-1" ng-show="{{symbol.sharesShort == 0}}">-</div>
                     <div class="md-body-1" ng-hide="{{symbol.sharesShort == 0}}">{{symbol.sharesShort | number:0}}</div>
                 </td>
-                <td md-cell>
+                <td md-cell class="no-padding">
                     <div class="md-body-1" ng-show="{{symbol.shortPercent == 0}}">-</div>
                     <div class="md-body-1" ng-hide="{{symbol.shortPercent == 0}}">{{symbol.shortPercent | number:2}}%</div>
                 </td>
-                <td md-cell>
+                <td md-cell ng-hide="vm.currentPath === '/alerts'">
                     <div class="md-body-1 pointer blue" ng-disabled="dialogForm.$invalid" ng-click="vm.openVitals($event, symbol)">Vitals</div>
                 </td>
-                <td md-cell>
+                <td md-cell ng-hide="vm.currentPath === '/alerts'">
                     <div class="md-body-1 pointer blue" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event, symbol)">Headlines</div>
                 </td>
 
@@ -110,6 +125,14 @@
                             <md-icon md-font-icon="zmdi zmdi-more-vert"></md-icon>
                         </md-button>
                         <md-menu-content width="3">
+                            <md-menu-item class="external-links-menu-item" ng-show="vm.currentPath === '/alerts'">
+                                <md-button class="md-flat external-links-button blue" ng-class="['md-primary','md-default-hue']" aria-label="Vitals" ng-disabled="dialogForm.$invalid" ng-click="vm.openVitals($event, symbol)">Vitals</md-button>
+                            </md-menu-item>
+
+                            <md-menu-item class="external-links-menu-item" ng-show="vm.currentPath === '/alerts'">
+                                <md-button class="md-flat external-links-button blue" ng-class="['md-primary','md-default-hue']" aria-label="Headlines" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event, symbol)">Headlines</md-button>
+                            </md-menu-item>
+
                             <md-menu-item class="external-links-menu-item">
                                 <a ng-href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={{symbol.symbol}}&type=&dateb=&owner=include&count=100" target="_blank">
                                     <md-button class="md-flat external-links-button blue" ng-class="['md-primary','md-default-hue']" aria-label="SEC Filings">SEC Filings</md-button>
