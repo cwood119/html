@@ -89,7 +89,7 @@
 
                 <td md-cell ng-show="vm.currentPath === '/alerts'">
                     <div class="md-body-1" ng-show="{{symbol.distance == 0}}">Triggered</div>
-                    <div class="md-body-1" ng-show="symbol.distance > 0">{{symbol.distance}}</div>
+                    <div class="md-body-1" ng-show="symbol.distance > 0">{{symbol.distance | numeraljs:'0.00a'}}</div>
                 </td>
 
                 <td md-cell ng-show="vm.currentPath === '/alerts'">
