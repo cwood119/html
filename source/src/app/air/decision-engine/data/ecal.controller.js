@@ -36,7 +36,7 @@
                     vm.list = data[0].data[0].list;
 
                     // Get Data Time Stamp
-                    vm.updated = new Date(data[0].headers()['last-modified']).toLocaleString();
+                    vm.updated = new Date(data[0].data[0].updated).toLocaleString();
 
                 } else {vm.ecalToggle=0;}
                 // Hide if Active on Ecal Page

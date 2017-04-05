@@ -80,7 +80,7 @@
                     vm.refreshToggle=0;
 
                     // Get Data Time Stamp
-                    vm.updated = new Date(data[0].headers()['last-modified']).toLocaleString();
+                    vm.updated = new Date(data[0].data[0].updated).toLocaleString();
 
                     // Auto Hide Chart
                     vm.chartToggle = 1;
@@ -122,7 +122,7 @@
         var updateCheck =  function() {
             return getEcalData().then(function(data) {
                 if (data[0].data.length != 0) {
-                    vm.modified = new Date(data[0].headers()['last-modified']).toLocaleString();
+                    vm.modified = new Date(data[0].data[0].updated).toLocaleString();
                     if (vm.modified > vm.updated && vm.refreshToggle != 1) {
                         vm.refreshToggle = 1;
                     }
