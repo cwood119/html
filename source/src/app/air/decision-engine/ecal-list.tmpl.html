@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody md-body>
-            <tr md-row ng-repeat="symbol in vm.ecalDaily | orderBy: vm.query.order | limitTo: vm.ecalPageSize : (vm.ecalCurPage - 1) * vm.ecalPageSize">
+            <tr md-row ng-repeat="symbol in vm.ecalDaily | orderBy: vm.query.order | limitTo: vm.ecalPageSize : (vm.ecalCurPage - 1) * vm.ecalPageSize" ng-hide="{{symbol.symbol == null}}">
                 <td md-cell>{{symbol.symbol}}</td>
                 <td md-cell>{{symbol.price | number:2}}</td>
                 <td md-cell class="no-padding" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">{{symbol.dollarChange | number:2}} ({{symbol.percentChange | number:2}}%)</td>
@@ -29,4 +29,4 @@
         </tbody>
     </table>
 </md-table-container>
-<md-table-pagination md-limit="vm.ecalPageSize" md-limit-options="vm.ecalLimitOptions"  md-page-select md-page="vm.ecalCurPage" md-total="{{vm.ecalDaily.length}}"></md-table-pagination>
+<md-table-pagination md-limit="vm.ecalPageSize" md-limit-options="vm.ecalLimitOptions"  md-page-select md-page="vm.ecalCurPage" md-total="{{vm.ecalDaily.length -1}}"></md-table-pagination>

@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody md-body>
-            <tr md-row ng-repeat="symbol in vm.ecalIntraday |  orderBy: vm.query.order | limitTo: vm.ecalIntradayPageSize : (vm.ecalIntradayCurPage - 1) * vm.ecalIntradayPageSize">
+            <tr md-row ng-repeat="symbol in vm.ecalIntraday |  orderBy: vm.query.order | limitTo: vm.ecalIntradayPageSize : (vm.ecalIntradayCurPage - 1) * vm.ecalIntradayPageSize" ng-hide="{{symbol.symbol == null}}">
                 <td md-cell>{{symbol.symbol}}</td>
                 <td md-cell>{{symbol.price | number:2}}</td>
                 <td md-cell class="no-padding" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">{{symbol.dollarChange | number:2}} ({{symbol.percentChange | number:2}}%)</td>
@@ -29,4 +29,4 @@
         </tbody>
     </table>
 </md-table-container>
-<md-table-pagination md-limit="vm.ecalIntradayPageSize" md-limit-options="vm.ecalIntradayLimitOptions"  md-page-select md-page="vm.ecalIntradayCurPage" md-total="{{vm.ecalIntraday.length}}"></md-table-pagination>
+<md-table-pagination md-limit="vm.ecalIntradayPageSize" md-limit-options="vm.ecalIntradayLimitOptions"  md-page-select md-page="vm.ecalIntradayCurPage" md-total="{{vm.ecalIntraday.length -1}}"></md-table-pagination>
