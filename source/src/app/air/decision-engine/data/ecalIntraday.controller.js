@@ -32,13 +32,13 @@
                     var symbol = data[0].data[0].symbol;
                     if (symbol == '') {vm.symbols = [];}
 
-                    // Get List
-                    vm.list = data[0].data[0].list;
-
                     // Get Data Time Stamp
                     var metaIndex = data[0].data.length -1;
                     vm.updated = new Date(data[0].data[metaIndex].meta.updated).toLocaleString();
                     vm.modified = moment(vm.updated, 'MM/DD/YYYY');
+
+                    // Get List
+                    vm.list = data[0].data[metaIndex].meta.list;
 
                     // Hide Stale List
                     vm.yesterday = moment().startOf('day').subtract(1, 'days').toDate();

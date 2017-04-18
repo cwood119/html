@@ -73,9 +73,6 @@
                     var symbol = data[0].data[0].symbol;
                     if (symbol == '') {vm.symbols = [];}
 
-                    // Get List
-                    vm.list = data[0].data[0].list;
-
                     // Auto Hide Refresh Button
                     vm.refreshToggle=0;
 
@@ -84,6 +81,9 @@
                     //vm.updated = new Date(data[0].data[0].updated).toLocaleString();
                     var metaIndex = data[0].data.length -1;
                     vm.updated = new Date(data[0].data[metaIndex].meta.updated).toLocaleString();
+
+                    // Get List
+                    vm.list = data[0].data[metaIndex].meta.list;
 
                     // Auto Hide Chart
                     vm.chartToggle = 1;
