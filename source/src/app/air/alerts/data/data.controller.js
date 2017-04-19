@@ -29,7 +29,7 @@
         vm.curPage = 1;
         vm.limitOptions = [5,10,25,50];
         vm.pageSize = 5;
-        vm.query = {order: '-percentChange'};
+        vm.query = {order: 'distance'};
 
         // Price Filter Variables
         vm.priceDisabled = true;

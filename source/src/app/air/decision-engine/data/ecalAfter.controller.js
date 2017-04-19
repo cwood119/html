@@ -51,7 +51,8 @@
                 } else {vm.ecalAfterToggle=0;}
                 // Hide if Active on Ecal Page
                 if (data[1].data.length != 0) {
-                    var list = data[1].data[0].list;
+                    var metaIndex2 = data[1].data.length -1;
+                    var list = data[1].data[metaIndex2].meta.list;
                     if (list == 'After Market Movers') {vm.ecalAfterToggle=0;}
                 }
             });

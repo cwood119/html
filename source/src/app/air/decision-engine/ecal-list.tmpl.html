@@ -7,7 +7,7 @@
                 <th md-column md-order-by="price">Price</th>
                 <th md-column md-order-by="percentChange">Change</th>
                 <th md-column md-order-by="avgVol">Avg Volume</th>
-                <th md-column md-order-by="time">When</th>
+                <th md-column md-order-by="when">When</th>
                 <th md-column>Vitals</th>
                 <th md-column>Headlines</th>
             </tr>
@@ -19,10 +19,10 @@
                 <td md-cell class="no-padding" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">{{symbol.dollarChange | number:2}} ({{symbol.percentChange | number:2}}%)</td>
                 <td md-cell ng-show="{{symbol.avgVol == 0}}">-</td>
                 <td md-cell ng-hide="{{symbol.avgVol == 0}}">{{symbol.avgVol | number:0}}</td>
-                <td md-cell ng-show="{{symbol.time == 1}}">After Market</td>
-                <td md-cell ng-show="{{symbol.time == 2}}">Pre Market</td>
-                <td md-cell ng-show="{{symbol.time == 3}}">Intraday</td>
-                <td md-cell ng-show="{{symbol.time == 4}}">Not Specified</td>
+                <td md-cell ng-show="{{symbol.when == 1}}">After Market</td>
+                <td md-cell ng-show="{{symbol.when == 2}}">Pre Market</td>
+                <td md-cell ng-show="{{symbol.when == 3}}">Intraday</td>
+                <td md-cell ng-show="{{symbol.when == 4}}">Not Specified</td>
                 <td md-cell><span class="pointer blue" data-symbol="{{symbol.symbol}}" data-open="{{symbol.vitals.open}}"  ng-disabled="dialogForm.$invalid" ng-click="vm.openVitals($event, symbol)">Vitals</span></td>
                 <td md-cell><span class="pointer blue" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event, symbol)">Headlines</span></td>
             </tr>
