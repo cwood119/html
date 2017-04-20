@@ -25,7 +25,7 @@
 
         function activate() {
             return getEcalDailyData().then(function(data) {
-                if (data[0].data.length != 0) {
+                if (data[0].data.length > 1) {
 
                     // Get Symbol and Check for Empty Data Set
                     vm.ecalDaily = data[0].data;

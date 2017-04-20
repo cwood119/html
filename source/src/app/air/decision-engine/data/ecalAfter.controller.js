@@ -26,7 +26,7 @@
 
         function activate() {
             return getEcalAfterData().then(function(data) {
-                if (data[0].data.length != 0) {
+                if (data[0].data.length > 1) {
 
                     // Get Symbol and Check for Empty Data Set
                     vm.ecalAfter = data[0].data;

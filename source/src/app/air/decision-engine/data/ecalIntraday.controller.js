@@ -25,7 +25,7 @@
 
         function activate() {
             return getEcalIntradayData().then(function(data) {
-                if (data[0].data.length != 0) {
+                if (data[0].data.length > 1) {
 
                     // Get Symbol and Check for Empty Data Set
                     vm.ecalIntraday = data[0].data;
