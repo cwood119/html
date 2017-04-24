@@ -44,7 +44,7 @@
                 if (data[1].data.length != 0) {
                     var metaIndex2 = data[1].data.length -1;
                     var list = data[1].data[metaIndex2].meta.list;
-                    if (list == 'Earnings Calendar') {vm.ecalToggle=0;}
+                    //if (list == 'Earnings Calendar') {vm.ecalToggle=0;}
                 }
             });
         }
