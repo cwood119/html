@@ -16,17 +16,16 @@
 
 // Side menu Bar
 .admin-sidebar-left, .triangular-sidenav-left {
-  overflow-x:hidden;
+  overflow-x: hidden;
   md-content {
     min-height: 100%;
-    overflow-x:hidden;
+    overflow-x: hidden;
   }
 }
 .admin-sidebar-left.md-locked-open, .triangular-sidenav-left.md-locked-open {
   width: 260px;
   min-width: 260px;
   max-width: 260px;
-  -ms-overflow-style: none; /* ie fix for removing scrollbars */
   &.admin-sidebar-collapsed {
     min-width: 48px;
     max-width: 48px;

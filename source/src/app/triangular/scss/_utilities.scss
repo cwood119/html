@@ -223,3 +223,10 @@ $i : 0;
 .background-overlay-static {
   position: static;
 }
+
+.hide-scrollbars {
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    width: 0 !important
+  }
+}

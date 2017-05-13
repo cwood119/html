@@ -1,5 +1,5 @@
 <!-- left sidebar -->
-<md-sidenav md-colors="{ background: 'primary' }" class="triangular-sidenav-left md-sidenav-left md-whiteframe-z2" ng-if="layout.sideMenuSize !== 'off'" md-component-id="left" md-is-locked-open="layout.sideMenuSize !== 'hidden' && $mdMedia('gt-sm')" ui-view="sidebarLeft" ng-class="{ 'admin-sidebar-collapsed': layout.sideMenuSize == 'icon' }" ng-mouseover="stateController.activateHover()" ng-mouseleave="stateController.removeHover()"></md-sidenav>
+<md-sidenav md-colors="{ background: 'primary' }" class="triangular-sidenav-left md-sidenav-left hide-scrollbars md-whiteframe-z2" ng-if="layout.sideMenuSize !== 'off'" md-component-id="left" md-is-locked-open="layout.sideMenuSize !== 'hidden' && $mdMedia('gt-sm')" ui-view="sidebarLeft" ng-class="{ 'admin-sidebar-collapsed': layout.sideMenuSize == 'icon' }" ng-mouseover="stateController.activateHover()" ng-mouseleave="stateController.removeHover()"></md-sidenav>
 
 <!-- main content -->
 <div class="triangular-toolbar-and-content" layout="column" flex>
