@@ -42,9 +42,11 @@ a{color:$blue !important;}
 .layout-margin.ng-scope{text-align:center;}
 .long-arrow {width: 10px !important;min-width: 10px;font-size: 15px !important;}
 .min-width-50{min-width:50px !important;}
-
+.center-text {text-align:center;}
 ////////// Elements
 
+// Loaders
+.mainLoader{margin:auto;}
 // Toolbars
 md-toolbar.md-light-blue-theme{color:$medium-gray;z-index: 0;}
 .md-subheader.md-light-blue-theme.md-primary {color: $dark-gray; background-color:white;border-top:1px solid #e1e1e1;padding-top:5px;}
@@ -115,7 +117,7 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .external-links-button{width: 100%;margin: auto;text-transform:none;text-align:center !important;}
 
 // Symbol Table
-.list-symbol{font-size: 20px;font-weight: 400;letter-spacing: 0.005em;color: $blue;}
+.list-symbol{font-size: 20px;font-weight: 400;letter-spacing: 0.005em;color: $medium-gray;cursor:pointer;}
 .list-template-container{padding-bottom: 0;}
 .list-card{max-width:1550px;margin:auto;}
 .list-buttons{position: absolute;top: 13px;right: 0;}
@@ -150,8 +152,10 @@ md-select-menu.md-light-blue-theme md-content md-option[selected]{color:$blue !i
 
 // Headlines Dialog
 .headline-row1 {font-size: 13px !important; color: $light-gray;}
+.headlines-dialog {min-height:100%;}
 
 // Vitals Dialog
+.vitals-container {min-height:220px;}
 .vitals-table-container {width:50%;float:left;}
 .vitals-table-container table {width:95%;}
 .vitals-table-container tr {border-bottom:1px solid #EEEEEE; padding:10px;}
@@ -161,7 +165,7 @@ md-select-menu.md-light-blue-theme md-content md-option[selected]{color:$blue !i
 .vitals-table-container td:first-child {padding-left:5px;}
 .vitals-line-item-responsive {display:none;color: $light-gray !important;font-size: 13px !important;line-height: .1;padding-bottom: 10px;}
 
-// Old Filters`
+// Old Filters
 .filter-group md-select {margin-top:0;display: inline-block;padding: 0px 5px 0px 5px;}
 .filter-group label {color:rgba(0,0,0,0.38);}
 

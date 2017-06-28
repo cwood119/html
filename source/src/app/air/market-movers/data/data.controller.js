@@ -72,7 +72,6 @@
                     vm.symbols = data[0].data;
                     var symbol = data[0].data[0].symbol;
                     if (symbol == '') {vm.symbols = [];}
-
                     // Auto Hide Refresh Button
                     vm.refreshToggle=0;
 
@@ -103,7 +102,6 @@
                             y: function(d){ return d.y; },
                             callback: function(){
                                 window.dispatchEvent(new Event('resize'));
-                                vm.chartToggle=1;
                             }
                         }
                     };

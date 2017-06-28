@@ -23,7 +23,6 @@
         vm.layout = 'list';
         vm.openSidebar = function(id) {$mdSidenav(id).toggle();vm.refreshSlider();};
         vm.toggleSearch = function() {vm.showSearch = !vm.showSearch;};
-        vm.symbols=[];
 
         // Pagination Variables
         vm.curPage = 1;
@@ -65,27 +64,26 @@
         //////////
 
         function activate() {
+            vm.emptySet = false;
+            vm.mainLoader = true;
+            vm.symbols=[];
             return getEcalData().then(function(data) {
                 if (data[0].data.length != 0) {
+                    // Get Symbols
+                    var symbols = data[0].data;
+                    angular.forEach(symbols,function(value){
+                        var s = value.symbol;
+                        var id = value.id;
+                        var w = value.announce;
+                        var ts = value.timestamp;
+                        vm.list = value.list;
+                        vm.updated = new Date(value.timestamp).toLocaleString();
+                        getSymbolData(s,id,w,ts).then(function(data) {
+                            vm.symbols.push(data);
+                        });
+                    });
 
-                    // Get Symbol and Check for Empty Data Set
-                    vm.symbols = data[0].data;
-                    var symbol = data[0].data[0].symbol;
-                    if (symbol == '') {vm.symbols = [];}
-
-                    // Auto Hide Refresh Button
-                    vm.refreshToggle=0;
-
-                    // Get Data Time Stamp
-                    var metaIndex = data[0].data.length -1;
-                    vm.updated = new Date(data[0].data[metaIndex].meta.updated).toLocaleString();
-
-                    // Get List
-                    vm.list = data[0].data[metaIndex].meta.list;
-
-                    // Auto Hide Chart
-                    vm.chartToggle = 1;
-
+                    vm.chartToggle = false;
                     // Build Line Chart
                     vm.lineChartOptions = {
                         chart: {
@@ -103,11 +101,12 @@
                             y: function(d){ return d.y; },
                             callback: function(){
                                 window.dispatchEvent(new Event('resize'));
-                                vm.chartToggle=1;
+                                vm.chartToggle = true;
+                                vm.mainLoader = false;
                             }
                         }
                     };
-                }
+                } else {vm.mainLoader = false;vm.emptySet = true;}
             });
         }
 
@@ -119,21 +118,74 @@
                 });
         }
 
+        function getHeadlines(symbol) {
+            return ecalService.getHeadlines(symbol)
+                .then(function(data) {
+                    return data;
+                });
+        }
+
+        function getVitals(symbol) {
+            return ecalService.getVitals(symbol)
+                .then(function(data) {
+                    return data;
+                });
+        }
+
+        function getSymbolData(s,id,w,ts) {
+            return ecalService.getSymbolData(s,id,w,ts)
+                .then(function(data) {
+                    var announce;
+                    var chart=[{color:'#03a9f4',values:[]}];
+                    var quotes = data[0].data.quotes.quote;
+                    var timeSales = data[5].data.series.data;
+                    var dataPoints = data[6].data.data; 
+                    //var fundamentals = data[1].data[0].results[1].tables;
+                    //var headlines = data[2].data.data;
+                    
+                    if ( data[3] == 1 ) { announce = 'After Market'; }
+                    if ( data[3] == 2 ) { announce = 'Pre Market'; }
+                    if ( data[3] == 3 ) { announce = 'Intraday'; }
+                    if ( data[3] == 4 ) { announce = 'Not Specified'; }
+                    
+                    // Build Chart Object 
+                    angular.forEach(timeSales,function(value){
+                        var close = value.close;
+                        var time = value.timestamp;
+                        chart[0].values.push({x:time,y:close});
+                    });
+                    var symbolObject = {
+                        'id':data[2],
+                        'symbol':data[1],
+                        'name':quotes.description,
+                        'price':quotes.last,
+                        'dollarChange':quotes.change,
+                        'percentChange':quotes.change_percentage,
+                        'when':announce,
+                        'open':quotes.open,
+                        'high':quotes.high,
+                        'low':quotes.low,
+                        'volume':quotes.volume,
+                        'avgVol':dataPoints[0].value,
+                        'sharesShort':'',
+                        'shortPercent':'',
+                        'marketCap':dataPoints[1].value,
+                        'float':'',
+                        'exchange':quotes.exch,
+                        'headlines':'',
+                        'chart':chart
+                    };
+                    return symbolObject;
+                });
+        }
+
         // Check for New Data
         var updateCheck =  function() {
-            return getEcalData().then(function(data) {
-                if (data[0].data.length != 0) {
-                    var metaIndex = data[0].data.length -1;
-                    vm.modified = new Date(data[0].data[metaIndex].meta.updated).toLocaleString();
-                    if (vm.modified > vm.updated && vm.refreshToggle != 1) {
-                        vm.refreshToggle = 1;
-                    }
-                }
-            });
+            vm.refreshToggle = 1;
         };
 
         // Check for New Data Every 60 Seconds
-        $interval(updateCheck, 60000);
+        $interval(updateCheck, 1000);
 
         // Price Filter and Controls
         vm.filterFn = function()
@@ -211,7 +263,6 @@
             vm.avgVolDisabled=false;
             if (vm.avgVol < 0) {vm.avgVolIndicator = vm.avgVol * -1;}
             else {vm.avgVolIndicator = vm.avgVol;}
-
         };
 
         // On Average Volume Toggle Change
@@ -263,7 +314,6 @@
             vm.marketCapDisabled=false;
             if (vm.marketCap < 0) {vm.marketCapIndicator = vm.marketCap * -1;}
             else {vm.marketCapIndicator = vm.marketCap;}
-
         };
 
         // On Market Cap Toggle Change
@@ -310,9 +360,23 @@
                     var vm = this;
                     vm.symbol = {};
                     vm.symbol = symbol;
+                    symbol.loading=true;
                     vm.cancelClick = function () {
                         $mdDialog.cancel();
                     };
+                    getVitals(symbol).then(function(data) {
+                        //var ownershipDetails = data[0].data[0].results[1].tables.ownership_details;
+                        //var company_profile = data[0].data[0].results[0].tables.company_profile;
+                        var ownershipSummary = data[0].data[0].results[1].tables.ownership_summary;
+                        var shareClassProfile = data[0].data[0].results[1].tables.share_class_profile;
+
+                        var sharesOutstanding = shareClassProfile.shares_outstanding;
+                        var insiderOwnership = ownershipSummary.insider_shares_owned;
+                        symbol.float = sharesOutstanding-insiderOwnership;
+                        symbol.sharesShort = ownershipSummary.short_interest;
+                        symbol.shortPercent = ownershipSummary.short_percentage_of_float;
+                        symbol.loading=false;
+                    });
                 },
                 controllerAs: 'modal',
                 templateUrl: 'app/air/templates/dialogs/vitals-dialog.tmpl.html',
@@ -329,9 +393,15 @@
                     var vm = this;
                     vm.symbol = {};
                     vm.symbol = symbol;
+                    symbol.loading=true;
                     vm.cancelClick = function () {
                         $mdDialog.cancel();
                     };
+                    getHeadlines(symbol).then(function(data) {
+                        symbol.headlines=data[0].data.data;
+                        symbol.loading=false;
+                    });
+                    
                 },
                 controllerAs: 'modal',
                 templateUrl: 'app/air/templates/dialogs/headlines-dialog.tmpl.html',
@@ -339,8 +409,6 @@
                 targetEvent: e
             });
         };
-
-
 
         // Legacy Filter Data
         vm.filterPrice = ['5','10','15'];

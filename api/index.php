@@ -14,6 +14,11 @@ $app->request->headers->set('Content-Type', 'application/json');
 $app->add(new \Slim\Middleware\ContentTypes());
 
 $app->get('/ecal', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
     $ecal = get_ecal();
     if (null !== $ecal) {
         $app->response->setStatus(200);

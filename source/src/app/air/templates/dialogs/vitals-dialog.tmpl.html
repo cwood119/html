@@ -9,23 +9,21 @@
             </md-button>
         </div>
     </md-toolbar>
-
-    <md-dialog-content class="md-dialog-content">
-        <div class="vitals-table-container">
+    <md-progress-linear data-loading="modal.symbol.loading" ng-show="modal.symbol.loading" class="md-accent" md-mode="indeterminate"></md-progress-linear>
+    <md-dialog-content class="md-dialog-content vitals-container">
+        <div class="vitals-table-container" ng-hide="modal.symbol.loading">
             <table>
                 <tr>
                    <td class="vitals-line-item">Open</td>
                    <td>
-                       <span ng-show="{{modal.symbol.open == 0}}">-</span>
-                       <span ng-hide="{{modal.symbol.open == 0}}">{{modal.symbol.open | number:2}}</span>
+                       <span>{{modal.symbol.open | number:2}}</span>
                        <span class="vitals-line-item-responsive">Open</span>
                    </td>
                 </tr>
                 <tr>
                    <td class="vitals-line-item">Day Range</td>
                    <td>
-                       <span ng-show="{{modal.symbol.low == 0}} || {{modal.symbol.high == 0}}">-</span>
-                       <span ng-hide="{{modal.symbol.low == 0}} || {{modal.symbol.high == 0}}">
+                       <span>
                            {{modal.symbol.low | number:2}} - {{modal.symbol.high | number:2}}
                        </span>
                        <span class="vitals-line-item-responsive">Day Range</span>
@@ -34,52 +32,46 @@
                 <tr>
                    <td class="vitals-line-item">Volume</td>
                    <td>
-                       <span ng-show="{{modal.symbol.volume == 0}}">-</span>
-                       <span ng-hide="{{modal.symbol.volume == 0}}">{{modal.symbol.volume | numeraljs:'0.0a'}}</span>
+                       <span>{{modal.symbol.volume | numeraljs:'0.0a'}}</span>
                        <span class="vitals-line-item-responsive">Volume</span>
                    </td>
                 </tr>
                 <tr>
-                   <td class="vitals-line-item">Avg Vol (3mo)</td>
+                   <td class="vitals-line-item">Avg Vol</td>
                    <td>
-                       <span ng-show="{{modal.symbol.avgVol == 0}}">-</span>
-                       <span ng-hide="{{modal.symbol.avgVol == 0}}">{{modal.symbol.avgVol | numeraljs:'0.0a'}}</span>
+                       <span>{{modal.symbol.avgVol | numeraljs:'0.0a'}}</span>
                        <span class="vitals-line-item-responsive">Avg Vol (3mo)</span>
                    </td>
                 </tr>
             </table>
         </div>
-        <div class="vitals-table-container">
+        <div class="vitals-table-container" ng-hide="modal.symbol.loading">
             <table style="margin-left:5%;">
                 <tr>
-                   <td class="vitals-line-item">Shares Short</td>
+                   <td class="vitals-line-item" data-short={{modal.symbol.sharesShort}}>Shares Short</td>
                    <td>
-                       <span ng-show="{{modal.symbol.sharesShort == 0}}">-</span>
-                       <span ng-hide="{{modal.symbol.sharesShort == 0}}">{{modal.symbol.sharesShort | numeraljs:'0.0a'}}</span>
+                       <span >{{modal.symbol.sharesShort | numeraljs:'0.0a'}}</span>
                        <span class="vitals-line-item-responsive">Shares Short</span>
                    </td>
                 </tr>
                 <tr>
                    <td class="vitals-line-item">Short Percent</td>
                    <td>
-                       <span ng-show="{{modal.symbol.shortPercent == 0}}">-</span>
-                       <span ng-hide="{{modal.symbol.shortPercent == 0}}">{{modal.symbol.shortPercent | number:2}}%</span>
+                       <span>{{modal.symbol.shortPercent | number:2}}%</span>
                        <span class="vitals-line-item-responsive">Short Percent</span>
                    </td>
                 </tr>
                 <tr>
                    <td class="vitals-line-item">Market Cap</td>
                    <td>
-                       <span ng-show="{{modal.symbol.marketCap == 0}}">-</span>
-                       <span ng-hide="{{modal.symbol.marketCap == 0}}">{{modal.symbol.marketCap | numeraljs:'0a'}}</span>
+                       <span>{{modal.symbol.marketCap | numeraljs:'0a'}}</span>
                        <span class="vitals-line-item-responsive">Market Cap</span>
                    </td>
                 </tr>
                 <tr>
                    <td class="vitals-line-item">Float</td>
                    <td>
-                       <span ng-show="{{modal.symbol.float == 0}}">-</span>
-                       <span ng-hide="{{modal.symbol.float == 0}}">{{modal.symbol.float | numeraljs:'0a'}}</span>
+                       <span>{{modal.symbol.float | numeraljs:'0a'}}</span>
                        <span class="vitals-line-item-responsive">Float</span>
                    </td>
                 </tr>

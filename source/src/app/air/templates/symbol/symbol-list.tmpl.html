@@ -30,56 +30,63 @@
         </div>
     </div>
 </md-toolbar>
-
-<md-table-container>
-    <table md-table class="md-primary md-data-table symbol-table">
+<div ng-show="vm.emptySet" class="center-text" >No symbols found in latest query</div>
+<md-table-container ng-show="!vm.mainLoader">
+    <table md-table ng-show="!vm.emptySet" class="md-primary md-data-table symbol-table">
         <thead md-head md-order="vm.query.order">
             <tr md-row>
-                <!-- <th md-column class="md-subhead">Symbol</th>
-                <th md-column class="md-subhead">Price</th>
-                <th md-column class="md-subhead">Chart</th> -->
+                <th md-column class="md-subhead" md-order-by="symbol">Symbol</th>
                 <th md-column class="md-subhead"></th>
-                <th md-column class="md-subhead"></th>
-                <th md-column class="md-subhead" md-order-by="percentChange">Change</th>
+                <th md-column class="md-subhead" md-order-by="price">Price</th>
+                <!--<th md-column class="md-subhead">Chart</th>-->
+                <th md-column class="md-subhead" md-order-by="dollarChange">Change</th>
+                <th md-column class="md-subhead" md-order-by="percentChange">% Change</th>
                 <th md-column ng-show="vm.currentPath === '/alerts'">Alert</th>
                 <th md-column ng-show="vm.currentPath === '/alerts'" md-order-by="distance">Distance</th>
                 <th md-column ng-show="vm.currentPath === '/alerts'" md-order-by="date">Added</th>
+                <th md-column ng-show="vm.currentPath === '/earnings-calendar'" md-order-by="when">When</th>
                 <th md-column class="md-subhead" md-order-by="volume">Volume</th>
-                <th md-column class="md-subhead" md-order-by="avgVol">Avg Vol</th>
-                <th md-column class="md-subhead" md-order-by="sharesShort">Short</th>
-                <th md-column class="md-subhead no-padding" ng-show="vm.currentPath === '/alerts'" md-order-by="shortPercent">Short %</th>
-                <th md-column class="md-subhead" ng-hide="vm.currentPath === '/alerts'" md-order-by="shortPercent">Short %</th>
-                <th md-column class="md-subhead" ng-hide="vm.currentPath === '/alerts'">Vitals</th>
-                <th md-column class="md-subhead" ng-hide="vm.currentPath === '/alerts'">Headlines</th>
+                <th md-column class="md-subhead" ng-hide="vm.currentPath === '/alerts'" md-order-by="avgVol">Avg Vol</th>
+                <th md-column class="md-subhead">Vitals</th>
+                <th md-column class="md-subhead">Headlines</th>
                 <th md-column md-subhead></th>
             </tr>
         </thead>
         <tbody md-body>
+
             <tr md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter:vm.volumeFilter() | filter: vm.avgVolFilter() |
             filter: vm.floatFilter() | filter: vm.marketCapFilter() | filter: vm.shortFilter() | filter: {symbol:search}) |
             orderBy: vm.query.order| limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize track by symbol.id">
                 <td md-cell class="symbol-container">
                     <div class="list-symbol">{{symbol.symbol}}<md-tooltip>{{symbol.name}}</md-tooltip></div>
+                </td>
+
+                <td md-cell class="chart-container" ng-mouseLeave="vm.hideInteractive();">
+                    <!-- <div google-chart chart="vm.chartData"></div> -->
+                        <nvd3 ng-show="vm.chartToggle" options="vm.lineChartOptions" data="symbol.chart"></nvd3>
+                </td>
+                <td md-cell>
+                    {{symbol.price | number:2}}
+                </td>
+                <td md-cell>
                     <div class="md-body-2">
-                        {{symbol.price | number:2}}
                         <span class="md-body-1" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">
                            <span ng-show="symbol.dollarChange > 0"> +</span>{{symbol.dollarChange | number:2}}
                         </span>
                     </div>
                 </td>
-
-                <td md-cell class="chart-container" ng-mouseLeave="vm.hideInteractive();">
-                    <!-- <div google-chart chart="vm.chartData"></div> -->
-                        <nvd3 ng-show="vm.chartToggle != 0" options="vm.lineChartOptions" data="symbol.chart"></nvd3>
-                </td>
-                <td md-cell class="no-padding">
-
+                <td md-cell>
                     <div class="md-body-1" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">
                       <!--<md-icon md-font-icon="zmdi zmdi-long-arrow-up" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}" class="long-arrow"></md-icon>-->
                       <span ng-show="symbol.dollarChange > 0"> +</span>{{symbol.percentChange | number:2}}%
                     </div>
                 </td>
 
+                <td md-cell class="min-width-50" ng-show="vm.currentPath === '/earnings-calendar'">
+                    <div class="md-body-1">
+                        {{symbol.when}}
+                    </div>
+                </td>
                 <td md-cell class="min-width-50" ng-show="vm.currentPath === '/alerts'">
                     <div class="md-body-1">
                         <md-icon class=" material-icons zmdi zmdi-long-arrow-up toggle-filter-long-up-arrow" aria-hidden="true"></md-icon>
@@ -100,22 +107,14 @@
                     <div class="md-body-1" ng-show="{{symbol.volume == 0}}">-</div>
                     <div class="md-body-1" ng-hide="{{symbol.volume == 0}}">{{symbol.volume | number:0}}</div>
                 </td>
-                <td md-cell>
+                <td md-cell ng-hide="vm.currentPath === '/alerts'">
                     <div class="md-body-1" ng-show="{{symbol.avgVol == 0}}">-</div>
                     <div class="md-body-1" ng-hide="{{symbol.avgVol == 0}}">{{symbol.avgVol | number:0}}</div>
                 </td>
                 <td md-cell>
-                    <div class="md-body-1" ng-show="{{symbol.sharesShort == 0}}">-</div>
-                    <div class="md-body-1" ng-hide="{{symbol.sharesShort == 0}}">{{symbol.sharesShort | number:0}}</div>
-                </td>
-                <td md-cell class="no-padding">
-                    <div class="md-body-1" ng-show="{{symbol.shortPercent == 0}}">-</div>
-                    <div class="md-body-1" ng-hide="{{symbol.shortPercent == 0}}">{{symbol.shortPercent | number:2}}%</div>
-                </td>
-                <td md-cell ng-hide="vm.currentPath === '/alerts'">
                     <div class="md-body-1 pointer blue" ng-disabled="dialogForm.$invalid" ng-click="vm.openVitals($event, symbol)">Vitals</div>
                 </td>
-                <td md-cell ng-hide="vm.currentPath === '/alerts'">
+                <td md-cell>
                     <div class="md-body-1 pointer blue" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event, symbol)">Headlines</div>
                 </td>
 
@@ -125,14 +124,6 @@
                             <md-icon md-font-icon="zmdi zmdi-more-vert"></md-icon>
                         </md-button>
                         <md-menu-content width="3">
-                            <md-menu-item class="external-links-menu-item" ng-show="vm.currentPath === '/alerts'">
-                                <md-button class="md-flat external-links-button blue" ng-class="['md-primary','md-default-hue']" aria-label="Vitals" ng-disabled="dialogForm.$invalid" ng-click="vm.openVitals($event, symbol)">Vitals</md-button>
-                            </md-menu-item>
-
-                            <md-menu-item class="external-links-menu-item" ng-show="vm.currentPath === '/alerts'">
-                                <md-button class="md-flat external-links-button blue" ng-class="['md-primary','md-default-hue']" aria-label="Headlines" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event, symbol)">Headlines</md-button>
-                            </md-menu-item>
-
                             <md-menu-item class="external-links-menu-item">
                                 <a ng-href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={{symbol.symbol}}&type=&dateb=&owner=include&count=100" target="_blank">
                                     <md-button class="md-flat external-links-button blue" ng-class="['md-primary','md-default-hue']" aria-label="SEC Filings">SEC Filings</md-button>
@@ -160,6 +151,7 @@
         </tbody>
     </table>
 </md-table-container>
+<md-progress-circular ng-show="vm.mainLoader" class="md-accent mainLoader" md-mode="indeterminate"></md-progress-circular>
 <md-table-pagination md-limit="vm.pageSize" md-limit-options="vm.limitOptions"  md-page-select md-page="vm.curPage" md-total="{{vm.filtered.length}}" class="symbol-pagination"></md-table-pagination>
 <div class="attributions attributions-list-view">
     Updated: {{vm.updated}}<br />
