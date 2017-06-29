@@ -50,31 +50,34 @@
                 <tr>
                    <td class="vitals-line-item" data-short={{modal.symbol.sharesShort}}>Shares Short</td>
                    <td>
-                       <span >{{modal.symbol.sharesShort | numeraljs:'0.0a'}}</span>
+                       <span ng-show="{{modal.symbol.sharesShort == 0}}">-</span>
+                       <span ng-hide="{{modal.symbol.sharesShort == 0}}">{{modal.symbol.sharesShort | numeraljs:'0.0a'}}</span>
                        <span class="vitals-line-item-responsive">Shares Short</span>
                    </td>
                 </tr>
                 <tr>
                    <td class="vitals-line-item">Short Percent</td>
                    <td>
-                       <span>{{modal.symbol.shortPercent | number:2}}%</span>
+                       <span ng-show="{{modal.symbol.shortPercent == 0}}">-</span>
+                       <span ng-hide="{{modal.symbol.shortPercent == 0}}">{{modal.symbol.shortPercent | number:2}}%</span>
                        <span class="vitals-line-item-responsive">Short Percent</span>
                    </td>
                 </tr>
                 <tr>
                    <td class="vitals-line-item">Market Cap</td>
                    <td>
-                       <span>{{modal.symbol.marketCap | numeraljs:'0a'}}</span>
+                       <span ng-show="{{modal.symbol.marketCap}}">-</span>
+                       <span ng-hide="{{modal.symbol.marketCap}}">{{modal.symbol.marketCap | numeraljs:'0a'}}</span>
                        <span class="vitals-line-item-responsive">Market Cap</span>
                    </td>
                 </tr>
-                <tr>
+               <!-- <tr>
                    <td class="vitals-line-item">Float</td>
                    <td>
                        <span>{{modal.symbol.float | numeraljs:'0a'}}</span>
                        <span class="vitals-line-item-responsive">Float</span>
                    </td>
-                </tr>
+                </tr>-->
             </table>
        </div>
     </md-dialog-content>

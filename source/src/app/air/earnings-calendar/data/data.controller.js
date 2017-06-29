@@ -76,13 +76,13 @@
                         var id = value.id;
                         var w = value.announce;
                         var ts = value.timestamp;
+                        var av = value.avgVol;
                         vm.list = value.list;
                         vm.updated = new Date(value.timestamp).toLocaleString();
-                        getSymbolData(s,id,w,ts).then(function(data) {
+                        getSymbolData(s,id,w,ts,av).then(function(data) {
                             vm.symbols.push(data);
                         });
                     });
-
                     vm.chartToggle = false;
                     // Build Line Chart
                     vm.lineChartOptions = {
@@ -132,16 +132,20 @@
                 });
         }
 
-        function getSymbolData(s,id,w,ts) {
-            return ecalService.getSymbolData(s,id,w,ts)
+        function getSymbolData(s,id,w,ts,av) {
+            return ecalService.getSymbolData(s,id,w,ts,av)
                 .then(function(data) {
                     var announce;
                     var chart=[{color:'#03a9f4',values:[]}];
                     var quotes = data[0].data.quotes.quote;
                     var timeSales = data[5].data.series.data;
-                    var dataPoints = data[6].data.data; 
+                    //var dataPoints = data[6].data.data; 
                     //var fundamentals = data[1].data[0].results[1].tables;
                     //var headlines = data[2].data.data;
+                    //var marketCap = dataPoints[1].value;
+
+                    //if ( marketCap == "na" ) { marketCap = 0; }
+                    //if ( marketCap == "nm" ) { marketCap = 0; }
                     
                     if ( data[3] == 1 ) { announce = 'After Market'; }
                     if ( data[3] == 2 ) { announce = 'Pre Market'; }
@@ -155,7 +159,7 @@
                         chart[0].values.push({x:time,y:close});
                     });
                     var symbolObject = {
-                        'id':data[2],
+                        'id':parseInt(data[2]),
                         'symbol':data[1],
                         'name':quotes.description,
                         'price':quotes.last,
@@ -166,10 +170,10 @@
                         'high':quotes.high,
                         'low':quotes.low,
                         'volume':quotes.volume,
-                        'avgVol':dataPoints[0].value,
+                        'avgVol':parseInt(data[6]),
                         'sharesShort':'',
                         'shortPercent':'',
-                        'marketCap':dataPoints[1].value,
+                        'marketCap':'',
                         'float':'',
                         'exchange':quotes.exch,
                         'headlines':'',
@@ -185,7 +189,7 @@
         };
 
         // Check for New Data Every 60 Seconds
-        $interval(updateCheck, 1000);
+        $interval(updateCheck, 300000);
 
         // Price Filter and Controls
         vm.filterFn = function()
@@ -367,14 +371,20 @@
                     getVitals(symbol).then(function(data) {
                         //var ownershipDetails = data[0].data[0].results[1].tables.ownership_details;
                         //var company_profile = data[0].data[0].results[0].tables.company_profile;
+                        //var shareClassProfile = data[0].data[0].results[1].tables.share_class_profile;
+                        //var sharesOutstanding = shareClassProfile.shares_outstanding;
                         var ownershipSummary = data[0].data[0].results[1].tables.ownership_summary;
-                        var shareClassProfile = data[0].data[0].results[1].tables.share_class_profile;
-
-                        var sharesOutstanding = shareClassProfile.shares_outstanding;
-                        var insiderOwnership = ownershipSummary.insider_shares_owned;
-                        symbol.float = sharesOutstanding-insiderOwnership;
                         symbol.sharesShort = ownershipSummary.short_interest;
                         symbol.shortPercent = ownershipSummary.short_percentage_of_float;
+
+                        /*if (ownershipSummary == null) { symbol.sharesShort=0;symbol.shortPercent=0; }
+                        else {
+                            //var insiderOwnership = ownershipSummary.insider_shares_owned;
+                            //symbol.float = sharesOutstanding-insiderOwnership;
+                            symbol.sharesShort = ownershipSummary.short_interest;
+                            symbol.shortPercent = ownershipSummary.short_percentage_of_float;
+                        }*/
+
                         symbol.loading=false;
                     });
                 },
