@@ -13,6 +13,14 @@ $app->response->headers->set('Content-Type', 'application/json');
 $app->request->headers->set('Content-Type', 'application/json');
 $app->add(new \Slim\Middleware\ContentTypes());
 
+// Endpoints
+$app->map('/', function() use($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+})->via('GET', 'POST');
+
 $app->get('/ecal', function () use ($app) {
     $response = $app->response();
     $response->header('Access-Control-Allow-Origin', '*');
@@ -27,18 +35,33 @@ $app->get('/ecal', function () use ($app) {
         $app->response->setStatus(401);
     }
 });
-$app->map('/', function() use($app) {
+
+$app->get('/gainers', function () use ($app) {
     $response = $app->response();
     $response->header('Access-Control-Allow-Origin', '*');
     $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
     $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
-})->via('GET', 'POST');
+
+    $gainers = get_gainers();
+    if (null !== $gainers) {
+        $app->response->setStatus(200);
+        echo json_encode($gainers);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
 
 
 // Data Functions
 function get_ecal() {
     $pdo = connect_to_db();    
-    $data = $pdo->query('SELECT * FROM `earnings-calendar-latest`')->fetchAll();
+    $data = $pdo->query('SELECT * FROM earnings_calendar_latest')->fetchAll();
+    return $data;
+}
+
+function get_gainers() {
+    $pdo = connect_to_db();    
+    $data = $pdo->query('SELECT * FROM market_movers_latest')->fetchAll();
     return $data;
 }
 
