@@ -27,9 +27,9 @@
             // permissions are turned off so no UserService available
             // just set default user
             vm.currentUser = {
-                displayName: 'Christos',
-                username: 'christos',
-                avatar: 'assets/images/avatars/avatar-5.png',
+                displayName: 'CWood',
+                username: 'cwood',
+                avatar: 'assets/images/avatars/avatar-7.png',
                 roles: []
             };
         }

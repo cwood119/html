@@ -30,8 +30,8 @@
 
         return service;
 
-        function getData() {
-            var ecalData = $http.get('http://localhost/api/ecal');
+        function getData(API_CONFIG) {
+            var ecalData = $http.get(API_CONFIG.url + 'ecal');
             return $q.all([ecalData]);
         }
 

@@ -3,7 +3,7 @@ function connect_to_db() {
     $host = 'localhost'; // this may be an ip address instead
     $db = 'mymedi13_air'; // name of your database
     $user = 'cwood';
-    $pass = 'placeholder';
+    $pass = '!*******';
     $charset = 'utf8';
     #$connection = new mysqli($server, $user, $pass, $database);
     

@@ -14,7 +14,7 @@
     // });
 
     /* @ngInject */
-    function moversController($http, $mdDialog, $location, $document, $timeout, $interval, $window, $mdSidenav, $scope, moversService) {
+    function moversController($http, $mdDialog, $location, $document, $timeout, $interval, $window, $mdSidenav, $scope, moversService, API_CONFIG) {
         var vm = this;
 
         // Page Variables
@@ -56,7 +56,7 @@
             vm.emptySet = false;
             vm.mainLoader = true;
             vm.symbols=[];
-            return getMoversData().then(function(data) {
+            return getMoversData(API_CONFIG).then(function(data) {
                 if (data[0].data.length != 0) {
                     // Get Symbols
                     var symbols = data[0].data;
@@ -99,8 +99,8 @@
         }
 
         // Get Data from Service
-        function getMoversData() {
-            return moversService.getData()
+        function getMoversData(API_CONFIG) {
+            return moversService.getData(API_CONFIG)
                 .then(function(data) {
                     return data;
                 });
@@ -165,11 +165,11 @@
             max: 20,
             options: {
                 floor: 0,
-                ceil: 20,
-                ticksArray: [0, 5, 10, 15, 20],
+                ceil: 65,
+                ticksArray: [0, 5, 10, 15, 20, 30, 40, 50, 60, 65],
                 translate: function(value) {return '$' + value;},
                 onChange: function () {
-                    if (vm.slider.min != 0 || vm.slider.max != 20) {vm.priceToggle=true;vm.priceDisabled=false;}
+                    if (vm.slider.min != 0 || vm.slider.max != 65) {vm.priceToggle=true;vm.priceDisabled=false;}
                     else {vm.priceToggle=false;vm.priceDisabled=true;}
                 }
             }
@@ -186,7 +186,7 @@
         vm.priceFilterCheck = function (state) {
             if (state == false) {
                 vm.slider.min = 0;
-                vm.slider.max = 20;
+                vm.slider.max = 65;
                 vm.priceDisabled=true;
             }
         };

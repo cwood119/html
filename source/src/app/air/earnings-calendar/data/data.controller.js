@@ -14,7 +14,7 @@
     // });
 
     /* @ngInject */
-    function ecalController($http, $mdDialog, $location, $document, $timeout, $interval, $window, $mdSidenav, $scope, ecalService) {
+    function ecalController($http, $mdDialog, $location, $document, $timeout, $interval, $window, $mdSidenav, $scope, ecalService, API_CONFIG) {
         var vm = this;
 
         // Page Variables
@@ -67,7 +67,7 @@
             vm.emptySet = false;
             vm.mainLoader = true;
             vm.symbols=[];
-            return getEcalData().then(function(data) {
+            return getEcalData(API_CONFIG).then(function(data) {
                 if (data[0].data.length != 0) {
                     // Get Symbols
                     var symbols = data[0].data;
@@ -111,8 +111,8 @@
         }
 
         // Get Data from Service
-        function getEcalData() {
-            return ecalService.getData()
+        function getEcalData(API_CONFIG) {
+            return ecalService.getData(API_CONFIG)
                 .then(function(data) {
                     return data;
                 });

@@ -28,8 +28,8 @@
 
         return service;
 
-        function getData() {
-            var moversData = $http.get('http://localhost/api/gainers');
+        function getData(API_CONFIG) {
+            var moversData = $http.get(API_CONFIG.url + 'gainers');
             return $q.all([moversData]);
         }
 

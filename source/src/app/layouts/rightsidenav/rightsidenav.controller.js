@@ -54,39 +54,38 @@
                 iconColor: '#4caf50'
             }]
         }];
-        vm.openMail = openMail;
         vm.settingsGroups = [{
-            name: 'Account Settings',
+            name: 'Notifications',
             settings: [{
-                title: 'Show my location',
-                icon: 'zmdi zmdi-pin',
+                title: 'Alerts are updated',
+                icon: 'zmdi zmdi-notifications-active',
                 enabled: true
             },{
-                title: 'Show my avatar',
-                icon: 'zmdi zmdi-face',
-                enabled: false
+                title: 'Watchlist is updated',
+                icon: 'zmdi zmdi-notifications-active',
+                enabled: true
             },{
-                title: 'Send me notifications',
+                title: 'Notify me when new alerts are added',
                 icon: 'zmdi zmdi-notifications-active',
                 enabled: true
             }]
         },{
-            name: 'Chat Settings',
+            name: 'Notification Settings',
             settings: [{
-                title: 'Show my username',
-                icon: 'zmdi zmdi-account',
+                title: 'Email Notifications',
+                icon: 'zmdi zmdi-email',
                 enabled: true
             },{
-                title: 'Make my profile public',
-                icon: 'zmdi zmdi-account-box',
+                title: 'Browser Push Notifications',
+                icon: 'zmdi zmdi-notifications-active',
                 enabled: false
             },{
-                title: 'Allow cloud backups',
-                icon: 'zmdi zmdi-cloud-upload',
+                title: 'Mobile Push Notifications',
+                icon: 'zmdi zmdi-notifications-active',
                 enabled: true
             }]
         }];
-
+/*
         vm.statisticsGroups = [{
             name: 'User Statistics',
             stats: [{
@@ -118,7 +117,7 @@
                 value: 100
             }]
         }];
-
+*/
         ////////////////
 
         // add an event to switch tabs (used when user clicks a menu item before sidebar opens)
@@ -126,18 +125,13 @@
             vm.currentTab = tab;
         });
 
-        // fetch some dummy emails from the API
+        // Get Watchlist Symbols
         $http({
             method: 'GET',
-            url: API_CONFIG.url + 'email/inbox'
-        }).success(function(data) {
-            vm.emails = data.slice(1,20);
+            url: API_CONFIG.url + 'watchlist'
+        }).then(function(data) {
+            vm.watchlist = data;
         });
-
-        function openMail() {
-            $state.go('triangular-no-scroll.email.inbox');
-            vm.close();
-        }
 
         function close() {
             $mdSidenav('notifications').close();

@@ -43,6 +43,7 @@ a{color:$blue !important;}
 .long-arrow {width: 10px !important;min-width: 10px;font-size: 15px !important;}
 .min-width-50{min-width:50px !important;}
 .center-text {text-align:center;}
+
 ////////// Elements
 
 // Loaders
@@ -89,7 +90,7 @@ md-fab-speed-dial.md-fab-bottom-right{position:fixed;}
 md-icon.material-icons.ng-scope.md-light-blue-theme.md-font.zmdi.zmdi-view-list.view-icons{line-height:21px;}
 
 // Tabs
-md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active {color:$blue;}
+md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-light-blue-theme .md-tab.md-active md-icon {color:$blue;}
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper {background-color: transparent;}
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {color: $light-gray;border-bottom: 1px solid #fafafa;}
 md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
@@ -131,6 +132,7 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .price-container {width:140px;text-align: center !important;}
 .chart-container {min-width:140px;max-width:150px;padding:10px 40px 10px 0px!important}
 .search-container {top:15px;}
+md-icon.material-icons.fa.fa-bell-o.toggle-filter-long-up-arrow.md-light-blue-theme {font-size: 13px;padding: 0;top: -1px;position: relative;}
 
 // Symbol Table chart
 .x-value {display:none;}

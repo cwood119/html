@@ -51,6 +51,35 @@ $app->get('/gainers', function () use ($app) {
     }
 });
 
+$app->get('/alerts', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $alerts = get_alerts();
+    if (null !== $alerts) {
+        $app->response->setStatus(200);
+        echo json_encode($alerts);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
+$app->get('/watchlist', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $watchlist = get_watchlist();
+    if (null !== $watchlist) {
+        $app->response->setStatus(200);
+        echo json_encode($watchlist);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
 
 // Data Functions
 function get_ecal() {
@@ -65,5 +94,16 @@ function get_gainers() {
     return $data;
 }
 
+function get_alerts() {
+    $pdo = connect_to_db();    
+    $data = $pdo->query('SELECT * FROM alerts_latest')->fetchAll();
+    return $data;
+}
+
+function get_watchlist() {
+    $pdo = connect_to_db();    
+    $data = $pdo->query('SELECT * FROM watchlist_latest')->fetchAll();
+    return $data;
+}
 
 $app->run();
