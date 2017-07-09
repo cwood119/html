@@ -2,10 +2,10 @@
     'use strict';
     angular
         .module('app.air.decision')
-        .controller('decisionController', decisionController);
+        .controller('heatmapController', heatmapController);
 
     /* @ngInject */
-    function decisionController($http, $mdDialog, $location, $document, $timeout, $mdToast, $interval, $scope) {
+    function heatmapController($http, $mdDialog, $location, $document, $timeout, $mdToast, $interval, $scope) {
         var vm = this;
 // Initialize random data for the demo
         var now = moment().endOf('day').toDate();

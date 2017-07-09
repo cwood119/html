@@ -115,7 +115,7 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .external-links-menu-container{position: absolute;top: -5px;right: -15px;color: $light-gray;}
 .external-links-menu-container-list > button > md-icon.md-light-blue-theme{color: $light-gray !important;}
 .external-links-menu-item{height: auto;min-height: auto;}
-.external-links-button{width: 100%;margin: auto;text-transform:none;text-align:center !important;}
+.external-links-button{width: 100%;margin: auto;text-transform:none;text-align:center !important;font-weight:500 !important;}
 
 // Symbol Table
 .list-symbol{font-size: 20px;font-weight: 400;letter-spacing: 0.005em;color: $medium-gray;cursor:pointer;}

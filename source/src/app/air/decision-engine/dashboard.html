@@ -1,16 +1,16 @@
-<div class="padded-content-page">
-    <div layout="row" layout-xs="column" layout-wrap ng-controller="counterWidgetsController as vm">
+<div class="padded-content-page" ng-controller="decisionController as vm">
+    <div layout="row" layout-xs="column" layout-wrap>
         <div flex flex-sm="50">
-            <counter-widget flex flex-sm="50" title="Calendar Movers" count="vm.ecalIntraday.length -1" icon="zmdi zmdi-calendar-check" background="deep-orange-500" color="white"></counter-widget>
+            <counter-widget flex flex-sm="50" title="Announcements" count="vm.ecal.length" icon="zmdi zmdi-calendar-check" background="deep-orange-500" color="white"></counter-widget>
         </div>
         <div flex flex-sm="50">
-            <counter-widget flex flex-sm="50" title="Pre Market" count="vm.ecalPre.length -1" icon="wi wi-horizon-alt"  background="light-blue-500" color="white"></counter-widget>
+            <counter-widget flex flex-sm="50" title="Pre Market" count="vm.ecalPre.length" icon="wi wi-horizon-alt"  background="light-blue-500" color="white"></counter-widget>
         </div>
         <div flex flex-sm="50">
-            <counter-widget flex flex-sm="50" title="After Market" count="vm.ecalAfter.length -1" icon="wi wi-night-clear"  background="deep-purple-500" color="white"></counter-widget>
+            <counter-widget flex flex-sm="50" title="After Market" count="vm.ecalAfter.length" icon="wi wi-night-clear"  background="deep-purple-500" color="white"></counter-widget>
         </div>
         <div flex flex-sm="50">
-            <counter-widget flex flex-sm="50" title="Market Movers" count="vm.gainersIntraday.length -1" icon="zmdi zmdi-trending-up"  background="green-500" color="white"></counter-widget>
+            <counter-widget flex flex-sm="50" title="Market Movers" count="vm.gainers.length" icon="zmdi zmdi-trending-up"  background="green-500" color="white"></counter-widget>
         </div>
     </div>
 <!--    <div flex flex="100" layout="row">
@@ -18,7 +18,7 @@
             <calendar-heatmap data="example_data" color="color" width="100%" overview="overview" handler="print"></calendar-heatmap>
         </md-card>
     </div>-->
-    <div id="ninety-day-outlook" layout="row" layour-xs="column">
+    <div id="ninety-day-outlook" layout="row" layout-xs="column">
         <div flex="50" flex-xs="100" ng-controller="ninetyDayLookbackController as vm">
             <ninety-day-lookback-widget flex flex="50" layout="column" start="vm.start" end="vm.end" time-spans="vm.timeSpans" on-time-change="vm.ninetyDayLookbackTimeSpanChanged(span)" data="vm.lookbackData.ninetyDayLookbackData" options="vm.ninetyDayLookbackOptions"></ninety-day-lookback-widget>
         </div>
@@ -50,28 +50,13 @@
 
         </div>
     </div>-->
-    <div flex flex="100" layout="row" ng-controller="ecalDEController as vm" ng-show="vm.ecalToggle != 0">
-        <md-card flex flex="100">
+    <div layout="row" layout-xs="column">
+        <md-card flex flex="60" flex-xs="100" layout="column" class="flex-60">
             <md-card-content ng-include="'app/air/decision-engine/ecal-list.tmpl.html'"></md-card-content>
         </md-card>
-    </div>
-    <div flex flex="100" layout="row" ng-controller="ecalIntradayDEController as vm" ng-show="vm.ecalIntradayToggle != 0">
-        <md-card flex flex="100">
-            <md-card-content ng-include="'app/air/decision-engine/ecal-intraday-list.tmpl.html'"></md-card-content>
+
+        <md-card flex flex="40" flex-xs="100" layout="column"  class="flex-40">
+            <md-card-content>Earnings Tracker</md-card-content>
         </md-card>
-    </div>
-    <div layout="row" layour-xs="column" ng-controller="ecalPreDEController as vm" ng-show="vm.ecalPreToggle != 0">
-        <div flex="100" flex-xs="100">
-            <md-card flex flex="100">
-                <md-card-content ng-include="'app/air/decision-engine/ecal-pre-list.tmpl.html'"></md-card-content>
-            </md-card>
-        </div>
-    </div>
-    <div layout="row" layour-xs="column" ng-controller="ecalAfterDEController as vm" ng-show="vm.ecalAfterToggle != 0">
-        <div flex="100" flex-xs="100">
-            <md-card flex flex="100">
-                <md-card-content ng-include="'app/air/decision-engine/ecal-after-list.tmpl.html'"></md-card-content>
-            </md-card>
-        </div>
     </div>
 </div>

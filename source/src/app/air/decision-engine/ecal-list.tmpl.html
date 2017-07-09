@@ -1,32 +1,79 @@
 <h3 class="md-subhead">Earnings Announcements<md-subhead class="list-subhead">{{vm.updated}}</md-subhead></h3>
-<md-table-container>
-    <table md-table class="md-primary md-data-table symbol-table">
+<div ng-show="vm.emptySet" class="center-text" >No symbols found in latest query</div>
+<md-table-container ng-show="!vm.mainLoader">
+    <table md-table ng-show="!vm.emptySet" class="md-primary md-data-table symbol-table">
         <thead md-head md-order="vm.query.order">
             <tr md-row>
                 <th md-column md-order-by="symbol">Symbol</th>
+                <th md-column >Daily</th>
                 <th md-column md-order-by="price">Price</th>
-                <th md-column md-order-by="percentChange">Change</th>
-                <th md-column md-order-by="avgVol">Avg Volume</th>
+                <th md-column md-order-by="avgVol">Avg Vol</th>
                 <th md-column md-order-by="when">When</th>
-                <th md-column>Vitals</th>
-                <th md-column>Headlines</th>
+                <th md-column></th>
             </tr>
         </thead>
         <tbody md-body>
-            <tr md-row ng-repeat="symbol in vm.ecalDaily | orderBy: vm.query.order | limitTo: vm.ecalPageSize : (vm.ecalCurPage - 1) * vm.ecalPageSize" ng-hide="{{symbol.symbol == null}}">
-                <td md-cell>{{symbol.symbol}}</td>
-                <td md-cell>{{symbol.price | number:2}}</td>
-                <td md-cell class="no-padding" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">{{symbol.dollarChange | number:2}} ({{symbol.percentChange | number:2}}%)</td>
-                <td md-cell ng-show="{{symbol.avgVol == 0}}">-</td>
-                <td md-cell ng-hide="{{symbol.avgVol == 0}}">{{symbol.avgVol | number:0}}</td>
-                <td md-cell ng-show="{{symbol.when == 1}}">After Market</td>
-                <td md-cell ng-show="{{symbol.when == 2}}">Pre Market</td>
-                <td md-cell ng-show="{{symbol.when == 3}}">Intraday</td>
-                <td md-cell ng-show="{{symbol.when == 4}}">Not Specified</td>
-                <td md-cell><span class="pointer blue" data-symbol="{{symbol.symbol}}" data-open="{{symbol.vitals.open}}"  ng-disabled="dialogForm.$invalid" ng-click="vm.openVitals($event, symbol)">Vitals</span></td>
-                <td md-cell><span class="pointer blue" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event, symbol)">Headlines</span></td>
+            <tr md-row ng-repeat="symbol in vm.symbols | orderBy: vm.query.order | limitTo: vm.ecalPageSize : (vm.ecalCurPage - 1) * vm.ecalPageSize track by symbol.id">
+                <td md-cell class="symbol-container">
+                    <div class="pointer">{{symbol.symbol}}<md-tooltip>{{symbol.name}}</md-tooltip></div>
+                </td>
+
+                <td md-cell class="chart-container" ng-mouseLeave="vm.hideInteractive();">
+                    <!-- <div google-chart chart="vm.chartData"></div> -->
+                        <nvd3  options="vm.lineChartOptions" data="symbol.chart"></nvd3>
+                </td>
+
+                <td md-cell>
+                    {{symbol.price | number:2}}
+                </td>
+
+                <td md-cell>
+                    <div class="md-body-1" ng-show="{{symbol.avgVol == 0}}">-</div>
+                    <div class="md-body-1" ng-hide="{{symbol.avgVol == 0}}">{{symbol.avgVol | number:0}}</div>
+                </td>
+
+                <td md-cell class="no-padding">
+                    <div class="md-body-1">
+                        {{symbol.when}}
+                    </div>
+                </td>
+
+                <td md-cell>
+                    <md-menu class="external-links-menu-container-list">
+                        <md-button class="md-icon-button" aria-label="open menu" ng-click="$mdOpenMenu()">
+                            <md-icon md-font-icon="zmdi zmdi-more-vert"></md-icon>
+                        </md-button>
+                        <md-menu-content width="3">
+                            <md-menu-item class="external-links-menu-item">
+                                <md-button class="blue md-flat external-links-button" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event, symbol)">Headlines</md-button>
+                            </md-menu-item>
+                            <md-menu-item class="external-links-menu-item">
+                                <a ng-href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={{symbol.symbol}}&type=&dateb=&owner=include&count=100" target="_blank">
+                                    <md-button class="md-flat external-links-button blue" ng-class="['md-primary','md-default-hue']" aria-label="SEC Filings">SEC Filings</md-button>
+                                </a>
+                            </md-menu-item>
+                            <md-menu-item class="external-links-menu-item">
+                                <a ng-href="https://www.google.com/finance?q={{symbol.symbol}}&fstype=ii" target="_blank">
+                                    <md-button class="md-flat external-links-button blue" ng-class="['md-primary','md-default-hue']" aria-label="Financial Statements">Statements</md-button>
+                                </a>
+                            </md-menu-item>
+                            <md-menu-item class="external-links-menu-item">
+                                <a ng-href="http://finance.yahoo.com/q/ks?s={{symbol.symbol}}+Key+Statistics" target="_blank">
+                                    <md-button class="md-flat external-links-button blue" ng-class="['md-primary','md-default-hue']" aria-label="Yahoo Finance Statistics">Yahoo! Stats</md-button>
+                                </a>
+                            </md-menu-item>
+                            <md-menu-item class="external-links-menu-item">
+                                <a ng-href="http://www.shortsqueeze.com?symbol={{symbol.symbol}}" target="_blank">
+                                    <md-button class="md-flat external-links-button blue" ng-class="['md-primary','md-default-hue']" aria-label="Short Interest">Short Interest</md-button>
+                                </a>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </td>
+
             </tr>
         </tbody>
     </table>
 </md-table-container>
-<md-table-pagination md-limit="vm.ecalPageSize" md-limit-options="vm.ecalLimitOptions"  md-page-select md-page="vm.ecalCurPage" md-total="{{vm.ecalDaily.length -1}}"></md-table-pagination>
+<md-progress-circular ng-show="vm.mainLoader" class="md-accent mainLoader" md-mode="indeterminate"></md-progress-circular>
+<md-table-pagination md-limit="vm.ecalPageSize"  md-page-select md-page="vm.ecalCurPage" md-total="{{vm.symbols.length}}"></md-table-pagination>

@@ -36,6 +36,36 @@ $app->get('/ecal', function () use ($app) {
     }
 });
 
+$app->get('/ecalPre', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $ecalPre = get_ecalPre();
+    if (null !== $ecalPre) {
+        $app->response->setStatus(200);
+        echo json_encode($ecalPre);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
+$app->get('/ecalAfter', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $ecalAfter = get_ecalAfter();
+    if (null !== $ecalAfter) {
+        $app->response->setStatus(200);
+        echo json_encode($ecalAfter);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
 $app->get('/gainers', function () use ($app) {
     $response = $app->response();
     $response->header('Access-Control-Allow-Origin', '*');
@@ -85,6 +115,18 @@ $app->get('/watchlist', function () use ($app) {
 function get_ecal() {
     $pdo = connect_to_db();    
     $data = $pdo->query('SELECT * FROM earnings_calendar_latest')->fetchAll();
+    return $data;
+}
+
+function get_ecalPre() {
+    $pdo = connect_to_db();    
+    $data = $pdo->query('SELECT * FROM ecal_pre_latest')->fetchAll();
+    return $data;
+}
+
+function get_ecalAfter() {
+    $pdo = connect_to_db();    
+    $data = $pdo->query('SELECT * FROM ecal_after_latest')->fetchAll();
     return $data;
 }
 
