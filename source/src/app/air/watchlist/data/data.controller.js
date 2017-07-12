@@ -46,6 +46,7 @@
         function activate() {
             vm.emptySet = false;
             vm.mainLoader = true;
+            vm.refreshToggle = 0;
             vm.symbols=[];
             return getWatchlistData(API_CONFIG).then(function(data) {
                 if (data[0].data.length != 0) {
@@ -150,32 +151,35 @@
                 return item['price'] >= vm.slider.min && item['price'] <= vm.slider.max;
             };
         };
+
         // Slider
         vm.slider = {
             min: 0,
             max: 20,
             options: {
                 floor: 0,
-                ceil: 20,
-                ticksArray: [0, 5, 10, 15, 20],
+                ceil: 50,
+                ticksArray: [0, 5, 10, 15, 20, 30, 40, 50],
                 translate: function(value) {return '$' + value;},
                 onChange: function () {
-                    if (vm.slider.min != 0 || vm.slider.max != 20) {vm.priceToggle=true;vm.priceDisabled=false;}
+                    if (vm.slider.min != 0 || vm.slider.max != 50) {vm.priceToggle=true;vm.priceDisabled=false;}
                     else {vm.priceToggle=false;vm.priceDisabled=true;}
                 }
             }
         };
+
         // Slider starts out hidden, this rebuilds it when the button is clicked
         vm.refreshSlider = function () {
             $timeout(function () {
                 $scope.$broadcast('rzSliderForceRender');
             });
         };
+
         // Master Price Toggle
         vm.priceFilterCheck = function (state) {
             if (state == false) {
                 vm.slider.min = 0;
-                vm.slider.max = 20;
+                vm.slider.max = 50;
                 vm.priceDisabled=true;
             }
         };

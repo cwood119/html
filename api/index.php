@@ -66,6 +66,21 @@ $app->get('/ecalAfter', function () use ($app) {
     }
 });
 
+$app->get('/ecalTracker', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $ecalTracker = get_ecalTracker();
+    if (null !== $ecalTracker) {
+        $app->response->setStatus(200);
+        echo json_encode($ecalTracker);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
 $app->get('/gainers', function () use ($app) {
     $response = $app->response();
     $response->header('Access-Control-Allow-Origin', '*');
@@ -76,6 +91,21 @@ $app->get('/gainers', function () use ($app) {
     if (null !== $gainers) {
         $app->response->setStatus(200);
         echo json_encode($gainers);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
+$app->get('/gainersExtended', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $gainersExtended = get_gainersExtended();
+    if (null !== $gainersExtended) {
+        $app->response->setStatus(200);
+        echo json_encode($gainersExtended);
     } else {
         $app->response->setStatus(401);
     }
@@ -130,9 +160,21 @@ function get_ecalAfter() {
     return $data;
 }
 
+function get_ecalTracker() {
+    $pdo = connect_to_db();    
+    $data = $pdo->query('SELECT * FROM earnings_calendar_archive WHERE date > date_sub(now(), interval 1 month);')->fetchAll();
+    return $data;
+}
+
 function get_gainers() {
     $pdo = connect_to_db();    
     $data = $pdo->query('SELECT * FROM market_movers_latest')->fetchAll();
+    return $data;
+}
+
+function get_gainersExtended() {
+    $pdo = connect_to_db();    
+    $data = $pdo->query('SELECT * FROM movers_extended_latest')->fetchAll();
     return $data;
 }
 

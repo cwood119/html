@@ -47,6 +47,7 @@
         function activate() {
             vm.emptySet = false;
             vm.mainLoader = true;
+            vm.refreshToggle = 0;
             vm.symbols=[];
             return getAlertsData(API_CONFIG).then(function(data) {
                 if (data[0].data.length != 0) {
@@ -57,7 +58,7 @@
                         var id = value.id;
                         var ad = value.added;
                         var tp = value.alert;
-                        var ts = value.timestamp;
+                        var ts = value.timeStamp;
                         var av = value.avgVol;
                         vm.list = value.list;
                         vm.updated = new Date(value.timestamp).toLocaleString();
@@ -166,14 +167,14 @@
         // Slider
         vm.slider = {
             min: 0,
-            max: 20,
-            options: {
+            max: 20, 
+            options: { 
                 floor: 0,
-                ceil: 20,
-                ticksArray: [0, 5, 10, 15, 20],
+                ceil: 50,
+                ticksArray: [0, 5, 10, 15, 20, 30, 40, 50],
                 translate: function(value) {return '$' + value;},
                 onChange: function () {
-                    if (vm.slider.min != 0 || vm.slider.max != 20) {vm.priceToggle=true;vm.priceDisabled=false;}
+                    if (vm.slider.min != 0 || vm.slider.max != 50) {vm.priceToggle=true;vm.priceDisabled=false;}
                     else {vm.priceToggle=false;vm.priceDisabled=true;}
                 }
             }
@@ -190,7 +191,7 @@
         vm.priceFilterCheck = function (state) {
             if (state == false) {
                 vm.slider.min = 0;
-                vm.slider.max = 20;
+                vm.slider.max = 50;
                 vm.priceDisabled=true;
             }
         };
@@ -263,7 +264,6 @@
                         symbol.headlines=data[0].data.data;
                         symbol.loading=false;
                     });
-
                 },
                 controllerAs: 'modal',
                 templateUrl: 'app/air/templates/dialogs/headlines-dialog.tmpl.html',

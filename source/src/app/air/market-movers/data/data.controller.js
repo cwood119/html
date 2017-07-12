@@ -4,15 +4,6 @@
         .module('app.air.market-movers')
         .controller('moversController', moversController);
 
-    // // Grid View Pagination
-    // angular.module('app.air.market-movers').filter('pagination', function(){
-    //     return function(input, start) {
-    //         if (!input || !input.length) { return; }
-    //         start = +start;
-    //         return input.slice(start);
-    //     };
-    // });
-
     /* @ngInject */
     function moversController($http, $mdDialog, $location, $document, $timeout, $interval, $window, $mdSidenav, $scope, moversService, API_CONFIG) {
         var vm = this;
@@ -55,6 +46,7 @@
         function activate() {
             vm.emptySet = false;
             vm.mainLoader = true;
+            vm.refreshToggle = 0;
             vm.symbols=[];
             return getMoversData(API_CONFIG).then(function(data) {
                 if (data[0].data.length != 0) {
@@ -63,7 +55,7 @@
                     angular.forEach(symbols,function(value){
                         var s = value.symbol;
                         var id = value.id;
-                        var ts = value.timestamp;
+                        var ts = value.timeStamp;
                         var av = value.avgVol;
                         vm.list = value.list;
                         vm.updated = new Date(value.timestamp).toLocaleString();
@@ -165,11 +157,11 @@
             max: 20,
             options: {
                 floor: 0,
-                ceil: 65,
-                ticksArray: [0, 5, 10, 15, 20, 30, 40, 50, 60, 65],
+                ceil: 50,
+                ticksArray: [0, 5, 10, 15, 20, 30, 40, 50],
                 translate: function(value) {return '$' + value;},
                 onChange: function () {
-                    if (vm.slider.min != 0 || vm.slider.max != 65) {vm.priceToggle=true;vm.priceDisabled=false;}
+                    if (vm.slider.min != 0 || vm.slider.max != 50) {vm.priceToggle=true;vm.priceDisabled=false;}
                     else {vm.priceToggle=false;vm.priceDisabled=true;}
                 }
             }
@@ -186,7 +178,7 @@
         vm.priceFilterCheck = function (state) {
             if (state == false) {
                 vm.slider.min = 0;
-                vm.slider.max = 65;
+                vm.slider.max = 50;
                 vm.priceDisabled=true;
             }
         };

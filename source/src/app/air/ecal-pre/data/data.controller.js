@@ -1,20 +1,11 @@
 (function() {
     'use strict';
     angular
-        .module('app.air.earnings-calendar')
-        .controller('ecalController', ecalController);
-
-    // // Grid View Pagination
-    // angular.module('app.air.earnings-calendar').filter('pagination', function(){
-    //     return function(input, start) {
-    //         if (!input || !input.length) { return; }
-    //         start = +start;
-    //         return input.slice(start);
-    //     };
-    // });
+        .module('app.air.ecal-pre')
+        .controller('ecalPreController', ecalPreController);
 
     /* @ngInject */
-    function ecalController($http, $mdDialog, $location, $document, $timeout, $interval, $window, $mdSidenav, $scope, ecalService, API_CONFIG) {
+    function ecalPreController($http, $mdDialog, $location, $document, $timeout, $interval, $window, $mdSidenav, $scope, ecalPreService, API_CONFIG) {
         var vm = this;
 
         // Page Variables
@@ -44,20 +35,11 @@
         vm.avgVolIndicator = 'Any';
         vm.avgVolDisabled = true;
 
-        // Float Filter Viarables
-        vm.float = 0;
-        vm.floatIndicator = 'Any';
-        vm.floatDisabled = true;
-
-        // Market Cap Filter Viarables
-        vm.marketCap = 0;
-        vm.marketCapIndicator = 'Any';
-        vm.marketCapDisabled = true;
-
-        // Short Filter Viarables
-        vm.short = 0;
-        vm.shortIndicator = 'Any';
-        vm.shortDisabled = true;
+        // Legacy Filter Data
+        vm.filterPrice = ['5','10','15'];
+        vm.filterVolume = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
+        vm.filterAdv = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
+        vm.filterTime = [{'value':'2','text':'Before Market'},{'value':'1','text':'After Market'},{'value':'3','text':'Intraday'},{'value':'4','text':'Unknown'}];
 
         activate();
 
@@ -113,41 +95,27 @@
 
         // Get Data from Service
         function getEcalData(API_CONFIG) {
-            return ecalService.getData(API_CONFIG)
+            return ecalPreService.getData(API_CONFIG)
                 .then(function(data) {
                     return data;
                 });
         }
 
         function getHeadlines(symbol) {
-            return ecalService.getHeadlines(symbol)
-                .then(function(data) {
-                    return data;
-                });
-        }
-
-        function getVitals(symbol) {
-            return ecalService.getVitals(symbol)
+            return ecalPreService.getHeadlines(symbol)
                 .then(function(data) {
                     return data;
                 });
         }
 
         function getSymbolData(s,id,w,ts,av) {
-            return ecalService.getSymbolData(s,id,w,ts,av)
+            return ecalPreService.getSymbolData(s,id,w,ts,av)
                 .then(function(data) {
                     var announce;
                     var chart=[{color:'#03a9f4',values:[]}];
                     var quotes = data[0].data.quotes.quote;
                     var timeSales = data[5].data.series.data;
-                    //var dataPoints = data[6].data.data; 
-                    //var fundamentals = data[1].data[0].results[1].tables;
-                    //var headlines = data[2].data.data;
-                    //var marketCap = dataPoints[1].value;
 
-                    //if ( marketCap == "na" ) { marketCap = 0; }
-                    //if ( marketCap == "nm" ) { marketCap = 0; }
-                    
                     if ( data[3] == 1 ) { announce = 'After Market'; }
                     if ( data[3] == 2 ) { announce = 'Pre Market'; }
                     if ( data[3] == 3 ) { announce = 'Intraday'; }
@@ -283,122 +251,6 @@
             }
         };
 
-        // Float Filter
-        vm.floatFilter = function()
-        {
-            if (vm.float < 0) {return function(item){ return item['float'] <= vm.float * -1; };}
-            else {return function(item){ return item['float'] >= vm.float; };}
-        };
-
-        // On Float Radio Change
-        vm.floatChange = function() {
-            vm.floatToggle=true;
-            vm.floatDisabled=false;
-            if (vm.float < 0) {vm.floatIndicator = vm.float * -1;}
-            else {vm.floatIndicator = vm.float;}
-
-        };
-
-        // On Float Toggle Change
-        vm.floatFilterCheck = function (state) {
-            if (state == false) {
-                vm.float=0;
-                vm.floatRadio=false;
-                vm.floatDisabled=true;
-                vm.floatIndicator='Any';
-            }
-        };
-
-        // Market Cap Filter
-        vm.marketCapFilter = function()
-        {
-            if (vm.marketCap < 0) {return function(item){ return item['marketCap'] <= vm.marketCap * -1; };}
-            else {return function(item){ return item['marketCap'] >= vm.marketCap; };}
-        };
-
-        // On Market Cap Radio Change
-        vm.marketCapChange = function() {
-            vm.marketCapToggle=true;
-            vm.marketCapDisabled=false;
-            if (vm.marketCap < 0) {vm.marketCapIndicator = vm.marketCap * -1;}
-            else {vm.marketCapIndicator = vm.marketCap;}
-        };
-
-        // On Market Cap Toggle Change
-        vm.marketCapFilterCheck = function (state) {
-            if (state == false) {
-                vm.marketCap=0;
-                vm.marketCapRadio=false;
-                vm.marketCapDisabled=true;
-                vm.marketCapIndicator='Any';
-            }
-        };
-
-        // Short Filter
-        vm.shortFilter = function()
-        {
-            if (vm.short < 0) {return function(item){ return item['shortPercent'] <= vm.short * -1; };}
-            else {return function(item){ return item['shortPercent'] >= vm.short; };}
-        };
-
-        // On Short Radio Change
-        vm.shortChange = function() {
-            vm.shortToggle=true;
-            vm.shortDisabled=false;
-            if (vm.short < 0) {vm.shortIndicator = vm.short * -1;}
-            else {vm.shortIndicator = vm.short;}
-
-        };
-
-        // On Short Toggle Change
-        vm.shortFilterCheck = function (state) {
-            if (state == false) {
-                vm.short=0;
-                vm.shortRadio=false;
-                vm.shortDisabled=true;
-                vm.shortIndicator='Any';
-            }
-        };
-
-        // Vitals Modal
-        vm.openVitals = function (e, symbol) {
-            $mdDialog.show({
-                clickOutsideToClose: true,
-                controller: function ($mdDialog) {
-                    var vm = this;
-                    vm.symbol = {};
-                    vm.symbol = symbol;
-                    symbol.loading=true;
-                    vm.cancelClick = function () {
-                        $mdDialog.cancel();
-                    };
-                    getVitals(symbol).then(function(data) {
-                        //var ownershipDetails = data[0].data[0].results[1].tables.ownership_details;
-                        //var company_profile = data[0].data[0].results[0].tables.company_profile;
-                        //var shareClassProfile = data[0].data[0].results[1].tables.share_class_profile;
-                        //var sharesOutstanding = shareClassProfile.shares_outstanding;
-                        var ownershipSummary = data[0].data[0].results[1].tables.ownership_summary;
-                        symbol.sharesShort = ownershipSummary.short_interest;
-                        symbol.shortPercent = ownershipSummary.short_percentage_of_float;
-
-                        /*if (ownershipSummary == null) { symbol.sharesShort=0;symbol.shortPercent=0; }
-                        else {
-                            //var insiderOwnership = ownershipSummary.insider_shares_owned;
-                            //symbol.float = sharesOutstanding-insiderOwnership;
-                            symbol.sharesShort = ownershipSummary.short_interest;
-                            symbol.shortPercent = ownershipSummary.short_percentage_of_float;
-                        }*/
-
-                        symbol.loading=false;
-                    });
-                },
-                controllerAs: 'modal',
-                templateUrl: 'app/air/templates/dialogs/vitals-dialog.tmpl.html',
-                parent: angular.element($document.body),
-                targetEvent: e
-            });
-        };
-
         // Headlines Modal
         vm.openHeadlines = function (e, symbol) {
             $mdDialog.show({
@@ -422,28 +274,6 @@
                 parent: angular.element($document.body),
                 targetEvent: e
             });
-        };
-
-        // Legacy Filter Data
-        vm.filterPrice = ['5','10','15'];
-        vm.filterVolume = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
-        vm.filterAdv = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
-        vm.filterMktOver = [{'value':'50000000','text':'50M'},{'value':'300000000','text':'300M'},{'value':'2000000000','text':'2B'},{'value':'10000000000','text':'10B'}];
-        vm.filterMktUnder = [{'value':'300000000','text':'300M'},{'value':'2000000000','text':'2B'},{'value':'10000000000','text':'10B'},{'value':'200000000000','text':'200B'}];
-        vm.filterFloat = [{'value':'50000000','text':'50M'},{'value':'100000000','text':'100M'},{'value':'500000000','text':'500M'}];
-        vm.filterShort = [{'value':'5','text':'5%'},{'value':'15','text':'15%'},{'value':'25','text':'25%'}];
-        vm.filterTime = [{'value':'2','text':'Before Market'},{'value':'1','text':'After Market'},{'value':'3','text':'Intraday'},{'value':'4','text':'Unknown'}];
-
-        // Legacy Sort Reset Function
-        vm.reset =  function reset() {
-            vm.sortPrice = {};
-            vm.sortPercentChange = {};
-            vm.sortVolume = {};
-            vm.sortAvgVol = {};
-            vm.sortMktCap = {};
-            vm.sortFloat = {};
-            vm.sortShort = {};
-            vm.sortSymbol = {};
         };
     }
 })();

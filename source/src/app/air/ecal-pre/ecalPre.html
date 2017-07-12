@@ -1,0 +1,34 @@
+<div ng-controller="ecalPreController as vm">
+    <div layout-margin>
+        <!-- Grid View -->
+        <!-- <md-content ng-show="vm.layout == 'grid'" class="symbol-cards-include" ng-include="'app/air/templates/symbol/symbol-cards.tmpl.html'"></md-content> -->
+
+        <!-- List View -->
+        <div flex flex="100" layout="row" ng-show="vm.layout == 'list'">
+            <md-card flex flex="100" class="list-card">
+                <md-card-content class="list-template-container" ng-include="'app/air/templates/symbol/symbol-list.tmpl.html'"></md-card-content>
+            </md-card>
+        </div>
+
+        <!-- Fab -->
+        <div layout="row" layout-align="center center" ng-include="'app/air/templates/elements/fab.tmpl.html'" flex ng-cloak hide-gt-xs></div>
+    </div>
+
+    <!-- Sort Sidebar -->
+    <md-sidenav class="md-sidenav-right md-whiteframe-z2 inner-sidenav" md-component-id="sort-sidebar">
+        <md-toolbar class="md-theme-light">
+            <h1 class="md-toolbar-tools">Sort</h1>
+        </md-toolbar>
+        <!-- Sorts -->
+        <md-content class="md-padding" ng-include="'app/air/templates/elements/sorts.tmpl.html'"></md-content>
+    </md-sidenav>
+
+    <!-- Filter Sidebar -->
+    <md-sidenav class="md-sidenav-right md-whiteframe-z2 inner-sidenav" md-component-id="filter-sidebar">
+        <md-toolbar class="md-theme-light">
+            <h1 class="md-toolbar-tools">Filter</h1>
+        </md-toolbar>
+        <!-- Filters -->
+        <md-content ng-include="'app/air/templates/elements/filters.tmpl.html'"></md-content>
+    </md-sidenav>
+</div>

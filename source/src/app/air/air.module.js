@@ -7,7 +7,8 @@
             'app.air.watchlist',
             'app.air.alerts',
             'app.air.earnings-calendar',
-            'app.air.market-movers'
+            'app.air.market-movers',
+            'app.air.ecal-pre'
             //'app.air.lookup'
         ]);
 })();
