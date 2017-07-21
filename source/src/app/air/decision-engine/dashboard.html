@@ -55,8 +55,8 @@
             <md-card-content ng-include="'app/air/decision-engine/ecal-list.tmpl.html'"></md-card-content>
         </md-card>
 
-        <md-card flex flex="40" flex-xs="100" layout="column"  class="flex-40">
-            <md-card-content>Earnings Tracker</md-card-content>
+        <md-card flex flex="40" flex-xs="100" layout="column"  class="flex-40" ng-controller="ecalTrackerController as vm">
+            <md-card-content ng-include="'app/air/decision-engine/ecal-tracker.tmpl.html'"></md-card-content>
         </md-card>
     </div>
 </div>

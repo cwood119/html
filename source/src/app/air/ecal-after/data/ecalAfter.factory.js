@@ -2,12 +2,12 @@
     'use strict';
 
     angular
-        .module('app.air.earnings-calendar')
-        .factory('ecalService', ecalService);
+        .module('app.air.ecal-after')
+        .factory('ecalAfterService', ecalAfterService);
 
     /* @ngInject */
 
-    function ecalService($http, $q) {
+    function ecalAfterService($http, $q) {
         var tradier = {
             headers:  {
                 'Accept': 'application/json',
@@ -24,14 +24,13 @@
         var service = {
             getData: getData,
             getSymbolData: getSymbolData,
-            getHeadlines: getHeadlines,
-            getVitals: getVitals
+            getHeadlines: getHeadlines
         };
 
         return service;
 
         function getData(API_CONFIG) {
-            var ecalData = $http.get(API_CONFIG.url + 'ecalUpdate');
+            var ecalData = $http.get(API_CONFIG.url + 'ecalAfter');
             return $q.all([ecalData]);
         }
 
@@ -41,24 +40,17 @@
             return $q.all([headlines]);
         }
 
-        function getVitals(symbol) {
-            var s = symbol.symbol;
-            var fundamentals = $http.get('https://api.tradier.com/beta/markets/fundamentals/company?symbols=' + s, tradier);
-            return $q.all([fundamentals]);
-        }
-
         function getSymbolData(s,id,w,ts,av) {
             if (symbol != '') {
-                var announce = w;
-                var avgVol = av;
                 var symbol = s;
+                var announce = w;
                 var timestamp = ts;
-                var today = moment().format('YYYY-MM-DD');
+                var avgVol = av;
                 var quotes = $http.get('https://api.tradier.com/v1/markets/quotes?symbols=' + symbol, tradier);
                 //var dataPoints = $http.get('https://api.intrinio.com/data_point?identifier=' + s + '&item=average_daily_volume,marketcap', intrinio);
                 var timeSales = $http.get('https://api.tradier.com/v1/markets/timesales?symbol=' + symbol + '&interval=5min', tradier);
                 //var chartUrl = 'https://www.tradingview.com/widgetembed/?symbol=' + symbol + '&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en';
-                return $q.all([quotes, symbol, id, announce, timestamp,timeSales,avgVol,today]);
+                return $q.all([quotes, symbol, id, announce, timestamp,timeSales,avgVol]);
             }
 
         }

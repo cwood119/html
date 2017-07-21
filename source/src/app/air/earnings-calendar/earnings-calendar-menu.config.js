@@ -14,6 +14,10 @@
         .state('triangular.ecalPre', {
             url: '/ecalPre',
             templateUrl: 'app/air/ecal-pre/ecalPre.html'
+        })
+        .state('triangular.ecalAfter', {
+            url: '/ecalAfter',
+            templateUrl: 'app/air/ecal-after/ecalAfter.html'
         });
         // next add the menu item that points to the above state.
         triMenuProvider.addMenu({
@@ -30,6 +34,11 @@
                 name: 'Pre Market Movers',
                 type: 'link',
                 state: 'triangular.ecalPre'
+            },
+            {
+                name: 'After Market Movers',
+                type: 'link',
+                state: 'triangular.ecalAfter'
             }]
         });
     }

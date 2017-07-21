@@ -61,7 +61,7 @@
                         var ts = value.date;
                         var av = value.avgVol;
                         vm.list = value.list;
-                        vm.updated = value.date;
+                        vm.updated = moment(value.date).format('MMM Do YYYY');
                         getSymbolData(s,id,w,ts,av).then(function(data) {
                             vm.symbols.push(data);
                         });
