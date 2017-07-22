@@ -260,6 +260,8 @@ md-radio-button.filter-radio-buttons .md-label{margin-left:15px;}
     .filter-group label {display:block;}
 }
 
+@media all and (max-width:600px){ .md-table-pagination{margin-bottom:75px;}}
+
 @media all and (max-width:525px){ .views-buttons{display: block;margin: auto;}}
 
 @media all and (max-width:500px){ /* Nexus 6P, Nexus 5X */

@@ -126,7 +126,7 @@
                             <md-icon md-font-icon="zmdi zmdi-more-vert"></md-icon>
                         </md-button>
                         <md-menu-content width="3">
-                            <md-menu-item class="external-links-menu-item">
+                            <md-menu-item class="external-links-menu-item" ng-hide="vm.currentPath != '/alerts'">
                                     <md-button class="md-flat external-links-button blue" ng-class="['md-primary','md-default-hue']" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event, symbol)" aria-label="Headlines">Headlines</md-button>
                             </md-menu-item>
                             <md-menu-item class="external-links-menu-item">
@@ -158,7 +158,7 @@
 </md-table-container>
 <md-progress-circular ng-show="vm.mainLoader" class="md-accent mainLoader" md-mode="indeterminate"></md-progress-circular>
 <md-table-pagination md-limit="vm.pageSize" md-limit-options="vm.limitOptions"  md-page-select md-page="vm.curPage" md-total="{{vm.filtered.length}}" class="symbol-pagination"></md-table-pagination>
-<div class="attributions attributions-list-view">
-    Updated: {{vm.updated}}<br />
+<!--<div class="attributions attributions-list-view">
+    Symbols Updated: {{vm.updated}}<br />
     Data from <a href="http://www.zacksdata.com/" target="_blank">Zacks</a> &middot; Intrinio &middot; Tradier
-</div>
+</div>-->

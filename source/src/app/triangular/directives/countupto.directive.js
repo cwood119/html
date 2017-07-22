@@ -26,7 +26,7 @@
 
         function link($scope, $element, attrs) {
             var options = {
-                useEasing: false,
+                useEasing: true,
                 useGrouping: true,
                 separator: ',',
                 decimal: '.',
@@ -47,7 +47,7 @@
 
             attrs.from = angular.isUndefined(attrs.from) ? 0 : parseInt(attrs.from);
             attrs.decimals = angular.isUndefined(attrs.decimals) ? 2 : parseFloat(attrs.decimals);
-            attrs.duration = angular.isUndefined(attrs.duration) ? 2 : parseFloat(attrs.duration);
+            attrs.duration = angular.isUndefined(attrs.duration) ? 4 : parseFloat(attrs.duration);
 
             $timeout(function() {
                 numAnim = new CountUp($element[0], attrs.from, $scope.countupto, attrs.decimals, attrs.duration, options);

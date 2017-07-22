@@ -68,6 +68,9 @@
             vm.mainLoader = true;
             vm.refreshToggle = 0;
             vm.symbols=[];
+            vm.today = moment().format('YYYY-MM-DD');
+            var yesterday = moment().subtract(1,'day');
+            vm.yesterday = moment(yesterday).format('YYYY-MM-DD');
 
             return getEcalData(API_CONFIG).then(function(data) {
                 if (data[0].data.length != 0) {
@@ -143,7 +146,6 @@
                     var chart=[{color:'#03a9f4',values:[]}];
                     var quotes = data[0].data.quotes.quote;
                     var timeSales = data[5].data.series.data;
-                    var today = data[7];
 
                     //var dataPoints = data[6].data.data; 
                     //var fundamentals = data[1].data[0].results[1].tables;
@@ -158,9 +160,10 @@
                     if ( data[3] == 3 ) { announce = 'Intraday'; }
                     if ( data[3] == 4 ) { announce = 'Unknown'; }
 
-                    if ( ts == today ) { announceDay = 'Today'; }
-                    else { announceDay = 'Yesterday'; }
-
+                    if ( ts == vm.today ) { announceDay = 'Today'; }
+                    else if ( ts == vm.yesterday ) { announceDay = 'Yesterday'; }
+                    else { announceDay = moment(ts).format('dddd'); }
+                    
                     // Build Chart Object 
                     angular.forEach(timeSales,function(value){
                         var close = value.close;

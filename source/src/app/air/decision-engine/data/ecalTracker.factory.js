@@ -50,13 +50,20 @@
                 var symbol = s;
                 var timestamp = ts;
 
-                if (announce == 1){ts = moment(ts).add(1,'days').toDate()}
-                var startDate = moment(ts).format('YYYYMMDD');
+                // Intrinio Price History
+                var startDate = moment().subtract(6, 'months').format('YYYY-MM-DD');
+                var history = $http.get('https://api.intrinio.com/prices?identifier=' + symbol + '&start_date=' + startDate, intrinio);
 
-                var history = $http.get('https://api.tradier.com/v1/markets/history?symbol=' + symbol + '&start=' + startDate, tradier);
+                // Tradier Price History
+                //if (announce == 1){ts = moment(ts).add(1,'days').toDate()}
+                //var startDate = moment(ts).format('YYYYMMDD');
+                //var history = $http.get('https://api.tradier.com/v1/markets/history?symbol=' + symbol + '&start=' + startDate, tradier);
+
+                //Tradier Intraday Quotes
                 //var quotes = $http.get('https://api.tradier.com/v1/markets/quotes?symbols=' + symbol, tradier);
-var quotes ='';
-                return $q.all([quotes, symbol, id, announce, timestamp,avgVol,startDate]);
+                var quotes ='';
+
+                return $q.all([quotes, symbol, id, announce, timestamp, avgVol, startDate]);
             }
         }
     }
