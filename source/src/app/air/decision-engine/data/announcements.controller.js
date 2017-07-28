@@ -2,22 +2,26 @@
     'use strict';
     angular
         .module('app.air.decision')
-        .controller('decisionController', decisionController);
+        .controller('announcementsController', announcementsController);
 
     /* @ngInject */
 
-    function decisionController($http, decisionService, API_CONFIG, $mdDialog, $document, filterFilter) {
+    function announcementsController($http, announcementsService, API_CONFIG, $mdDialog, $document, filterFilter) {
         var vm = this;
+        vm.activate = function(){activate();};
+        vm.day = vm.announceDay = 'Today';
         vm.ecal = [];
         vm.ecalAfter = [];
         vm.ecalPre = [];
         vm.gainers = [];
+        var nextDay;
+        vm.today = moment().format('YYYY-MM-DD');
+        var todayIndex = moment(vm.today).day(); // Sunday is 0
 
         vm.ecalCurPage = 1;
         vm.ecalLimitOptions = [5,10,15];
         vm.ecalPageSize = 5;
-        vm.query = {order: 'Symbol'};
-
+        vm.query = {order: '-percentChange'};
 
         activate();
 
@@ -25,12 +29,44 @@
             vm.emptySet = false;
             vm.mainLoader = true;
             vm.symbols=[];
+            vm.bulkQuotes=[];
 
-            return getListData(API_CONFIG).then(function(data) {
+            if (todayIndex == 5){ nextDay = moment().add(3,'day');  } 
+            else if (todayIndex == 6){ nextDay = moment().add(2,'day');  } 
+            else { nextDay = moment().add(1,'day'); }
+
+            vm.nextDay = moment(nextDay).format('dddd, MMM D');
+
+            var yesterday = moment().subtract(1,'day');
+            vm.yesterday = moment(yesterday).format('YYYY-MM-DD');
+        
+            var endpoint = 'ecal';
+            if (vm.day == vm.nextDay){ endpoint = 'ecalNext'; }
+
+            return getListData(API_CONFIG,endpoint).then(function(data) {
+
                 vm.ecal = data[0].data;
                 vm.ecalPre= filterFilter(vm.ecal, { announce: '2' });
                 vm.ecalAfter= filterFilter(vm.ecal, { announce: '1' });
                 vm.gainers = data[1].data;
+
+                // Prepare all symbols for bulk quotes
+                var symbolsObject = [];
+                angular.forEach(vm.ecal,function(value){
+                    var s = value.symbol;
+                    symbolsObject.push(s);
+                });
+
+                var allSymbols = symbolsObject.toString();
+
+                getBulkQuotes(allSymbols).then(function(data) {
+                  vm.bulkQuotes.push(data);
+                });
+
+                vm.updated = data[0].data[0].date;
+                if ( vm.updated == vm.today ) { vm.announceDay = 'Today'; }
+                else if ( vm.updated == vm.yesterday ) { vm.announceDay = 'Yesterday'; }
+                else { vm.announceDay = moment(vm.updated).format('dddd, MMM D'); }
 
                 // Get ecal Symbol Data
                 if (vm.ecal.length != 0) {
@@ -42,8 +78,8 @@
                         var w = value.announce;
                         var ts = value.date;
                         var av = value.avgVol;
-                        vm.list = value.list;
-                        vm.updated = moment(value.date).format('MMM Do YYYY');
+                        vm.list = 'Earnings Announcements';
+
                         getSymbolData(s,id,w,ts,av).then(function(data) {
                             vm.symbols.push(data);
                         });
@@ -74,32 +110,35 @@
             });
         }
 
-        function getListData(API_CONFIG) {
-            return decisionService.getListData(API_CONFIG)
+        function getListData(API_CONFIG,endpoint) {
+            return announcementsService.getListData(API_CONFIG,endpoint)
                 .then(function(data) {
                     return data;
                 });
         }
 
         function getHeadlines(symbol) {
-            return decisionService.getHeadlines(symbol)
+            return announcementsService.getHeadlines(symbol)
+                .then(function(data) {
+                    return data;
+                });
+        }
+
+        function getBulkQuotes(allSymbols) {
+            return announcementsService.getBulkQuotes(allSymbols)
                 .then(function(data) {
                     return data;
                 });
         }
 
         function getSymbolData(s,id,w,ts,av) {
-            return decisionService.getSymbolData(s,id,w,ts,av)
+            return announcementsService.getSymbolData(s,id,w,ts,av)
                 .then(function(data) {
-                    var announce;
+                    var announce = data[2];
+                    var bulkQuotes = vm.bulkQuotes[0][0].data.quotes.quote;
                     var chart=[{color:'#03a9f4',values:[]}];
-                    var quotes = data[0].data.quotes.quote;
-                    var chartPrices = data[5].data.data;
-
-                    if ( data[3] == 1 ) { announce = 'After Market'; }
-                    if ( data[3] == 2 ) { announce = 'Pre Market'; }
-                    if ( data[3] == 3 ) { announce = 'Intraday'; }
-                    if ( data[3] == 4 ) { announce = 'Not Specified'; }
+                    var chartPrices = data[4].data.history.day;
+                    var quotes= filterFilter(bulkQuotes, { symbol: s });
 
                     // Build Chart Object 
                     angular.forEach(chartPrices,function(value){
@@ -110,23 +149,23 @@
                     });
 
                     var symbolObject = {
-                        'id':parseInt(data[2]),
-                        'symbol':data[1],
-                        'name':quotes.description,
-                        'price':quotes.last,
-                        'dollarChange':quotes.change,
-                        'percentChange':quotes.change_percentage,
+                        'id':parseInt(data[1]),
+                        'symbol':data[0],
+                        'name':quotes[0].description,
+                        'price':quotes[0].last,
+                        'dollarChange':quotes[0].change,
+                        'percentChange':quotes[0].change_percentage,
                         'when':announce,
-                        'open':quotes.open,
-                        'high':quotes.high,
-                        'low':quotes.low,
-                        'volume':quotes.volume,
-                        'avgVol':parseInt(data[6]),
+                        'open':quotes[0].open,
+                        'high':quotes[0].high,
+                        'low':quotes[0].low,
+                        'volume':quotes[0].volume,
+                        'avgVol':parseInt(data[5]),
                         'sharesShort':'',
                         'shortPercent':'',
                         'marketCap':'',
                         'float':'',
-                        'exchange':quotes.exch,
+                        'exchange':quotes[0].exch,
                         'headlines':'',
                         'chart':chart
                     };

@@ -21,12 +21,18 @@ $dark-gray: #424242;
 $medium-gray: #616161;
 $light-gray: #9E9E9E;
 $lighter-gray: #EEEEEE;
+$deep-purple-500: #673ab7;
+$yellow: #ffeb3b;
 
 // Global App Styles
 body {color: $medium-gray;}
 ::-webkit-scrollbar {display:none;}
 a{color:$blue !important;}
+
 .pointer {cursor:pointer;}
+
+.purple {color: $deep-purple-500 !important;}
+.yellow {color: $yellow !important;}
 .green {color:#4CAF50 !important;}
 .red {color:#F44336 !important;}
 .white {color:white !important;}
@@ -35,13 +41,19 @@ a{color:$blue !important;}
 .medium-gray{color:$medium-gray !important;}
 .dark-gray{color:$dark-gray !important;}
 .blue-background{background-color: $blue !important;}
+
 .float-right{float:right;}
 .float-left{float:left;}
+
 .no-padding{padding: 0 !important;}
 .no-margin{margin: 0 !important;}
+
 .layout-margin.ng-scope{text-align:center;}
+
 .long-arrow {width: 10px !important;min-width: 10px;font-size: 15px !important;}
+
 .min-width-50{min-width:50px !important;}
+
 .center-text {text-align:center;}
 
 ////////// Elements
@@ -197,7 +209,7 @@ md-radio-button.filter-radio-buttons .md-label{margin-left:15px;}
 .calendar-heatmap > svg.svg {width:100% !important;}
 .list-subhead{float:right;color: rgba(0,0,0,0.54);font-size: 14px;}
 .ninety-day-outlook-responsive{display:none;}
-
+.list-subhead md-select {margin:0;}
 // Symbol Lookup
 .lookup-card {width: 60%;min-width: 300px;margin: auto;padding: 0px 5px 0px 5px;}
 .lookup-container {margin-bottom:0;}

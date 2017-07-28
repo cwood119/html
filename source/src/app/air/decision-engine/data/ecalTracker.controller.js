@@ -70,9 +70,7 @@
                     if ( data[3] == 2 ) { announce = 'Pre Market'; }
                     if ( data[3] == 3 ) { announce = 'Intraday'; }
                     if ( data[3] == 4 ) { announce = 'Not Specified'; }
-
-                    var announceDate = moment(data[6]).format('M/DD/YYYY');
-
+                    var announceDate = moment(data[4]).format('M/DD/YYYY');
                     var symbolObject = {
                         'id':parseInt(data[2]),
                         'symbol':data[1],

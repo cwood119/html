@@ -1,4 +1,13 @@
-<h3 class="md-subhead">Earnings Announcements<md-subhead class="list-subhead">{{vm.updated}}</md-subhead></h3>
+<h3 class="md-subhead">{{vm.list}}
+    <md-subhead class="list-subhead">
+
+<md-select placeholder="{{vm.announceDay}}" ng-model="vm.day" ng-change="vm.activate()">
+    <md-option value="{{vm.announceDay}}"> {{vm.announceDay}} </md-option>
+    <md-option value="{{vm.nextDay}}">{{vm.nextDay}}</md-option>
+</md-select>
+
+    </md-subhead>
+</h3>
 <div ng-show="vm.emptySet" class="center-text" >No symbols found in latest query</div>
 <md-table-container ng-show="!vm.mainLoader">
     <table md-table ng-show="!vm.emptySet" class="md-primary md-data-table symbol-table">
@@ -7,7 +16,7 @@
                 <th md-column md-order-by="symbol">Symbol</th>
                 <th md-column >Daily</th>
                 <th md-column md-order-by="price">Price</th>
-                <th md-column md-order-by="avgVol">Avg Vol</th>
+                <th md-column md-order-by="percentChange">% Change</th>
                 <th md-column md-order-by="when">When</th>
                 <th md-column></th>
             </tr>
@@ -28,13 +37,17 @@
                 </td>
 
                 <td md-cell>
-                    <div class="md-body-1" ng-show="{{symbol.avgVol == 0}}">-</div>
-                    <div class="md-body-1" ng-hide="{{symbol.avgVol == 0}}">{{symbol.avgVol | number:0}}</div>
+                    <div class="md-body-1" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">
+                      <span ng-show="symbol.dollarChange > 0"> +</span>{{symbol.percentChange | number:2}}%
+                    </div>
                 </td>
 
                 <td md-cell class="no-padding">
                     <div class="md-body-1">
-                        {{symbol.when}}
+                      <md-icon md-font-icon="wi wi-night-clear"  class="purple" ng-show="symbol.when == 1"></md-icon>
+                      <md-icon md-font-icon="wi wi-horizon-alt"  class="blue" ng-show="symbol.when == 2"></md-icon>
+                      <md-icon md-font-icon="wi wi-day-sunny"  class="yellow" ng-show="symbol.when == 3"></md-icon>
+                      <md-icon md-font-icon="fa fa-question"  class="light-gray" ng-show="symbol.when == 4"></md-icon>
                     </div>
                 </td>
 

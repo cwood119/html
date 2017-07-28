@@ -18,9 +18,7 @@
         })
         .state('triangular.dashboard', {
             url: '/dashboard',
-            templateUrl: 'app/air/decision-engine/dashboard.html',
-            controller: 'decisionController',
-            controllerAs: 'vm'
+            templateUrl: 'app/air/decision-engine/dashboard.html'
         });
         // next add the menu item that points to the above state.
         triMenuProvider.addMenu({

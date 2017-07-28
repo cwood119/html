@@ -96,6 +96,22 @@ $app->get('/ecalTracker', function () use ($app) {
     }
 });
 
+$app->get('/ecalNext', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $ecalNext = get_ecalNext();
+    if (null !== $ecalNext) {
+        $app->response->setStatus(200);
+        echo json_encode($ecalNext);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
+
 $app->get('/gainers', function () use ($app) {
     $response = $app->response();
     $response->header('Access-Control-Allow-Origin', '*');
@@ -201,6 +217,12 @@ function get_ecalTracker() {
 function get_ecalPre() {
     $pdo = connect_to_db();    
     $data = $pdo->query('SELECT * FROM ecal_pre_latest')->fetchAll();
+    return $data;
+}
+
+function get_ecalNext() {
+    $pdo = connect_to_db();    
+    $data = $pdo->query('SELECT * FROM ecal_next')->fetchAll();
     return $data;
 }
 

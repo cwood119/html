@@ -1,4 +1,4 @@
-<div class="padded-content-page" ng-controller="decisionController as vm">
+<div class="padded-content-page" ng-controller="countersController as vm">
     <div layout="row" layout-xs="column" layout-wrap>
         <div flex flex-sm="50">
             <counter-widget flex flex-sm="50" title="Announcements" count="vm.ecal.length" icon="zmdi zmdi-calendar-check" background="deep-orange-500" color="white"></counter-widget>
@@ -51,8 +51,8 @@
         </div>
     </div>-->
     <div layout="row" layout-xs="column">
-        <md-card flex flex="60" flex-xs="100" layout="column" class="flex-60">
-            <md-card-content ng-include="'app/air/decision-engine/ecal-list.tmpl.html'"></md-card-content>
+        <md-card flex flex="60" flex-xs="100" layout="column" class="flex-60" ng-controller="announcementsController as vm">
+            <md-card-content ng-include="'app/air/decision-engine/announcements.tmpl.html'"></md-card-content>
         </md-card>
 
         <md-card flex flex="40" flex-xs="100" layout="column"  class="flex-40" ng-controller="ecalTrackerController as vm">

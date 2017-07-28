@@ -3,11 +3,11 @@
 
     angular
         .module('app.air.decision')
-        .factory('ecalTrackerService', ecalTrackerService);
+        .factory('announcementsService', announcementsService);
 
     /* @ngInject */
 
-    function ecalTrackerService($http, $q) {
+    function announcementsService($http, $q) {
 
         var tradier = {
             headers:  {
@@ -27,14 +27,16 @@
         var service = {
             getHeadlines: getHeadlines,
             getListData: getListData,
+            getBulkQuotes: getBulkQuotes,
             getSymbolData: getSymbolData
         };
 
         return service;
 
-        function getListData(API_CONFIG) {
-            var ecal = $http.get(API_CONFIG.url + 'ecalTracker');
-            return $q.all([ecal]);
+        function getListData(API_CONFIG,endpoint) {
+            var ecal = $http.get(API_CONFIG.url + endpoint);
+            var gainers = $http.get(API_CONFIG.url + 'gainers');
+            return $q.all([ecal,gainers]);
         }
 
         function getHeadlines(symbol) {
@@ -43,27 +45,24 @@
             return $q.all([headlines]);
         }
 
+        function getBulkQuotes(s) {
+            if (s != '') {
+                var symbols = s;
+                var quotes = $http.get('https://api.tradier.com/v1/markets/quotes?symbols=' + symbols, tradier);
+                return $q.all([quotes]);
+            }
+        }
+
         function getSymbolData(s,id,w,ts,av) {
             if (symbol != '') {
-                var announce = w;
-                var avgVol = av;
                 var symbol = s;
+                var announce = w;
                 var timestamp = ts;
-
-                // Intrinio Price History
+                var avgVol = av;
                 var startDate = moment().subtract(6, 'months').format('YYYY-MM-DD');
-                //var history = $http.get('https://api.intrinio.com/prices?identifier=' + symbol + '&start_date=' + startDate, intrinio);
-
-                // Tradier Price History
-                //if (announce == 1){ts = moment(ts).add(1,'days').toDate()}
-                //var startDate = moment(ts).format('YYYYMMDD');
-                //var history = $http.get('https://api.tradier.com/v1/markets/history?symbol=' + symbol + '&start=' + startDate, tradier);
-
-                //Tradier Intraday Quotes
-                //var quotes = $http.get('https://api.tradier.com/v1/markets/quotes?symbols=' + symbol, tradier);
-                var quotes ='';
-
-                return $q.all([quotes, symbol, id, announce, timestamp, avgVol, startDate]);
+                var chartPrices = $http.get('https://api.tradier.com/v1/markets/history?symbol=' + symbol + '&start=' + startDate, tradier);
+                //var chartPrices = $http.get('https://api.intrinio.com/prices?identifier=' + symbol + '&start_date=' + startDate, intrinio);
+                return $q.all([symbol, id, announce, timestamp,chartPrices,avgVol]);
             }
         }
     }
