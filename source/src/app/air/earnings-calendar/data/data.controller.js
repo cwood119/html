@@ -4,17 +4,8 @@
         .module('app.air.earnings-calendar')
         .controller('ecalController', ecalController);
 
-    // // Grid View Pagination
-    // angular.module('app.air.earnings-calendar').filter('pagination', function(){
-    //     return function(input, start) {
-    //         if (!input || !input.length) { return; }
-    //         start = +start;
-    //         return input.slice(start);
-    //     };
-    // });
-
     /* @ngInject */
-    function ecalController($http, $mdDialog, $location, $document, $timeout, $interval, $window, $mdSidenav, $scope, ecalService, API_CONFIG) {
+    function ecalController($http, $mdDialog, $location, $document, $timeout, $interval, $window, $mdSidenav, $scope, ecalService, API_CONFIG, filterFilter) {
         var vm = this;
 
         // Page Variables
@@ -44,52 +35,42 @@
         vm.avgVolIndicator = 'Any';
         vm.avgVolDisabled = true;
 
-        // Float Filter Viarables
-        vm.float = 0;
-        vm.floatIndicator = 'Any';
-        vm.floatDisabled = true;
-
-        // Market Cap Filter Viarables
-        vm.marketCap = 0;
-        vm.marketCapIndicator = 'Any';
-        vm.marketCapDisabled = true;
-
-        // Short Filter Viarables
-        vm.short = 0;
-        vm.shortIndicator = 'Any';
-        vm.shortDisabled = true;
-
         activate();
 
         //////////
 
         function activate() {
+            vm.bulkQuotes=[];
             vm.emptySet = false;
             vm.mainLoader = true;
             vm.refreshToggle = 0;
+            var resize = function() { window.dispatchEvent(new Event('resize')); };
             vm.symbols=[];
+
             vm.today = moment().format('YYYY-MM-DD');
             var yesterday = moment().subtract(1,'day');
             vm.yesterday = moment(yesterday).format('YYYY-MM-DD');
 
             return getEcalData(API_CONFIG).then(function(data) {
+
                 if (data[0].data.length != 0) {
-                    // Get Symbols
+
                     var symbols = data[0].data;
+
+                    // Prepare all symbols for bulk quotes
+                    var symbolsObject = [];
+
                     angular.forEach(symbols,function(value){
                         var s = value.symbol;
-                        var id = value.id;
-                        var w = value.announce;
-                        var ts = value.date;
-                        var av = value.avgVol;
-                        //vm.list = value.list;
-                        vm.list = 'Calendar Movers';
-                        vm.updated = moment(value.date).format('MMM Do YYYY');
-                        getSymbolData(s,id,w,ts,av).then(function(data) {
-                            vm.symbols.push(data);
-                        });
+                        symbolsObject.push(s);
                     });
-                    vm.chartToggle = false;
+
+                    var allSymbols = symbolsObject.toString();
+
+                    getBulkQuotes(allSymbols).then(function(data) {
+                        vm.bulkQuotes.push(data);
+                    });
+
                     // Build Line Chart
                     vm.lineChartOptions = {
                         chart: {
@@ -106,12 +87,37 @@
                             x: function(d){ return d.x; },
                             y: function(d){ return d.y; },
                             callback: function(){
-                                window.dispatchEvent(new Event('resize'));
-                                vm.chartToggle = true;
-                                vm.mainLoader = false;
+                                //window.dispatchEvent(new Event('resize'));
                             }
                         }
                     };
+
+                    // Get Symbols
+                    $timeout(function(){
+                        angular.forEach(symbols,function(value){
+                            var s = value.symbol;
+                            var id = value.id;
+                            var index = symbols.indexOf(value)+1;
+                            var w = value.announce;
+                            var ts = value.date;
+                            var av = value.avgVol;
+                            //vm.list = value.list;
+                            vm.list = 'Calendar Movers';
+                            vm.updated = moment(value.date).format('MMM Do YYYY');
+
+                            getSymbolData(s,id,w,ts,av).then(function(data) {
+                                vm.symbols.push(data);
+                            });
+
+                            if ( index == symbols.length) {
+                                console.log(symbols.length);
+                                $timeout(function(){
+                                    vm.mainLoader = false;
+                                    $timeout(resize,1);
+                                },3000);
+                            }
+                        });
+                    },1000);
                 } else {vm.mainLoader = false;vm.emptySet = true;}
             });
         }
@@ -138,14 +144,22 @@
                 });
         }
 
+        function getBulkQuotes(allSymbols) {
+            return ecalService.getBulkQuotes(allSymbols)
+                .then(function(data) {
+                    return data;
+                });
+        }
+
         function getSymbolData(s,id,w,ts,av) {
             return ecalService.getSymbolData(s,id,w,ts,av)
                 .then(function(data) {
                     var announce;
                     var announceDay;
-                    var chart=[{color:'#03a9f4',values:[]}];
-                    var quotes = data[0].data.quotes.quote;
-                    var timeSales = data[5].data.series.data;
+                    var chart = [{color:'#03a9f4',values:[]}];
+                    var q = filterFilter(vm.bulkQuotes[0][0].data.quotes.quote, { symbol: s }, true);
+                    var quotes = q[0];
+                    var timeSales = data[4].data.series.data;
 
                     //var dataPoints = data[6].data.data; 
                     //var fundamentals = data[1].data[0].results[1].tables;
@@ -155,10 +169,10 @@
                     //if ( marketCap == "na" ) { marketCap = 0; }
                     //if ( marketCap == "nm" ) { marketCap = 0; }
                     
-                    if ( data[3] == 1 ) { announce = 'After Market'; }
-                    if ( data[3] == 2 ) { announce = 'Pre Market'; }
-                    if ( data[3] == 3 ) { announce = 'Intraday'; }
-                    if ( data[3] == 4 ) { announce = 'Unknown'; }
+                    if ( data[2] == 1 ) { announce = 'After Market'; }
+                    if ( data[2] == 2 ) { announce = 'Pre Market'; }
+                    if ( data[2] == 3 ) { announce = 'Intraday'; }
+                    if ( data[2] == 4 ) { announce = 'Unknown'; }
 
                     if ( ts == vm.today ) { announceDay = 'Today'; }
                     else if ( ts == vm.yesterday ) { announceDay = 'Yesterday'; }
@@ -171,8 +185,8 @@
                         chart[0].values.push({x:time,y:close});
                     });
                     var symbolObject = {
-                        'id':parseInt(data[2]),
-                        'symbol':data[1],
+                        'id':parseInt(data[1]),
+                        'symbol':data[0],
                         'name':quotes.description,
                         'price':quotes.last,
                         'dollarChange':quotes.change,
@@ -183,7 +197,7 @@
                         'high':quotes.high,
                         'low':quotes.low,
                         'volume':quotes.volume,
-                        'avgVol':parseInt(data[6]),
+                        'avgVol':parseInt(data[5]),
                         'sharesShort':'',
                         'shortPercent':'',
                         'marketCap':'',
@@ -215,14 +229,14 @@
         // Slider
         vm.slider = {
             min: 0,
-            max: 20, 
+            max: 25, 
             options: { 
                 floor: 0,
-                ceil: 50,
-                ticksArray: [0, 5, 10, 15, 20, 30, 40, 50],
+                ceil: 25,
+                ticksArray: [0, 5, 10, 15, 20, 25],
                 translate: function(value) {return '$' + value;},
                 onChange: function () {
-                    if (vm.slider.min != 0 || vm.slider.max != 50) {vm.priceToggle=true;vm.priceDisabled=false;}
+                    if (vm.slider.min != 0 || vm.slider.max != 25) {vm.priceToggle=true;vm.priceDisabled=false;}
                     else {vm.priceToggle=false;vm.priceDisabled=true;}
                 }
             }
@@ -239,7 +253,7 @@
         vm.priceFilterCheck = function (state) {
             if (state == false) {
                 vm.slider.min = 0;
-                vm.slider.max = 50;
+                vm.slider.max = 25;
                 vm.priceDisabled=true;
             }
         };

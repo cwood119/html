@@ -40,11 +40,11 @@
                 <th md-column class="md-subhead" md-order-by="price">Price</th>
                 <th md-column class="md-subhead" md-order-by="dollarChange">Change</th>
                 <th md-column class="md-subhead" md-order-by="percentChange">% Change</th>
-                <th md-column class="md-subhead" md-order-by="volume">Volume</th>
+                <th md-column ng-hide="vm.currentPath === '/ecalAfter'" class="md-subhead" md-order-by="volume">Volume</th>
                 <th md-column class="md-subhead" md-order-by="avgVol">Avg Vol</th>
                 <th md-column ng-show="vm.currentPath === '/alerts'" md-order-by="distance">Distance</th>
                 <th md-column ng-show="vm.currentPath === '/alerts'" md-order-by="date">Added</th>
-                <th md-column ng-show="vm.currentPath === '/earnings-calendar'" md-order-by="when">When</th>
+                <th md-column ng-show="vm.currentPath === '/earnings-calendar' || vm.currentPath === '/ecalAfter'" md-order-by="when">When</th>
                 <!--<th md-column class="md-subhead">Vitals</th>-->
                 <th md-column ng-hide="vm.currentPath === '/alerts'" class="md-subhead">Headlines</th>
                 <th md-column md-subhead></th>
@@ -63,9 +63,9 @@
                     </div>
                 </td>
 
-                <td md-cell class="chart-container" ng-mouseLeave="vm.hideInteractive();">
+                <td md-cell class="chart-container">
                     <!-- <div google-chart chart="vm.chartData"></div> -->
-                        <nvd3 ng-show="vm.chartToggle" options="vm.lineChartOptions" data="symbol.chart"></nvd3>
+                        <nvd3 options="vm.lineChartOptions" data="symbol.chart"></nvd3>
                 </td>
                 <td md-cell>
                     {{symbol.price | number:2}}
@@ -84,7 +84,7 @@
                     </div>
                 </td>
 
-                <td md-cell>
+                <td md-cell ng-hide="vm.currentPath === '/ecalAfter'">
                     <div class="md-body-1" ng-show="{{symbol.volume == 0}}">-</div>
                     <div class="md-body-1" ng-hide="{{symbol.volume == 0}}">{{symbol.volume | number:0}}</div>
                 </td>
@@ -94,7 +94,7 @@
                     <div class="md-body-1" ng-hide="{{symbol.avgVol == 0}}">{{symbol.avgVol | number:0}}</div>
                 </td>
 
-                <td md-cell class="min-width-50" ng-show="vm.currentPath === '/earnings-calendar'">
+                <td md-cell class="min-width-50" ng-show="vm.currentPath === '/earnings-calendar' || vm.currentPath === '/ecalAfter'">
                     <div class="md-body-1">
                         {{symbol.announceDay}}
                     </div>

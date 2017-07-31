@@ -6,14 +6,9 @@
 
     /* @ngInject */
 
-    function announcementsController($http, announcementsService, API_CONFIG, $mdDialog, $document, filterFilter) {
+    function announcementsController($http, announcementsService, API_CONFIG, $mdDialog, $document, filterFilter, $timeout) {
         var vm = this;
         vm.activate = function(){activate();};
-        vm.day = vm.announceDay = 'Today';
-        vm.ecal = [];
-        vm.ecalAfter = [];
-        vm.ecalPre = [];
-        vm.gainers = [];
         var nextDay;
         vm.today = moment().format('YYYY-MM-DD');
         var todayIndex = moment(vm.today).day(); // Sunday is 0
@@ -26,10 +21,11 @@
         activate();
 
         function activate() {
+            vm.bulkQuotes=[];
             vm.emptySet = false;
             vm.mainLoader = true;
+            var resize = function() { window.dispatchEvent(new Event('resize')); };
             vm.symbols=[];
-            vm.bulkQuotes=[];
 
             if (todayIndex == 5){ nextDay = moment().add(3,'day');  } 
             else if (todayIndex == 6){ nextDay = moment().add(2,'day');  } 
@@ -45,46 +41,30 @@
 
             return getListData(API_CONFIG,endpoint).then(function(data) {
 
-                vm.ecal = data[0].data;
-                vm.ecalPre= filterFilter(vm.ecal, { announce: '2' });
-                vm.ecalAfter= filterFilter(vm.ecal, { announce: '1' });
-                vm.gainers = data[1].data;
+                if (data[0].data.length != 0) {
 
-                // Prepare all symbols for bulk quotes
-                var symbolsObject = [];
-                angular.forEach(vm.ecal,function(value){
-                    var s = value.symbol;
-                    symbolsObject.push(s);
-                });
-
-                var allSymbols = symbolsObject.toString();
-
-                getBulkQuotes(allSymbols).then(function(data) {
-                  vm.bulkQuotes.push(data);
-                });
-
-                vm.updated = data[0].data[0].date;
-                if ( vm.updated == vm.today ) { vm.announceDay = 'Today'; }
-                else if ( vm.updated == vm.yesterday ) { vm.announceDay = 'Yesterday'; }
-                else { vm.announceDay = moment(vm.updated).format('dddd, MMM D'); }
-
-                // Get ecal Symbol Data
-                if (vm.ecal.length != 0) {
-                    // Get Symbols
                     var symbols = data[0].data;
+                    vm.updated = data[0].data[0].date;
+
+                    // Prepare all symbols for bulk quotes
+                    var symbolsObject = [];
+
                     angular.forEach(symbols,function(value){
                         var s = value.symbol;
-                        var id = value.id;
-                        var w = value.announce;
-                        var ts = value.date;
-                        var av = value.avgVol;
-                        vm.list = 'Earnings Announcements';
-
-                        getSymbolData(s,id,w,ts,av).then(function(data) {
-                            vm.symbols.push(data);
-                        });
+                        symbolsObject.push(s);
                     });
-                    vm.chartToggle = false;
+
+                    var allSymbols = symbolsObject.toString();
+
+                    getBulkQuotes(allSymbols).then(function(data) {
+                        vm.bulkQuotes.push(data);
+                    });
+
+                    if (vm.day != vm.nextDay){ vm.latest = moment(vm.updated).format('dddd, MMM D'); }
+                    if ( vm.updated == vm.today ) { vm.announceDay = 'Today'; }
+                    else if ( vm.updated == vm.yesterday ) { vm.announceDay = 'Yesterday'; }
+                    else { vm.announceDay = moment(vm.updated).format('dddd, MMM D'); }
+
                     // Build Line Chart
                     vm.lineChartOptions = {
                         chart: {
@@ -100,12 +80,35 @@
                             x: function(d){ return d.x; },
                             y: function(d){ return d.y; },
                             callback: function(){
-                                window.dispatchEvent(new Event('resize'));
-                                vm.chartToggle = true;
-                                vm.mainLoader = false;
+                                //window.dispatchEvent(new Event('resize'));
                             }
                         }
                     };
+
+                    // Get Symbols
+                    $timeout(function(){
+                        angular.forEach(symbols,function(value){
+                            var s = value.symbol;
+                            var index = symbols.indexOf(value)+1;
+                            var id = value.id;
+                            var w = value.announce;
+                            var ts = value.date;
+                            var av = value.avgVol;
+                            vm.list = 'Earnings Announcements';
+
+                            getSymbolData(s,id,w,ts,av).then(function(data) {
+                                vm.symbols.push(data);
+                            });
+                            if ( index == symbols.length) {
+                                console.log(symbols.length);
+                                $timeout(function(){
+                                    vm.mainLoader = false;
+                                    $timeout(resize,1);
+                                },500);
+                            }
+                        });
+                    },500);
+
                 } else {vm.mainLoader = false;vm.emptySet = true;}
             });
         }
@@ -135,10 +138,9 @@
             return announcementsService.getSymbolData(s,id,w,ts,av)
                 .then(function(data) {
                     var announce = data[2];
-                    var bulkQuotes = vm.bulkQuotes[0][0].data.quotes.quote;
                     var chart=[{color:'#03a9f4',values:[]}];
                     var chartPrices = data[4].data.history.day;
-                    var quotes= filterFilter(bulkQuotes, { symbol: s });
+                    var quotes= filterFilter(vm.bulkQuotes[0][0].data.quotes.quote, { symbol: s }, true);
 
                     // Build Chart Object 
                     angular.forEach(chartPrices,function(value){

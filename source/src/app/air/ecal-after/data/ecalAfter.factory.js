@@ -22,15 +22,31 @@
             }
         };
         var service = {
+            getBulkQuotes: getBulkQuotes,
+            getClock: getClock,
             getData: getData,
             getSymbolData: getSymbolData,
+            getSnapshot: getSnapshot,
             getHeadlines: getHeadlines
         };
 
         return service;
 
+        function getBulkQuotes(s) {
+            if (s != '') {
+                var symbols = s;
+                var quotes = $http.get('https://api.tradier.com/v1/markets/quotes?symbols=' + symbols, tradier);
+                return $q.all([quotes]);
+            }
+        }
+
+        function getClock() {
+            var clock = $http.get('https://api.tradier.com/v1/markets/clock', tradier);
+            return $q.all([clock]);
+        }
+
         function getData(API_CONFIG) {
-            var ecalData = $http.get(API_CONFIG.url + 'ecalAfter');
+            var ecalData = $http.get(API_CONFIG.url + 'ecal');
             return $q.all([ecalData]);
         }
 
@@ -40,19 +56,19 @@
             return $q.all([headlines]);
         }
 
-        function getSymbolData(s,id,w,ts,av) {
-            if (symbol != '') {
-                var symbol = s;
-                var announce = w;
-                var timestamp = ts;
-                var avgVol = av;
-                var quotes = $http.get('https://api.tradier.com/v1/markets/quotes?symbols=' + symbol, tradier);
-                //var dataPoints = $http.get('https://api.intrinio.com/data_point?identifier=' + s + '&item=average_daily_volume,marketcap', intrinio);
-                var timeSales = $http.get('https://api.tradier.com/v1/markets/timesales?symbol=' + symbol + '&interval=5min', tradier);
-                //var chartUrl = 'https://www.tradingview.com/widgetembed/?symbol=' + symbol + '&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en';
-                return $q.all([quotes, symbol, id, announce, timestamp,timeSales,avgVol]);
-            }
+        function getSnapshot(API_CONFIG) {
+            var snapshot = $http.get(API_CONFIG.url + 'ecalAfter');
+            return $q.all([snapshot]);
+        }
 
+        function getSymbolData(s,ts) {
+            var today = moment().format('YYYY-MM-DD');
+            var timeSales;
+
+            if (s != '') {
+                if ( ts == today ) { timeSales = $http.get('https://api.tradier.com/v1/markets/timesales?symbol=' + s + '&interval=5min', tradier); return $q.all([s, timeSales]); }
+                else { timeSales = $http.get('https://api.tradier.com/v1/markets/timesales?symbol=' + s + '&interval=5min&start=' + ts +' 09:30&end=' + ts + ' 20:00', tradier); return $q.all([s, timeSales]); }
+            }
         }
     }
 })();

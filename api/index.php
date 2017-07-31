@@ -216,7 +216,7 @@ function get_ecalTracker() {
 
 function get_ecalPre() {
     $pdo = connect_to_db();    
-    $data = $pdo->query('SELECT * FROM ecal_pre_latest')->fetchAll();
+    $data = $pdo->query('SELECT * FROM ecal_pre')->fetchAll();
     return $data;
 }
 
@@ -228,7 +228,7 @@ function get_ecalNext() {
 
 function get_ecalAfter() {
     $pdo = connect_to_db();    
-    $data = $pdo->query('SELECT * FROM ecal_after_latest')->fetchAll();
+    $data = $pdo->query('SELECT * FROM ecal_after')->fetchAll();
     return $data;
 }
 
