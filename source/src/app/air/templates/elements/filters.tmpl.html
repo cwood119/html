@@ -20,12 +20,12 @@
     <md-switch class="md-accent filter-toggles" ng-disabled="vm.volumeDisabled" ng-model="vm.volumeToggle" aria-label="Volume Filter Toggle" ng-change="vm.volumeFilterCheck(vm.volumeDisabled)"></md-switch>
 </md-subheader>
 <md-radio-group class="md-padding filter-options filter-radio-group" ng-model="vm.volume" ng-change="vm.volumeChange()">
-    <md-radio-button class="md-accent filter-radio-buttons" ng-repeat="filterVolume in vm.filterVolume"  ng-model="vm.volumeRadio" value="{{filterVolume.value}}" aria-label="Show symbols over {{filterVolume.text}}" >
+    <md-radio-button class="md-primary filter-radio-buttons" ng-repeat="filterVolume in vm.filterVolume"  ng-model="vm.volumeRadio" value="{{filterVolume.value}}" aria-label="Show symbols over {{filterVolume.text}}" >
         <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> {{filterVolume.text}}
     </md-radio-button>
 </md-radio-group>
 <md-radio-group class="md-padding filter-options filter-radio-group" ng-model="vm.volume" ng-change="vm.volumeChange()">
-    <md-radio-button class="md-accent filter-radio-buttons" ng-repeat="filterVolume in vm.filterVolume"  ng-model="vm.volumeRadio" value="{{filterVolume.value * -1}}" aria-label="Show symbols over {{filterVolume.text}}" >
+    <md-radio-button class="md-primary filter-radio-buttons" ng-repeat="filterVolume in vm.filterVolume"  ng-model="vm.volumeRadio" value="{{filterVolume.value * -1}}" aria-label="Show symbols over {{filterVolume.text}}" >
         <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true"></md-icon> {{filterVolume.text}}
     </md-radio-button>
 </md-radio-group>
@@ -39,12 +39,12 @@
     <md-switch class="md-accent filter-toggles" ng-disabled="vm.avgVolDisabled" ng-model="vm.avgVolToggle" aria-label="Average Volume Filter Toggle" ng-change="vm.avgVolFilterCheck(vm.avgVolDisabled)"></md-switch>
 </md-subheader>
 <md-radio-group class="md-padding filter-options filter-radio-group" ng-model="vm.avgVol" ng-change="vm.avgVolChange()">
-    <md-radio-button class="md-accent filter-radio-buttons" ng-repeat="filterAdv in vm.filterAdv"  ng-model="vm.avgVolRadio" value="{{filterAdv.value}}" aria-label="Show symbols over {{filterAdv.text}}" >
+    <md-radio-button class="md-primary filter-radio-buttons" ng-repeat="filterAdv in vm.filterAdv"  ng-model="vm.avgVolRadio" value="{{filterAdv.value}}" aria-label="Show symbols over {{filterAdv.text}}" >
         <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> {{filterAdv.text}}
     </md-radio-button>
 </md-radio-group>
 <md-radio-group class="md-padding filter-options filter-radio-group" ng-model="vm.avgVol" ng-change="vm.avgVolChange()">
-    <md-radio-button class="md-accent filter-radio-buttons" ng-repeat="filterAdv in vm.filterAdv"  ng-model="vm.avgVolRadio" value="{{filterAdv.value * -1}}" aria-label="Show symbols over {{filterAdv.text}}" >
+    <md-radio-button class="md-primary filter-radio-buttons" ng-repeat="filterAdv in vm.filterAdv"  ng-model="vm.avgVolRadio" value="{{filterAdv.value * -1}}" aria-label="Show symbols over {{filterAdv.text}}" >
         <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true"></md-icon> {{filterAdv.text}}
     </md-radio-button>
 </md-radio-group>

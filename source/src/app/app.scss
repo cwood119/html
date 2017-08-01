@@ -191,9 +191,10 @@ md-icon.filter-long-up-arrow {vertical-align: baseline;text-align: right;padding
 .filter-radio-group{width: 95px;display: inline-block;}
 .filter-radio-buttons{height:inherit;margin:0;text-transform: lowercase;}
 md-radio-button.filter-radio-buttons .md-label{margin-left:15px;}
+md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);background-color: $blue !important; }
 
 // Range Slider
-.rzslider .rz-pointer {outline:0;background-color: $blue !important;cursor:-webkit-grab !important;}
+.rzslider .rz-pointer {top: -11px !important;width: 25px !important;height: 25px !important;border-radius: 50% !important;outline:0;background-color: $blue !important;cursor:-webkit-grab !important;}
 .rzslider .rz-pointer:active{cursor:-webkit-grabbing !important}
 .rzslider .rz-pointer:after {cursor:-webkit-grab;border-color: $blue;background: $blue !important;}
 .rzslider .rz-bubble {color:$medium-gray !important;}
