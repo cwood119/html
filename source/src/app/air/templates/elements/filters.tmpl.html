@@ -12,19 +12,19 @@
     </rzslider>
 </div>
 <!-- Volume Filter -->
-<md-subheader class="md-primary">
+<md-subheader class="md-primary" ng-hide="vm.currentPath === '/ecalAfter' || vm.currentPath === '/ecalPre'">
     Volume:
     <md-icon class=" material-icons zmdi zmdi-long-arrow-up toggle-filter-long-up-arrow" aria-hidden="true" ng-show="vm.volume > 0"></md-icon>
     <md-icon class=" material-icons zmdi zmdi-long-arrow-down toggle-filter-long-up-arrow" aria-hidden="true" ng-show="vm.volume < 0"></md-icon>
     <span ng-hide="vm.volumeIndicator =='Any'">{{vm.volumeIndicator | numeraljs:'0a'}}</span>
     <md-switch class="md-accent filter-toggles" ng-disabled="vm.volumeDisabled" ng-model="vm.volumeToggle" aria-label="Volume Filter Toggle" ng-change="vm.volumeFilterCheck(vm.volumeDisabled)"></md-switch>
 </md-subheader>
-<md-radio-group class="md-padding filter-options filter-radio-group" ng-model="vm.volume" ng-change="vm.volumeChange()">
+<md-radio-group ng-hide="vm.currentPath === '/ecalAfter' || vm.currentPath === '/ecalPre'" class="md-padding filter-options filter-radio-group" ng-model="vm.volume" ng-change="vm.volumeChange()">
     <md-radio-button class="md-primary filter-radio-buttons" ng-repeat="filterVolume in vm.filterVolume"  ng-model="vm.volumeRadio" value="{{filterVolume.value}}" aria-label="Show symbols over {{filterVolume.text}}" >
         <md-icon class=" material-icons zmdi zmdi-long-arrow-up filter-long-up-arrow" aria-hidden="true"></md-icon> {{filterVolume.text}}
     </md-radio-button>
 </md-radio-group>
-<md-radio-group class="md-padding filter-options filter-radio-group" ng-model="vm.volume" ng-change="vm.volumeChange()">
+<md-radio-group ng-hide="vm.currentPath === '/ecalAfter' || vm.currentPath === '/ecalPre'" class="md-padding filter-options filter-radio-group" ng-model="vm.volume" ng-change="vm.volumeChange()">
     <md-radio-button class="md-primary filter-radio-buttons" ng-repeat="filterVolume in vm.filterVolume"  ng-model="vm.volumeRadio" value="{{filterVolume.value * -1}}" aria-label="Show symbols over {{filterVolume.text}}" >
         <md-icon class=" material-icons zmdi zmdi-long-arrow-down filter-long-up-arrow" aria-hidden="true"></md-icon> {{filterVolume.text}}
     </md-radio-button>

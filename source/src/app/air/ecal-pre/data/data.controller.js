@@ -5,7 +5,7 @@
         .controller('ecalPreController', ecalPreController);
 
     /* @ngInject */
-    function ecalPreController($http, $mdDialog, $location, $document, $timeout, $interval, $window, $mdSidenav, $scope, ecalPreService, API_CONFIG) {
+    function ecalPreController($http, $mdDialog, $location, $document, $timeout, $interval, $window, $mdSidenav, $scope, ecalPreService, API_CONFIG, filterFilter) {
         var vm = this;
 
         // Page Variables
@@ -35,65 +35,159 @@
         vm.avgVolIndicator = 'Any';
         vm.avgVolDisabled = true;
 
-        // Legacy Filter Data
+        // Filter Data
         vm.filterPrice = ['5','10','15'];
         vm.filterVolume = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
         vm.filterAdv = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
-        vm.filterTime = [{'value':'2','text':'Before Market'},{'value':'1','text':'After Market'},{'value':'3','text':'Intraday'},{'value':'4','text':'Unknown'}];
+        vm.filterTime = [{'value':'2','text':'Before Market'},{'value':'1','text':'Pre Market'},{'value':'3','text':'Intraday'},{'value':'4','text':'Unknown'}];
 
         activate();
 
         //////////
 
         function activate() {
+            vm.bulkQuotes=[];
+            vm.clock=[];
             vm.emptySet = false;
             vm.mainLoader = true;
             vm.refreshToggle = 0;
+            vm.resize = function() { window.dispatchEvent(new Event('resize')); };
             vm.symbols=[];
+
+            vm.today = moment().format('YYYY-MM-DD');
+            var yesterday = moment().subtract(1,'day');
+            vm.yesterday = moment(yesterday).format('YYYY-MM-DD');
+
+            // Define Line Chart
+            vm.lineChartOptions = {
+                chart: { type: 'lineChart',showXAxis: false,showYAxis: false,showLegend: false,interactive: false,duration: 0,height: 90,margin : {top: 0,right: 0,bottom: 0,left: 0},
+
+                    x: function(d){ return d.x; },
+                    y: function(d){ return d.y; },
+
+                    callback: function(){
+                        //window.dispatchEvent(new Event('resize'));
+                    }
+                }
+            };
+
+            getClock().then(function(data) {
+
+                vm.state = data[0].data.clock.state;
+                //console.log(vm.state);
+                if (vm.state == 'premarket') {
+                    vm.list = 'Pre Market Movers';
+                    getRealTimeQuotes();
+                }
+                else {
+                    vm.list = 'Pre Market Snapshot';
+                    getSnapshot();
+                }
+
+            });
+        }
+
+        function getRealTimeQuotes() {
+
             return getEcalData(API_CONFIG).then(function(data) {
-                if (data[0].data.length != 0) {
-                    // Get Symbols
-                    var symbols = data[0].data;
+                vm.ecalData = data;
+                if (vm.ecalData.length != 0) {
+
+                    var symbols = vm.ecalData[0].data;
+                    // Prepare all symbols for bulk quotes
+                    var symbolsObject = [];
+
                     angular.forEach(symbols,function(value){
                         var s = value.symbol;
-                        var id = value.id;
-                        var w = value.announce;
-                        var ts = value.date;
-                        var av = value.avgVol;
-                        vm.list = value.list;
-                        vm.updated = moment(value.date).format('MMM Do YYYY');
-                        getSymbolData(s,id,w,ts,av).then(function(data) {
-                            vm.symbols.push(data);
-                        });
+                        symbolsObject.push(s);
                     });
-                    vm.chartToggle = false;
-                    // Build Line Chart
-                    vm.lineChartOptions = {
-                        chart: {
-                            type: 'lineChart',
-                            showXAxis: false,
-                            showYAxis: false,
-                            showLegend: false,
-                            //useInteractiveGuideline: true,
-                            interactive: false,
-                            duration: 0,
-                            height: 90,
-                            margin : {top: 0,right: 0,bottom: 0,left: 0},
 
-                            x: function(d){ return d.x; },
-                            y: function(d){ return d.y; },
-                            callback: function(){
-                                window.dispatchEvent(new Event('resize'));
-                                vm.chartToggle = true;
-                                vm.mainLoader = false;
+                    var allSymbols = symbolsObject.toString();
+
+                    getBulkQuotes(allSymbols).then(function(data) {
+                        vm.bulkQuotes.push(data);
+                    });
+
+                    // Get Symbols
+                    $timeout(function(){
+                        angular.forEach(symbols,function(value){
+                            var pp;
+                            var av = value.avgVol;
+                            var index = symbols.indexOf(value)+1;
+                            var id = value.id;
+                            var pc;
+                            var s = value.symbol;
+                            var ts = value.date;
+                            var w = value.announce;
+
+                            vm.updated = moment(value.date).format('MMM Do YYYY');
+                            getSymbolData(pp,av,index,id,pc,s,ts,w).then(function(data) {
+                                vm.symbols.push(data);
+                            });
+                                        
+                            if ( index == symbols.length) {
+                                $timeout(function(){
+                                    vm.mainLoader = false;
+                                    $timeout(vm.resize,1);
+                                },3000);
                             }
-                        }
-                    };
+                        });
+                    },1000);
+                } else {vm.mainLoader = false;vm.emptySet = true;}
+            });
+        }
+
+        function getSnapshot() {
+            return getSnapshotData(API_CONFIG).then(function(data) {
+                vm.snapshot = data;
+                if (vm.snapshot.length != 0) {
+
+                    // Get Symbols
+                    var symbols = vm.snapshot[0].data;
+                    $timeout(function(){
+                        angular.forEach(symbols,function(value){
+                            var pp = value.pp;
+                            var av = value.avgVol;
+                            var index = symbols.indexOf(value)+1;
+                            var id = value.id;
+                            var pc = value.price;
+                            var s = value.symbol;
+                            var ts = value.date;
+                            var w = value.announce;
+
+                            vm.updated = moment(value.date).format('MMM Do YYYY');
+                            getSymbolData(pp,av,index,id,pc,s,ts,w).then(function(data) {
+                                vm.symbols.push(data);
+                            });
+                                        
+                            if ( index == symbols.length) {
+                                $timeout(function(){
+                                    vm.mainLoader = false;
+                                    $timeout(vm.resize,1);
+                                },3000);
+                            }
+                        });
+                    },1000);
                 } else {vm.mainLoader = false;vm.emptySet = true;}
             });
         }
 
         // Get Data from Service
+
+        function getBulkQuotes(allSymbols) {
+            return ecalPreService.getBulkQuotes(allSymbols)
+                .then(function(data) {
+                    return data;
+                });
+        }
+
+        function getClock() {
+            return ecalPreService.getClock()
+                .then(function(data) {
+                    return data;
+                });
+        }
+
         function getEcalData(API_CONFIG) {
             return ecalPreService.getData(API_CONFIG)
                 .then(function(data) {
@@ -108,47 +202,100 @@
                 });
         }
 
-        function getSymbolData(s,id,w,ts,av) {
-            return ecalPreService.getSymbolData(s,id,w,ts,av)
+        function getSnapshotData(API_CONFIG) {
+            return ecalPreService.getSnapshot(API_CONFIG)
+                .then(function(data) {
+                    return data;
+                });
+        }
+
+        function getSymbolData(pp,av,index,id,pc,s,ts,w) {
+            return ecalPreService.getSymbolData(s,ts)
                 .then(function(data) {
                     var announce;
+                    var announceDay;
+                    var change;
                     var chart=[{color:'#03a9f4',values:[]}];
-                    var quotes = data[0].data.quotes.quote;
-                    var timeSales = data[5].data.series.data;
+                    var percentChange;
+                    var symbolObject;
+                    var timeSales = data[1].data.series.data;
 
-                    if ( data[3] == 1 ) { announce = 'After Market'; }
-                    if ( data[3] == 2 ) { announce = 'Pre Market'; }
-                    if ( data[3] == 3 ) { announce = 'Intraday'; }
-                    if ( data[3] == 4 ) { announce = 'Not Specified'; }
-                    
-                    // Build Chart Object 
-                    angular.forEach(timeSales,function(value){
-                        var close = value.close;
-                        var time = value.timestamp;
-                        chart[0].values.push({x:time,y:close});
-                    });
-                    var symbolObject = {
-                        'id':parseInt(data[2]),
-                        'symbol':data[1],
-                        'name':quotes.description,
-                        'price':quotes.last,
-                        'dollarChange':quotes.change,
-                        'percentChange':quotes.change_percentage,
-                        'when':announce,
-                        'open':quotes.open,
-                        'high':quotes.high,
-                        'low':quotes.low,
-                        'volume':quotes.volume,
-                        'avgVol':parseInt(data[6]),
-                        'sharesShort':'',
-                        'shortPercent':'',
-                        'marketCap':'',
-                        'float':'',
-                        'exchange':quotes.exch,
-                        'headlines':'',
-                        'chart':chart
-                    };
-                    return symbolObject;
+                    if ( w == 1 ) { announce = 'After Market'; }
+                    if ( w == 2 ) { announce = 'Pre Market'; }
+                    if ( w == 3 ) { announce = 'Intraday'; }
+                    if ( w == 4 ) { announce = 'Not Specified'; }
+
+                    if ( ts == vm.today ) { announceDay = 'Today'; }
+                    else if ( ts == vm.yesterday ) { announceDay = 'Yesterday'; }
+                    else { announceDay = moment(ts).format('dddd'); }
+
+                    // Build Real Time Symbol Object
+                    if ( pp == null ) {
+                        var q = filterFilter(vm.bulkQuotes[0][0].data.quotes.quote, { symbol: s }, true);
+                        var quotes = q[0];
+
+                        // Get Pre Market Price
+                        var price = timeSales[timeSales.length - 1].close;
+
+                        // Calculate Change
+                        //var prevClose = quotes.prevclose;
+                        var close = quotes.close;
+                        change = price - close;
+                        percentChange = (change/close)*100;
+
+                        // Build Chart Object 
+                        angular.forEach(timeSales,function(value){
+                            var close = value.close;
+                            var time = value.timestamp;
+                            chart[0].values.push({x:time,y:close});
+                        });
+
+                        symbolObject = {
+                            'id':parseInt(id),
+                            'symbol':data[0],
+                            'name':quotes.description,
+                            'price':price,
+                            'dollarChange':change,
+                            'percentChange':percentChange,
+                            'when':announce,
+                            'announceDay':announceDay,
+                            'volume':quotes.volume,
+                            'avgVol':parseInt(av),
+                            'headlines':'',
+                            'chart':chart
+                        };
+
+                        return symbolObject;
+                    }
+                    // Build Snapshot Symbol Object
+                    else {
+                        // Calculate Change
+                        change = pp - pc;
+                        percentChange = (change/pc)*100;
+
+                        // Build Chart Object 
+                        angular.forEach(timeSales,function(value){
+                            var close = value.close;
+                            var time = value.timestamp;
+                            chart[0].values.push({x:time,y:close});
+                        });
+
+                        symbolObject = {
+                            'id':parseInt(id),
+                            'symbol':data[0],
+                            'name':'null',
+                            'price':pp,
+                            'dollarChange':change,
+                            'percentChange':percentChange,
+                            'when':announce,
+                            'announceDay':announceDay,
+                            'volume':'',
+                            'avgVol':parseInt(av),
+                            'headlines':'',
+                            'chart':chart
+                        };
+                        return symbolObject;
+                    }
                 });
         }
 
@@ -171,14 +318,14 @@
         // Slider
         vm.slider = {
             min: 0,
-            max: 20, 
+            max: 25, 
             options: { 
                 floor: 0,
-                ceil: 20,
-                ticksArray: [0, 5, 10, 15, 20],
+                ceil: 25,
+                ticksArray: [0, 5, 10, 15, 20, 25],
                 translate: function(value) {return '$' + value;},
                 onChange: function () {
-                    if (vm.slider.min != 0 || vm.slider.max != 20) {vm.priceToggle=true;vm.priceDisabled=false;}
+                    if (vm.slider.min != 0 || vm.slider.max != 25) {vm.priceToggle=true;vm.priceDisabled=false;}
                     else {vm.priceToggle=false;vm.priceDisabled=true;}
                 }
             }
@@ -195,7 +342,7 @@
         vm.priceFilterCheck = function (state) {
             if (state == false) {
                 vm.slider.min = 0;
-                vm.slider.max = 20;
+                vm.slider.max = 25;
                 vm.priceDisabled=true;
             }
         };
