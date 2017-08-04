@@ -249,7 +249,7 @@ function get_ecalNext() {
 
 function get_ecalAfter() {
     $pdo = connect_to_db();    
-    $data = $pdo->query('SELECT * FROM ecal_after')->fetchAll();
+    $data = $pdo->query('SELECT * FROM ecal_after WHERE price != 0 AND ap != 0')->fetchAll();
     return $data;
 }
 
