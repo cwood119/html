@@ -46,7 +46,7 @@
         }
 
         function getData(API_CONFIG) {
-            var ecalData = $http.get(API_CONFIG.url + 'ecal');
+            var ecalData = $http.get(API_CONFIG.url + 'ecalPreUpdate');
             return $q.all([ecalData]);
         }
 

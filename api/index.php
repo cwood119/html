@@ -66,6 +66,21 @@ $app->get('/ecalPre', function () use ($app) {
     }
 });
 
+$app->get('/ecalPreUpdate', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $ecalPreUpdate = get_ecalPreUpdate();
+    if (null !== $ecalPreUpdate) {
+        $app->response->setStatus(200);
+        echo json_encode($ecalPreUpdate);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
 $app->get('/ecalAfter', function () use ($app) {
     $response = $app->response();
     $response->header('Access-Control-Allow-Origin', '*');
@@ -214,9 +229,15 @@ function get_ecalTracker() {
     return $data;
 }
 
+function get_ecalPreUpdate() {
+    $pdo = connect_to_db();    
+    $data = $pdo->query('SELECT * FROM earnings_calendar_latest WHERE announce IN (2,3,4) UNION SELECT * FROM earnings_calendar_archive WHERE date = subdate(current_date,1) AND announce = 1;')->fetchAll();
+    return $data;
+}
+
 function get_ecalPre() {
     $pdo = connect_to_db();    
-    $data = $pdo->query('SELECT * FROM ecal_pre')->fetchAll();
+    $data = $pdo->query('SELECT * FROM ecal_pre WHERE price != 0 AND pp != 0')->fetchAll();
     return $data;
 }
 

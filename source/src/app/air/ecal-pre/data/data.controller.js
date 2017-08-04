@@ -238,8 +238,7 @@
                         var price = timeSales[timeSales.length - 1].close;
 
                         // Calculate Change
-                        //var prevClose = quotes.prevclose;
-                        var close = quotes.close;
+                        var close = quotes.prevclose;
                         change = price - close;
                         percentChange = (change/close)*100;
 
@@ -318,14 +317,14 @@
         // Slider
         vm.slider = {
             min: 0,
-            max: 25, 
+            max: 50, 
             options: { 
                 floor: 0,
-                ceil: 25,
-                ticksArray: [0, 5, 10, 15, 20, 25],
+                ceil: 50,
+                ticksArray: [0, 5, 10, 15, 20, 30, 40, 50],
                 translate: function(value) {return '$' + value;},
                 onChange: function () {
-                    if (vm.slider.min != 0 || vm.slider.max != 25) {vm.priceToggle=true;vm.priceDisabled=false;}
+                    if (vm.slider.min != 0 || vm.slider.max != 50) {vm.priceToggle=true;vm.priceDisabled=false;}
                     else {vm.priceToggle=false;vm.priceDisabled=true;}
                 }
             }
@@ -342,7 +341,7 @@
         vm.priceFilterCheck = function (state) {
             if (state == false) {
                 vm.slider.min = 0;
-                vm.slider.max = 25;
+                vm.slider.max = 50;
                 vm.priceDisabled=true;
             }
         };
