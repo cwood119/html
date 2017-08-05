@@ -187,21 +187,6 @@ $app->get('/watchlist', function () use ($app) {
     }
 });
 
-$app->get('/ecalTracker', function () use ($app) {
-    $response = $app->response();
-    $response->header('Access-Control-Allow-Origin', '*');
-    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
-    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
-
-    $ecalTracker = get_ecalTracker();
-    if (null !== $ecalTracker) {
-        $app->response->setStatus(200);
-        echo json_encode($ecalTracker);
-    } else {
-        $app->response->setStatus(401);
-    }
-});
-
 // Data Functions
 function get_ecal() {
     $pdo = connect_to_db();    
@@ -225,7 +210,7 @@ function get_ecalUpdate() {
 
 function get_ecalTracker() {
     $pdo = connect_to_db();    
-    $data = $pdo->query('SELECT * FROM earnings_calendar_archive WHERE date > subdate(current_date,30) GROUP BY symbol ORDER BY date ASC;')->fetchAll();
+    $data = $pdo->query('SELECT * FROM ecal_tracker ORDER BY date ASC;')->fetchAll();
     return $data;
 }
 
