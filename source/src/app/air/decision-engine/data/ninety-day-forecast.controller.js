@@ -27,8 +27,6 @@
         }
         function getForecastData(start, end, span) {
             vm.forecastData = NinetyDayForecastService.getForecastData(start, end, span);
-//            vm.ecalData = DashboardService.getWidgetForecastData();
-            //console.log(vm.ecalData);
             vm.ninetyDayForecastOptions = {
                 chart: {
                     type: 'lineChart',

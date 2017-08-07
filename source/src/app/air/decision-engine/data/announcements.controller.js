@@ -100,7 +100,6 @@
                                 vm.symbols.push(data);
                             });
                             if ( index == symbols.length) {
-                                console.log(symbols.length);
                                 $timeout(function(){
                                     vm.mainLoader = false;
                                     $timeout(resize,1);

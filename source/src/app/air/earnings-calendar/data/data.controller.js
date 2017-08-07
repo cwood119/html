@@ -110,7 +110,6 @@
                             });
 
                             if ( index == symbols.length) {
-                                console.log(symbols.length);
                                 $timeout(function(){
                                     vm.mainLoader = false;
                                     $timeout(resize,1);
@@ -460,16 +459,5 @@
         vm.filterShort = [{'value':'5','text':'5%'},{'value':'15','text':'15%'},{'value':'25','text':'25%'}];
         vm.filterTime = [{'value':'2','text':'Before Market'},{'value':'1','text':'After Market'},{'value':'3','text':'Intraday'},{'value':'4','text':'Unknown'}];
 
-        // Legacy Sort Reset Function
-        vm.reset =  function reset() {
-            vm.sortPrice = {};
-            vm.sortPercentChange = {};
-            vm.sortVolume = {};
-            vm.sortAvgVol = {};
-            vm.sortMktCap = {};
-            vm.sortFloat = {};
-            vm.sortShort = {};
-            vm.sortSymbol = {};
-        };
     }
 })();

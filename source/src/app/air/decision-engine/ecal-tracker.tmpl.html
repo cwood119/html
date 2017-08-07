@@ -5,8 +5,9 @@
         <thead md-head md-order="vm.query.order">
             <tr md-row>
                 <th md-column md-order-by="symbol">Symbol</th>
-                <th md-column md-order-by="when">When</th>
-                <th md-column md-order-by="price">Price</th>
+                <th md-column md-order-by="announceDate">When</th>
+                <th md-column md-order-by="changeOpen">Change <br />From Open</th>
+                <th md-column md-order-by="changeClose">Change <br />From Close</th>
                 <th md-column md-order-by="avgVol">Avg Vol</th>
                 <th md-column></th>
             </tr>
@@ -14,17 +15,24 @@
         <tbody md-body>
             <tr md-row ng-repeat="symbol in vm.symbols | orderBy: vm.query.order | limitTo: vm.ecalPageSize : (vm.ecalCurPage - 1) * vm.ecalPageSize track by symbol.id">
                 <td md-cell class="symbol-container">
-                    <div class="pointer">{{symbol.symbol}}<md-tooltip>{{symbol.name}}</md-tooltip></div>
+                    <div class="pointer">{{symbol.symbol}}</div>
                 </td>
 
-                <td md-cell class="no-padding">
+                <td md-cell style="min-width:90px;">
                     <div class="md-body-1">
                         {{symbol.announceDate}}
                     </div>
                 </td>
 
                 <td md-cell>
-                    {{symbol.price | number:2}}
+                    <div class="md-body-1" ng-class="{'green': symbol.changeOpen > 0,'red':symbol.changeOpen < 0}">
+                      <span ng-show="symbol.changeOpen > 0"> +</span>{{symbol.changeOpen | number:2}}%
+                    </div>
+                </td>
+                <td md-cell>
+                    <div class="md-body-1" ng-class="{'green': symbol.changeClose > 0,'red':symbol.changeClose < 0}">
+                      <span ng-show="symbol.changeClose > 0"> +</span>{{symbol.changeClose | number:2}}%
+                    </div>
                 </td>
 
                 <td md-cell>
