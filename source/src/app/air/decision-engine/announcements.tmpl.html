@@ -88,5 +88,6 @@
         </tbody>
     </table>
 </md-table-container>
-<md-progress-circular ng-show="vm.mainLoader" class="md-accent mainLoader" md-mode="indeterminate"></md-progress-circular>
-<md-table-pagination md-limit="vm.ecalPageSize"  md-page-select md-page="vm.ecalCurPage" md-total="{{vm.symbols.length}}"></md-table-pagination>
+<!--<md-progress-linear ng-show="vm.mainLoader" class="md-accent mainLoader card-loader" md-mode="indeterminate"></md-progress-linear>-->
+<div id="container" class="mainLoader card-loader" ng-show="vm.mainLoader"><div class="pulse"></div><div class="dot">A</div></div>
+<md-table-pagination class="no-border" md-limit="vm.ecalPageSize"  md-page-select md-page="vm.ecalCurPage" md-total="{{vm.symbols.length}}"></md-table-pagination>

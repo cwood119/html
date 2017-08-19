@@ -47,6 +47,7 @@ a{color:$blue !important;}
 
 .no-padding{padding: 0 !important;}
 .no-margin{margin: 0 !important;}
+.no-border{border: none !important;}
 
 .layout-margin.ng-scope{text-align:center;}
 
@@ -60,6 +61,75 @@ a{color:$blue !important;}
 
 // Loaders
 .mainLoader{margin:auto;}
+
+// Pulsating Air Logo Loader
+#container {
+  position: relative;
+}
+
+.dot {
+    color: white;
+    font-size: 48pt;
+    text-align: center;
+    font-family: sans-serif;
+    width: 100px;
+    height: 100px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    background-color: #03a9f4;
+    z-index: 10;
+    margin: auto;
+    position: relative;
+    top: 16%;
+    transform: translateY(-16%);
+}
+
+.pulse {
+    background: #03a9f4;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    height: 160px;
+    width: 160px;
+    -webkit-animation: pulseLoader 1.5s ease-out infinite;
+    -moz-animation: pulseLoader 1.5s ease-out infinite;
+    animation: pulseLoader 1.5s ease-out infinite;
+    animation-delay: 0s;
+    position: relative;
+    z-index: 1;
+    margin:auto;
+    top: 34.5%;
+    transform: translateY(-34.5%);
+}
+
+@keyframes pulseLoader {
+ from { transform: scale(0);opacity: 0.0;}
+ 25% {transform: scale(0.5);opacity: 0.5;}
+ 100% {transform: scale(1);opacity: 0.0;}
+}
+
+@-moz-keyframes pulseLoader {
+ 0% { -moz-transform: scale(0);opacity: 0.0;}
+ 25% {-moz-transform: scale(0);opacity: 0.1;}
+ 50% {-moz-transform: scale(0.1);opacity: 0.3;}
+ 75% {-moz-transform: scale(0.5);opacity: 0.5;}
+ 100% {-moz-transform: scale(1);opacity: 0.0;}
+}
+
+@-webkit-keyframes "pulseLoader" {
+ 0% {-webkit-transform: scale(0);opacity: 0.0;}
+ 25% {-webkit-transform: scale(0);opacity: 0.1;}
+ 50% {-webkit-transform: scale(0.1);opacity: 0.3;}
+ 75% {-webkit-transform: scale(0.5);opacity: 0.5;}
+ 100% { -webkit-transform: scale(1);opacity: 0.0; }
+}
+
+
+
+// Tables
+//713px
+table.md-table tbody.md-body > tr.md-row, table.md-table tfoot.md-foot > tr.md-row { height: 50px; }
 // Toolbars
 md-toolbar.md-light-blue-theme{color:$medium-gray;z-index: 0;}
 .md-subheader.md-light-blue-theme.md-primary {color: $dark-gray; background-color:white;border-top:1px solid #e1e1e1;padding-top:5px;}
@@ -211,6 +281,8 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 .list-subhead{float:right;color: rgba(0,0,0,0.54);font-size: 14px;}
 .ninety-day-outlook-responsive{display:none;}
 .list-subhead md-select {margin:0;}
+.card-loader{height: 612px;}
+
 // Symbol Lookup
 .lookup-card {width: 60%;min-width: 300px;margin: auto;padding: 0px 5px 0px 5px;}
 .lookup-container {margin-bottom:0;}

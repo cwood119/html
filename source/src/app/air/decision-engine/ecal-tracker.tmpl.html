@@ -4,43 +4,43 @@
     <table md-table ng-show="!vm.emptySet" class="md-primary md-data-table symbol-table">
         <thead md-head md-order="vm.query.order">
             <tr md-row>
-                <th md-column md-order-by="symbol">Symbol</th>
-                <th md-column md-order-by="announceDate">When</th>
-                <th md-column md-order-by="changeOpen">Change <br />From Open</th>
-                <th md-column md-order-by="changeClose">Change <br />From Close</th>
-                <th md-column md-order-by="avgVol">Avg Vol</th>
+                <th md-column class="no-padding" md-order-by="symbol">Symbol</th>
+                <th md-column class="no-padding" md-order-by="announceDate">When</th>
+                <th md-column class="no-padding" md-order-by="changeOpen">Change <br />From Open</th>
+                <th md-column class="no-padding" md-order-by="changeClose">Change <br />From Close</th>
+                <th md-column class="no-padding" md-order-by="avgVol">Avg Vol</th>
                 <th md-column></th>
             </tr>
         </thead>
         <tbody md-body>
             <tr md-row ng-repeat="symbol in vm.symbols | orderBy: vm.query.order | limitTo: vm.ecalPageSize : (vm.ecalCurPage - 1) * vm.ecalPageSize track by symbol.id">
-                <td md-cell class="symbol-container">
+                <td md-cell class="no-padding">
                     <div class="pointer">{{symbol.symbol}}</div>
                 </td>
 
-                <td md-cell style="min-width:90px;">
+                <td md-cell class="no-padding" style="min-width:90px;">
                     <div class="md-body-1">
                         {{symbol.announceDate}}
                     </div>
                 </td>
 
-                <td md-cell>
+                <td md-cell class="no-padding">
                     <div class="md-body-1" ng-class="{'green': symbol.changeOpen > 0,'red':symbol.changeOpen < 0}">
                       <span ng-show="symbol.changeOpen > 0"> +</span>{{symbol.changeOpen | number:2}}%
                     </div>
                 </td>
-                <td md-cell>
+                <td md-cell class="no-padding">
                     <div class="md-body-1" ng-class="{'green': symbol.changeClose > 0,'red':symbol.changeClose < 0}">
                       <span ng-show="symbol.changeClose > 0"> +</span>{{symbol.changeClose | number:2}}%
                     </div>
                 </td>
 
-                <td md-cell>
+                <td md-cell class="no-padding">
                     <div class="md-body-1" ng-show="{{symbol.avgVol == 0}}">-</div>
                     <div class="md-body-1" ng-hide="{{symbol.avgVol == 0}}">{{symbol.avgVol | number:0}}</div>
                 </td>
 
-                <td md-cell>
+                <td md-cell class="no-padding">
                     <md-menu class="external-links-menu-container-list">
                         <md-button class="md-icon-button" aria-label="open menu" ng-click="$mdOpenMenu()">
                             <md-icon md-font-icon="zmdi zmdi-more-vert"></md-icon>
@@ -78,4 +78,4 @@
     </table>
 </md-table-container>
 <md-progress-circular ng-show="vm.mainLoader" class="md-accent mainLoader" md-mode="indeterminate"></md-progress-circular>
-<md-table-pagination md-limit="vm.ecalPageSize"  md-page-select md-page="vm.ecalCurPage" md-total="{{vm.symbols.length}}"></md-table-pagination>
+<md-table-pagination class="no-border" md-limit="vm.ecalPageSize"  md-page-select md-page="vm.ecalCurPage" md-total="{{vm.symbols.length}}"></md-table-pagination>

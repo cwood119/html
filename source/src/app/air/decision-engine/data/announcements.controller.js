@@ -103,7 +103,7 @@
                                 $timeout(function(){
                                     vm.mainLoader = false;
                                     $timeout(resize,1);
-                                },500);
+                                },3000);
                             }
                         });
                     },500);
