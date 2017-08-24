@@ -57,6 +57,8 @@ a{color:$blue !important;}
 
 .center-text {text-align:center;}
 
+.pulsate {-webkit-animation: pulse 2s ease-out infinite;animation: pulse 2s ease-out infinite;-webkit-animation-delay: 1s;animation-delay: 1s;}
+
 ////////// Elements
 
 // Loaders
@@ -71,7 +73,7 @@ a{color:$blue !important;}
     color: white;
     font-size: 48pt;
     text-align: center;
-    font-family: sans-serif;
+    font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif;
     width: 100px;
     height: 100px;
     -webkit-border-radius: 50%;
@@ -282,6 +284,10 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 .ninety-day-outlook-responsive{display:none;}
 .list-subhead md-select {margin:0;}
 .card-loader{height: 612px;}
+.nv-axis.nv-y .tick line {
+        display:none;
+    }
+
 
 // Symbol Lookup
 .lookup-card {width: 60%;min-width: 300px;margin: auto;padding: 0px 5px 0px 5px;}

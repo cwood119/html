@@ -96,6 +96,21 @@ $app->get('/ecalAfter', function () use ($app) {
     }
 });
 
+$app->get('/ecalFuture', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $ecalFuture = get_ecalFuture();
+    if (null !== $ecalFuture) {
+        $app->response->setStatus(200);
+        echo json_encode($ecalFuture);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
 $app->get('/ecalTracker', function () use ($app) {
     $response = $app->response();
     $response->header('Access-Control-Allow-Origin', '*');
@@ -206,6 +221,12 @@ function get_ecalUpdate() {
     if ( $today == 'Sunday' ) { $data = $pdo->query('SELECT * FROM earnings_calendar_latest WHERE announce IN (2,3,4) UNION SELECT * FROM earnings_calendar_archive WHERE date = subdate(current_date,3) AND announce = 1;')->fetchAll(); }
     return $data;
 
+}
+
+function get_ecalFuture() {
+    $pdo = connect_to_db();    
+    $data = $pdo->query('SELECT * FROM ecal_future;')->fetchAll();
+    return $data;
 }
 
 function get_ecalTracker() {

@@ -29,7 +29,7 @@
                 ninetyDayLookbackData: [{
                     key: 'Announcements',
                     values: [],
-                    area: true
+                    area:true
                 }],
                 totals: {
                     ecal: 0

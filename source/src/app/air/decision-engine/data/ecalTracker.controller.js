@@ -13,7 +13,7 @@
         vm.ecalCurPage = 1;
         vm.ecalLimitOptions = [5,10,15];
         vm.ecalPageSize = 11;
-        vm.query = {order: 'Symbol'};
+        vm.query = {order: '-change'};
 
         activate();
 
@@ -35,14 +35,18 @@
                         var id = value.id;
                         var index = symbols.indexOf(value)+1;
                         vm.list = value.list;
-
+                        var erClose = value.erClose;
+                        var latestClose = value.latestClose;
+                        var change = latestClose - erClose;
+                        vm.percentChange = (change / erClose) * 100;
+                        //vm.change = parseFloat(vm.percentChange).toFixed(2);
+                        vm.change = Number(vm.percentChange);
                         var symbolObject = {
                             'id':parseInt(id),
                             'symbol':value.symbol,
-                            'announceDate':value.date,
+                            'announceDate':moment(value.date).format('MMM Do'),
                             'avgVol':parseInt(av),
-                            'changeClose':parseInt(value.changeClose),
-                            'changeOpen':parseInt(value.changeOpen),
+                            'change':vm.change,
                             'close':value.close,
                             'erClose':value.erClose,
                             'headlines':''

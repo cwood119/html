@@ -140,7 +140,7 @@
         function getSnapshot() {
             return getSnapshotData(API_CONFIG).then(function(data) {
                 vm.snapshot = data;
-                if (vm.snapshot.length != 0) {
+                if (vm.snapshot[0].data.length != 0) {
 
                     // Get Symbols
                     var symbols = vm.snapshot[0].data;

@@ -28,8 +28,6 @@
         }
         function getLookbackData(start, end, span) {
             vm.lookbackData = NinetyDayLookbackService.getLookbackData(start, end, span);
-//            vm.ecalData = DashboardService.getWidgetLookbackData();
-            //console.log(vm.ecalData);
             vm.ninetyDayLookbackOptions = {
                 chart: {
                     type: 'lineChart',
@@ -39,10 +37,10 @@
                     y: function(d){
                         return d[1];
                     },
-                    color: ['#82B1FF'],
+                    color: ['#039be5'],
                     xAxis: {
                         tickFormat: function(d) {
-                            return d3.time.format('%m/%d/%y')(new Date(d));
+                            return d3.time.format('%B %d')(new Date(d));
                         },
                         showMaxMin: false
                     },

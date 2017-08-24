@@ -8,12 +8,12 @@
         </md-input-container>
         <div class="list-buttons" hide-gt-xs ng-show="!vm.showSearch">
             <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
-                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw zmdi-hc-flip-horizontal animated infinite pulse" ></md-icon>
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw zmdi-hc-flip-horizontal animated infinite pulsate" ></md-icon>
             </md-button>
         </div>
         <div class="list-buttons" hide-xs>
             <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
-                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw zmdi-hc-flip-horizontal animated infinite pulse" ></md-icon>
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw zmdi-hc-flip-horizontal animated infinite pulsate" ></md-icon>
             </md-button>
             <md-button aria-label="search" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.showSearch = !vm.showSearch">
                 <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-search" ></md-icon>
@@ -156,7 +156,8 @@
         </tbody>
     </table>
 </md-table-container>
-<md-progress-circular ng-show="vm.mainLoader" class="md-accent mainLoader" md-mode="indeterminate"></md-progress-circular>
+<!--<md-progress-circular ng-show="vm.mainLoader" class="md-accent mainLoader" md-mode="indeterminate"></md-progress-circular>-->
+<div id="container" class="mainLoader card-loader" ng-show="vm.mainLoader"><div class="pulse"></div><div class="dot">A</div></div>
 <md-table-pagination md-limit="vm.pageSize" md-limit-options="vm.limitOptions"  md-page-select md-page="vm.curPage" md-total="{{vm.filtered.length}}" class="symbol-pagination"></md-table-pagination>
 <!--<div class="attributions attributions-list-view">
     Symbols Updated: {{vm.updated}}<br />

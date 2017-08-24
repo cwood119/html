@@ -6,8 +6,7 @@
             <tr md-row>
                 <th md-column class="no-padding" md-order-by="symbol">Symbol</th>
                 <th md-column class="no-padding" md-order-by="announceDate">When</th>
-                <th md-column class="no-padding" md-order-by="changeOpen">Change <br />From Open</th>
-                <th md-column class="no-padding" md-order-by="changeClose">Change <br />From Close</th>
+                <th md-column class="no-padding" md-order-by="change">Change</th>
                 <th md-column class="no-padding" md-order-by="avgVol">Avg Vol</th>
                 <th md-column></th>
             </tr>
@@ -25,13 +24,8 @@
                 </td>
 
                 <td md-cell class="no-padding">
-                    <div class="md-body-1" ng-class="{'green': symbol.changeOpen > 0,'red':symbol.changeOpen < 0}">
-                      <span ng-show="symbol.changeOpen > 0"> +</span>{{symbol.changeOpen | number:2}}%
-                    </div>
-                </td>
-                <td md-cell class="no-padding">
-                    <div class="md-body-1" ng-class="{'green': symbol.changeClose > 0,'red':symbol.changeClose < 0}">
-                      <span ng-show="symbol.changeClose > 0"> +</span>{{symbol.changeClose | number:2}}%
+                    <div class="md-body-1" ng-class="{'green': symbol.change > 0,'red':symbol.change < 0}">
+                      <span ng-show="symbol.change > 0"> +</span>{{symbol.change | number:2}}%
                     </div>
                 </td>
 
@@ -77,5 +71,6 @@
         </tbody>
     </table>
 </md-table-container>
-<md-progress-circular ng-show="vm.mainLoader" class="md-accent mainLoader" md-mode="indeterminate"></md-progress-circular>
+<!--<md-progress-circular ng-show="vm.mainLoader" class="md-accent mainLoader" md-mode="indeterminate"></md-progress-circular>-->
+<div id="container" class="mainLoader card-loader" ng-show="vm.mainLoader"><div class="pulse"></div><div class="dot">A</div></div>
 <md-table-pagination class="no-border" md-limit="vm.ecalPageSize"  md-page-select md-page="vm.ecalCurPage" md-total="{{vm.symbols.length}}"></md-table-pagination>

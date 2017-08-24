@@ -36,17 +36,17 @@
                     y: function(d){
                         return d[1];
                     },
-                    color: ['#82B1FF'],
+                    color: ['#039be5'],
                     xAxis: {
                         tickFormat: function(d) {
-                            return d3.time.format('%m/%d/%y')(new Date(d));
+                            return d3.time.format('%B %d')(new Date(d));
                         },
                         showMaxMin: false
                     },
 
                     yAxis: {
                         tickFormat: function(d){
-                            return d3.format(',')(d);
+                            return d3.format('.0f')(d);
                         },
                         domain: [0, 100000]
                     }
@@ -57,6 +57,7 @@
             vm.activeTimeSpan = span;
             // create new data
             getForecastData(vm.start, vm.end, vm.activeTimeSpan.value);
+
         }
 
         // init
