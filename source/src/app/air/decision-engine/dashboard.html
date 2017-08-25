@@ -50,12 +50,12 @@
 
         </div>
     </div>-->
-    <div layout="row" layout-xs="column">
-        <md-card flex flex="60" flex-xs="100" layout="column" class="flex-60" ng-controller="announcementsController as vm">
+    <div layout="row" layout-sm="column" layout-xs="column">
+        <md-card flex flex="60" class="flex-gt-sm-60" ng-controller="announcementsController as vm">
             <md-card-content ng-include="'app/air/decision-engine/announcements.tmpl.html'"></md-card-content>
         </md-card>
 
-        <md-card flex flex="40" flex-xs="100" layout="column"  class="flex-40" ng-controller="ecalTrackerController as vm">
+        <md-card flex flex="40" ng-controller="ecalTrackerController as vm">
             <md-card-content ng-include="'app/air/decision-engine/ecal-tracker.tmpl.html'"></md-card-content>
         </md-card>
     </div>

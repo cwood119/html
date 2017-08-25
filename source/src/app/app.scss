@@ -127,11 +127,9 @@ a{color:$blue !important;}
  100% { -webkit-transform: scale(1);opacity: 0.0; }
 }
 
-
-
 // Tables
-//713px
 table.md-table tbody.md-body > tr.md-row, table.md-table tfoot.md-foot > tr.md-row { height: 50px; }
+
 // Toolbars
 md-toolbar.md-light-blue-theme{color:$medium-gray;z-index: 0;}
 .md-subheader.md-light-blue-theme.md-primary {color: $dark-gray; background-color:white;border-top:1px solid #e1e1e1;padding-top:5px;}
@@ -284,9 +282,7 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 .ninety-day-outlook-responsive{display:none;}
 .list-subhead md-select {margin:0;}
 .card-loader{height: 612px;}
-.nv-axis.nv-y .tick line {
-        display:none;
-    }
+.nv-axis.nv-y .tick line {display:none;}
 
 
 // Symbol Lookup
