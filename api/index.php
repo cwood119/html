@@ -36,6 +36,21 @@ $app->get('/ecal', function () use ($app) {
     }
 });
 
+$app->get('/ecalArchive', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $ecalArchive = get_ecalArchive();
+    if (null !== $ecalArchive) {
+        $app->response->setStatus(200);
+        echo json_encode($ecalArchive);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
 $app->get('/ecalUpdate', function () use ($app) {
     $response = $app->response();
     $response->header('Access-Control-Allow-Origin', '*');
@@ -206,6 +221,12 @@ $app->get('/watchlist', function () use ($app) {
 function get_ecal() {
     $pdo = connect_to_db();    
     $data = $pdo->query('SELECT * FROM earnings_calendar_latest')->fetchAll();
+    return $data;
+}
+
+function get_ecalArchive() {
+    $pdo = connect_to_db();    
+    $data = $pdo->query('SELECT * FROM earnings_calendar_archive')->fetchAll();
     return $data;
 }
 
