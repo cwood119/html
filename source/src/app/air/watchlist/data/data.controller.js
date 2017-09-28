@@ -155,7 +155,7 @@
         // Slider
         vm.slider = {
             min: 0,
-            max: 20,
+            max: 50,
             options: {
                 floor: 0,
                 ceil: 50,

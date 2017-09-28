@@ -14,7 +14,7 @@
 
         // set a constant for the API we are connecting to
         .constant('API_CONFIG', {
-            //'url':  'https://www.automatedinvestmentresearch.com/api/'
-            'url':  'http://localhost/api/'
+            'url':  'https://www.automatedinvestmentresearch.com/api/'
+            //'url':  'http://localhost/api/'
         });
 })();

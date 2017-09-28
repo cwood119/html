@@ -36,14 +36,14 @@
         <thead md-head md-order="vm.query.order">
             <tr md-row>
                 <th md-column class="md-subhead" md-order-by="symbol">Symbol</th>
-                <th md-column class="md-subhead"></th>
+                <th md-column class="md-subhead">Today 5m</th>
                 <th md-column class="md-subhead" md-order-by="price">Price</th>
                 <th md-column class="md-subhead" md-order-by="dollarChange">Change</th>
                 <th md-column class="md-subhead" md-order-by="percentChange">% Change</th>
                 <th md-column ng-hide="vm.currentPath === '/ecalAfter' || vm.currentPath === '/ecalPre'" class="md-subhead" md-order-by="volume">Volume</th>
                 <th md-column class="md-subhead" md-order-by="avgVol">Avg Vol</th>
                 <th md-column ng-show="vm.currentPath === '/alerts'" md-order-by="distance">Distance</th>
-                <th md-column ng-show="vm.currentPath === '/alerts'" md-order-by="date">Added</th>
+                <th md-column ng-show="vm.currentPath === '/alerts'" md-order-by="added">Added</th>
                 <th md-column ng-show="vm.currentPath === '/earnings-calendar' || vm.currentPath === '/ecalAfter' || vm.currentPath === '/ecalPre'" md-order-by="when">When</th>
                 <!--<th md-column class="md-subhead">Vitals</th>-->
                 <th md-column ng-hide="vm.currentPath === '/alerts'" class="md-subhead">Headlines</th>
@@ -55,11 +55,11 @@
             <tr md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter:vm.volumeFilter() | filter: vm.avgVolFilter() | filter: {symbol:search}) | 
             orderBy: vm.query.order| limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize track by symbol.id">
                 <td md-cell class="symbol-container">
-                    <div class="list-symbol">{{symbol.symbol}}<md-tooltip>{{symbol.name}}</md-tooltip></div>
+                    <div class="list-symbol">{{symbol.symbol}}<md-tooltip ng-hide="vm.currentPath === '/ecalAfter' || vm.currentPath === '/ecalPre'">{{symbol.name}}</md-tooltip></div>
                     <div class="md-body-1" ng-show="vm.currentPath === '/alerts'">
                         <md-icon class="material-icons fa fa-bell-o toggle-filter-long-up-arrow" aria-hidden="true"></md-icon>
                         <md-icon class="material-icons zmdi zmdi-long-arrow-up toggle-filter-long-up-arrow" aria-hidden="true"></md-icon>
-                        {{symbol.triggerPrice}}
+                        {{symbol.triggerPrice | number:2}}
                     </div>
                 </td>
 
