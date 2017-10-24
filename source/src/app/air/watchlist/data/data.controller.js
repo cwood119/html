@@ -39,6 +39,57 @@
         vm.filterAdv = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
         vm.filterVolume = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
         
+        // Table Rows
+        vm.showPrice = true;
+        vm.showDollarChange = true;
+        vm.showPercentChange = true;
+        vm.showVolume = true;
+        vm.showAvgVol = true;
+        vm.showDistance = false;
+        vm.showAdded = true;
+        vm.showWhen = false;
+        vm.showHeadlines = true;
+        
+        // Table Columns
+        vm.cols = [
+            {'name':'Symbol','order':'symbol','show':'true'},
+            {'name':'Today 5m','order':'','show':'true'},
+            {'name':'Price','order':'price','show':'vm.showPrice'},
+            {'name':'Change','order':'dollarChange','show':'vm.showDollarChange'},
+            {'name':'% Change','order':'percentChange','show':'vm.showPercentChange'},
+            {'name':'Volume','order':'volume','show':'vm.showVolume'},
+            {'name':'Avg Vol','order':'avgVol','show':'vm.showAvgVol'},
+            {'name':'Distance','order':'distance','show':'vm.showDistance'},
+            {'name':'Added','order':'added','show':'vm.showAdded'},
+            {'name':'When','order':'when','show':'vm.showWhen'},
+            {'name':'Headlines','order':'','show':'vm.showHeadlines'}
+        ];
+
+        // Table Columns Show/Hide Menu
+        vm.columnsMenu = [
+            {'name':'Price','model':'vm.showPrice','checked':vm.showPrice,'disabled':'false','label':'Show/Hide Price Column'},
+            {'name':'Change','model':'vm.showDollarChange','checked':vm.showDollarChange,'disabled':'false','label':'Show/Hide Dollar Change Column'},
+            {'name':'% Change','model':'vm.showPercentChange','checked':vm.showPercentChange,'disabled':'false','label':'Show/Hide Percent Change Column'},
+            {'name':'Volume','model':'vm.showVolume','checked':vm.showVolume,'disabled':'false','label':'Show/Hide Volume Column'},
+            {'name':'Avg Vol','model':'vm.showAvgVol','checked':vm.showAvgVol,'disabled':'false','label':'Show/Hide Average Volume Column'},
+            {'name':'Distance','model':'vm.showDistance','checked':vm.showDistance,'disabled':'true','label':'Show/Hide Distance Column'},
+            {'name':'Added','model':'vm.showAdded','checked':vm.showAdded,'disabled':'false','label':'Show/Hide Added Column'},
+            {'name':'When','model':'vm.showWhen','checked':vm.showWhen,'disabled':'true','label':'Show/Hide When Column'},
+            {'name':'Headlines','model':'vm.showHeadlines','checked':vm.showHeadlines,'disabled':'false','label':'Show/Hide Headlines Column'}
+        ];
+
+        vm.columnClick = function(model,checked) {
+            if (model == 'vm.showPrice'){vm.showPrice=checked;}
+            if (model == 'vm.showDollarChange'){vm.showDollarChange=checked;}
+            if (model == 'vm.showPercentChange'){vm.showPercentChange=checked;}
+            if (model == 'vm.showVolume'){vm.showVolume=checked;}
+            if (model == 'vm.showAvgVol'){vm.showAvgVol=checked;}
+            if (model == 'vm.showDistance'){vm.showDistance=checked;}
+            if (model == 'vm.showAdded'){vm.showAdded=checked;}
+            if (model == 'vm.showWhen'){vm.showWhen=checked;}
+            if (model == 'vm.showHeadlines'){vm.showHeadlines=checked;}
+        };
+
         activate();
 
         //////////
@@ -55,11 +106,12 @@
                     angular.forEach(symbols,function(value){
                         var s = value.symbol;
                         var id = value.id;
+                        var ad = value.added;
                         var ts = value.timestamp;
                         var av = value.avgVol;
                         vm.list = value.list;
                         vm.updated = new Date(value.timestamp).toLocaleString();
-                        getSymbolData(s,id,ts,av).then(function(data) {
+                        getSymbolData(s,id,ad,ts,av).then(function(data) {
                             vm.symbols.push(data);
                         });
                     });
@@ -105,12 +157,14 @@
                 });
         }
 
-        function getSymbolData(s,id,ts,av) {
-            return watchlistService.getSymbolData(s,id,ts,av)
+        function getSymbolData(s,id,ad,ts,av) {
+            return watchlistService.getSymbolData(s,id,ad,ts,av)
                 .then(function(data) {
+                    var symbol = data[1];
                     var chart=[{color:'#03a9f4',values:[]}];
                     var quotes = data[0].data.quotes.quote;
                     var timeSales = data[4].data.series.data;
+                    var chartUrl = 'https://www.tradingview.com/widgetembed/?symbol=' + symbol + '&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en&referral_id=5952';
 
                     // Build Chart Object 
                     angular.forEach(timeSales,function(value){
@@ -120,7 +174,8 @@
                     });
                     var symbolObject = {
                         'id':parseInt(data[2]),
-                        'symbol':data[1],
+                        'symbol':symbol,
+                        'added':data[6],
                         'name':quotes.description,
                         'price':quotes.last,
                         'dollarChange':quotes.change,
@@ -129,7 +184,9 @@
                         'avgVol':parseInt(data[5]),
                         'exchange':quotes.exch,
                         'headlines':'',
-                        'chart':chart
+                        'chart':chart,
+                        'chartUrl':chartUrl
+
                     };
                     return symbolObject;
                 });

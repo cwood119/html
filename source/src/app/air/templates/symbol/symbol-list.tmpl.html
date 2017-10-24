@@ -6,6 +6,7 @@
             <label>Search</label>
             <input type="text" ng-model="search" show-focus="vm.showSearch">
         </md-input-container>
+        <!-- Table Controls -->
         <div class="list-buttons" hide-gt-xs ng-show="!vm.showSearch">
             <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
                 <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw zmdi-hc-flip-horizontal animated infinite pulsate" ></md-icon>
@@ -27,6 +28,18 @@
             <md-button aria-label="download symbols" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" download="symbols.txt" ng-href="http://automatedinvestmentresearch.com/app/app/air{{vm.currentPath}}/data/symbols.txt">
                 <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-download"></md-icon>
             </md-button>
+            <md-menu>
+                <md-button class="md-icon-button" aria-label="open menu" ng-click="$mdOpenMenu()">
+                    <md-icon md-font-icon="zmdi zmdi-view-column"></md-icon>
+                </md-button>
+                <md-menu-content width="3">
+                    <md-menu-item ng-repeat="column in vm.columnsMenu" >
+                        <md-input-container class="md-block">
+                            <md-checkbox class="md-primary" ng-click="vm.columnClick(column.model,!column.checked)" ng-model="column.checked" ng-disabled="{{column.disabled}}" aria-label="{{column.label}}">{{column.name}}</md-checkbox>
+                        </md-input-container>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
         </div>
     </div>
 </md-toolbar>
@@ -35,19 +48,7 @@
     <table md-table ng-show="!vm.emptySet" class="md-primary md-data-table symbol-table">
         <thead md-head md-order="vm.query.order">
             <tr md-row>
-                <th md-column class="md-subhead" md-order-by="symbol">Symbol</th>
-                <th md-column class="md-subhead">Today 5m</th>
-                <th md-column class="md-subhead" md-order-by="price">Price</th>
-                <th md-column class="md-subhead" md-order-by="dollarChange">Change</th>
-                <th md-column class="md-subhead" md-order-by="percentChange">% Change</th>
-                <th md-column ng-hide="vm.currentPath === '/ecalAfter' || vm.currentPath === '/ecalPre'" class="md-subhead" md-order-by="volume">Volume</th>
-                <th md-column class="md-subhead" md-order-by="avgVol">Avg Vol</th>
-                <th md-column ng-show="vm.currentPath === '/alerts'" md-order-by="distance">Distance</th>
-                <th md-column ng-show="vm.currentPath === '/alerts'" md-order-by="added">Added</th>
-                <th md-column ng-show="vm.currentPath === '/earnings-calendar' || vm.currentPath === '/ecalAfter' || vm.currentPath === '/ecalPre'" md-order-by="when">When</th>
-                <!--<th md-column class="md-subhead">Vitals</th>-->
-                <th md-column ng-hide="vm.currentPath === '/alerts'" class="md-subhead">Headlines</th>
-                <th md-column md-subhead></th>
+                <th ng-repeat="col in vm.cols" md-column class="md-subhead" md-order-by="{{col.order}}" ng-show="{{col.show}}">{{col.name}}</th>
             </tr>
         </thead>
         <tbody md-body>
@@ -65,36 +66,36 @@
 
                 <td md-cell class="chart-container">
                     <!-- <div google-chart chart="vm.chartData"></div> -->
-                        <nvd3 options="vm.lineChartOptions" data="symbol.chart"></nvd3>
+                        <a href="{{symbol.chartUrl}}" target="_blank"><nvd3 class="pointer" options="vm.lineChartOptions" data="symbol.chart" ></nvd3></a>
                 </td>
-                <td md-cell>
+                <td md-cell ng-show="vm.showPrice">
                     {{symbol.price | number:2}}
                 </td>
-                <td md-cell>
+                <td md-cell ng-show="vm.showDollarChange">
                     <div class="md-body-2">
                         <span class="md-body-1" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">
                            <span ng-show="symbol.dollarChange > 0"> +</span>{{symbol.dollarChange | number:2}}
                         </span>
                     </div>
                 </td>
-                <td md-cell>
+                <td md-cell ng-show="vm.showPercentChange">
                     <div class="md-body-1" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">
                       <!--<md-icon md-font-icon="zmdi zmdi-long-arrow-up" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}" class="long-arrow"></md-icon>-->
                       <span ng-show="symbol.dollarChange > 0"> +</span>{{symbol.percentChange | number:2}}%
                     </div>
                 </td>
 
-                <td md-cell ng-hide="vm.currentPath === '/ecalAfter' || vm.currentPath === '/ecalPre'">
+                <td md-cell ng-show="vm.showVolume">
                     <div class="md-body-1" ng-show="{{symbol.volume == 0}}">-</div>
                     <div class="md-body-1" ng-hide="{{symbol.volume == 0}}">{{symbol.volume | number:0}}</div>
                 </td>
 
-                <td md-cell>
+                <td md-cell ng-show="vm.showAvgVol">
                     <div class="md-body-1" ng-show="{{symbol.avgVol == 0}}">-</div>
                     <div class="md-body-1" ng-hide="{{symbol.avgVol == 0}}">{{symbol.avgVol | number:0}}</div>
                 </td>
 
-                <td md-cell class="min-width-50" ng-show="vm.currentPath === '/earnings-calendar' || vm.currentPath === '/ecalAfter' || vm.currentPath === '/ecalPre'">
+                <td md-cell class="min-width-50" ng-show="vm.showWhen">
                     <div class="md-body-1">
                         {{symbol.announceDay}}
                     </div>
@@ -103,12 +104,12 @@
                     </div>
                 </td>
 
-                <td md-cell ng-show="vm.currentPath === '/alerts'">
+                <td md-cell ng-show="vm.showDistance">
                     <div class="md-body-1" ng-show="symbol.distance <= 0">Triggered</div>
                     <div class="md-body-1" ng-show="symbol.distance > 0">{{symbol.distance | numeraljs:'0.00a'}}</div>
                 </td>
 
-                <td md-cell ng-show="vm.currentPath === '/alerts'">
+                <td md-cell ng-show="vm.showAdded">
                     <div class="md-body-1">{{symbol.added | date:'M/d/yy'}}</div>
                 </td>
 
@@ -116,7 +117,7 @@
                     <div class="md-body-1 pointer blue" ng-disabled="dialogForm.$invalid" ng-click="vm.openVitals($event, symbol)">Vitals</div>
                 </td>-->
 
-                <td md-cell ng-hide="vm.currentPath === '/alerts'">
+                <td md-cell ng-show="vm.showHeadlines">
                     <div class="md-body-1 pointer blue" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event, symbol)">Headlines</div>
                 </td>
 
