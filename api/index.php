@@ -252,7 +252,7 @@ function get_ecalFuture() {
 
 function get_ecalTracker() {
     $pdo = connect_to_db();    
-    $data = $pdo->query('SELECT * FROM ecal_tracker ORDER BY date ASC;')->fetchAll();
+    $data = $pdo->query('SELECT * FROM ecal_tracker where erOpen != 0  ORDER BY date ASC;')->fetchAll();
     return $data;
 }
 

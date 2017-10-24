@@ -67,27 +67,27 @@
 
         // Table Columns Show/Hide Menu
         vm.columnsMenu = [
-            {'name':'Price','model':'vm.showPrice','checked':vm.showPrice,'disabled':'false','label':'Show/Hide Price Column'},
-            {'name':'Change','model':'vm.showDollarChange','checked':vm.showDollarChange,'disabled':'false','label':'Show/Hide Dollar Change Column'},
-            {'name':'% Change','model':'vm.showPercentChange','checked':vm.showPercentChange,'disabled':'false','label':'Show/Hide Percent Change Column'},
-            {'name':'Volume','model':'vm.showVolume','checked':vm.showVolume,'disabled':'false','label':'Show/Hide Volume Column'},
-            {'name':'Avg Vol','model':'vm.showAvgVol','checked':vm.showAvgVol,'disabled':'false','label':'Show/Hide Average Volume Column'},
-            {'name':'Distance','model':'vm.showDistance','checked':vm.showDistance,'disabled':'true','label':'Show/Hide Distance Column'},
-            {'name':'Added','model':'vm.showAdded','checked':vm.showAdded,'disabled':'false','label':'Show/Hide Added Column'},
-            {'name':'When','model':'vm.showWhen','checked':vm.showWhen,'disabled':'true','label':'Show/Hide When Column'},
-            {'name':'Headlines','model':'vm.showHeadlines','checked':vm.showHeadlines,'disabled':'false','label':'Show/Hide Headlines Column'}
+            {'index':1,'name':'Price','checked':vm.showPrice,'disabled':'false','label':'Show/Hide Price Column'},
+            {'index':2,'name':'Change','checked':vm.showDollarChange,'disabled':'false','label':'Show/Hide Dollar Change Column'},
+            {'index':3,'name':'% Change','checked':vm.showPercentChange,'disabled':'false','label':'Show/Hide Percent Change Column'},
+            {'index':4,'name':'Volume','checked':vm.showVolume,'disabled':'false','label':'Show/Hide Volume Column'},
+            {'index':5,'name':'Avg Vol','checked':vm.showAvgVol,'disabled':'false','label':'Show/Hide Average Volume Column'},
+            {'index':6,'name':'Distance','checked':vm.showDistance,'disabled':'true','label':'Show/Hide Distance Column'},
+            {'index':7,'name':'Added','checked':vm.showAdded,'disabled':'false','label':'Show/Hide Added Column'},
+            {'index':8,'name':'When','checked':vm.showWhen,'disabled':'true','label':'Show/Hide When Column'},
+            {'index':9,'name':'Headlines','checked':vm.showHeadlines,'disabled':'false','label':'Show/Hide Headlines Column'}
         ];
 
-        vm.columnClick = function(model,checked) {
-            if (model == 'vm.showPrice'){vm.showPrice=checked;}
-            if (model == 'vm.showDollarChange'){vm.showDollarChange=checked;}
-            if (model == 'vm.showPercentChange'){vm.showPercentChange=checked;}
-            if (model == 'vm.showVolume'){vm.showVolume=checked;}
-            if (model == 'vm.showAvgVol'){vm.showAvgVol=checked;}
-            if (model == 'vm.showDistance'){vm.showDistance=checked;}
-            if (model == 'vm.showAdded'){vm.showAdded=checked;}
-            if (model == 'vm.showWhen'){vm.showWhen=checked;}
-            if (model == 'vm.showHeadlines'){vm.showHeadlines=checked;}
+        vm.columnClick = function(index,checked) {
+            if (index == 1){vm.showPrice=checked;}
+            if (index == 2){vm.showDollarChange=checked;}
+            if (index == 3){vm.showPercentChange=checked;}
+            if (index == 4){vm.showVolume=checked;}
+            if (index == 5){vm.showAvgVol=checked;}
+            if (index == 6){vm.showDistance=checked;}
+            if (index == 7){vm.showAdded=checked;}
+            if (index == 8){vm.showWhen=checked;}
+            if (index == 9){vm.showHeadlines=checked;}
         };
 
         activate();
@@ -160,9 +160,9 @@
         function getSymbolData(s,id,ad,ts,av) {
             return watchlistService.getSymbolData(s,id,ad,ts,av)
                 .then(function(data) {
-                    var symbol = data[1];
                     var chart=[{color:'#03a9f4',values:[]}];
                     var quotes = data[0].data.quotes.quote;
+                    var symbol = data[1];
                     var timeSales = data[4].data.series.data;
                     var chartUrl = 'https://www.tradingview.com/widgetembed/?symbol=' + symbol + '&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en&referral_id=5952';
 

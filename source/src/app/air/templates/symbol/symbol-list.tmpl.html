@@ -35,7 +35,7 @@
                 <md-menu-content width="3">
                     <md-menu-item ng-repeat="column in vm.columnsMenu" >
                         <md-input-container class="md-block">
-                            <md-checkbox class="md-primary" ng-click="vm.columnClick(column.model,!column.checked)" ng-model="column.checked" ng-disabled="{{column.disabled}}" aria-label="{{column.label}}">{{column.name}}</md-checkbox>
+                            <md-checkbox class="md-primary" ng-click="vm.columnClick(column.index,!column.checked)" ng-model="column.checked" ng-disabled="{{column.disabled}}" aria-label="{{column.label}}">{{column.name}}</md-checkbox>
                         </md-input-container>
                     </md-menu-item>
                 </md-menu-content>
