@@ -44,7 +44,7 @@
                         var symbolObject = {
                             'id':parseInt(id),
                             'symbol':value.symbol,
-                            'announceDate':moment(value.date).format('MMM Do'),
+                            'announceDate':value.date,
                             'avgVol':parseInt(av),
                             'change':vm.change,
                             'close':value.close,
