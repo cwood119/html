@@ -39,15 +39,16 @@
             return $q.all([headlines]);
         }
 
-        function getSymbolData(s,id,ad,ts,av) {
+        function getSymbolData(s,id,ad,ts,av,API_CONFIG) {
             if (symbol != '') {
                 var symbol = s;
                 var added = ad;
                 var timestamp = ts;
                 var avgVol = av;
+                var when = $http.get(API_CONFIG.url + 'when/' + symbol);
                 var quotes = $http.get('https://api.tradier.com/v1/markets/quotes?symbols=' + symbol, tradier);
                 var timeSales = $http.get('https://api.tradier.com/v1/markets/timesales?symbol=' + symbol + '&interval=5min', tradier);
-                return $q.all([quotes, symbol, id, timestamp, timeSales, avgVol, added]);
+                return $q.all([quotes, symbol, id, timestamp, timeSales, avgVol, added, when]);
             }
 
         }

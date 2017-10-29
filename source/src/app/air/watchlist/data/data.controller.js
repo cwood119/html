@@ -61,7 +61,7 @@
             {'name':'Avg Vol','order':'avgVol','show':'vm.showAvgVol'},
             {'name':'Distance','order':'distance','show':'vm.showDistance'},
             {'name':'Added','order':'added','show':'vm.showAdded'},
-            {'name':'When','order':'when','show':'vm.showWhen'},
+            {'name':'When','order':'announceDay','show':'vm.showWhen'},
             {'name':'Headlines','order':'','show':'vm.showHeadlines'}
         ];
 
@@ -74,7 +74,7 @@
             {'index':5,'name':'Avg Vol','checked':vm.showAvgVol,'disabled':'false','label':'Show/Hide Average Volume Column'},
             {'index':6,'name':'Distance','checked':vm.showDistance,'disabled':'true','label':'Show/Hide Distance Column'},
             {'index':7,'name':'Added','checked':vm.showAdded,'disabled':'false','label':'Show/Hide Added Column'},
-            {'index':8,'name':'When','checked':vm.showWhen,'disabled':'true','label':'Show/Hide When Column'},
+            {'index':8,'name':'When','checked':vm.showWhen,'disabled':'false','label':'Show/Hide When Column'},
             {'index':9,'name':'Headlines','checked':vm.showHeadlines,'disabled':'false','label':'Show/Hide Headlines Column'}
         ];
 
@@ -111,7 +111,7 @@
                         var av = value.avgVol;
                         vm.list = value.list;
                         vm.updated = new Date(value.timestamp).toLocaleString();
-                        getSymbolData(s,id,ad,ts,av).then(function(data) {
+                        getSymbolData(s,id,ad,ts,av,API_CONFIG).then(function(data) {
                             vm.symbols.push(data);
                         });
                     });
@@ -157,14 +157,23 @@
                 });
         }
 
-        function getSymbolData(s,id,ad,ts,av) {
-            return watchlistService.getSymbolData(s,id,ad,ts,av)
+        function getSymbolData(s,id,ad,ts,av,API_CONFIG) {
+            return watchlistService.getSymbolData(s,id,ad,ts,av,API_CONFIG)
                 .then(function(data) {
+                    var announce;
                     var chart=[{color:'#03a9f4',values:[]}];
                     var quotes = data[0].data.quotes.quote;
                     var symbol = data[1];
                     var timeSales = data[4].data.series.data;
+                    var when = data[7].data[0];
+                    var announceDay = moment(when.date).format('MM/DD/YY');
+
                     var chartUrl = 'https://www.tradingview.com/widgetembed/?symbol=' + symbol + '&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en&referral_id=5952';
+
+                    if ( when.announce == 1 ) { announce = 'After Market'; }
+                    if ( when.announce == 2 ) { announce = 'Pre Market'; }
+                    if ( when.announce == 3 ) { announce = 'Intraday'; }
+                    if ( when.announce == 4 ) { announce = 'Unknown'; }
 
                     // Build Chart Object 
                     angular.forEach(timeSales,function(value){
@@ -180,6 +189,8 @@
                         'price':quotes.last,
                         'dollarChange':quotes.change,
                         'percentChange':quotes.change_percentage,
+                        'when':announce,
+                        'announceDay':announceDay,
                         'volume':quotes.volume,
                         'avgVol':parseInt(data[5]),
                         'exchange':quotes.exch,

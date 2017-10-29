@@ -9,7 +9,7 @@
     function translateConfig(triSettingsProvider, triRouteProvider) {
         var now = new Date();
         // set app name & logo (used in loader, sidemenu, footer, login pages, etc)
-        triSettingsProvider.setName('AIR');
+        triSettingsProvider.setName('Air');
         triSettingsProvider.setCopyright('&copy;' + now.getFullYear() + ' automatedinvestmentresearch.com');
         triSettingsProvider.setLogo('assets/images/Blue-Logo.svg');
         // set current version of app (shown in footer)

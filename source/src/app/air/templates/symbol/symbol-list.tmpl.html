@@ -95,15 +95,6 @@
                     <div class="md-body-1" ng-hide="{{symbol.avgVol == 0}}">{{symbol.avgVol | number:0}}</div>
                 </td>
 
-                <td md-cell class="min-width-50" ng-show="vm.showWhen">
-                    <div class="md-body-1">
-                        {{symbol.announceDay}}
-                    </div>
-                    <div class="md-body-1">
-                        {{symbol.when}}
-                    </div>
-                </td>
-
                 <td md-cell ng-show="vm.showDistance">
                     <div class="md-body-1" ng-show="symbol.distance <= 0">Triggered</div>
                     <div class="md-body-1" ng-show="symbol.distance > 0">{{symbol.distance | numeraljs:'0.00a'}}</div>
@@ -111,6 +102,15 @@
 
                 <td md-cell ng-show="vm.showAdded">
                     <div class="md-body-1">{{symbol.added | date:'M/d/yy'}}</div>
+                </td>
+
+                <td md-cell class="min-width-50" ng-show="vm.showWhen">
+                    <div class="md-body-1">
+                        {{symbol.announceDay}}
+                    </div>
+                    <div class="md-body-1">
+                        {{symbol.when}}
+                    </div>
                 </td>
 
                 <!--<td md-cell>
