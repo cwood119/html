@@ -18,6 +18,10 @@
         .state('triangular.ecalAfter', {
             url: '/ecalAfter',
             templateUrl: 'app/air/ecal-after/ecalAfter.html'
+        })
+        .state('triangular.ecalSnapshot', {
+            url: '/ecalSnapshot',
+            templateUrl: 'app/air/ecal-snapshot/ecalSnapshot.html'
         });
         // next add the menu item that points to the above state.
         triMenuProvider.addMenu({
@@ -39,6 +43,11 @@
                 name: 'After Market Movers',
                 type: 'link',
                 state: 'triangular.ecalAfter'
+            },
+            {
+                name: 'Calendar Snapshot',
+                type: 'link',
+                state: 'triangular.ecalSnapshot'
             }]
         });
     }

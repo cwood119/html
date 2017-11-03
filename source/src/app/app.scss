@@ -41,13 +41,17 @@ a{color:$blue !important;}
 .medium-gray{color:$medium-gray !important;}
 .dark-gray{color:$dark-gray !important;}
 .blue-background{background-color: $blue !important;}
-
+.blue-background:not([disabled]):hover { background-color: #039be5 !important; }
 .float-right{float:right;}
 .float-left{float:left;}
 
+.margin-auto {margin: auto !important;}
+.padding-25 {padding: 25px !important;}
 .no-padding{padding: 0 !important;}
 .no-margin{margin: 0 !important;}
 .no-border{border: none !important;}
+
+.width-175 {width: 175px !important;}
 
 .layout-margin.ng-scope{text-align:center;}
 
@@ -60,6 +64,13 @@ a{color:$blue !important;}
 .pulsate {-webkit-animation: pulse 2s ease-out infinite;animation: pulse 2s ease-out infinite;-webkit-animation-delay: 1s;animation-delay: 1s;}
 
 ////////// Elements
+
+// Datepicker
+#datepicker { margin-right:0px; }
+.md-light-blue-theme .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator, .md-light-blue-theme .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator { color:white; background: $blue; }
+.md-light-blue-theme .md-calendar-date.md-calendar-date-today .md-calendar-date-selection-indicator { border: 1px solid $blue; }
+.datepicker-submit { margin:15px auto 0px;} 
+.datepicker-submit:not([disabled]) {background-color: $blue !important;}
 
 // Loaders
 .mainLoader{margin:auto;}
@@ -151,7 +162,7 @@ md-sidenav, md-backdrop {position: fixed;}
 button.md-primary.md-raised.side-menu-link.md-button.ng-scope.md-light-blue-theme.md-ink-ripple.md-hue-1{color:$blue;}
 .md-button.md-light-blue-theme.md-primary.md-raised:not([disabled]) md-icon, .md-button.md-light-blue-theme.md-primary.md-fab:not([disabled]) md-icon{color:$medium-gray;}
 .md-button.md-light-blue-theme.md-hue-1.md-primary.md-raised:not([disabled]) md-icon, .md-button.md-light-blue-theme.md-hue-1.md-primary.md-fab:not([disabled]) md-icon{color:$blue;}
-.md-button.md-light-blue-theme.md-primary.md-raised:hover {background-color: #EEEEEE !important;}
+.side-menu-link:hover {background-color: #EEEEEE !important;}
 
 // Forms
 md-input-container.md-light-blue-theme:not(.md-input-invalid).md-input-focused label, md-input-container.md-light-blue-theme:not(.md-input-invalid).md-input-focused md-icon {color: inherit;}
