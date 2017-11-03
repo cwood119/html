@@ -66,6 +66,21 @@ $app->get('/ecalUpdate', function () use ($app) {
     }
 });
 
+$app->get('/ecalUpdateSnapshot/:date', function ($date) use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+    
+    $ecalUpdateSnapshot = get_ecalUpdateSnapshot($date);
+    if (null !== $date) {
+        $app->response->setStatus(200);
+        echo json_encode($ecalUpdateSnapshot);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
 $app->get('/ecalPre', function () use ($app) {
     $response = $app->response();
     $response->header('Access-Control-Allow-Origin', '*');
@@ -231,6 +246,36 @@ $app->get('/when/:symbol', function ($symbol) use ($app) {
     }
 });
 
+$app->get('/ecalYear/:year', function ($year) use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $ecalYear = get_ecalYear($year);
+    if (null !== $year) {
+        $app->response->setStatus(200);
+        echo json_encode($ecalYear);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
+$app->get('/ecalFrom/:start/:end', function ($start,$end) use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $ecalFrom = get_ecalFrom($start,$end);
+    if (null !== $start && null !== $end) {
+        $app->response->setStatus(200);
+        echo json_encode($ecalFrom);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
 // Data Functions
 function get_ecal() {
     $pdo = connect_to_db();    
@@ -254,6 +299,24 @@ function get_ecalUpdate() {
     if ( $today == 'Saturday' ) { $data = $pdo->query('SELECT * FROM earnings_calendar_latest WHERE announce IN (2,3,4) UNION SELECT * FROM earnings_calendar_archive WHERE date = subdate(current_date,2) AND announce = 1;')->fetchAll(); }
 
     if ( $today == 'Sunday' ) { $data = $pdo->query('SELECT * FROM earnings_calendar_latest WHERE announce IN (2,3,4) UNION SELECT * FROM earnings_calendar_archive WHERE date = subdate(current_date,3) AND announce = 1;')->fetchAll(); }
+    return $data;
+
+}
+
+function get_ecalUpdateSnapshot($d) {
+
+    $day = date('l',strtotime($d));
+    $pdo = connect_to_db();
+
+    if ($day != 'Saturday' || $day != 'Sunday' || $day != 'Monday') {$sth = $pdo->prepare('SELECT * FROM earnings_calendar_archive WHERE date = ? AND announce IN (2,3,4) OR date = subdate(?,1) AND announce = 1;'); }
+    if ($day == 'Saturday') {$sth = $pdo->prepare('SELECT * FROM earnings_calendar_archive WHERE date = subdate(?,1) AND announce IN (2,3,4) OR date = subdate(?,2) AND announce = 1;'); }
+    if ($day == 'Sunday') {$sth = $pdo->prepare('SELECT * FROM earnings_calendar_archive WHERE date = subdate(?,2) AND announce IN (2,3,4) OR date = subdate(?,3) AND announce = 1;'); }
+    if ($day == 'Monday') {$sth = $pdo->prepare('SELECT * FROM earnings_calendar_archive WHERE date = ? AND announce IN (2,3,4) OR date = subdate(?,3) AND announce = 1;'); }
+    
+    $sth->bindParam(1, $d, PDO::PARAM_STR, 12);
+    $sth->bindParam(2, $d, PDO::PARAM_STR, 12);
+    $sth->execute();
+    $data = $sth->fetchAll();
     return $data;
 
 }
@@ -320,11 +383,32 @@ function get_watchlist() {
 
 function get_when($symbol) {
     $pdo = connect_to_db();    
-    $sth = $pdo->prepare('SELECT a.* FROM (SELECT s.symbol, s.announce, s.date FROM earnings_calendar_latest s WHERE symbol = ? ORDER BY s.DATE DESC LIMIT 1) a UNION ALL SELECT b.* FROM (SELECT t.symbol, t.announce, t.date FROM earnings_calendar_archive t WHERE symbol = ? ORDER BY t.DATE DESC LIMIT 1) b LIMIT 1;');
+    $sth = $pdo->prepare('SELECT symbol, announce, date FROM earnings_calendar_archive WHERE symbol = ? ORDER BY DATE DESC LIMIT 1');
     $sth->bindParam(1, $symbol, PDO::PARAM_STR, 12);
     $sth->execute();
     $data = $sth->fetchAll();
     //$data = $pdo->query('SELECT announce, date FROM earnings_calendar_archive WHERE symbol = "'.$symbol.'" ORDER BY DATE DESC LIMIT 1')->fetchAll();
+    return $data;
+}
+
+function get_ecalYear($year) {
+    $pdo = connect_to_db();    
+    $sth = $pdo->prepare('SELECT symbol, announce, avgVol, date FROM earnings_calendar_archive WHERE date LIKE ? ORDER BY date ASC');
+    $year = '%'.$year.'%';
+    $sth->bindParam(1, $year, PDO::PARAM_STR, 12);
+    $sth->execute();
+    $data = $sth->fetchAll();
+    return $data;
+}
+
+function get_ecalFrom($start,$end) {
+    $pdo = connect_to_db();
+
+    $sth = $pdo->prepare('SELECT symbol, announce, avgVol, date FROM earnings_calendar_archive WHERE date BETWEEN ? AND ? ORDER BY date ASC');
+    $sth->bindParam(1, $start, PDO::PARAM_STR, 12);
+    $sth->bindParam(2, $end, PDO::PARAM_STR, 12);
+    $sth->execute();
+    $data = $sth->fetchAll();
     return $data;
 }
 
