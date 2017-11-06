@@ -28,7 +28,7 @@ $yellow: #ffeb3b;
 body {color: $medium-gray;}
 ::-webkit-scrollbar {display:none;}
 a{color:$blue !important;}
-
+md-title{color:#212121;}
 .pointer {cursor:pointer;}
 
 .purple {color: $deep-purple-500 !important;}
@@ -66,11 +66,14 @@ a{color:$blue !important;}
 ////////// Elements
 
 // Datepicker
-#datepicker { margin-right:0px; }
+.md-datepicker-calendar-pane.md-pane-open {box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);border:none;}
+#datepicker .md-datepicker-input-container {margin: 0;}
 .md-light-blue-theme .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator, .md-light-blue-theme .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator { color:white; background: $blue; }
 .md-light-blue-theme .md-calendar-date.md-calendar-date-today .md-calendar-date-selection-indicator { border: 1px solid $blue; }
 .datepicker-submit { margin:15px auto 0px;} 
 .datepicker-submit:not([disabled]) {background-color: $blue !important;}
+.md-light-blue-theme .md-datepicker-input {display:none;}
+.md-calendar tr:last-child td {border-bottom-color: #e0e0e0;}
 
 // Loaders
 .mainLoader{margin:auto;}
@@ -140,11 +143,16 @@ a{color:$blue !important;}
 
 // Tables
 table.md-table tbody.md-body > tr.md-row, table.md-table tfoot.md-foot > tr.md-row { height: 50px; }
+table.md-table th.md-column { text-transform: uppercase; font-size: 12px !important; color: #212121; }
+table.md-table:not(.md-row-select) td.md-cell:first-child, table.md-table:not(.md-row-select) th.md-column:first-child { padding: 0 14px;  }
 
 // Toolbars
 md-toolbar.md-light-blue-theme{color:$medium-gray;z-index: 0;}
+md-toolbar.md-light-blue-theme:not(.md-menu-toolbar) md-icon {fill: $dark-gray;}
 .md-subheader.md-light-blue-theme.md-primary {color: $dark-gray; background-color:white;border-top:1px solid #e1e1e1;padding-top:5px;}
-
+md-toolbar.md-table-toolbar .md-toolbar-tools {padding:14px;}
+md-toolbar.md-table-toolbar .md-toolbar-tools md-icon {color:$dark-gray;}
+md-toolbar.md-table-toolbar.md-default-theme:not(.md-menu-toolbar).md-default .md-button, md-toolbar.md-table-toolbar:not(.md-menu-toolbar).md-default .md-button {color: $dark-gray;}
 // Top Toolbar
 .side-menu-badge {color:white !important;}
 .side-menu-icon[md-font-icon], .menu-toggle-icon[md-font-icon] {font-size: 22px !important;margin-right: 25px;margin-left: 5px;text-align:center;}
@@ -219,11 +227,11 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .symbol-table {background-color:white;}
 .symbol-table-container {background-color:white;}
 .symbol-table > thead > tr > th {font-size: 15px !important;}
-.symbol-table.md-table th.md-column md-icon {height: 18px;min-height: 0px;}
+.symbol-table.md-table th.md-column md-icon {height: 16px; min-height: 0px; position:relative;top: -1px;}
 .symbol-table.md-table td.md-cell {font-size:14px; color: $medium-gray;}
 .symbol-container {padding-top:10px !important;padding-bottom:10px !important;min-width:85px;}
 .price-container {width:140px;text-align: center !important;}
-.chart-container {min-width:140px;max-width:150px;padding:10px 40px 10px 0px!important}
+.chart-container {min-width:115px;max-width:125px;padding:10px 40px 10px 0px!important}
 .search-container {top:15px;}
 md-icon.material-icons.fa.fa-bell-o.toggle-filter-long-up-arrow.md-light-blue-theme {font-size: 13px;padding: 0;top: -1px;position: relative;}
 

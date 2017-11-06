@@ -9,8 +9,7 @@
             'app.air.earnings-calendar',
             'app.air.market-movers',
             'app.air.ecal-pre',
-            'app.air.ecal-after',
-            'app.air.ecal-snapshot'
+            'app.air.ecal-after'
 
             //'app.air.lookup'
         ]);

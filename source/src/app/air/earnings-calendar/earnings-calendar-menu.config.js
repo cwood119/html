@@ -43,11 +43,6 @@
                 name: 'After Market Movers',
                 type: 'link',
                 state: 'triangular.ecalAfter'
-            },
-            {
-                name: 'Calendar Snapshot',
-                type: 'link',
-                state: 'triangular.ecalSnapshot'
             }]
         });
     }

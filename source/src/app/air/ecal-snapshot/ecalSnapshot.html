@@ -2,8 +2,8 @@
     <div layout-margin>
         <div flex flex="100" ng-show="vm.layout == 'datepicker'" layout="row" layout-align="space-around center">
             <md-card flex flex="100" class="list-card padding-25 center-text">
-                <md-datepicker id="datepicker" ng-model="vm.snapshotDate" md-placeholder="Enter date" md-date-filter="vm.noWeekendsPredicate" md-open-on-focus></md-datepicker>
-                    <md-button class="width-175 datepicker-submit md-primary md-raised  white" md-ripple-size="auto" aria-label="ripple auto" ng-click="vm.activate()" ng-disabled="!vm.snapshotDate">Submit</md-button>
+                <md-datepicker id="datepicker" ng-model="vm.snapshotDate" md-placeholder="Enter date" md-date-filter="vm.noWeekendsPredicate" md-open-on-focus ng-change="vm.activate()" md-hide-icons="triangle"></md-datepicker>
+                    <!-- <md-button class="width-175 datepicker-submit md-primary md-raised  white" md-ripple-size="auto" aria-label="ripple auto" ng-click="vm.activate()" ng-disabled="!vm.snapshotDate">Submit</md-button> -->
             </md-card>
         </div>
         <!-- Grid View -->
