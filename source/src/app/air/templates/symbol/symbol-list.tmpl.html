@@ -106,8 +106,9 @@
                 </td>
 
                 <td md-cell class="min-width-50" ng-show="vm.showWhen">
-                    <div class="md-body-1">
+                    <div class="md-body-1 pointer">
                         {{symbol.announceDay}}
+                        <md-tooltip>{{symbol.date}}</md-tooltip>
                     </div>
                     <div class="md-body-1">
                         {{symbol.when}}

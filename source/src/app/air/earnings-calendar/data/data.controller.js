@@ -277,14 +277,14 @@
                         var exchange = '';
                         var dollarChange = price - yClose;
                         var percentChange = (dollarChange/yClose)*100;;
-                        announceDay = moment(ts).format('MMM Do YYYY');  
+                        //announceDay = moment(ts).format('MMM Do YYYY');  
 
                     }
                     
 
-                    if ( ts == vm.today && d == today ) { announceDay = 'Today'; }
-                    else if ( ts == vm.yesterday  && d == today) { announceDay = 'Yesterday'; }
-                    else if ( d == today ) { announceDay = moment(ts).format('dddd'); }
+                    if ( ts == vm.today ) { announceDay = 'Today'; }
+                    else if ( ts == vm.yesterday ) { announceDay = 'Yesterday'; }
+                    else { announceDay = moment(ts).format('dddd'); }
 
                     var symbolObject = {
                         'id':parseInt(data[1]),
@@ -293,6 +293,7 @@
                         'price':price,
                         'dollarChange':dollarChange,
                         'percentChange':percentChange,
+                        'date':moment(ts).format('dddd, MMMM Do YYYY'),
                         'when':announce,
                         'announceDay':announceDay,
                         'open':open,

@@ -143,7 +143,7 @@ md-title{color:#212121;}
 
 // Tables
 table.md-table tbody.md-body > tr.md-row, table.md-table tfoot.md-foot > tr.md-row { height: 50px; }
-table.md-table th.md-column { text-transform: uppercase; font-size: 12px !important; color: #212121; }
+table.md-table th.md-column { text-transform: uppercase; font-size: 13px !important; color: #212121; }
 table.md-table:not(.md-row-select) td.md-cell:first-child, table.md-table:not(.md-row-select) th.md-column:first-child { padding: 0 14px;  }
 
 // Toolbars
@@ -227,7 +227,7 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .symbol-table {background-color:white;}
 .symbol-table-container {background-color:white;}
 .symbol-table > thead > tr > th {font-size: 15px !important;}
-.symbol-table.md-table th.md-column md-icon {height: 16px; min-height: 0px; position:relative;top: -1px;}
+.symbol-table.md-table th.md-column md-icon {height: 16px; min-height: 0px; position:relative;top: -2px;}
 .symbol-table.md-table td.md-cell {font-size:14px; color: $medium-gray;}
 .symbol-container {padding-top:10px !important;padding-bottom:10px !important;min-width:85px;}
 .price-container {width:140px;text-align: center !important;}

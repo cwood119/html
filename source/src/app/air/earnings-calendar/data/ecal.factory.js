@@ -76,7 +76,7 @@
                 var timestamp = ts;
                 var historicalQuotes = [];
                 //var dataPoints = $http.get('https://api.intrinio.com/data_point?identifier=' + s + '&item=average_daily_volume,marketcap', intrinio);
-                if (d == today) { var timeSales = $http.get('https://api.tradier.com/v1/markets/timesales?symbol=' + symbol + '&interval=5min', tradier); }
+                if (d == today) { var timeSales = $http.get('https://api.tradier.com/v1/markets/timesales?symbol=' + symbol + '&interval=5min&session_filter=open', tradier); }
                 else {
                     var timeSales = $http.get('https://api.tradier.com/v1/markets/timesales?symbol=' + symbol + '&start=' + d + ' 09:30&end=' + d + ' 16:00&interval=5min', tradier);
                     var y = moment(d).subtract(1,'day');
