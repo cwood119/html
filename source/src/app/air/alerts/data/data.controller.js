@@ -18,7 +18,7 @@
         // Pagination Variables
         vm.curPage = 1;
         vm.limitOptions = [5,10,25,50];
-        vm.pageSize = 5;
+        vm.pageSize = 10;
         vm.query = {order: 'distance'};
 
         // Price Filter Variables
@@ -99,6 +99,7 @@
             vm.emptySet = false;
             vm.mainLoader = true;
             vm.refreshToggle = 0;
+            var resize = function() { window.dispatchEvent(new Event('resize')); };
             vm.symbols=[];
             return getAlertsData(API_CONFIG).then(function(data) {
                 if (data[0].data.length != 0) {
@@ -107,15 +108,25 @@
                     angular.forEach(symbols,function(value){
                         var s = value.symbol;
                         var id = value.id;
+                        var index = symbols.indexOf(value)+1;
                         var ad = value.added;
                         var tp = value.alert;
                         var ts = value.timeStamp;
                         var av = value.avgVol;
                         vm.list = value.list;
                         vm.updated = new Date(value.timestamp).toLocaleString();
+
                         getSymbolData(s,id,ad,tp,ts,av,API_CONFIG).then(function(data) {
                             vm.symbols.push(data);
                         });
+
+                        if ( index == symbols.length) {
+                            $timeout(function(){
+                                vm.mainLoader = false;
+                                $timeout(resize,1);
+                            },5000);
+                        }
+
                     });
                     vm.chartToggle = false;
                     // Build Line Chart
@@ -128,7 +139,7 @@
                             //useInteractiveGuideline: true,
                             interactive: false,
                             duration: 0,
-                            height: 90,
+                            height: 60,
                             margin : {top: 0,right: 0,bottom: 0,left: 0},
 
                             x: function(d){ return d.x; },

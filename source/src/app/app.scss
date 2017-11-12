@@ -70,6 +70,7 @@ md-title{color:#212121;}
 #datepicker .md-datepicker-input-container {margin: 0;}
 .md-light-blue-theme .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator, .md-light-blue-theme .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator { color:white; background: $blue; }
 .md-light-blue-theme .md-calendar-date.md-calendar-date-today .md-calendar-date-selection-indicator { border: 1px solid $blue; }
+.md-light-blue-theme .md-calendar-date-disabled, .md-light-blue-theme .md-calendar-month-label-disabled, .md-light-blue-theme .md-calendar-date.md-calendar-date-today.md-calendar-date-disabled { color: $light-gray;  }
 .datepicker-submit { margin:15px auto 0px;} 
 .datepicker-submit:not([disabled]) {background-color: $blue !important;}
 .md-light-blue-theme .md-datepicker-input {display:none;}

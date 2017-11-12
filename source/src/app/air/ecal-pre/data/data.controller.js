@@ -18,7 +18,7 @@
         // Pagination Variables
         vm.curPage = 1;
         vm.limitOptions = [5,10,25,50];
-        vm.pageSize = 5;
+        vm.pageSize = 10;
         vm.query = {order: '-percentChange'};
 
         // Price Filter Variables
@@ -111,7 +111,7 @@
 
             // Define Line Chart
             vm.lineChartOptions = {
-                chart: { type: 'lineChart',showXAxis: false,showYAxis: false,showLegend: false,interactive: false,duration: 0,height: 90,margin : {top: 0,right: 0,bottom: 0,left: 0},
+                chart: { type: 'lineChart',showXAxis: false,showYAxis: false,showLegend: false,interactive: false,duration: 0,height: 60,margin : {top: 0,right: 0,bottom: 0,left: 0},
 
                     x: function(d){ return d.x; },
                     y: function(d){ return d.y; },

@@ -53,7 +53,7 @@
                 var when = $http.get(API_CONFIG.url + 'when/' + symbol);
                 var quotes = $http.get('https://api.tradier.com/v1/markets/quotes?symbols=' + symbol, tradier);
                 //var dataPoints = $http.get('https://api.intrinio.com/data_point?identifier=' + s + '&item=average_daily_volume,marketcap', intrinio);
-                var timeSales = $http.get('https://api.tradier.com/v1/markets/timesales?symbol=' + symbol + '&interval=5min', tradier);
+                var timeSales = $http.get('https://api.tradier.com/v1/markets/timesales?symbol=' + symbol + '&interval=5min&session_filter=open', tradier);
                 return $q.all([quotes, symbol, id, added, triggerPrice, timestamp, timeSales, avgVol, when]);
             }
 

@@ -1,6 +1,6 @@
 <md-toolbar class="md-table-toolbar md-default">
     <div class="md-toolbar-tools">
-        <span ng-show="!vm.showSearch"><h2 class="md-title">{{vm.list}}</h2></span>
+        <span ng-show="!vm.showSearch"><h2 class="md-title">{{vm.list}}</h2><md-tooltip ng-show="vm.list == 'Calendar Movers'">{{vm.listDay}}</md-tooltip></span>
         <!-- Symbol Filter -->
         <md-input-container class="no-margin search-container" ng-show="vm.showSearch">
             <label>Search</label>

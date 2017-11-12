@@ -12,6 +12,7 @@
         vm.activate = function(){activate();};
         vm.currentPath = $location.path();
         vm.layout = 'list';
+        vm.list = 'Calendar Movers';
         vm.openSidebar = function(id) {$mdSidenav(id).toggle();vm.refreshSlider();};
         vm.toggleSearch = function() {vm.showSearch = !vm.showSearch;};
 
@@ -87,6 +88,10 @@
         };
 
         // Datepicker
+        vm.noWeekendsPredicate = function(date) {
+            var day = date.getDay();
+            return day === 1 || day === 2 || day === 3 || day === 4 || day === 5; 
+        };
         vm.snapshotDate = moment().toDate();
 
         activate();
@@ -103,8 +108,12 @@
             vm.refreshToggle = 0;
             var resize = function() { window.dispatchEvent(new Event('resize')); };
             vm.symbols=[];
-
-            vm.today = moment().format('YYYY-MM-DD');
+            var td = moment().format('YYYY-MM-DD');
+            var thisDay = moment().format('dddd');
+            vm.listDay = '';
+            if (thisDay == 'Saturday') { td = moment().subtract(1,'day'); vm.listDay = moment(td).format('dddd, MMMM Do YYYY'); }
+            if (thisDay == 'Sunday') { td = moment().subtract(2,'day'); vm.listDay = moment(td).format('dddd, MMMM Do YYYY'); }
+            vm.today = moment(td).format('YYYY-MM-DD');
             var today = vm.today;
             var yesterday = moment().subtract(1,'day');
             vm.yesterday = moment(yesterday).format('YYYY-MM-DD');
@@ -131,15 +140,6 @@
                         });
                     }
 
-/*                    else { 
-                        angular.forEach(symbols,function(value){
-                            var s = value.symbol;
-                            getHistoricalQuotes(s,d,today).then(function(data) {
-                                vm.historicalQuotes.push(data);
-                            });
-                        });
-                    }
-*/
                     // Build Line Chart
                     vm.lineChartOptions = {
                         chart: {
@@ -156,7 +156,7 @@
                             x: function(d){ return d.x; },
                             y: function(d){ return d.y; },
                             callback: function(){
-                                //window.dispatchEvent(new Event('resize'));
+                                window.dispatchEvent(new Event('resize'));
                             }
                         }
                     };
@@ -171,7 +171,6 @@
                             var ts = value.date;
                             var av = value.avgVol;
                             //vm.list = value.list;
-                            if (d == today) {vm.list = 'Calendar Movers';}
                             vm.updated = moment(value.date).format('MMM Do YYYY');
 
                             getSymbolData(s,id,w,ts,av,d,today).then(function(data) {
@@ -182,7 +181,7 @@
                                 $timeout(function(){
                                     vm.mainLoader = false;
                                     $timeout(resize,1);
-                                },3000);
+                                },5000);
                             }
                         });
                     },1000);
@@ -249,39 +248,49 @@
                         chart[0].values.push({x:time,y:close});
                     });
 
+                    var q;
+                    var quotes;
+                    var price;
+                    var description;
+                    var dollarChange;
+                    var percentChange;
+                    var open;
+                    var high;
+                    var low;
+                    var volume;
+                    var exchange;
+
                     if (d == today) { 
-                        var q = filterFilter(vm.bulkQuotes[0][0].data.quotes.quote, { symbol: s }, true);
-                        var quotes = q[0];
-                        var price = quotes.last;
-                        var description = quotes.description;
-                        var dollarChange = quotes.change;
-                        var percentChange = quotes.change_percentage;
-                        var open = quotes.open;
-                        var high = quotes.high;
-                        var low = quotes.low;
-                        var volume = quotes.volume;
-                        var exchange = quotes.exch;
+                        q = filterFilter(vm.bulkQuotes[0][0].data.quotes.quote, { symbol: s }, true);
+                        quotes = q[0];
+                        price = quotes.last;
+                        description = quotes.description;
+                        dollarChange = quotes.change;
+                        percentChange = quotes.change_percentage;
+                        open = quotes.open;
+                        high = quotes.high;
+                        low = quotes.low;
+                        volume = quotes.volume;
+                        exchange = quotes.exch;
                     }
                     else {
-                        vm.list = 'Calendar Movers Snapshot';
                         vm.historicalQuotes = history;
                         var yQuotes = vm.historicalQuotes.data.data[1];
                         var yClose = yQuotes.close;
-                        var quotes = vm.historicalQuotes.data.data[0];
-                        var price = quotes.close;
-                        var description = '';
-                        var open = quotes.open;
-                        var high = quotes.high;
-                        var low = quotes.low;
-                        var volume = quotes.volume;
-                        var exchange = '';
-                        var dollarChange = price - yClose;
-                        var percentChange = (dollarChange/yClose)*100;;
+                        quotes = vm.historicalQuotes.data.data[0];
+                        price = quotes.close;
+                        description = '';
+                        open = quotes.open;
+                        high = quotes.high;
+                        low = quotes.low;
+                        volume = quotes.volume;
+                        exchange = '';
+                        dollarChange = price - yClose;
+                        percentChange = (dollarChange/yClose)*100;
                         //announceDay = moment(ts).format('MMM Do YYYY');  
-
                     }
-                    
 
+                    vm.today = moment().format('YYYY-MM-DD');
                     if ( ts == vm.today ) { announceDay = 'Today'; }
                     else if ( ts == vm.yesterday ) { announceDay = 'Yesterday'; }
                     else { announceDay = moment(ts).format('dddd'); }
@@ -316,7 +325,8 @@
 
         // Check for New Data
         var updateCheck =  function() {
-            vm.refreshToggle = 1;
+            var dow = moment().format('dddd');
+            if (dow != 'Saturday' && dow != 'Sunday') { vm.refreshToggle = 1; }
         };
 
         // Check for New Data Every 60 Seconds

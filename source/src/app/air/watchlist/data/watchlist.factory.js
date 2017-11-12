@@ -47,7 +47,7 @@
                 var avgVol = av;
                 var when = $http.get(API_CONFIG.url + 'when/' + symbol);
                 var quotes = $http.get('https://api.tradier.com/v1/markets/quotes?symbols=' + symbol, tradier);
-                var timeSales = $http.get('https://api.tradier.com/v1/markets/timesales?symbol=' + symbol + '&interval=5min', tradier);
+                var timeSales = $http.get('https://api.tradier.com/v1/markets/timesales?symbol=' + symbol + '&interval=5min&session_filter=open', tradier);
                 return $q.all([quotes, symbol, id, timestamp, timeSales, avgVol, added, when]);
             }
 

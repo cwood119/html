@@ -32,8 +32,9 @@
         return service;
 
         function getData(API_CONFIG, d, today) {
-            if (d == today) { var ecalData = $http.get(API_CONFIG.url + 'ecalUpdate'); }
-            else { var ecalData = $http.get(API_CONFIG.url + 'ecalUpdateSnapshot/' + d); }
+            var ecalData;
+            if (d == today) { ecalData = $http.get(API_CONFIG.url + 'ecalUpdate'); }
+            else { ecalData = $http.get(API_CONFIG.url + 'ecalUpdateSnapshot/' + d); }
             return $q.all([ecalData]);
         }
 
@@ -74,15 +75,20 @@
                 var avgVol = av;
                 var symbol = s;
                 var timestamp = ts;
+                var timeSales;
                 var historicalQuotes = [];
+
                 //var dataPoints = $http.get('https://api.intrinio.com/data_point?identifier=' + s + '&item=average_daily_volume,marketcap', intrinio);
-                if (d == today) { var timeSales = $http.get('https://api.tradier.com/v1/markets/timesales?symbol=' + symbol + '&interval=5min&session_filter=open', tradier); }
+                if (d == today) { timeSales = $http.get('https://api.tradier.com/v1/markets/timesales?symbol=' + symbol + '&interval=5min&session_filter=open', tradier); }
                 else {
-                    var timeSales = $http.get('https://api.tradier.com/v1/markets/timesales?symbol=' + symbol + '&start=' + d + ' 09:30&end=' + d + ' 16:00&interval=5min', tradier);
+                    var thisDay = moment().format('dddd');
+                    if (thisDay == 'Saturday') { d = moment(d).subtract(1,'day'); }
+                    if (thisDay == 'Sunday') { d = moment(d).subtract(2,'day').format('YYYY-MM-DD'); }
+                    timeSales = $http.get('https://api.tradier.com/v1/markets/timesales?symbol=' + symbol + '&start=' + d + ' 09:30&end=' + d + ' 16:00&interval=5min', tradier);
                     var y = moment(d).subtract(1,'day');
                     var start = moment(y).format('YYYY-MM-DD');
-                    var historicalQuotes = $http.get('https://api.intrinio.com/prices?symbol=' + s + '&start_date=' + start + '&end_date=' + d, intrinio);
-                 }
+                    historicalQuotes = $http.get('https://api.intrinio.com/prices?symbol=' + s + '&start_date=' + start + '&end_date=' + d, intrinio);
+                }
                 return $q.all([symbol, id, announce, timestamp, timeSales, avgVol, historicalQuotes]);
             }
 
