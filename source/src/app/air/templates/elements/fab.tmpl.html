@@ -17,7 +17,8 @@
         <md-button ng-hide="vm.layout == 'list'" aria-label="list view" class="md-fab md-raised md-mini" ng-class="{active: vm.layout == 'list'}" ng-click="vm.layout = 'list'">
             <md-icon md-font-icon="zmdi zmdi-view-list"></md-icon>
         </md-button> -->
-        <md-button aria-label="download symbols" class="md-fab md-raised md-mini" download="symbols.txt" ng-href="http://automatedinvestmentresearch.com/app/app/air/market-movers/data/symbols.txt">
+        <md-button aria-label="download symbols" class="md-fab md-raised md-mini" download="symbols.txt" ng-href="http://automatedinvestmentresearch.com/app/app/air{{vm.currentPath}}/data/symbols.txt">
+
             <md-icon md-font-icon="zmdi zmdi-download"></md-icon>
         </md-button>
         <md-button aria-label="search" class="md-fab md-raised md-mini" ng-click="vm.toggleSearch()">
