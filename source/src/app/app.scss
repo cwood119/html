@@ -30,6 +30,7 @@ body {color: $medium-gray;}
 a{color:$blue !important;}
 md-title{color:#212121;}
 .pointer {cursor:pointer;}
+.dotted-underline { text-decoration:underline; text-decoration-style:dotted; }
 
 .purple {color: $deep-purple-500 !important;}
 .yellow {color: $yellow !important;}
@@ -44,6 +45,7 @@ md-title{color:#212121;}
 .blue-background:not([disabled]):hover { background-color: #039be5 !important; }
 .float-right{float:right;}
 .float-left{float:left;}
+.top{position:absolute;top:0px !important;}
 
 .margin-auto {margin: auto !important;}
 .padding-25 {padding: 25px !important;}
