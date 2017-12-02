@@ -11,10 +11,9 @@
             url: '/forecast',
             templateUrl: 'app/air/decision-engine/forecast.html'
         })
-
-        .state('triangular.pattern-recognition', {
-            url: '/pattern-recognition',
-            templateUrl: 'app/air/decision-engine/pattern-recognition.html'
+        .state('triangular.chart', {
+            url: '/chart',
+            templateUrl: 'app/air/chart/chart.html'
         })
         .state('triangular.dashboard', {
             url: '/dashboard',
@@ -25,8 +24,17 @@
             name: 'Decision Engine',
             icon: 'zmdi zmdi-compass',
             priority: 1,
-            type: 'link',
-            state: 'triangular.dashboard'
+            type: 'dropdown',
+            children: [{
+                name: 'Dashboard',
+                type: 'link',
+                state: 'triangular.dashboard'
+            },
+            {
+                name: 'Chart',
+                type: 'link',
+                state: 'triangular.chart'
+            }]
         });
     }
 })();

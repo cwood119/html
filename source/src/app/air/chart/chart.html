@@ -1,0 +1,30 @@
+<div class="padded-content-page" ng-controller="chartController as vm">
+    <!--<md-card class="lookup-card">
+        <form name="vm.symbolLookup" ng-submit="vm.lookup();">
+            <md-input-container class="md-block lookup-container">
+                <label>Symbol</label>
+                <input type="text" ng-model="vm.symbol" md-maxlength="5" ng-change="vm.symbol=vm.symbol.toUpperCase();">
+            </md-input-container>
+            <div layout="row" layout-align="end center">
+                <md-button type="submit" class="md-primary blue" ng-disabled="!vm.symbolLookup.$valid">Lookup</md-button>
+                <md-button ng-click="vm.reset();">Clear</md-button>
+            </div>
+        </form>
+    </md-card>-->
+    <md-tabs class="md-primary" md-selected="selectedTabIndex" md-stretch-tabs="always">
+        <md-tab label="Watchlist">
+            <div flex flex="100" layout="row" ng-show="vm.layout == 'list'">
+                <md-card flex flex="100" class="list-card">
+                    <md-card-content class="list-template-container" ng-include="'app/air/chart/list.tmpl.html'"></md-card-content>
+                </md-card>
+            </div>
+        </md-tab>
+    </md-tabs>
+
+    <div layout="row" layout-align="center">
+        <md-card class="lookup-chart-card" ng-show="vm.toggle == true"><iframe class="lookup-chart" ng-src="{{vm.chart}}"></iframe></md-card>
+    </div>
+    <div layout="row" layour-xs="column" ng-show="vm.toggle == true">
+        <md-card flex="100" flex-xs="100" ng-include="'app/air/chart/vitals.tmpl.html'"></md-card>
+    </div>
+</div>

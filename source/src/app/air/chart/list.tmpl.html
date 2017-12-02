@@ -1,0 +1,74 @@
+<md-table-container>
+    <table md-table class="md-primary md-data-table symbol-table">
+        <thead md-head md-order="vm.query.order">
+            <tr md-row>
+                <th ng-repeat="col in vm.cols" md-column class="md-subhead" md-order-by="{{col.order}}" ng-show="{{col.show}}">{{col.name}}</th>
+            </tr>
+        </thead>
+        <tbody md-body>
+            <tr md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter:vm.volumeFilter() | filter: vm.avgVolFilter() | filter: {symbol:search}) | 
+            orderBy: vm.query.order| limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize track by symbol.id" ng-click="vm.lookup(symbol);">
+                <td md-cell class="symbol-container">
+                    <div class="list-symbol">{{symbol.symbol}}<md-tooltip ng-hide="vm.currentPath === '/ecalAfter' || vm.currentPath === '/ecalPre'">{{symbol.name}}</md-tooltip></div>
+                    <div class="md-body-1" ng-show="vm.currentPath === '/alerts'">
+                        <md-icon class="material-icons fa fa-bell-o toggle-filter-long-up-arrow" aria-hidden="true"></md-icon>
+                        <md-icon class="material-icons zmdi zmdi-long-arrow-up toggle-filter-long-up-arrow" aria-hidden="true"></md-icon>
+                        {{symbol.triggerPrice | number:2}}
+                    </div>
+                </td>
+
+                <td md-cell class="chart-container">
+                    <!-- <div google-chart chart="vm.chartData"></div> -->
+                        <a href="{{symbol.chartUrl}}" target="_blank"><nvd3 class="pointer" options="vm.lineChartOptions" data="symbol.chart" ></nvd3></a>
+                </td>
+                <td md-cell ng-show="vm.showPrice">
+                    {{symbol.price | number:2}}
+                </td>
+                <td md-cell ng-show="vm.showDollarChange">
+                    <div class="md-body-2">
+                        <span class="md-body-1" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">
+                           <span ng-show="symbol.dollarChange > 0"> +</span>{{symbol.dollarChange | number:2}}
+                        </span>
+                    </div>
+                </td>
+                <td md-cell ng-show="vm.showPercentChange">
+                    <div class="md-body-1" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}">
+                      <!--<md-icon md-font-icon="zmdi zmdi-long-arrow-up" ng-class="{'green': symbol.dollarChange > 0,'red':symbol.dollarChange < 0}" class="long-arrow"></md-icon>-->
+                      <span ng-show="symbol.dollarChange > 0"> +</span>{{symbol.percentChange | number:2}}%
+                    </div>
+                </td>
+
+                <td md-cell ng-show="vm.showVolume">
+                    <div class="md-body-1" ng-show="{{symbol.volume == 0}}">-</div>
+                    <div class="md-body-1" ng-hide="{{symbol.volume == 0}}">{{symbol.volume | number:0}}</div>
+                </td>
+
+                <td md-cell ng-show="vm.showAvgVol">
+                    <div class="md-body-1" ng-show="{{symbol.avgVol == 0}}">-</div>
+                    <div class="md-body-1" ng-hide="{{symbol.avgVol == 0}}">{{symbol.avgVol | number:0}}</div>
+                </td>
+
+                <td md-cell ng-show="vm.showDistance">
+                    <div class="md-body-1" ng-show="symbol.distance <= 0">Triggered</div>
+                    <div class="md-body-1" ng-show="symbol.distance > 0">{{symbol.distance | numeraljs:'0.00a'}}</div>
+                </td>
+
+                <td md-cell ng-show="vm.showAdded">
+                    <div class="md-body-1">{{symbol.added | date:'M/d/yy'}}</div>
+                </td>
+
+                <td md-cell class="min-width-50" ng-show="vm.showWhen">
+                    <div class="md-body-1 pointer">
+                        {{symbol.announceDay}}
+                        <md-tooltip>{{symbol.date}}</md-tooltip>
+                    </div>
+                    <div class="md-body-1">
+                        {{symbol.when}}
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</md-table-container>
+<md-table-pagination md-limit="vm.pageSize" md-limit-options="vm.limitOptions"  md-page-select md-page="vm.curPage" md-total="{{vm.filtered.length}}" class="symbol-pagination"></md-table-pagination>
+
