@@ -1,5 +1,52 @@
+<md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+        <span ng-show="!vm.showSearch"><h2 class="md-title">{{vm.list}}</h2><md-tooltip ng-show="vm.list == 'Calendar Movers'">{{vm.listDay}}</md-tooltip></span>
+        <!-- Symbol Filter -->
+        <md-input-container class="no-margin search-container" ng-show="vm.showSearch">
+            <label>Search</label>
+            <input type="text" ng-model="search" show-focus="vm.showSearch">
+        </md-input-container>
+        <!-- Table Controls -->
+        <div class="list-buttons" hide-gt-xs ng-show="!vm.showSearch">
+            <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw zmdi-hc-flip-horizontal animated infinite pulsate" ></md-icon>
+            </md-button>
+        </div>
+        <div class="list-buttons" hide-xs>
+            <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw zmdi-hc-flip-horizontal animated infinite pulsate" ></md-icon>
+            </md-button>
+            <md-button aria-label="search" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.showSearch = !vm.showSearch">
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-search" ></md-icon>
+            </md-button>
+            <md-datepicker id="datepicker" ng-show="vm.currentPath === '/earnings-calendar'" ng-model="vm.snapshotDate" md-placeholder="Enter date" md-date-filter="vm.noWeekendsPredicate" md-open-on-focus ng-change="vm.activate()" md-hide-icons="triangle"></md-datepicker>
+            <!--<md-button aria-label="sort" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.openSidebar('sort-sidebar') ">
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-sort-asc"></md-icon>
+            </md-button>-->
+            <md-button aria-label="filter" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.openSidebar('filter-sidebar')">
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-filter-list"></md-icon>
+            </md-button>
+            <md-button aria-label="download symbols" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" download="symbols.txt" ng-href="http://automatedinvestmentresearch.com/app/app/air{{vm.currentPath}}/data/symbols.txt">
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-download"></md-icon>
+            </md-button>
+            <md-menu>
+                <md-button class="md-icon-button" aria-label="open menu" ng-click="$mdOpenMenu()">
+                    <md-icon md-font-icon="zmdi zmdi-view-column"></md-icon>
+                </md-button>
+                <md-menu-content width="3">
+                    <md-menu-item ng-repeat="column in vm.columnsMenu" >
+                        <md-input-container class="md-block">
+                            <md-checkbox class="md-primary" ng-click="vm.columnClick(column.index,!column.checked)" ng-model="column.checked" ng-disabled="{{column.disabled}}" aria-label="{{column.label}}">{{column.name}}</md-checkbox>
+                        </md-input-container>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </div>
+    </div>
+</md-toolbar>
+
 <md-table-container>
-    <table md-table class="md-primary md-data-table symbol-table">
+    <table md-table id="chart-list-table" class="md-primary md-data-table symbol-table">
         <thead md-head md-order="vm.query.order">
             <tr md-row>
                 <th ng-repeat="col in vm.cols" md-column class="md-subhead" md-order-by="{{col.order}}" ng-show="{{col.show}}">{{col.name}}</th>
@@ -70,5 +117,5 @@
         </tbody>
     </table>
 </md-table-container>
-<md-table-pagination md-limit="vm.pageSize" md-limit-options="vm.limitOptions"  md-page-select md-page="vm.curPage" md-total="{{vm.filtered.length}}" class="symbol-pagination"></md-table-pagination>
+<!--<md-table-pagination md-limit="vm.pageSize" md-limit-options="vm.limitOptions"  md-page-select md-page="vm.curPage" md-total="{{vm.filtered.length}}" class="symbol-pagination"></md-table-pagination>-->
 

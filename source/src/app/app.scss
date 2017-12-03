@@ -326,6 +326,12 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 .lookup-yahoo{background-image: url(../../../assets/images/yahoo.png);}
 #lookup-resources a:hover{text-decoration:none;}
 
+// DE Chart List 
+#de-chart, #de-chart-list { max-height: 550px; min-height:550px; }
+#chart-caption-container { position:relative;top:16px;width:95%;font-size: 13px; }
+#chart-caption-container li { display:inline-block;margin-left:20px;text-transform:uppercase;color:#212121;float:right; } 
+#chart-list-table { overflow:auto;display: block; max-height:450px; min-height:450px; }
+#chart-list-table th.md-subhead.md-column.ng-binding.ng-scope.ng-isolate-scope { padding: 0; }
 //////////
 
 // Responsive

@@ -18,8 +18,9 @@
         // Pagination Variables
         vm.curPage = 1;
         vm.limitOptions = [5,10,25,50];
-        vm.pageSize = 10;
-        vm.query = {order: '-percentChange'};
+        vm.pageSize = 9999999;
+        //vm.query = {order: '-percentChange'};
+        vm.query = {order: 'symbol'};
 
         // Price Filter Variables
         vm.priceDisabled = true;
@@ -103,6 +104,8 @@
                 if (data[0].data.length != 0) {
                     // Get Symbols
                     var symbols = data[0].data;
+                    var symbolOne = data[0].data[0];
+                    vm.lookup(symbolOne);
                     angular.forEach(symbols,function(value){
                         var s = value.symbol;
                         var id = value.id;
@@ -134,6 +137,7 @@
                             callback: function(){
                                 window.dispatchEvent(new Event('resize'));
                                 vm.chartToggle = true;
+                                //$interval(orderByPercentChange, 750);
                                 vm.mainLoader = false;
                             }
                         }
@@ -210,6 +214,10 @@
 
         // Check for New Data Every 60 Seconds
         $interval(updateCheck, 300000);
+
+        var orderByPercentChange =  function() {
+            vm.query = {order: '-percentChange'};
+        };
 
 
         // Price Filter and Controls
@@ -330,7 +338,6 @@
         };
 
         vm.lookup = function submit(s) {
-console.log(s);
             var tradier = {
                 headers:  {
                     'Accept': 'application/json',

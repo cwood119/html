@@ -11,20 +11,26 @@
             </div>
         </form>
     </md-card>-->
-    <md-tabs class="md-primary" md-selected="selectedTabIndex" md-stretch-tabs="always">
-        <md-tab label="Watchlist">
-            <div flex flex="100" layout="row" ng-show="vm.layout == 'list'">
-                <md-card flex flex="100" class="list-card">
-                    <md-card-content class="list-template-container" ng-include="'app/air/chart/list.tmpl.html'"></md-card-content>
-                </md-card>
-            </div>
-        </md-tab>
-    </md-tabs>
 
-    <div layout="row" layout-align="center">
-        <md-card class="lookup-chart-card" ng-show="vm.toggle == true"><iframe class="lookup-chart" ng-src="{{vm.chart}}"></iframe></md-card>
+
+    <div layout="row" layout-sm="column" layout-xs="column">
+        <md-card id="de-chart" flex flex="60" class="flex-gt-sm-60">
+            <iframe class="lookup-chart" ng-src="{{vm.chart}}"></iframe>
+
+            <ul id="chart-caption-container">
+                <li><span style="font-weight:bold;">Latest Announcement:</span> Nov 28th (5 days ago)</li>
+                <li><span style="font-weight:bold;">Avg Range:</span> .34</li>
+            </ul>
+        </md-card>
+
+        <md-card id="de-chart-list" flex flex="40">
+            <md-card-content ng-include="'app/air/chart/list.tmpl.html'"></md-card-content>
+        </md-card>
     </div>
-    <div layout="row" layour-xs="column" ng-show="vm.toggle == true">
-        <md-card flex="100" flex-xs="100" ng-include="'app/air/chart/vitals.tmpl.html'"></md-card>
+    <div layout="row" layout-xs="column" ng-show="vm.toggle == true">
+        <md-card flex="25" flex-xs="100" ng-include="'app/air/chart/position-price-target.tmpl.html'"></md-card>
+        <md-card flex="25" flex-xs="100" ng-include="'app/air/chart/simple-entry-exit.tmpl.html'"></md-card>
+        <md-card flex="25" flex-xs="100" ng-include="'app/air/chart/day-one.tmpl.html'"></md-card>
+        <md-card flex="25" flex-xs="100" ng-include="'app/air/chart/vitals.tmpl.html'"></md-card>
     </div>
 </div>
