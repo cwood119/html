@@ -18,7 +18,7 @@
         // Pagination Variables
         vm.curPage = 1;
         vm.limitOptions = [5,10,25,50];
-        vm.pageSize = 9999999;
+        vm.pageSize = 5;
         //vm.query = {order: '-percentChange'};
         vm.query = {order: 'symbol'};
 
@@ -129,7 +129,7 @@
                             //useInteractiveGuideline: true,
                             interactive: false,
                             duration: 0,
-                            height: 60,
+                            height: 50,
                             margin : {top: 0,right: 0,bottom: 0,left: 0},
 
                             x: function(d){ return d.x; },
@@ -191,6 +191,9 @@
                         'added':data[6],
                         'name':quotes.description,
                         'price':quotes.last,
+                        'open':quotes.open,
+                        'high':quotes.high,
+                        'low':quotes.low,
                         'dollarChange':quotes.change,
                         'percentChange':quotes.change_percentage,
                         'when':announce,
@@ -337,40 +340,26 @@
             });
         };
 
-        vm.lookup = function submit(s) {
-            var tradier = {
-                headers:  {
-                    'Accept': 'application/json',
-                    'Authorization': 'Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6'
-                }
-            };
-            var intrinio = {
-                headers:  {
-                    'Accept': 'application/json',
-                    'Authorization': 'Basic ' + window.btoa('506540ef71e2788714ac2bdd2255d337:1d3bce294c77797adefb8a602339ff21'),
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            };
-            vm.s = s.symbol;
+        vm.lookup = function submit(sy) {
+
+            vm.s = sy.symbol;
             if (vm.s != '') {
-                var quotes = $http.get('https://api.tradier.com/v1/markets/quotes?symbols=' + vm.s, tradier);
-                var fundamentals = $http.get('https://api.tradier.com/beta/markets/fundamentals/company?symbols=' + vm.s, tradier);
-                var headlines = $http.get('https://api.intrinio.com/news?ticker=' + vm.s, intrinio);
                 var chartUrl = 'https://www.tradingview.com/widgetembed/?symbol=' + vm.s + '&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en';
                 vm.secUrl = 'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=' + vm.symbol + '&type=&dateb=&owner=exclude&count=100&output=xml';
                 vm.googleUrl = 'https://www.google.com/finance?q=' + vm.symbol + '&fstype=ii';
                 vm.yahooUrl = 'http://finance.yahoo.com/q/ks?s=' + vm.symbol + '+Key+Statistics';
                 vm.chart = $sce.trustAsResourceUrl(chartUrl);
-                $q.all([quotes, fundamentals, headlines]).then(function(data){
-                    vm.quotes = data[0].data.quotes.quote;
-                    vm.fundamentals = data[1].data[0].results[1].tables;
-                    vm.headlines = data[2].data.data;
-                    vm.toggle = true;
+                var s = sy.symbol;
+                var id = sy.id;
+                var ad = sy.added;
+                var ts = sy.timestamp;
+                var av = sy.avgVol;
+                vm.list = sy.list;
+                getSymbolData(s,id,ad,ts,av,API_CONFIG).then(function(data) {
+                    vm.lookupSymbol = data;
                 });
+                vm.toggle = true;
             }
-        }
-
-
-
+        };
     }
 })();

@@ -1,24 +1,15 @@
 <div class="padded-content-page" ng-controller="chartController as vm">
-    <!--<md-card class="lookup-card">
-        <form name="vm.symbolLookup" ng-submit="vm.lookup();">
-            <md-input-container class="md-block lookup-container">
-                <label>Symbol</label>
-                <input type="text" ng-model="vm.symbol" md-maxlength="5" ng-change="vm.symbol=vm.symbol.toUpperCase();">
-            </md-input-container>
-            <div layout="row" layout-align="end center">
-                <md-button type="submit" class="md-primary blue" ng-disabled="!vm.symbolLookup.$valid">Lookup</md-button>
-                <md-button ng-click="vm.reset();">Clear</md-button>
-            </div>
-        </form>
-    </md-card>-->
-
-
     <div layout="row" layout-sm="column" layout-xs="column">
         <md-card id="de-chart" flex flex="60" class="flex-gt-sm-60">
+            <!-- TradingView Chart Widget  -->
             <iframe class="lookup-chart" ng-src="{{vm.chart}}"></iframe>
 
+            <!-- Chart Caption  -->
             <ul id="chart-caption-container">
-                <li><span style="font-weight:bold;">Latest Announcement:</span> Nov 28th (5 days ago)</li>
+                <li>
+                    <span style="font-weight:bold;">Latest Announcement: </span>
+                    {{vm.lookupSymbol.announceDay | amDateFormat:'MMM Do'}} ({{vm.lookupSymbol.announceDay | amTimeAgo}})
+                </li>
                 <li><span style="font-weight:bold;">Avg Range:</span> .34</li>
             </ul>
         </md-card>
@@ -27,6 +18,7 @@
             <md-card-content ng-include="'app/air/chart/list.tmpl.html'"></md-card-content>
         </md-card>
     </div>
+    <!-- Trade Planning and Info Cards  -->
     <div layout="row" layout-xs="column" ng-show="vm.toggle == true">
         <md-card flex="25" flex-xs="100" ng-include="'app/air/chart/position-price-target.tmpl.html'"></md-card>
         <md-card flex="25" flex-xs="100" ng-include="'app/air/chart/simple-entry-exit.tmpl.html'"></md-card>

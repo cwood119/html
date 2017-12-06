@@ -311,7 +311,7 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 .lookup-card {width: 60%;min-width: 300px;margin: auto;padding: 0px 5px 0px 5px;}
 .lookup-container {margin-bottom:0;}
 .lookup-chart-card {width:100%;height:500px;}
-.lookup-chart {height:500px;}
+.lookup-chart {height:515px;}
 .lookup-vitals-table-container {padding:25px;}
 .lookup-vitals-table-container table {width:100%;}
 .lookup-vitals-table-container tr {border-bottom:1px solid #EEEEEE; padding:10px;}
@@ -327,10 +327,10 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 #lookup-resources a:hover{text-decoration:none;}
 
 // DE Chart List 
-#de-chart, #de-chart-list { max-height: 550px; min-height:550px; }
+/*#de-chart, #de-chart-list { max-height: 590px; min-height:520px; }*/
 #chart-caption-container { position:relative;top:16px;width:95%;font-size: 13px; }
 #chart-caption-container li { display:inline-block;margin-left:20px;text-transform:uppercase;color:#212121;float:right; } 
-#chart-list-table { overflow:auto;display: block; max-height:450px; min-height:450px; }
+/*#chart-list-table { overflow:auto;display: block; max-height:400px; min-height:400px; }*/
 #chart-list-table th.md-subhead.md-column.ng-binding.ng-scope.ng-isolate-scope { padding: 0; }
 //////////
 
