@@ -6,9 +6,11 @@
 
             <!-- Chart Caption  -->
             <ul id="chart-caption-container">
-                <li>
-                    <span style="font-weight:bold;">Latest Announcement: </span>
-                    {{vm.lookupSymbol.announceDay | amDateFormat:'MMM Do'}} ({{vm.lookupSymbol.announceDay | amTimeAgo}})
+                <li class="help">
+                    <span style="font-weight:bold;">When: </span>
+                    {{vm.lookupSymbol.announceDay | amDateFormat:'MMM Do'}} <md-tooltip class="capitalize">{{vm.lookupSymbol.announceDay | amTimeAgo}}</md-tooltip>
+                    <md-icon md-font-icon="wi wi-night-clear"  class="purple" ng-show="vm.lookupSymbol.when == 'After Market'"></md-icon>
+                    <md-icon md-font-icon="wi wi-horizon-alt"  class="blue" ng-show="vm.lookupSymbol.when == 'Pre Market'"></md-icon>
                 </li>
                 <li><span style="font-weight:bold;">Avg Range:</span> .34</li>
             </ul>

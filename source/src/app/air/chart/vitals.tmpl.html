@@ -11,7 +11,7 @@
         <tbody md-body>
             <tr md-row>
                 <td md-cell>{{vm.lookupSymbol.symbol}}</td>
-                <td md-cell class="dotted-underline">{{vm.lookupSymbol.announceDay}}<md-tooltip>{{vm.lookupSymbol.when}}</md-tooltip></td>
+                <td md-cell class="dotted-underline help">{{vm.lookupSymbol.announceDay}}<md-tooltip>{{vm.lookupSymbol.when}}</md-tooltip></td>
                 <td md-cell ng-show="{{vm.lookupSymbol.short == 0}}">-</td>
                 <td md-cell ng-hide="{{vm.lookupSymbol.short == 0}}">{{vm.lookupSymbol.short}}</td>
                 <td md-cell ng-show="{{vm.lookupSymbol.volume == 0}}">-</td>

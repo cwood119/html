@@ -12,6 +12,7 @@
         vm.activate = function(){activate();};
         vm.currentPath = $location.path();
         vm.layout = 'list';
+        vm.list = 'ecal';
         vm.openSidebar = function(id) {$mdSidenav(id).toggle();vm.refreshSlider();};
         vm.toggleSearch = function() {vm.showSearch = !vm.showSearch;};
 
@@ -91,16 +92,25 @@
             if (index == 9){vm.showHeadlines=checked;}
         };
 
+        vm.lists = [
+            {'index':1,'name':'Announcements'},
+            {'index':2,'name':'Calendar'},
+            {'index':3,'name':'Tracker'},
+            {'index':4,'name':'Watchlist'},
+            {'index':5,'name':'Alerts'},
+        ];
+
         activate();
 
         //////////
 
         function activate() {
             vm.emptySet = false;
+            var list = vm.list;
             vm.mainLoader = true;
             vm.refreshToggle = 0;
             vm.symbols=[];
-            return getChartData(API_CONFIG).then(function(data) {
+            return getChartData(API_CONFIG, list).then(function(data) {
                 if (data[0].data.length != 0) {
                     // Get Symbols
                     var symbols = data[0].data;
@@ -112,7 +122,7 @@
                         var ad = value.added;
                         var ts = value.timestamp;
                         var av = value.avgVol;
-                        vm.list = value.list;
+                        //vm.list = value.list;
                         vm.updated = new Date(value.timestamp).toLocaleString();
                         getSymbolData(s,id,ad,ts,av,API_CONFIG).then(function(data) {
                             vm.symbols.push(data);
@@ -147,8 +157,8 @@
         }
 
         // Get Data from Service
-        function getChartData(API_CONFIG) {
-            return chartService.getData(API_CONFIG)
+        function getChartData(API_CONFIG, list) {
+            return chartService.getData(API_CONFIG,list)
                 .then(function(data) {
                     return data;
                 });
@@ -354,7 +364,7 @@
                 var ad = sy.added;
                 var ts = sy.timestamp;
                 var av = sy.avgVol;
-                vm.list = sy.list;
+                //vm.list = sy.list;
                 getSymbolData(s,id,ad,ts,av,API_CONFIG).then(function(data) {
                     vm.lookupSymbol = data;
                 });

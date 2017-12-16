@@ -30,6 +30,7 @@ body {color: $medium-gray;}
 a{color:$blue !important;}
 md-title{color:#212121;}
 .pointer {cursor:pointer;}
+.help {cursor:help;}
 .dotted-underline { text-decoration:underline; text-decoration-style:dotted; }
 
 .purple {color: $deep-purple-500 !important;}
@@ -62,6 +63,7 @@ md-title{color:#212121;}
 .min-width-50{min-width:50px !important;}
 
 .center-text {text-align:center;}
+.capitalize {text-transform: capitalize;}
 
 .pulsate {-webkit-animation: pulse 2s ease-out infinite;animation: pulse 2s ease-out infinite;-webkit-animation-delay: 1s;animation-delay: 1s;}
 
@@ -328,10 +330,11 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 
 // DE Chart List 
 /*#de-chart, #de-chart-list { max-height: 590px; min-height:520px; }*/
-#chart-caption-container { position:relative;top:16px;width:95%;font-size: 13px; }
+#chart-caption-container { position:relative;top:16px;width:95%;font-size: 13px; height: 45px; }
 #chart-caption-container li { display:inline-block;margin-left:20px;text-transform:uppercase;color:#212121;float:right; } 
 /*#chart-list-table { overflow:auto;display: block; max-height:400px; min-height:400px; }*/
 #chart-list-table th.md-subhead.md-column.ng-binding.ng-scope.ng-isolate-scope { padding: 0; }
+//#de-chart { min-height: 560px; }
 //////////
 
 // Responsive

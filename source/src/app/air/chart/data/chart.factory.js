@@ -28,8 +28,8 @@
 
         return service;
 
-        function getData(API_CONFIG) {
-            var chartData = $http.get(API_CONFIG.url + 'watchlist');
+        function getData(API_CONFIG, list) {
+            var chartData = $http.get(API_CONFIG.url + list);
             return $q.all([chartData]);
         }
 
