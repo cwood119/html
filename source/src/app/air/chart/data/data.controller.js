@@ -5,23 +5,22 @@
         .controller('chartController', chartController);
 
     /* @ngInject */
-    function chartController($http, $mdDialog, $location, $document, $timeout, $interval, $window, $mdSidenav, $scope, chartService, API_CONFIG, $sce, $q) {
+    function chartController($http, $mdDialog, $location, $document, $timeout, $interval, $window, $mdSidenav, $scope, chartService, API_CONFIG, $sce, $filter) {
         var vm = this;
 
         // Page Variables
         vm.activate = function(){activate();};
         vm.currentPath = $location.path();
         vm.layout = 'list';
-        vm.list = 'ecal';
+        vm.list = 'alerts';
         vm.openSidebar = function(id) {$mdSidenav(id).toggle();vm.refreshSlider();};
         vm.toggleSearch = function() {vm.showSearch = !vm.showSearch;};
 
         // Pagination Variables
         vm.curPage = 1;
         vm.limitOptions = [5,10,25,50];
-        vm.pageSize = 5;
-        //vm.query = {order: '-percentChange'};
-        vm.query = {order: 'symbol'};
+
+        vm.query = {order: '-percentChange'};
 
         // Price Filter Variables
         vm.priceDisabled = true;
@@ -41,21 +40,20 @@
         vm.filterAdv = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
         vm.filterVolume = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
         
-        // Table Rows
+        // Table Columns 
         vm.showPrice = true;
         vm.showDollarChange = true;
         vm.showPercentChange = true;
         vm.showVolume = true;
-        vm.showAvgVol = true;
+        vm.showAvgVol = false;
         vm.showDistance = false;
-        vm.showAdded = true;
-        vm.showWhen = true;
-        vm.showHeadlines = false;
+        vm.showAdded = false;
+        vm.showWhen = false;
+        vm.showHeadlines = true;
         
-        // Table Columns
+        // Table Column Headers
         vm.cols = [
             {'name':'Symbol','order':'symbol','show':'true'},
-            {'name':'Today 5m','order':'','show':'true'},
             {'name':'Price','order':'price','show':'vm.showPrice'},
             {'name':'Change','order':'dollarChange','show':'vm.showDollarChange'},
             {'name':'% Change','order':'percentChange','show':'vm.showPercentChange'},
@@ -74,7 +72,7 @@
             {'index':3,'name':'% Change','checked':vm.showPercentChange,'disabled':'false','label':'Show/Hide Percent Change Column'},
             {'index':4,'name':'Volume','checked':vm.showVolume,'disabled':'false','label':'Show/Hide Volume Column'},
             {'index':5,'name':'Avg Vol','checked':vm.showAvgVol,'disabled':'false','label':'Show/Hide Average Volume Column'},
-            {'index':6,'name':'Distance','checked':vm.showDistance,'disabled':'true','label':'Show/Hide Distance Column'},
+            {'index':6,'name':'Distance','checked':vm.showDistance,'disabled':'false','label':'Show/Hide Distance Column'},
             {'index':7,'name':'Added','checked':vm.showAdded,'disabled':'false','label':'Show/Hide Added Column'},
             {'index':8,'name':'When','checked':vm.showWhen,'disabled':'false','label':'Show/Hide When Column'},
             {'index':9,'name':'Headlines','checked':vm.showHeadlines,'disabled':'false','label':'Show/Hide Headlines Column'}
@@ -92,72 +90,58 @@
             if (index == 9){vm.showHeadlines=checked;}
         };
 
-        vm.lists = [
-            {'index':1,'name':'Announcements'},
-            {'index':2,'name':'Calendar'},
-            {'index':3,'name':'Tracker'},
-            {'index':4,'name':'Watchlist'},
-            {'index':5,'name':'Alerts'},
-        ];
-
         activate();
 
         //////////
 
         function activate() {
-            vm.emptySet = false;
             var list = vm.list;
+            vm.emptySet = false;
             vm.mainLoader = true;
             vm.refreshToggle = 0;
             vm.symbols=[];
-            return getChartData(API_CONFIG, list).then(function(data) {
+            var list = vm.list;
+            if (list == 'alerts') { vm.pageSize = 5; }
+            else { vm.pageSize = 7;  }
+            return getSymbolsList(API_CONFIG, list).then(function(data) {
                 if (data[0].data.length != 0) {
+
+                    if (data[0].data.length < vm.pageSize) { vm.showPagination = false; }
+                    else { vm.showPagination = true; }
+                    
                     // Get Symbols
                     var symbols = data[0].data;
-                    var symbolOne = data[0].data[0];
-                    vm.lookup(symbolOne);
                     angular.forEach(symbols,function(value){
                         var s = value.symbol;
                         var id = value.id;
                         var ad = value.added;
                         var ts = value.timestamp;
                         var av = value.avgVol;
+                        //var index = symbols.indexOf(value)+1;
+
+                        if (list == 'alerts') {
+                            var tp = value.alert;
+                        }
                         //vm.list = value.list;
                         vm.updated = new Date(value.timestamp).toLocaleString();
-                        getSymbolData(s,id,ad,ts,av,API_CONFIG).then(function(data) {
+                        getSymbolData(s,id,ad,ts,av,API_CONFIG,tp).then(function(data) {
                             vm.symbols.push(data);
-                        });
-                    });
-                    vm.chartToggle = false;
-                    // Build Line Chart
-                    vm.lineChartOptions = {
-                        chart: {
-                            type: 'lineChart',
-                            showXAxis: false,
-                            showYAxis: false,
-                            showLegend: false,
-                            //useInteractiveGuideline: true,
-                            interactive: false,
-                            duration: 0,
-                            height: 50,
-                            margin : {top: 0,right: 0,bottom: 0,left: 0},
-
-                            x: function(d){ return d.x; },
-                            y: function(d){ return d.y; },
-                            callback: function(){
-                                window.dispatchEvent(new Event('resize'));
-                                vm.chartToggle = true;
-                                //$interval(orderByPercentChange, 750);
+                            vm.symbols.sort(function(a, b){ return b.percentChange-a.percentChange; });
+                            vm.symbolOne = vm.symbols[0];
+                            var index = vm.symbols.length;
+                            if ( index == symbols.length) {
+                                var symbolOne = vm.symbolOne;
+                                vm.lookup(symbolOne);
                                 vm.mainLoader = false;
                             }
-                        }
-                    };
+                        });
+                    });
                 } else {vm.mainLoader = false;vm.emptySet = true;}
             });
         }
 
         // Get Data from Service
-        function getChartData(API_CONFIG, list) {
+        function getSymbolsList(API_CONFIG, list) {
             return chartService.getData(API_CONFIG,list)
                 .then(function(data) {
                     return data;
@@ -171,36 +155,36 @@
                 });
         }
 
-        function getSymbolData(s,id,ad,ts,av,API_CONFIG) {
-            return chartService.getSymbolData(s,id,ad,ts,av,API_CONFIG)
+        function getSymbolData(s,id,ad,ts,av,API_CONFIG,tp) {
+            return chartService.getSymbolData(s,id,ad,ts,av,API_CONFIG,tp)
                 .then(function(data) {
                     var announce;
-                    var chart=[{color:'#03a9f4',values:[]}];
                     var quotes = data[0].data.quotes.quote;
                     var symbol = data[1];
-                    var timeSales = data[4].data.series.data;
-                    var when = data[7].data[0];
+                    var when = data[6].data[0];
+                    var triggerPrice = data[7];
                     var announceDay = moment(when.date).format('MM/DD/YY');
 
                     var chartUrl = 'https://www.tradingview.com/widgetembed/?symbol=' + symbol + '&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en&referral_id=5952';
+
+                    var list = vm.list;
+                    var price = quotes.last;
+
+                    if (list == 'alerts') {
+                        var distance = triggerPrice-price;
+                    }
 
                     if ( when.announce == 1 ) { announce = 'After Market'; }
                     if ( when.announce == 2 ) { announce = 'Pre Market'; }
                     if ( when.announce == 3 ) { announce = 'Intraday'; }
                     if ( when.announce == 4 ) { announce = 'Unknown'; }
 
-                    // Build Chart Object 
-                    angular.forEach(timeSales,function(value){
-                        var close = value.close;
-                        var time = value.timestamp;
-                        chart[0].values.push({x:time,y:close});
-                    });
                     var symbolObject = {
                         'id':parseInt(data[2]),
                         'symbol':symbol,
-                        'added':data[6],
+                        'added':data[5],
                         'name':quotes.description,
-                        'price':quotes.last,
+                        'price':price,
                         'open':quotes.open,
                         'high':quotes.high,
                         'low':quotes.low,
@@ -209,10 +193,11 @@
                         'when':announce,
                         'announceDay':announceDay,
                         'volume':quotes.volume,
-                        'avgVol':parseInt(data[5]),
+                        'avgVol':parseInt(data[4]),
                         'exchange':quotes.exch,
                         'headlines':'',
-                        'chart':chart,
+                        'distance':distance,
+                        'triggerPrice':triggerPrice,
                         'chartUrl':chartUrl
 
                     };
@@ -227,11 +212,6 @@
 
         // Check for New Data Every 60 Seconds
         $interval(updateCheck, 300000);
-
-        var orderByPercentChange =  function() {
-            vm.query = {order: '-percentChange'};
-        };
-
 
         // Price Filter and Controls
         vm.filterFn = function()
@@ -351,7 +331,6 @@
         };
 
         vm.lookup = function submit(sy) {
-
             vm.s = sy.symbol;
             if (vm.s != '') {
                 var chartUrl = 'https://www.tradingview.com/widgetembed/?symbol=' + vm.s + '&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en';

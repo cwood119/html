@@ -29,8 +29,8 @@
         return service;
 
         function getData(API_CONFIG, list) {
-            var chartData = $http.get(API_CONFIG.url + list);
-            return $q.all([chartData]);
+            var symbolsList = $http.get(API_CONFIG.url + list);
+            return $q.all([symbolsList]);
         }
 
         function getHeadlines(symbol) {
@@ -39,16 +39,16 @@
             return $q.all([headlines]);
         }
 
-        function getSymbolData(s,id,ad,ts,av,API_CONFIG) {
+        function getSymbolData(s,id,ad,ts,av,API_CONFIG,tp) {
             if (symbol != '') {
                 var symbol = s;
                 var added = ad;
                 var timestamp = ts;
                 var avgVol = av;
+                var triggerPrice = tp;
                 var when = $http.get(API_CONFIG.url + 'when/' + symbol);
                 var quotes = $http.get('https://api.tradier.com/v1/markets/quotes?symbols=' + symbol, tradier);
-                var timeSales = $http.get('https://api.tradier.com/v1/markets/timesales?symbol=' + symbol + '&interval=5min&session_filter=open', tradier);
-                return $q.all([quotes, symbol, id, timestamp, timeSales, avgVol, added, when]);
+                return $q.all([quotes, symbol, id, timestamp, avgVol, added, when, triggerPrice]);
             }
 
         }

@@ -17,24 +17,20 @@
         <!-- Table Controls -->
         <div class="list-buttons" hide-gt-xs ng-show="!vm.showSearch">
             <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
-                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw zmdi-hc-flip-horizontal animated infinite pulsate" ></md-icon>
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw" ></md-icon>
             </md-button>
         </div>
         <div class="list-buttons" hide-xs>
             <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
-                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw zmdi-hc-flip-horizontal animated infinite pulsate" ></md-icon>
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw" ></md-icon>
             </md-button>
             <md-button aria-label="search" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.showSearch = !vm.showSearch">
                 <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-search" ></md-icon>
             </md-button>
-            <md-datepicker id="datepicker" ng-show="vm.currentPath === '/earnings-calendar'" ng-model="vm.snapshotDate" md-placeholder="Enter date" md-date-filter="vm.noWeekendsPredicate" md-open-on-focus ng-change="vm.activate()" md-hide-icons="triangle"></md-datepicker>
-            <!--<md-button aria-label="sort" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.openSidebar('sort-sidebar') ">
-                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-sort-asc"></md-icon>
-            </md-button>-->
             <md-button aria-label="filter" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.openSidebar('filter-sidebar')">
                 <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-filter-list"></md-icon>
             </md-button>
-            <md-button aria-label="download symbols" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" download="symbols.txt" ng-href="http://automatedinvestmentresearch.com/app/app/air{{vm.currentPath}}/data/symbols.txt">
+            <md-button aria-label="download symbols" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" download="symbols.txt" ng-href="http://automatedinvestmentresearch.com/app/app/air/{{vm.list}}/data/symbols.txt">
                 <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-download"></md-icon>
             </md-button>
             <md-menu>
@@ -52,30 +48,28 @@
         </div>
     </div>
 </md-toolbar>
+<md-progress-linear data-loading="vm.mainLoader" ng-show="vm.mainLoader" class="md-accent" md-mode="indeterminate"></md-progress-linear>
 
-<md-table-container>
+<md-table-container ng-show="!vm.mainLoader">
     <table md-table id="chart-list-table" class="md-primary md-data-table symbol-table">
         <thead md-head md-order="vm.query.order">
             <tr md-row>
                 <th ng-repeat="col in vm.cols" md-column class="md-subhead" md-order-by="{{col.order}}" ng-show="{{col.show}}">{{col.name}}</th>
             </tr>
         </thead>
+
         <tbody md-body>
             <tr md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter:vm.volumeFilter() | filter: vm.avgVolFilter() | filter: {symbol:search}) | 
             orderBy: vm.query.order| limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize track by symbol.id" ng-click="vm.lookup(symbol);">
                 <td md-cell class="symbol-container">
-                    <div class="list-symbol">{{symbol.symbol}}<md-tooltip ng-hide="vm.currentPath === '/ecalAfter' || vm.currentPath === '/ecalPre'">{{symbol.name}}</md-tooltip></div>
-                    <div class="md-body-1" ng-show="vm.currentPath === '/alerts'">
+                    <div class="list-symbol">{{symbol.symbol}}<md-tooltip>{{symbol.name}}</md-tooltip></div>
+                    <div class="md-body-1" ng-show="vm.list === 'alerts'">
                         <md-icon class="material-icons fa fa-bell-o toggle-filter-long-up-arrow" aria-hidden="true"></md-icon>
                         <md-icon class="material-icons zmdi zmdi-long-arrow-up toggle-filter-long-up-arrow" aria-hidden="true"></md-icon>
                         {{symbol.triggerPrice | number:2}}
                     </div>
                 </td>
 
-                <td md-cell class="chart-container">
-                    <!-- <div google-chart chart="vm.chartData"></div> -->
-                        <a href="{{symbol.chartUrl}}" target="_blank"><nvd3 class="pointer" options="vm.lineChartOptions" data="symbol.chart" ></nvd3></a>
-                </td>
                 <td md-cell ng-show="vm.showPrice">
                     {{symbol.price | number:2}}
                 </td>
@@ -121,9 +115,24 @@
                         {{symbol.when}}
                     </div>
                 </td>
+
+                <td md-cell ng-show="vm.showHeadlines">
+                    <div class="md-body-1 pointer blue" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event, symbol)">Headlines</div>
+                </td>
+
             </tr>
         </tbody>
     </table>
+<md-table-pagination ng-show="vm.showPagination" md-limit="vm.pageSize" md-limit-options=""  md-page-select md-page="vm.curPage" md-total="{{vm.filtered.length}}" class="symbol-pagination"></md-table-pagination>
+
 </md-table-container>
-<md-table-pagination md-limit="vm.pageSize" md-limit-options=""  md-page-select md-page="vm.curPage" md-total="{{vm.filtered.length}}" class="symbol-pagination"></md-table-pagination>
+<!-- Filter Sidebar -->
+<md-sidenav class="md-sidenav-right md-whiteframe-z2 inner-sidenav" md-component-id="filter-sidebar">
+    <md-toolbar class="md-theme-light">
+        <h1 class="md-toolbar-tools">Filter</h1>
+    </md-toolbar>
+    <!-- Filters -->
+    <md-content ng-include="'app/air/templates/elements/filters.tmpl.html'"></md-content>
+</md-sidenav>
+
 
