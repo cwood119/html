@@ -1,20 +1,25 @@
 <md-dialog class="order-dialog mobile-fullwidth-dialog headlines-dialog" flex="60" flex-xs="100">
-    <md-toolbar class="blue-background white">
+    <md-toolbar>
         <div class="md-toolbar-tools">
             <h2 flex >
                 <span translate>{{modal.symbol.symbol}} Headlines</span>
             </h2>
+        <md-input-container class="no-margin search-container">
+            <label>Search</label>
+            <input type="text" ng-model="search">
+        </md-input-container>
+
             <md-button class="md-icon-button" ng-controller="dialogController as vm" ng-click="vm.cancelClick()" aria-label="cancel">
-                <md-icon class="white" md-font-icon="zmdi zmdi-close"></md-icon>
+                <md-icon md-font-icon="zmdi zmdi-close"></md-icon>
             </md-button>
         </div>
     </md-toolbar>
 
     <md-progress-linear data-loading="modal.symbol.loading" ng-show="modal.symbol.loading" class="md-accent" md-mode="indeterminate"></md-progress-linear>
     <md-dialog-content class="md-dialog-content">
-        <md-list-item class="md-2-line" ng-repeat="headlines in modal.symbol.headlines">
+        <md-list-item class="md-2-line" ng-repeat="headlines in vm.filtered = (modal.symbol.headlines | filter: {title:search})">
             <div class="md-list-item-text">
-               <p class="md-subhead headline-row1">{{headlines.publication_date | limitTo:19}}</p>
+               <p class="md-subhead headline-row1">{{headlines.publication_date | limitTo:19 | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</p>
                <a href="{{headlines.url}}" target="_blank"><h3>{{headlines.title}}</h3></a>
                 <md-divider ></md-divider>
             </div>
