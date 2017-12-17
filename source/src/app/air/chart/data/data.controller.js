@@ -5,7 +5,7 @@
         .controller('chartController', chartController);
 
     /* @ngInject */
-    function chartController($http, $mdDialog, $location, $document, $timeout, $interval, $window, $mdSidenav, $scope, chartService, API_CONFIG, $sce, $filter) {
+    function chartController($http, $mdDialog, $location, $document, $timeout, $interval, $window, $mdSidenav, $scope, chartService, API_CONFIG, $sce) {
         var vm = this;
 
         // Page Variables
@@ -40,69 +40,105 @@
         vm.filterAdv = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
         vm.filterVolume = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
         
-        // Table Columns 
-        vm.showPrice = true;
-        vm.showDollarChange = true;
-        vm.showPercentChange = true;
-        vm.showVolume = true;
-        vm.showAvgVol = false;
-        vm.showDistance = false;
-        vm.showAdded = false;
-        vm.showWhen = false;
-        vm.showHeadlines = true;
-        
-        // Table Column Headers
-        vm.cols = [
-            {'name':'Symbol','order':'symbol','show':'true'},
-            {'name':'Price','order':'price','show':'vm.showPrice'},
-            {'name':'Change','order':'dollarChange','show':'vm.showDollarChange'},
-            {'name':'% Change','order':'percentChange','show':'vm.showPercentChange'},
-            {'name':'Volume','order':'volume','show':'vm.showVolume'},
-            {'name':'Avg Vol','order':'avgVol','show':'vm.showAvgVol'},
-            {'name':'Distance','order':'distance','show':'vm.showDistance'},
-            {'name':'Added','order':'added','show':'vm.showAdded'},
-            {'name':'When','order':'announceDay','show':'vm.showWhen'},
-            {'name':'Headlines','order':'','show':'vm.showHeadlines'}
-        ];
-
-        // Table Columns Show/Hide Menu
-        vm.columnsMenu = [
-            {'index':1,'name':'Price','checked':vm.showPrice,'disabled':'false','label':'Show/Hide Price Column'},
-            {'index':2,'name':'Change','checked':vm.showDollarChange,'disabled':'false','label':'Show/Hide Dollar Change Column'},
-            {'index':3,'name':'% Change','checked':vm.showPercentChange,'disabled':'false','label':'Show/Hide Percent Change Column'},
-            {'index':4,'name':'Volume','checked':vm.showVolume,'disabled':'false','label':'Show/Hide Volume Column'},
-            {'index':5,'name':'Avg Vol','checked':vm.showAvgVol,'disabled':'false','label':'Show/Hide Average Volume Column'},
-            {'index':6,'name':'Distance','checked':vm.showDistance,'disabled':'false','label':'Show/Hide Distance Column'},
-            {'index':7,'name':'Added','checked':vm.showAdded,'disabled':'false','label':'Show/Hide Added Column'},
-            {'index':8,'name':'When','checked':vm.showWhen,'disabled':'false','label':'Show/Hide When Column'},
-            {'index':9,'name':'Headlines','checked':vm.showHeadlines,'disabled':'false','label':'Show/Hide Headlines Column'}
-        ];
-
-        vm.columnClick = function(index,checked) {
-            if (index == 1){vm.showPrice=checked;}
-            if (index == 2){vm.showDollarChange=checked;}
-            if (index == 3){vm.showPercentChange=checked;}
-            if (index == 4){vm.showVolume=checked;}
-            if (index == 5){vm.showAvgVol=checked;}
-            if (index == 6){vm.showDistance=checked;}
-            if (index == 7){vm.showAdded=checked;}
-            if (index == 8){vm.showWhen=checked;}
-            if (index == 9){vm.showHeadlines=checked;}
-        };
 
         activate();
 
         //////////
 
         function activate() {
-            var list = vm.list;
+
+            // Page Variables
             vm.emptySet = false;
             vm.mainLoader = true;
             vm.refreshToggle = 0;
-            vm.symbols=[];
+
+            // Pagination Page Size
             var list = vm.list;
             if (list == 'alerts') { vm.pageSize = 5; }
             else { vm.pageSize = 7;  }
+
+            // Table Columns 
+            vm.showPrice = true;
+            vm.showDollarChange = true;
+            vm.showPercentChange = true;
+            vm.showVolume = true;
+            vm.showAvgVol = false;
+            vm.showDistance = false;
+            vm.showAdded = false;
+            vm.showWhen = false;
+            vm.showHeadlines = true;
+        
+            // Table Column Headers
+            vm.cols = [
+                {'name':'Symbol','order':'symbol','show':'true'},
+                {'name':'Price','order':'price','show':'vm.showPrice'},
+                {'name':'Change','order':'dollarChange','show':'vm.showDollarChange'},
+                {'name':'% Change','order':'percentChange','show':'vm.showPercentChange'},
+                {'name':'Volume','order':'volume','show':'vm.showVolume'},
+                {'name':'Avg Vol','order':'avgVol','show':'vm.showAvgVol'},
+                {'name':'Distance','order':'distance','show':'vm.showDistance'},
+                {'name':'Added','order':'added','show':'vm.showAdded'},
+                {'name':'When','order':'announceDay','show':'vm.showWhen'},
+                {'name':'Headlines','order':'','show':'vm.showHeadlines'}
+            ];
+
+            vm.columnClick = function(index,checked) {
+                if (index == 1){vm.showPrice=checked;}
+                if (index == 2){vm.showDollarChange=checked;}
+                if (index == 3){vm.showPercentChange=checked;}
+                if (index == 4){vm.showVolume=checked;}
+                if (index == 5){vm.showAvgVol=checked;}
+                if (index == 6){vm.showDistance=checked;}
+                if (index == 7){vm.showAdded=checked;}
+                if (index == 8){vm.showWhen=checked;}
+                if (index == 9){vm.showHeadlines=checked;}
+            };
+
+            // Table Columns Show/Hide Menu
+            if (vm.list == 'ecal' || vm.list == 'ecalUpdate' || vm.list == 'ecalTracker') {
+                vm.columnsMenu = [
+                    {'index':1,'name':'Price','checked':vm.showPrice,'disabled':'false','label':'Show/Hide Price Column'},
+                    {'index':2,'name':'Change','checked':vm.showDollarChange,'disabled':'false','label':'Show/Hide Dollar Change Column'},
+                    {'index':3,'name':'% Change','checked':vm.showPercentChange,'disabled':'false','label':'Show/Hide Percent Change Column'},
+                    {'index':4,'name':'Volume','checked':vm.showVolume,'disabled':'false','label':'Show/Hide Volume Column'},
+                    {'index':5,'name':'Avg Vol','checked':vm.showAvgVol,'disabled':'false','label':'Show/Hide Average Volume Column'},
+                    {'index':6,'name':'Distance','checked':vm.showDistance,'disabled':'true','label':'Show/Hide Distance Column'},
+                    {'index':7,'name':'Added','checked':vm.showAdded,'disabled':'true','label':'Show/Hide Added Column'},
+                    {'index':8,'name':'When','checked':vm.showWhen,'disabled':'false','label':'Show/Hide When Column'},
+                    {'index':9,'name':'Headlines','checked':vm.showHeadlines,'disabled':'false','label':'Show/Hide Headlines Column'}
+                ];
+            }
+
+            if (vm.list == 'alerts') {
+                vm.columnsMenu = [
+                    {'index':1,'name':'Price','checked':vm.showPrice,'disabled':'false','label':'Show/Hide Price Column'},
+                    {'index':2,'name':'Change','checked':vm.showDollarChange,'disabled':'false','label':'Show/Hide Dollar Change Column'},
+                    {'index':3,'name':'% Change','checked':vm.showPercentChange,'disabled':'false','label':'Show/Hide Percent Change Column'},
+                    {'index':4,'name':'Volume','checked':vm.showVolume,'disabled':'false','label':'Show/Hide Volume Column'},
+                    {'index':5,'name':'Avg Vol','checked':vm.showAvgVol,'disabled':'false','label':'Show/Hide Average Volume Column'},
+                    {'index':6,'name':'Distance','checked':vm.showDistance,'disabled':'false','label':'Show/Hide Distance Column'},
+                    {'index':7,'name':'Added','checked':vm.showAdded,'disabled':'false','label':'Show/Hide Added Column'},
+                    {'index':8,'name':'When','checked':vm.showWhen,'disabled':'false','label':'Show/Hide When Column'},
+                    {'index':9,'name':'Headlines','checked':vm.showHeadlines,'disabled':'false','label':'Show/Hide Headlines Column'}
+                ];
+            }
+
+            if (vm.list == 'watchlist') {
+                vm.columnsMenu = [
+                    {'index':1,'name':'Price','checked':vm.showPrice,'disabled':'false','label':'Show/Hide Price Column'},
+                    {'index':2,'name':'Change','checked':vm.showDollarChange,'disabled':'false','label':'Show/Hide Dollar Change Column'},
+                    {'index':3,'name':'% Change','checked':vm.showPercentChange,'disabled':'false','label':'Show/Hide Percent Change Column'},
+                    {'index':4,'name':'Volume','checked':vm.showVolume,'disabled':'false','label':'Show/Hide Volume Column'},
+                    {'index':5,'name':'Avg Vol','checked':vm.showAvgVol,'disabled':'false','label':'Show/Hide Average Volume Column'},
+                    {'index':6,'name':'Distance','checked':vm.showDistance,'disabled':'true','label':'Show/Hide Distance Column'},
+                    {'index':7,'name':'Added','checked':vm.showAdded,'disabled':'false','label':'Show/Hide Added Column'},
+                    {'index':8,'name':'When','checked':vm.showWhen,'disabled':'false','label':'Show/Hide When Column'},
+                    {'index':9,'name':'Headlines','checked':vm.showHeadlines,'disabled':'false','label':'Show/Hide Headlines Column'}
+                ];
+            }
+
+            // Build Symbol List
+            vm.symbols=[];
             return getSymbolsList(API_CONFIG, list).then(function(data) {
                 if (data[0].data.length != 0) {
 

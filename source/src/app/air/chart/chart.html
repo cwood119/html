@@ -21,10 +21,8 @@
         </md-card>
     </div>
     <!-- Trade Planning and Info Cards  -->
-    <div layout="row" layout-xs="column" ng-show="vm.toggle == true">
-        <md-card flex="25" flex-xs="100" ng-include="'app/air/chart/position-price-target.tmpl.html'"></md-card>
-        <md-card flex="25" flex-xs="100" ng-include="'app/air/chart/simple-entry-exit.tmpl.html'"></md-card>
-        <md-card flex="25" flex-xs="100" ng-include="'app/air/chart/day-one.tmpl.html'"></md-card>
-        <md-card flex="25" flex-xs="100" ng-include="'app/air/chart/vitals.tmpl.html'"></md-card>
+    <div layout="row" layout-sm="column" layout-xs="column" ng-show="vm.toggle == true">
+        <md-card flex="50" flex-sm="100" flex-xs="100" ng-include="'app/air/chart/calculators.tmpl.html'"></md-card>
+        <md-card flex="50" flex-sm="100" flex-xs="100" ng-include="'app/air/chart/vitals.tmpl.html'"></md-card>
     </div>
 </div>

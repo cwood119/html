@@ -1,3 +1,11 @@
+<md-sidenav class="md-sidenav-right md-whiteframe-z2 inner-sidenav" md-component-id="filter-sidebar">
+    <md-toolbar class="md-theme-light">
+        <h1 class="md-toolbar-tools">Filter</h1>
+    </md-toolbar>
+    <!-- Filters -->
+    <md-content ng-include="'app/air/templates/elements/filters.tmpl.html'"></md-content>
+</md-sidenav>
+
 <md-toolbar class="md-table-toolbar md-default">
     <div class="md-toolbar-tools">
         <span ng-show="!vm.showSearch">
@@ -107,12 +115,9 @@
                 </td>
 
                 <td md-cell class="min-width-50" ng-show="vm.showWhen">
-                    <div class="md-body-1 pointer">
+                    <div class="md-body-1 pointer dotted-underline help">
                         {{symbol.announceDay}}
-                        <md-tooltip>{{symbol.date}}</md-tooltip>
-                    </div>
-                    <div class="md-body-1">
-                        {{symbol.when}}
+                        <md-tooltip>{{symbol.when}}</md-tooltip>
                     </div>
                 </td>
 
@@ -126,13 +131,5 @@
 <md-table-pagination ng-show="vm.showPagination" md-limit="vm.pageSize" md-limit-options=""  md-page-select md-page="vm.curPage" md-total="{{vm.filtered.length}}" class="symbol-pagination"></md-table-pagination>
 
 </md-table-container>
-<!-- Filter Sidebar -->
-<md-sidenav class="md-sidenav-right md-whiteframe-z2 inner-sidenav" md-component-id="filter-sidebar">
-    <md-toolbar class="md-theme-light">
-        <h1 class="md-toolbar-tools">Filter</h1>
-    </md-toolbar>
-    <!-- Filters -->
-    <md-content ng-include="'app/air/templates/elements/filters.tmpl.html'"></md-content>
-</md-sidenav>
 
 
