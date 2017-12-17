@@ -12,7 +12,7 @@
         vm.activate = function(){activate();};
         vm.currentPath = $location.path();
         vm.layout = 'list';
-        vm.list = 'alerts';
+        vm.list = 'ecalTracker';
         vm.openSidebar = function(id) {$mdSidenav(id).toggle();vm.refreshSlider();};
         vm.toggleSearch = function() {vm.showSearch = !vm.showSearch;};
 
@@ -153,14 +153,19 @@
                         var ad = value.added;
                         var ts = value.timestamp;
                         var av = value.avgVol;
-                        //var index = symbols.indexOf(value)+1;
+                        var erClose = value.erClose;
+                        var latestClose = value.latestClose;
+                        var change = latestClose - erClose;
+                        var pChange = (change / erClose) * 100;
+                        var percentChange = Number(pChange);
 
-                        if (list == 'alerts') {
-                            var tp = value.alert;
-                        }
+                        //var index = symbols.indexOf(value)+1;
                         //vm.list = value.list;
+
+                        if (list == 'alerts') { var tp = value.alert; }
+
                         vm.updated = new Date(value.timestamp).toLocaleString();
-                        getSymbolData(s,id,ad,ts,av,API_CONFIG,tp).then(function(data) {
+                        getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange).then(function(data) {
                             vm.symbols.push(data);
                             vm.symbols.sort(function(a, b){ return b.percentChange-a.percentChange; });
                             vm.symbolOne = vm.symbols[0];
@@ -191,8 +196,8 @@
                 });
         }
 
-        function getSymbolData(s,id,ad,ts,av,API_CONFIG,tp) {
-            return chartService.getSymbolData(s,id,ad,ts,av,API_CONFIG,tp)
+        function getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange) {
+            return chartService.getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange)
                 .then(function(data) {
                     var announce;
                     var quotes = data[0].data.quotes.quote;
@@ -206,6 +211,13 @@
                     var list = vm.list;
                     var price = quotes.last;
 
+                    vm.percentChange = quotes.change_percentage;
+                    vm.change = quotes.change;
+
+                    if (list == 'ecalTracker') {
+                        vm.percentChange = data[11];
+                        vm.change = data[10];
+                    }
                     if (list == 'alerts') {
                         var distance = triggerPrice-price;
                     }
@@ -224,8 +236,8 @@
                         'open':quotes.open,
                         'high':quotes.high,
                         'low':quotes.low,
-                        'dollarChange':quotes.change,
-                        'percentChange':quotes.change_percentage,
+                        'dollarChange':vm.change,
+                        'percentChange':vm.percentChange,
                         'when':announce,
                         'announceDay':announceDay,
                         'volume':quotes.volume,

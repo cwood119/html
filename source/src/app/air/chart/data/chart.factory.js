@@ -39,7 +39,7 @@
             return $q.all([headlines]);
         }
 
-        function getSymbolData(s,id,ad,ts,av,API_CONFIG,tp) {
+        function getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange) {
             if (symbol != '') {
                 var symbol = s;
                 var added = ad;
@@ -48,7 +48,7 @@
                 var triggerPrice = tp;
                 var when = $http.get(API_CONFIG.url + 'when/' + symbol);
                 var quotes = $http.get('https://api.tradier.com/v1/markets/quotes?symbols=' + symbol, tradier);
-                return $q.all([quotes, symbol, id, timestamp, avgVol, added, when, triggerPrice]);
+                return $q.all([quotes, symbol, id, timestamp, avgVol, added, when, triggerPrice,erClose,latestClose,change,percentChange]);
             }
 
         }
