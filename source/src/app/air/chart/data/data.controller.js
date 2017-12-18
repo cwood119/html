@@ -11,7 +11,6 @@
         // Page Variables
         vm.activate = function(){activate();};
         vm.currentPath = $location.path();
-        vm.layout = 'list';
         vm.list = 'ecalTracker';
         vm.openSidebar = function(id) {$mdSidenav(id).toggle();vm.refreshSlider();};
         vm.toggleSearch = function() {vm.showSearch = !vm.showSearch;};
@@ -138,7 +137,10 @@
             }
 
             // Build Symbol List
-            vm.symbols=[];
+            
+            vm.symbols = [];
+            vm.download = [];
+
             return getSymbolsList(API_CONFIG, list).then(function(data) {
                 if (data[0].data.length != 0) {
 
@@ -158,9 +160,7 @@
                         var change = latestClose - erClose;
                         var pChange = (change / erClose) * 100;
                         var percentChange = Number(pChange);
-
-                        //var index = symbols.indexOf(value)+1;
-                        //vm.list = value.list;
+                        vm.download.push(s);
 
                         if (list == 'alerts') { var tp = value.alert; }
 
@@ -177,9 +177,25 @@
                             }
                         });
                     });
+
+                    vm.downloadSymbols = function() {
+
+                        var content = "";
+
+                        for (var i = 0; i < vm.download.length; i += 1) {
+                            content += vm.download[i] ;
+                            content += "\n";
+                        }
+
+                        var uri = "data:application/octet-stream," + encodeURIComponent(content);
+                        $window.open(uri);
+                    }
+
                 } else {vm.mainLoader = false;vm.emptySet = true;}
             });
         }
+
+        
 
         // Get Data from Service
         function getSymbolsList(API_CONFIG, list) {

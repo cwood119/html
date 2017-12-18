@@ -38,7 +38,7 @@
             <md-button aria-label="filter" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.openSidebar('filter-sidebar')">
                 <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-filter-list"></md-icon>
             </md-button>
-            <md-button aria-label="download symbols" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" download="symbols.txt" ng-href="http://automatedinvestmentresearch.com/app/app/air/{{vm.list}}/data/symbols.txt">
+            <md-button aria-label="download symbols" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" download="symbols.txt" ng-click="vm.downloadSymbols()">
                 <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-download"></md-icon>
             </md-button>
             <md-menu>
