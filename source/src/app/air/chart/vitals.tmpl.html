@@ -1,42 +1,53 @@
-<md-table-container>
-    <table md-table class="md-primary md-data-table symbol-table">
-        <thead md-head>
-            <tr md-row>
-                <th md-column>Symbol</th>
-                <th md-column>When</th>
-                <th md-column>Short</th>
-                <th md-column>Volume</th>
-            </tr>
-        </thead>
+<md-content class="white-background padding-25">
+<div>{{vm.lookupSymbol.name}}</div>
+<div>{{vm.lookupSymbol.industry}}: {{vm.lookupSymbol.sector}}</div>
+<div>{{vm.lookupSymbol.price | number:2}} <span ng-class="{'green': vm.lookupSymbol.todayChange > 0,'red':vm.lookupSymbol.todayChange < 0}">{{vm.lookupSymbol.todayChange | number:2}} ({{vm.lookupSymbol.todayPercentChange | number:2}}%)</span></div>
+</md-content>
+    <table md-table class="md-primary md-data-table white-background vitals-table">
         <tbody md-body>
             <tr md-row>
-                <td md-cell>{{vm.lookupSymbol.symbol}}</td>
-                <td md-cell class="dotted-underline help">{{vm.lookupSymbol.announceDay}}<md-tooltip>{{vm.lookupSymbol.when}}</md-tooltip></td>
-                <td md-cell ng-show="{{vm.lookupSymbol.short == 0}}">-</td>
-                <td md-cell ng-hide="{{vm.lookupSymbol.short == 0}}">{{vm.lookupSymbol.short}}</td>
-                <td md-cell ng-show="{{vm.lookupSymbol.volume == 0}}">-</td>
-                <td md-cell ng-hide="{{vm.lookupSymbol.volume == 0}}">{{vm.lookupSymbol.volume | number:0}}</td>
-            </tr>
-        </tbody>
-        <thead md-head>
-            <tr md-row>
-                <th md-column>Open</th>
-                <th md-column>High</th>
-                <th md-column>Low</th>
-                <th md-column>Last</th>
-            </tr>
-        </thead>
-        <tbody md-body>
-            <tr md-row>
+                <td md-cell>Open</td>
                 <td md-cell ng-show="{{vm.lookupSymbol.open == 0}}">-</td>
                 <td md-cell ng-hide="{{vm.lookupSymbol.open == 0}}">{{vm.lookupSymbol.open | number:2}}</td>
+            </tr>
+            <tr md-body>
+                <td md-cell>High</td>
                 <td md-cell ng-show="{{vm.lookupSymbol.high == 0}}">-</td>
                 <td md-cell ng-hide="{{vm.lookupSymbol.high == 0}}">{{vm.lookupSymbol.high | number:2}}</td>
+            </tr>
+            <tr md-body>
+                <td md-cell>Low</td>
                 <td md-cell ng-show="{{vm.lookupSymbol.low == 0}}">-</td>
                 <td md-cell ng-hide="{{vm.lookupSymbol.low == 0}}">{{vm.lookupSymbol.low | number:2}}</td>
+            </tr>
+            <tr md-body>
+                <td md-cell>Last</td>
                 <td md-cell ng-show="{{vm.lookupSymbol.price == 0}}">-</td>
                 <td md-cell ng-hide="{{vm.lookupSymbol.price == 0}}">{{vm.lookupSymbol.price | number:2}}</td>
             </tr>
         </tbody>
     </table>
-</md-table-container>
+    <table md-table class="md-primary md-data-table white-background vitals-table">
+        <tbody md-body>
+            <tr md-row>
+                <td md-cell>Open</td>
+                <td md-cell ng-show="{{vm.lookupSymbol.open == 0}}">-</td>
+                <td md-cell ng-hide="{{vm.lookupSymbol.open == 0}}">{{vm.lookupSymbol.open | number:2}}</td>
+            </tr>
+            <tr md-body>
+                <td md-cell>High</td>
+                <td md-cell ng-show="{{vm.lookupSymbol.high == 0}}">-</td>
+                <td md-cell ng-hide="{{vm.lookupSymbol.high == 0}}">{{vm.lookupSymbol.high | number:2}}</td>
+            </tr>
+            <tr md-body>
+                <td md-cell>Low</td>
+                <td md-cell ng-show="{{vm.lookupSymbol.low == 0}}">-</td>
+                <td md-cell ng-hide="{{vm.lookupSymbol.low == 0}}">{{vm.lookupSymbol.low | number:2}}</td>
+            </tr>
+            <tr md-body>
+                <td md-cell>Last</td>
+                <td md-cell ng-show="{{vm.lookupSymbol.price == 0}}">-</td>
+                <td md-cell ng-hide="{{vm.lookupSymbol.price == 0}}">{{vm.lookupSymbol.price | number:2}}</td>
+            </tr>
+        </tbody>
+    </table>

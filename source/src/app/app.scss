@@ -44,6 +44,7 @@ md-title{color:#212121;}
 .dark-gray{color:$dark-gray !important;}
 .blue-background{background-color: $blue !important;}
 .blue-background:not([disabled]):hover { background-color: #039be5 !important; }
+.white-background{background-color: #fff !important;}
 .float-right{float:right;}
 .float-left{float:left;}
 .top{position:absolute;top:0px !important;}
@@ -200,7 +201,7 @@ md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-p
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper {background-color: transparent;}
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {color: $light-gray;border-bottom: 1px solid #fafafa;}
 md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
-
+md-tabs { height:100%; }
 ////////// Templates
 
 // Symbol Cards
@@ -237,7 +238,7 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 .symbol-container {padding-top:10px !important;padding-bottom:10px !important;min-width:85px;}
 .price-container {width:140px;text-align: center !important;}
 .chart-container {min-width:115px;max-width:125px;padding:10px 40px 10px 0px!important}
-.search-container {top:15px;}
+.search-container {top:15px;width:175px;}
 md-icon.material-icons.fa.fa-bell-o.toggle-filter-long-up-arrow.md-light-blue-theme {font-size: 13px;padding: 0;top: -1px;position: relative;}
 
 // Symbol Table chart
@@ -329,12 +330,13 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 #lookup-resources a:hover{text-decoration:none;}
 
 // DE Chart List 
-/*#de-chart, #de-chart-list { max-height: 590px; min-height:520px; }*/
 #chart-caption-container { position:relative;top:16px;width:95%;font-size: 13px; height: 45px; }
 #chart-caption-container li { display:inline-block;margin-left:20px;text-transform:uppercase;color:#212121;float:right; } 
-/*#chart-list-table { overflow:auto;display: block; max-height:400px; min-height:400px; }*/
 #chart-list-table th.md-subhead.md-column.ng-binding.ng-scope.ng-isolate-scope { padding: 0; }
-//#de-chart { min-height: 560px; }
+
+// DE Vitals
+.vitals-table { width: 50% !important; float: left; min-width: 50% !important;  }
+
 //////////
 
 // Responsive

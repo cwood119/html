@@ -180,16 +180,16 @@
 
                     vm.downloadSymbols = function() {
 
-                        var content = "";
+                        var content = '';
 
                         for (var i = 0; i < vm.download.length; i += 1) {
                             content += vm.download[i] ;
                             content += "\n";
                         }
 
-                        var uri = "data:application/octet-stream," + encodeURIComponent(content);
+                        var uri = 'data:application/octet-stream,' + encodeURIComponent(content);
                         $window.open(uri);
-                    }
+                    };
 
                 } else {vm.mainLoader = false;vm.emptySet = true;}
             });
@@ -220,6 +220,8 @@
                     var symbol = data[1];
                     var when = data[6].data[0];
                     var triggerPrice = data[7];
+                    var company = data[12].data;
+                    var stats = data[13].data;
                     var announceDay = moment(when.date).format('MM/DD/YY');
 
                     var chartUrl = 'https://www.tradingview.com/widgetembed/?symbol=' + symbol + '&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en&referral_id=5952';
@@ -254,6 +256,8 @@
                         'low':quotes.low,
                         'dollarChange':vm.change,
                         'percentChange':vm.percentChange,
+                        'todayPercentChange':quotes.change_percentage,
+                        'todayChange':quotes.change,
                         'when':announce,
                         'announceDay':announceDay,
                         'volume':quotes.volume,
@@ -262,9 +266,20 @@
                         'headlines':'',
                         'distance':distance,
                         'triggerPrice':triggerPrice,
-                        'chartUrl':chartUrl
-
+                        'chartUrl':chartUrl,
+                        'marketCap':stats.marketcap,
+                        'week52high':stats.week52high,
+                        'week52low':stats.week52low,
+                        'week52change':stats.week52change,
+                        'shortInterest':stats.shortInterest,
+                        'shortPercent':stats.shortInterest,
+                        'shortDate':stats.shortDate,
+                        'float':stats.float,
+                        'industry':company.industry,
+                        'longDescription':company.description,
+                        'sector':company.sector
                     };
+
                     return symbolObject;
                 });
         }
@@ -410,6 +425,7 @@
                 //vm.list = sy.list;
                 getSymbolData(s,id,ad,ts,av,API_CONFIG).then(function(data) {
                     vm.lookupSymbol = data;
+                    console.log(vm.lookupSymbol);
                 });
                 vm.toggle = true;
             }
