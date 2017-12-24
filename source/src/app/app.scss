@@ -353,6 +353,7 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 
 // DE Vitals
 .vitals-table { width: 50% !important;  min-width: 50% !important; float:left; font-size: 14px; color: $medium-gray}
+.vitals-table td { color: $medium-gray !important; font-size: 14px !important; padding-left: 30px !important; }
 #vitals-header div {display: table-row; }
 // DE Slider Fab
 .slick-prev, .slick-next { 
@@ -366,9 +367,16 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 .slick-prev {left: 0px !important;}
 .slick-next {right: 0px !important;}
 .slick-prev:before {
-    font-family: "Material Icons" !important;
-    content: "\e5cc" !important;
-    color: black !important;
+    font-family: 'Material-Design-Iconic-Font' !important;
+    content: '\f2fa' !important;
+    color: $dark-gray !important;
+    font-size: 25px !important;
+}
+.slick-next:before {
+    font-family: 'Material-Design-Iconic-Font' !important;
+    content: '\f2fb' !important;
+    color: #757575 !important;
+    font-size: 25px !important;
 }
 //////////
 
