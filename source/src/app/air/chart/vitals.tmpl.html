@@ -1,53 +1,54 @@
-<md-content class="white-background padding-25">
-<div>{{vm.lookupSymbol.name}}</div>
-<div>{{vm.lookupSymbol.industry}}: {{vm.lookupSymbol.sector}}</div>
-<div>{{vm.lookupSymbol.price | number:2}} <span ng-class="{'green': vm.lookupSymbol.todayChange > 0,'red':vm.lookupSymbol.todayChange < 0}">{{vm.lookupSymbol.todayChange | number:2}} ({{vm.lookupSymbol.todayPercentChange | number:2}}%)</span></div>
+
+<md-content id="vitals-header" class="white-background padding-25">
+    <div ng-class="{'blurry-text': vm.mainLoader}">{{vm.lookupSymbol.name}}</div>
+    <div ng-class="{'blurry-text': vm.mainLoader}">{{vm.lookupSymbol.industry}}: {{vm.lookupSymbol.sector}}</div>
+    <div ng-class="{'blurry-text': vm.mainLoader}">{{vm.lookupSymbol.price | number:2}}
+        <span ng-class="{'green': vm.lookupSymbol.todayChange > 0,'red':vm.lookupSymbol.todayChange < 0}">
+            {{vm.lookupSymbol.todayChange | number:2}} ({{vm.lookupSymbol.todayPercentChange | number:2}}%)
+        </span>
+    </div>
 </md-content>
+
+<table md-table class="md-primary md-data-table white-background vitals-table">
+    <tbody md-body >
+        <tr md-row>
+            <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>Open</td>
+            <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>{{vm.lookupSymbol.open | number:2}}</td>
+        </tr>
+        <tr md-body>
+            <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>High</td>
+            <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>{{vm.lookupSymbol.high | number:2}}</td>
+        </tr>
+        <tr md-body>
+            <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>Low</td>
+            <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>{{vm.lookupSymbol.low | number:2}}</td>
+        </tr>
+        <tr md-body>
+            <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>Prev Range</td>
+            <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>{{vm.lookupSymbol.price | number:2}}-{{vm.lookupSymbol.price | number:2}}</td>
+        </tr>
+    </tbody>
+</table>
     <table md-table class="md-primary md-data-table white-background vitals-table">
         <tbody md-body>
             <tr md-row>
-                <td md-cell>Open</td>
-                <td md-cell ng-show="{{vm.lookupSymbol.open == 0}}">-</td>
-                <td md-cell ng-hide="{{vm.lookupSymbol.open == 0}}">{{vm.lookupSymbol.open | number:2}}</td>
+                <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>Short</td>
+                <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>
+                    {{vm.lookupSymbol.shortInterest | numeraljs:'0.0a'}} ({{vm.lookupSymbol.shortPercent | number:2}}%)
+                    <md-tooltip>As of {{vm.lookupSymbol.shortDate}}</md-tooltip>
+                </td>
             </tr>
             <tr md-body>
-                <td md-cell>High</td>
-                <td md-cell ng-show="{{vm.lookupSymbol.high == 0}}">-</td>
-                <td md-cell ng-hide="{{vm.lookupSymbol.high == 0}}">{{vm.lookupSymbol.high | number:2}}</td>
+                <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>Float</td>
+                <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>{{vm.lookupSymbol.float | numeraljs:'0.0a'}}</td>
             </tr>
             <tr md-body>
-                <td md-cell>Low</td>
-                <td md-cell ng-show="{{vm.lookupSymbol.low == 0}}">-</td>
-                <td md-cell ng-hide="{{vm.lookupSymbol.low == 0}}">{{vm.lookupSymbol.low | number:2}}</td>
+                <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>Mkt Cap</td>
+                <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>{{vm.lookupSymbol.marketCap | numeraljs:'0.0a'}}</td>
             </tr>
             <tr md-body>
-                <td md-cell>Last</td>
-                <td md-cell ng-show="{{vm.lookupSymbol.price == 0}}">-</td>
-                <td md-cell ng-hide="{{vm.lookupSymbol.price == 0}}">{{vm.lookupSymbol.price | number:2}}</td>
-            </tr>
-        </tbody>
-    </table>
-    <table md-table class="md-primary md-data-table white-background vitals-table">
-        <tbody md-body>
-            <tr md-row>
-                <td md-cell>Open</td>
-                <td md-cell ng-show="{{vm.lookupSymbol.open == 0}}">-</td>
-                <td md-cell ng-hide="{{vm.lookupSymbol.open == 0}}">{{vm.lookupSymbol.open | number:2}}</td>
-            </tr>
-            <tr md-body>
-                <td md-cell>High</td>
-                <td md-cell ng-show="{{vm.lookupSymbol.high == 0}}">-</td>
-                <td md-cell ng-hide="{{vm.lookupSymbol.high == 0}}">{{vm.lookupSymbol.high | number:2}}</td>
-            </tr>
-            <tr md-body>
-                <td md-cell>Low</td>
-                <td md-cell ng-show="{{vm.lookupSymbol.low == 0}}">-</td>
-                <td md-cell ng-hide="{{vm.lookupSymbol.low == 0}}">{{vm.lookupSymbol.low | number:2}}</td>
-            </tr>
-            <tr md-body>
-                <td md-cell>Last</td>
-                <td md-cell ng-show="{{vm.lookupSymbol.price == 0}}">-</td>
-                <td md-cell ng-hide="{{vm.lookupSymbol.price == 0}}">{{vm.lookupSymbol.price | number:2}}</td>
+                <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>52 wk Range</td>
+                <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>{{vm.lookupSymbol.week52low | number:2}} - {{vm.lookupSymbol.week52high | number:2}}</td>
             </tr>
         </tbody>
     </table>

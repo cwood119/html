@@ -24,47 +24,66 @@ $lighter-gray: #EEEEEE;
 $deep-purple-500: #673ab7;
 $yellow: #ffeb3b;
 
-// Global App Styles
-body {color: $medium-gray;}
+///////// Global App Styles
+
 ::-webkit-scrollbar {display:none;}
+
+// Page Elements
+body {color: $medium-gray;}
 a{color:$blue !important;}
 md-title{color:#212121;}
-.pointer {cursor:pointer;}
-.help {cursor:help;}
-.dotted-underline { text-decoration:underline; text-decoration-style:dotted; }
 
-.purple {color: $deep-purple-500 !important;}
-.yellow {color: $yellow !important;}
-.green {color:#4CAF50 !important;}
-.red {color:#F44336 !important;}
-.white {color:white !important;}
+// Text Styles 
+.dotted-underline { text-decoration:underline; text-decoration-style:dotted; }
 .blue{color:$blue !important;}
+.green {color:#4CAF50 !important;}
+.purple {color: $deep-purple-500 !important;}
+.red {color:#F44336 !important;}
+.yellow {color: $yellow !important;}
+.white {color:white !important;}
+
 .light-gray{color:$light-gray !important;}
 .medium-gray{color:$medium-gray !important;}
 .dark-gray{color:$dark-gray !important;}
+
+.center-text {text-align:center;}
+.capitalize {text-transform: capitalize;}
+
+.blurry-text {-webkit-filter: blur(10px);filter: blur(10px);}
+
+// Mouse Styles
+.pointer {cursor:pointer;}
+.help {cursor:help;}
+
+// Background Colors
 .blue-background{background-color: $blue !important;}
 .blue-background:not([disabled]):hover { background-color: #039be5 !important; }
 .white-background{background-color: #fff !important;}
+
+// Element Styles
 .float-right{float:right;}
 .float-left{float:left;}
 .top{position:absolute;top:0px !important;}
 
-.margin-auto {margin: auto !important;}
-.padding-25 {padding: 25px !important;}
 .no-padding{padding: 0 !important;}
+.padding-5 {padding: 5px !important;}
+.padding-10 {padding: 10px !important;}
+.padding-15 {padding: 15px !important;}
+.padding-20 {padding: 20px !important;}
+.padding-25 {padding: 25px !important;}
+
+.margin-auto {margin: auto !important;}
 .no-margin{margin: 0 !important;}
+
 .no-border{border: none !important;}
 
 .width-175 {width: 175px !important;}
 
+.min-width-50{min-width:50px !important;}
+
 .layout-margin.ng-scope{text-align:center;}
 
 .long-arrow {width: 10px !important;min-width: 10px;font-size: 15px !important;}
-
-.min-width-50{min-width:50px !important;}
-
-.center-text {text-align:center;}
-.capitalize {text-transform: capitalize;}
 
 .pulsate {-webkit-animation: pulse 2s ease-out infinite;animation: pulse 2s ease-out infinite;-webkit-animation-delay: 1s;animation-delay: 1s;}
 
@@ -159,6 +178,7 @@ md-toolbar.md-light-blue-theme:not(.md-menu-toolbar) md-icon {fill: $dark-gray;}
 md-toolbar.md-table-toolbar .md-toolbar-tools {padding:14px;}
 md-toolbar.md-table-toolbar .md-toolbar-tools md-icon {color:$dark-gray;}
 md-toolbar.md-table-toolbar.md-default-theme:not(.md-menu-toolbar).md-default .md-button, md-toolbar.md-table-toolbar:not(.md-menu-toolbar).md-default .md-button {color: $dark-gray;}
+
 // Top Toolbar
 .side-menu-badge {color:white !important;}
 .side-menu-icon[md-font-icon], .menu-toggle-icon[md-font-icon] {font-size: 22px !important;margin-right: 25px;margin-left: 5px;text-align:center;}
@@ -202,6 +222,7 @@ md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper {background-color: tran
 md-tabs.md-light-blue-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {color: $light-gray;border-bottom: 1px solid #fafafa;}
 md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {min-height: 290px;}
 md-tabs { height:100%; }
+
 ////////// Templates
 
 // Symbol Cards
@@ -293,10 +314,6 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 .rzslider .rz-pointer:active{cursor:-webkit-grabbing !important}
 .rzslider .rz-pointer:after {cursor:-webkit-grab;border-color: $blue;background: $blue !important;}
 .rzslider .rz-bubble {color:$medium-gray !important;}
-// Sorts
-.sort-text-center {text-align:center;}
-.reset-menu-container {position: absolute;top: 60px;right: 20px;}
-
 
 ////////// Routes
 
@@ -335,8 +352,24 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 #chart-list-table th.md-subhead.md-column.ng-binding.ng-scope.ng-isolate-scope { padding: 0; }
 
 // DE Vitals
-.vitals-table { width: 50% !important; float: left; min-width: 50% !important;  }
-
+.vitals-table { width: 50% !important;  min-width: 50% !important; float:left; font-size: 14px; color: $medium-gray}
+#vitals-header div {display: table-row; }
+// DE Slider Fab
+.slick-prev, .slick-next { 
+    min-width: 40px;
+    min-height: 40px;
+    z-index: 1;
+    background: white !important;
+    border-radius: 100%;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.12), 0 4px 4px rgba(0, 0, 0, 0.24);
+ }
+.slick-prev {left: 0px !important;}
+.slick-next {right: 0px !important;}
+.slick-prev:before {
+    font-family: "Material Icons" !important;
+    content: "\e5cc" !important;
+    color: black !important;
+}
 //////////
 
 // Responsive

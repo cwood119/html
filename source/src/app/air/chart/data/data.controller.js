@@ -39,6 +39,57 @@
         vm.filterAdv = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
         vm.filterVolume = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
         
+        // Content Slider
+        $scope.slickConfig = {
+            method: {}
+        };
+
+        // Data Placeholders
+        vm.lookupSymbol = {
+            'symbol': '#AirApp', 
+            'name': 'Automated Investment Research', 
+            'industry': 'Information Technology',
+            'sector': 'FinTech',
+            'price': 12.34,
+            'todayChange': 0,
+            'todayPercentChange': 12.34,
+            'open': 12.34,
+            'high': 12.34,
+            'low': 12.34,
+            'shortInterest': 12.34,
+            'shortPercent': 12.34,
+            'float': 12.34,
+            'marketCap': 12.34,
+            'week52low': 12.34,
+            'week52high': 12.34,
+            'headlines': [
+                {
+                    'publication_date':moment(),
+                    'url':'https://twitter.com/hashtag/AirApp?src=hash',
+                    'title':'#AirApp Hashtag on Twitter'
+                },
+                {
+                    'publication_date':moment(),
+                    'url':'https://twitter.com/hashtag/AirApp?src=hash',
+                    'title':'#AirApp Hashtag on Twitter'
+                },
+                {
+                    'publication_date':moment(),
+                    'url':'https://twitter.com/hashtag/AirApp?src=hash',
+                    'title':'#AirApp Hashtag on Twitter'
+                },
+                {
+                    'publication_date':moment(),
+                    'url':'https://twitter.com/hashtag/AirApp?src=hash',
+                    'title':'#AirApp Hashtag on Twitter'
+                },
+                {
+                    'publication_date':moment(),
+                    'url':'https://twitter.com/hashtag/AirApp?src=hash',
+                    'title':'#AirApp Hashtag on Twitter'
+                }
+            ] 
+        };
 
         activate();
 
@@ -184,7 +235,7 @@
 
                         for (var i = 0; i < vm.download.length; i += 1) {
                             content += vm.download[i] ;
-                            content += "\n";
+                            content += '\n';
                         }
 
                         var uri = 'data:application/octet-stream,' + encodeURIComponent(content);
@@ -205,76 +256,123 @@
                 });
         }
 
-        function getHeadlines(symbol) {
-            return chartService.getHeadlines(symbol)
-                .then(function(data) {
-                    return data;
-                });
-        }
-
         function getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange) {
             return chartService.getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange)
                 .then(function(data) {
-                    var announce;
+
+                    // Data
                     var quotes = data[0].data.quotes.quote;
                     var symbol = data[1];
+                    var id = parseInt(data[2]);
+                    var timestamp = parseInt(data[3]);
+                    var avgVol = parseInt(data[4]);
+                    var added = data[5];
                     var when = data[6].data[0];
                     var triggerPrice = data[7];
                     var company = data[12].data;
                     var stats = data[13].data;
-                    var announceDay = moment(when.date).format('MM/DD/YY');
+                    var headlines = data[14].data.data;
 
+                    // Stats
+                    var shortInterest = stats.shortInterest;
+                    var shortDate = stats.shortDate;
+                    var float = stats.float;
+                    var marketCap = stats.marketcap;
+                    var week52high = stats.week52high;
+                    var week52low = stats.week52low;
+                    var week52change = stats.week52change;
+
+                    // Quotes
+                    var name = quotes.description;
+                    var price = quotes.last;
+                    var open = quotes.open;
+                    var high = quotes.high;
+                    var low = quotes.low;
+                    vm.percentChange = quotes.change_percentage;
+                    var list = vm.list;
+                    if (list == 'ecalTracker') { vm.change = data[10]; vm.percentChange = data[11]; }
+                    else { vm.change = quotes.change; }
+                    var todayPercentChange = quotes.change_percentage;
+                    var todayChange = quotes.change;
+                    var volume = quotes.volume;
+                    var exchange = quotes.exch;
+
+                    // Custom
+                    var announce;
+                    var distance;
+                    var shortPercent;
+                    var announceDay = moment(when.date).format('MM/DD/YY');
                     var chartUrl = 'https://www.tradingview.com/widgetembed/?symbol=' + symbol + '&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en&referral_id=5952';
 
-                    var list = vm.list;
-                    var price = quotes.last;
+                    if (list == 'alerts') { distance = triggerPrice-price; }
+                    else { distance = '-'; }
 
-                    vm.percentChange = quotes.change_percentage;
-                    vm.change = quotes.change;
-
-                    if (list == 'ecalTracker') {
-                        vm.percentChange = data[11];
-                        vm.change = data[10];
-                    }
-                    if (list == 'alerts') {
-                        var distance = triggerPrice-price;
-                    }
+                    if (float == '' || float == 0 || float == null) { shortPercent = '-'; }
+                    else { shortPercent = shortInterest/float; }
 
                     if ( when.announce == 1 ) { announce = 'After Market'; }
                     if ( when.announce == 2 ) { announce = 'Pre Market'; }
                     if ( when.announce == 3 ) { announce = 'Intraday'; }
                     if ( when.announce == 4 ) { announce = 'Unknown'; }
 
+                    if (added == '' || added == 0 || added == null){ added = '-'; }
+                    if (name == '' || name == 0 || name == null){ name = '-'; }
+                    if (price == '' || price == 0 || price == null){ price = '-'; }
+                    if (open == '' || open == 0 || open == null){ open = '-'; }
+                    if (high == '' || high == 0 || high == null){ high = '-'; }
+                    if (low == '' || low == 0 || low == null){ low = '-'; }
+                    if (vm.Change == '' || vm.Change == 0 || vm.Change == null){ vm.Change = '-'; }
+                    if (vm.percentChange == '' || vm.percentChange == 0 || vm.percentChange == null){ vm.percentChange = '-'; }
+                    if (todayPercentChange == '' || todayPercentChange == 0 || todayPercentChange == null){ todayPercentChange = '-'; }
+                    if (todayChange == '' || todayChange == 0 || todayChange == null){ todayChange = '-'; }
+                    if (announce == '' || announce == 0 || announce == null){ announce = '-'; }
+                    if (announceDay == '' || announceDay == 0 || announceDay == null){ announceDay = '-'; }
+                    if (volume == '' || volume == 0 || volume == null){ volume = '-'; }
+                    if (avgVol == '' || avgVol == 0 || avgVol == null){ avgVol = '-'; }
+                    if (exchange == '' || exchange == 0 || exchange == null){ exchange = '-'; }
+                    if (headlines == '' || headlines == 0 || headlines == null){ headlines = '-'; }
+                    if (distance == '' || distance == 0 || distance == null){ distance = '-'; }
+                    if (triggerPrice == '' || triggerPrice == 0 || triggerPrice == null){ triggerPrice = '-'; }
+                    if (chartUrl == '' || chartUrl == 0 || chartUrl == null){ chartUrl = '-'; }
+                    if (marketCap == '' || marketCap == 0 || marketCap == null){ marketCap = '-'; }
+                    if (week52high == '' || week52high == 0 || week52high == null){ week52high = '-'; }
+                    if (week52low == '' || week52low == 0 || week52low == null){ week52low = '-'; }
+                    if (week52change == '' || week52change == 0 || week52change == null){ week52change = '-'; }
+                    if (shortInterest == '' || shortInterest == 0 || shortInterest == null){ shortInterest = '-'; }
+                    if (shortPercent == '' || shortPercent == 0 || shortPercent == null){ shortPercent = '-'; }
+                    if (shortDate == '' || shortDate == 0 || shortDate == null){ shortDate = '-'; }
+                    if (float == '' || float == 0 || float == null){ float = '-'; }
+
                     var symbolObject = {
-                        'id':parseInt(data[2]),
+                        'id':id,
                         'symbol':symbol,
-                        'added':data[5],
-                        'name':quotes.description,
+                        'added':added,
+                        'name':name,
                         'price':price,
-                        'open':quotes.open,
-                        'high':quotes.high,
-                        'low':quotes.low,
+                        'open':open,
+                        'high':high,
+                        'low':low,
                         'dollarChange':vm.change,
                         'percentChange':vm.percentChange,
-                        'todayPercentChange':quotes.change_percentage,
-                        'todayChange':quotes.change,
+                        'todayPercentChange':todayPercentChange,
+                        'todayChange':todayChange,
                         'when':announce,
                         'announceDay':announceDay,
-                        'volume':quotes.volume,
-                        'avgVol':parseInt(data[4]),
-                        'exchange':quotes.exch,
-                        'headlines':'',
+                        'volume':volume,
+                        'avgVol':avgVol,
+                        'exchange':exchange,
+                        'headlines':headlines,
                         'distance':distance,
                         'triggerPrice':triggerPrice,
                         'chartUrl':chartUrl,
-                        'marketCap':stats.marketcap,
-                        'week52high':stats.week52high,
-                        'week52low':stats.week52low,
-                        'week52change':stats.week52change,
-                        'shortInterest':stats.shortInterest,
-                        'shortPercent':stats.shortInterest,
-                        'shortDate':stats.shortDate,
-                        'float':stats.float,
+                        'marketCap':marketCap,
+                        'week52high':week52high,
+                        'week52low':week52low,
+                        'week52change':week52change,
+                        'shortInterest':shortInterest,
+                        'shortPercent':shortPercent,
+                        'shortDate':shortDate,
+                        'float':float,
                         'industry':company.industry,
                         'longDescription':company.description,
                         'sector':company.sector
@@ -390,17 +488,10 @@
                 clickOutsideToClose: true,
                 controller: function ($mdDialog) {
                     var vm = this;
-                    vm.symbol = {};
                     vm.symbol = symbol;
-                    symbol.loading=true;
                     vm.cancelClick = function () {
                         $mdDialog.cancel();
                     };
-                    getHeadlines(symbol).then(function(data) {
-                        symbol.headlines=data[0].data.data;
-                        symbol.loading=false;
-                    });
-
                 },
                 controllerAs: 'modal',
                 templateUrl: 'app/air/templates/dialogs/headlines-dialog.tmpl.html',
