@@ -41,7 +41,26 @@
         
         // Content Slider
         $scope.slickConfig = {
-            method: {}
+            method: {},
+            infinite: false,
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 860,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll:1 
+                    }
+                }
+            ]
         };
 
         // Data Placeholders
@@ -115,8 +134,8 @@
             vm.showAvgVol = false;
             vm.showDistance = false;
             vm.showAdded = false;
-            vm.showWhen = false;
-            vm.showHeadlines = true;
+            vm.showWhen = true;
+            vm.showHeadlines = false;
         
             // Table Column Headers
             vm.cols = [
