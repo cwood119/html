@@ -291,6 +291,7 @@
                     var company = data[12].data;
                     var stats = data[13].data;
                     var headlines = data[14].data.data;
+                    var logo = data[15].data.url;
 
                     // Stats
                     var shortInterest = stats.shortInterest;
@@ -319,9 +320,14 @@
                     // Custom
                     var announce;
                     var distance;
+                    var changeHeader;
+                    var percentChangeHeader;
                     var shortPercent;
                     var announceDay = moment(when.date).format('MM/DD/YY');
                     var chartUrl = 'https://www.tradingview.com/widgetembed/?symbol=' + symbol + '&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en&referral_id=5952';
+
+                    if ( todayChange < 0) { percentChangeHeader =  todayPercentChange * -1; changeHeader =  todayChange * -1; }
+                    else { percentChangeHeader = todayPercentChange; changeHeader = todayChange;  }
 
                     if (list == 'alerts') { distance = triggerPrice-price; }
                     else { distance = '-'; }
@@ -361,6 +367,7 @@
                     if (shortPercent == '' || shortPercent == 0 || shortPercent == null){ shortPercent = '-'; }
                     if (shortDate == '' || shortDate == 0 || shortDate == null){ shortDate = '-'; }
                     if (float == '' || float == 0 || float == null){ float = '-'; }
+                    if (logo == '' || logo == 0 || logo == null){ logo = 'https://automatedinvestmentresearch.com/app/assets/images/Blue-Logo.svg'; }
 
                     var symbolObject = {
                         'id':id,
@@ -373,6 +380,8 @@
                         'low':low,
                         'dollarChange':vm.change,
                         'percentChange':vm.percentChange,
+                        'changeHeader':changeHeader,
+                        'percentChangeHeader':percentChangeHeader,
                         'todayPercentChange':todayPercentChange,
                         'todayChange':todayChange,
                         'when':announce,
@@ -394,7 +403,8 @@
                         'float':float,
                         'industry':company.industry,
                         'longDescription':company.description,
-                        'sector':company.sector
+                        'sector':company.sector,
+                        'logo':logo
                     };
 
                     return symbolObject;
@@ -535,7 +545,7 @@
                 //vm.list = sy.list;
                 getSymbolData(s,id,ad,ts,av,API_CONFIG).then(function(data) {
                     vm.lookupSymbol = data;
-                    console.log(vm.lookupSymbol);
+                    //console.log(vm.lookupSymbol);
                 });
                 vm.toggle = true;
             }

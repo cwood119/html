@@ -51,7 +51,9 @@
                 var company = $http.get('https://api.iextrading.com/1.0/stock/' + symbol + '/company');
                 var stats = $http.get('https://api.iextrading.com/1.0/stock/' + symbol + '/stats');
                 var headlines = $http.get('https://api.intrinio.com/news?ticker=' + symbol, intrinio);
-                return $q.all([quotes, symbol, id, timestamp, avgVol, added, when, triggerPrice,erClose,latestClose,change,percentChange,company,stats,headlines]);
+                var logo = $http.get('https://api.iextrading.com/1.0/stock/' + symbol + '/logo');
+                
+                return $q.all([quotes, symbol, id, timestamp, avgVol, added, when, triggerPrice,erClose,latestClose,change,percentChange,company,stats,headlines,logo]);
             }
         }
     }

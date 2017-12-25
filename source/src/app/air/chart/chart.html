@@ -1,6 +1,6 @@
 <div class="padded-content-page" ng-controller="chartController as vm">
-    <div layout="row" layout-sm="column" layout-xs="column">
-        <md-card id="de-chart" flex flex="60" class="flex-gt-sm-60">
+    <div layout="column" layout-gt-md="row">
+        <md-card id="de-chart" flex flex="60" class="flex-gt-md-60">
             <!-- TradingView Chart Widget  -->
             <iframe class="lookup-chart" ng-src="{{vm.chart}}"></iframe>
 
