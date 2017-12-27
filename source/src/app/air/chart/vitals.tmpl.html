@@ -63,9 +63,9 @@
 </md-content>
 <md-content id="vitals-external-container" class="white-background no-padding">
     <ul id="vitals-external">
-        <li ng-class="{'blurry-text': vm.lookupLoader}"><md-icon md-font-icon="fa fa-twitter" class="orange"></md-icon></li>
-        <li ng-class="{'blurry-text': vm.lookupLoader}"><md-icon md-font-icon="fa fa-google" class="orange"></md-icon></li>
-        <li ng-class="{'blurry-text': vm.lookupLoader}"><md-icon md-font-icon="fa fa-yahoo" class="orange"></md-icon></li>
-        <li ng-class="{'blurry-text': vm.lookupLoader}"><md-icon md-font-icon="fa fa-cloud" class="orange"></md-icon></li>
+        <a target="_blank" ng-href="{{vm.lookupSymbol.twitterUrl}}"><li ng-class="{'blurry-text': vm.lookupLoader}"><md-icon md-font-icon="fa fa-twitter" class="orange "></md-icon></li></a>
+        <a target="_blank" ng-href="{{vm.lookupSymbol.googleUrl}}"><li ng-class="{'blurry-text': vm.lookupLoader}"><md-icon md-font-icon="fa fa-google" class="orange"></md-icon></li></a>
+        <a target="_blank" ng-href="{{vm.lookupSymbol.yahooUrl}}"><li ng-class="{'blurry-text': vm.lookupLoader}"><md-icon md-font-icon="fa fa-yahoo" class="orange"></md-icon></li></a>
+        <a target="_blank" ng-href="{{vm.lookupSymbol.ratingsUrl}}"><li ng-class="{'blurry-text': vm.lookupLoader}"><md-icon md-font-icon="fa fa-comment" class="orange"></md-icon></li></a>
     </ul>
 </md-content>

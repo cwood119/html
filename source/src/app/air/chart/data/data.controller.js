@@ -305,6 +305,16 @@
                     var percentChangeHeader;
                     var shortPercent;
                     var announceDay = moment(when.date).format('MM/DD/YY');
+
+                    var twitterUrl = 'https://twitter.com/search?f=tweets&vertical=default&q=%24' + symbol;
+                    var googleUrl = 'https://www.google.com/finance?q=' + symbol; 
+                    var yahooUrl = 'http://finance.yahoo.com/quote/' + symbol + '?p=' + symbol;
+                    var ratingsUrl = 'https://www.benzinga.com/stock/' + symbol + '/ratings/';
+
+                    var secUrl = 'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=' + symbol + '&type=&dateb=&owner=exclude&count=100&output=xml';
+                    var statementsUrl = 'https://finance.google.com/finance?q=' + symbol + '&fstype=ii';
+                    var transcriptsUrl = 'https://seekingalpha.com/symbol/' + symbol + '/earnings/transcripts';
+
                     var chartUrl = 'https://www.tradingview.com/widgetembed/?symbol=' + symbol + '&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en&referral_id=5952';
 
                     if ( todayChange < 0) { percentChangeHeader =  todayPercentChange * -1; changeHeader =  todayChange * -1; }
@@ -381,7 +391,14 @@
                         'industry':company.industry,
                         'longDescription':company.description,
                         'sector':company.sector,
-                        'logo':logo
+                        'logo':logo,
+                        'twitterUrl':twitterUrl,
+                        'googleUrl':googleUrl,
+                        'yahooUrl':yahooUrl,
+                        'ratingsUrl':ratingsUrl,
+                        'secUrl':secUrl,
+                        'statementsUrl':statementsUrl,
+                        'transcriptsUrl':transcriptsUrl,
                     };
 
                     return symbolObject;
@@ -513,9 +530,6 @@
             vm.s = sy.symbol;
             if (vm.s != '') {
                 var chartUrl = 'https://www.tradingview.com/widgetembed/?symbol=' + vm.s + '&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en';
-                vm.secUrl = 'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=' + vm.symbol + '&type=&dateb=&owner=exclude&count=100&output=xml';
-                vm.googleUrl = 'https://www.google.com/finance?q=' + vm.symbol + '&fstype=ii';
-                vm.yahooUrl = 'http://finance.yahoo.com/q/ks?s=' + vm.symbol + '+Key+Statistics';
                 vm.chart = $sce.trustAsResourceUrl(chartUrl);
                 var s = sy.symbol;
                 var id = sy.id;
