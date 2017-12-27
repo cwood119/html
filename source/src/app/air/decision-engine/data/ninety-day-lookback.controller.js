@@ -47,7 +47,7 @@
 
                     yAxis: {
                         tickFormat: function(d){
-                            return d3.format(',')(d);
+                            return d3.format('.0f')(d);
                         },
                         domain: [0, 100000]
                     }

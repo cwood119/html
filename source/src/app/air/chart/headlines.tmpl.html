@@ -1,20 +1,20 @@
 <md-toolbar>
     <div class="md-toolbar-tools">
-        <h2 flex  ng-class="{'blurry-text': vm.mainLoader}">
+        <h2 flex  ng-class="{'blurry-text': vm.headlinesLoader}">
             <span translate>{{vm.lookupSymbol.symbol}} Headlines</span>
         </h2>
-        <md-input-container class="no-margin search-container" ng-class="{'blurry-text': vm.mainLoader}">
+        <md-input-container class="no-margin search-container" ng-class="{'blurry-text': vm.headlinesLoader}">
             <label>Search</label>
             <input type="text" ng-model="search">
         </md-input-container>
     </div>
 </md-toolbar>
-<md-list-item class="md-2-line" ng-repeat="headlines in vm.filtered = (vm.lookupSymbol.headlines | filter: {title:search} | limitTo: 3)">
+<md-list-item class="md-2-line lookup-headlines" ng-repeat="headlines in vm.filtered = (vm.lookupSymbol.headlines | filter: {title:search} | limitTo: 3)">
     <div class="md-list-item-text">
-        <p ng-class="{'blurry-text': vm.mainLoader}" class="md-subhead headline-row1">{{headlines.publication_date | limitTo:19 | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</p>
-        <a href="{{headlines.url}}" target="_blank"><h3 ng-class="{'blurry-text': vm.mainLoader}">{{headlines.title}}</h3></a>
+        <p ng-class="{'blurry-text': vm.headlinesLoader}" class="md-subhead headline-row1">{{headlines.publication_date | limitTo:19 | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</p>
+        <a href="{{headlines.url}}" target="_blank"><h3 ng-class="{'blurry-text': vm.headlinesLoader}">{{headlines.title}}</h3></a>
         <md-divider ></md-divider>
     </div>
 </md-list-item>
-<md-button class="float-right light-gray"  ng-class="{'blurry-text': vm.mainLoader}" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event,vm.lookupSymbol)">More</button>
+<md-button class="float-right light-gray"  ng-class="{'blurry-text': vm.headlinesLoader}" ng-disabled="dialogForm.$invalid" ng-click="vm.openHeadlines($event,vm.lookupSymbol)">More</button>
 

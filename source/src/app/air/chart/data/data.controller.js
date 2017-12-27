@@ -11,7 +11,8 @@
         // Page Variables
         vm.activate = function(){activate();};
         vm.currentPath = $location.path();
-        vm.list = 'ecalTracker';
+        //vm.list = 'ecalTracker';
+        vm.list = 'watchlist';
         vm.openSidebar = function(id) {$mdSidenav(id).toggle();vm.refreshSlider();};
         vm.toggleSearch = function() {vm.showSearch = !vm.showSearch;};
 
@@ -39,29 +40,6 @@
         vm.filterAdv = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
         vm.filterVolume = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
         
-        // Content Slider
-        $scope.slickConfig = {
-            method: {},
-            infinite: false,
-            slidesToShow: 3,
-            slidesToScroll: 1,
-            responsive: [
-                {
-                    breakpoint: 1245,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 2
-                    }
-                },
-                {
-                    breakpoint: 860,
-                    settings: {
-                        slidesToShow: 1,
-                        slidesToScroll:1 
-                    }
-                }
-            ]
-        };
 
         // Data Placeholders
         vm.lookupSymbol = {
@@ -119,6 +97,9 @@
             // Page Variables
             vm.emptySet = false;
             vm.mainLoader = true;
+            vm.lookupLoader = true;
+            vm.headlinesLoader = true;
+            vm.aboutLoader = true;
             vm.refreshToggle = 0;
 
             // Pagination Page Size
@@ -261,7 +242,7 @@
                         $window.open(uri);
                     };
 
-                } else {vm.mainLoader = false;vm.emptySet = true;}
+                } else {vm.mainLoader = false;vm.lookupLoader = false;vm.headlinesLoader = false;vm.aboutLoader = false;vm.emptySet = true;}
             });
         }
 
@@ -333,7 +314,7 @@
                     else { distance = '-'; }
 
                     if (float == '' || float == 0 || float == null) { shortPercent = '-'; }
-                    else { shortPercent = shortInterest/float; }
+                    else { shortPercent = 100 *(shortInterest/float); }
 
                     if ( when.announce == 1 ) { announce = 'After Market'; }
                     if ( when.announce == 2 ) { announce = 'Pre Market'; }
@@ -346,10 +327,6 @@
                     if (open == '' || open == 0 || open == null){ open = '-'; }
                     if (high == '' || high == 0 || high == null){ high = '-'; }
                     if (low == '' || low == 0 || low == null){ low = '-'; }
-                    if (vm.Change == '' || vm.Change == 0 || vm.Change == null){ vm.Change = '-'; }
-                    if (vm.percentChange == '' || vm.percentChange == 0 || vm.percentChange == null){ vm.percentChange = '-'; }
-                    if (todayPercentChange == '' || todayPercentChange == 0 || todayPercentChange == null){ todayPercentChange = '-'; }
-                    if (todayChange == '' || todayChange == 0 || todayChange == null){ todayChange = '-'; }
                     if (announce == '' || announce == 0 || announce == null){ announce = '-'; }
                     if (announceDay == '' || announceDay == 0 || announceDay == null){ announceDay = '-'; }
                     if (volume == '' || volume == 0 || volume == null){ volume = '-'; }
@@ -530,6 +507,9 @@
         };
 
         vm.lookup = function submit(sy) {
+            vm.lookupLoader = true;
+            vm.headlinesLoader = true;
+            vm.aboutLoader = true;
             vm.s = sy.symbol;
             if (vm.s != '') {
                 var chartUrl = 'https://www.tradingview.com/widgetembed/?symbol=' + vm.s + '&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en';
@@ -545,7 +525,39 @@
                 //vm.list = sy.list;
                 getSymbolData(s,id,ad,ts,av,API_CONFIG).then(function(data) {
                     vm.lookupSymbol = data;
-                    //console.log(vm.lookupSymbol);
+                    console.log(vm.lookupSymbol);
+                    $timeout(function(){
+                        jQuery(document).ready(function($) {
+
+                            // Content Slider
+                            vm.slickConfig = {
+                                method: {},
+                                infinite: false,
+                                slidesToShow: 3,
+                                slidesToScroll: 1,
+                                responsive: [
+                                    {
+                                        breakpoint: 1245,
+                                        settings: {
+                                            slidesToShow: 2,
+                                            slidesToScroll: 2
+                                        }
+                                    },
+                                    {
+                                        breakpoint: 860,
+                                        settings: {
+                                            slidesToShow: 1,
+                                            slidesToScroll:1 
+                                        }
+                                    }
+                                ]
+                            };
+                            $(window).trigger('resize');
+                            vm.lookupLoader = false;
+                            vm.headlinesLoader = false;
+                            vm.aboutLoader = false;
+                        });
+                    },1000);
                 });
                 vm.toggle = true;
             }

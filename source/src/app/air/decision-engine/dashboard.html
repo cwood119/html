@@ -36,27 +36,5 @@
             <ninety-day-forecast-widget flex flex="50" layout="column" start="vm.start" end="vm.end" time-spans="vm.timeSpans" on-time-change="vm.ninetyDayForecastTimeSpanChanged(span)" data="vm.forecastData.ninetyDayForecastData" options="vm.ninetyDayForecastOptions"></ninety-day-forecast-widget>
         </div>
     </div>
-
-    <!--<div layout="row" layout-xs="column">
-        <div flex="50" flex-xs="100" layout="column">
-            <md-card style="height:100%;">
-            <md-card-content style="height:100%;" ng-controller="ChartJsBarController as vm" ng-include="'app/air/decision-engine/charts/ninety.tmpl.html'"></md-card-content>
-        </md-card>
-        </div>
-        <div flex="50" flex-xs="100" layout="column">
-            <md-card>
-                <md-card-content ng-controller="ChartJsPieController as vm" ng-include="'app/air/decision-engine/chartjs-pie.tmpl.html'"></md-card-content>
-            </md-card>
-
-        </div>
-    </div>-->
-    <div layout="row" layout-sm="column" layout-xs="column">
-        <md-card flex flex="60" class="flex-gt-sm-60" ng-controller="announcementsController as vm">
-            <md-card-content ng-include="'app/air/decision-engine/announcements.tmpl.html'"></md-card-content>
-        </md-card>
-
-        <md-card flex flex="40" ng-controller="ecalTrackerController as vm">
-            <md-card-content ng-include="'app/air/decision-engine/ecal-tracker.tmpl.html'"></md-card-content>
-        </md-card>
-    </div>
+    <div ng-include="'app/air/chart/chart.html'"></div>
 </div>

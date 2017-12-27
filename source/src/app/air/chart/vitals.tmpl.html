@@ -1,51 +1,71 @@
 <md-content id="vitals-header" class="white-background no-padding">
     <!--<img ng-src="{{vm.lookupSymbol.logo}}">-->
-    <h1 id="vitals-symbol" ng-class="{'blurry-text': vm.mainLoader}">{{vm.lookupSymbol.symbol}}</h1>
-    <div ng-class="{'blurry-text': vm.mainLoader}">
+    <h1 id="vitals-symbol" class="help"  ng-class="{'blurry-text': vm.lookupLoader}">{{vm.lookupSymbol.symbol}}<md-tooltip>{{vm.lookupSymbol.name}}</md-tooltip></h1>
+    <div ng-class="{'blurry-text': vm.lookupLoader}">
         <h2 id="vitals-price">{{vm.lookupSymbol.price | number:2}}</h2>
-        <span ng-class="{'green': vm.lookupSymbol.todayChange > 0,'red':vm.lookupSymbol.todayChange < 0}">
+        <span class="vitals-change" ng-class="{'green': vm.lookupSymbol.todayChange > 0,'red':vm.lookupSymbol.todayChange < 0}">
             <md-icon class="green" ng-show="vm.lookupSymbol.todayChange > 0" md-svg-icon="arrow-up.svg" aria-label="arrow-up.svg" role="img"></md-icon>
             <md-icon class="vitals-arrow-down red" ng-show="vm.lookupSymbol.todayChange < 0" md-svg-icon="arrow-up.svg" aria-label="arrow-up.svg" role="img"></md-icon>
             {{vm.lookupSymbol.changeHeader | number:2}} ({{vm.lookupSymbol.percentChangeHeader | number:2}}%)
         </span>
     </div>
-    <div ng-class="{'blurry-text': vm.mainLoader}">{{vm.lookupSymbol.name}}</div>
-    <div ng-class="{'blurry-text': vm.mainLoader}">{{vm.lookupSymbol.industry}}: {{vm.lookupSymbol.sector}}</div>
+    <!--<div id="vitals-name" ng-class="{'blurry-text': vm.lookupLoader}"></div>-->
 </md-content>
 <md-content id="vitals-info" class="white-background no-padding">
     <ul id="vitals-ohl">
-        <li ng-class="{'blurry-text': vm.mainLoader}">O: </li>
-        <li ng-class="{'blurry-text': vm.mainLoader}">{{vm.lookupSymbol.open | number:2}}</li>
-        <li ng-class="{'blurry-text': vm.mainLoader}">H: </li>
-        <li ng-class="{'blurry-text': vm.mainLoader}">{{vm.lookupSymbol.high | number:2}}</li>
-        <li ng-class="{'blurry-text': vm.mainLoader}">L: </li>
-        <li ng-class="{'blurry-text': vm.mainLoader}">{{vm.lookupSymbol.low | number:2}}</li>
+        <li ng-class="{'blurry-text': vm.lookupLoader}">O: </li>
+        <li ng-class="{'blurry-text': vm.lookupLoader}">{{vm.lookupSymbol.open | number:2}}</li>
+        <li ng-class="{'blurry-text': vm.lookupLoader}">H: </li>
+        <li ng-class="{'blurry-text': vm.lookupLoader}">{{vm.lookupSymbol.high | number:2}}</li>
+        <li ng-class="{'blurry-text': vm.lookupLoader}">L: </li>
+        <li ng-class="{'blurry-text': vm.lookupLoader}">{{vm.lookupSymbol.low | number:2}}</li>
     </ul>
-    <table md-table class="md-primary md-data-table white-background vitals-table">
-        <tbody md-body>
-            <tr md-row>
-                <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>Short</td>
-                <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>
-                    {{vm.lookupSymbol.shortInterest | numeraljs:'0.0a'}} ({{vm.lookupSymbol.shortPercent | number:2}}%)
-                    <md-tooltip>As of {{vm.lookupSymbol.shortDate}}</md-tooltip>
-                </td>
-            </tr>
-            <tr md-body>
-                <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>Float</td>
-                <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>{{vm.lookupSymbol.float | numeraljs:'0.0a'}}</td>
-            </tr>
-            <tr md-body>
-                <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>Mkt Cap</td>
-                <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>{{vm.lookupSymbol.marketCap | numeraljs:'0.0a'}}</td>
-            </tr>
-            <tr md-body>
-                <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>Prev Range</td>
-                <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>{{vm.lookupSymbol.price | number:2}}-{{vm.lookupSymbol.price | number:2}}</td>
-            </tr>
-            <tr md-body>
-                <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>52 wk Range</td>
-                <td ng-class="{'blurry-text': vm.mainLoader}" md-cell>{{vm.lookupSymbol.week52low | number:2}} - {{vm.lookupSymbol.week52high | number:2}}</td>
-            </tr>
-        </tbody>
-    </table>
+    <ul class="white-background vitals-list vitals-line-item">
+        <li ng-class="{'blurry-text': vm.lookupLoader}" >Float</li>
+        <li ng-class="{'blurry-text': vm.lookupLoader}" >Short</li>
+        <li ng-class="{'blurry-text': vm.lookupLoader}" >Short %</li>
+    </ul>
+
+    <ul class="white-background vitals-list">
+        <li ng-class="{'blurry-text': vm.lookupLoader}" >
+            {{vm.lookupSymbol.float | numeraljs:'0.0a'}}
+            <span class="vitals-line-item-responsive">Float</span>
+        </li>
+        <li class="help" ng-class="{'blurry-text': vm.lookupLoader}" >
+            <span class="dotted-underline">{{vm.lookupSymbol.shortInterest | numeraljs:'0.0a'}}</span>
+            <md-tooltip>As of {{vm.lookupSymbol.shortDate}}</md-tooltip>
+            <span class="vitals-line-item-responsive">Short</span>
+        </li>
+        <li ng-class="{'blurry-text': vm.lookupLoader}" >
+            {{vm.lookupSymbol.shortPercent | number:2}} %
+            <span class="vitals-line-item-responsive">Short %</span>
+        </li>
+    </ul>
+    <ul class="white-background vitals-list vitals-line-item">
+        <li ng-class="{'blurry-text': vm.lookupLoader}" >Prev High</li>
+        <li ng-class="{'blurry-text': vm.lookupLoader}" >Prev Low</li>
+        <li ng-class="{'blurry-text': vm.lookupLoader}" >Mkt Cap</li>
+    </ul>
+    <ul class="white-background vitals-list">
+        <li ng-class="{'blurry-text': vm.lookupLoader}" >
+            {{vm.lookupSymbol.price | number:2}}
+            <span class="vitals-line-item-responsive">Prev High</span>
+        </li>
+        <li ng-class="{'blurry-text': vm.lookupLoader}" >
+            {{vm.lookupSymbol.price | number:2}}
+            <span class="vitals-line-item-responsive">Prev Low</span>
+        </li>
+        <li ng-class="{'blurry-text': vm.lookupLoader}" >
+            {{vm.lookupSymbol.marketCap | numeraljs:'0.0a'}}
+            <span class="vitals-line-item-responsive">Mkt Cap</span>
+        </li>
+    </ul>
+</md-content>
+<md-content id="vitals-external-container" class="white-background no-padding">
+    <ul id="vitals-external">
+        <li ng-class="{'blurry-text': vm.lookupLoader}"><md-icon md-font-icon="fa fa-twitter" class="orange"></md-icon></li>
+        <li ng-class="{'blurry-text': vm.lookupLoader}"><md-icon md-font-icon="fa fa-google" class="orange"></md-icon></li>
+        <li ng-class="{'blurry-text': vm.lookupLoader}"><md-icon md-font-icon="fa fa-yahoo" class="orange"></md-icon></li>
+        <li ng-class="{'blurry-text': vm.lookupLoader}"><md-icon md-font-icon="fa fa-cloud" class="orange"></md-icon></li>
+    </ul>
 </md-content>

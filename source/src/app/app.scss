@@ -35,14 +35,14 @@ a{color:$blue !important;}
 md-title{color:#212121;}
 
 // Text Styles 
-.dotted-underline { text-decoration:underline; text-decoration-style:dotted; }
+.dotted-underline { border-bottom: 1px dotted $light-gray; }
 .blue{color:$blue !important;}
 .green {color:#4CAF50 !important;}
 .purple {color: $deep-purple-500 !important;}
 .red {color:#F44336 !important;}
 .yellow {color: $yellow !important;}
 .white {color:white !important;}
-
+.orange{color: $orange !important;}
 .light-gray{color:$light-gray !important;}
 .medium-gray{color:$medium-gray !important;}
 .dark-gray{color:$dark-gray !important;}
@@ -294,7 +294,7 @@ md-select-menu.md-light-blue-theme md-content md-option[selected]{color:$blue !i
 .vitals-table-container tr:hover{background:#EEEEEE;}
 .vitals-table-container td {color:$medium-gray;padding:5px 0px 5px 0px;font-size: 19px;line-height: 45px}
 .vitals-table-container td:first-child {padding-left:5px;}
-.vitals-line-item-responsive {display:none;color: $light-gray !important;font-size: 13px !important;line-height: .1;padding-bottom: 10px;}
+.vitals-line-item-responsive {display:none;color: $light-gray !important;font-size: 13px !important;line-height: 1;padding-bottom: 10px;}
 
 // Old Filters
 .filter-group md-select {margin-top:0;display: inline-block;padding: 0px 5px 0px 5px;}
@@ -328,58 +328,46 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 .nv-axis.nv-y .tick line {display:none;}
 
 
-// Symbol Lookup
-.lookup-card {width: 60%;min-width: 300px;margin: auto;padding: 0px 5px 0px 5px;}
-.lookup-container {margin-bottom:0;}
+
+// DE Chart
 .lookup-chart-card {width:100%;height:500px;}
 .lookup-chart {height:515px;}
-.lookup-vitals-table-container {padding:25px;}
-.lookup-vitals-table-container table {width:100%;}
-.lookup-vitals-table-container tr {border-bottom:1px solid #EEEEEE; padding:10px;}
-.lookup-vitals-table-container tr:last-child {border-bottom:none;}
-.lookup-vitals-table-container tr:hover{background:#EEEEEE;}
-.lookup-vitals-table-container td {color:$medium-gray;padding:5px 0px 5px 0px;font-size: 19px;line-height: 45px}
-.lookup-vitals-table-container td:first-child {padding-left:5px;}
-.lookup-widget {background-size: 122px !important;background-repeat: no-repeat;background-position-y: -6px;background-position-x: 10px;text-align: right;}
-.lookup-sec{background-image: url(../../../assets/images/sec-logo.png);background-blend-mode: difference;color:rgb(136, 106, 58) !important}
-.lookup-google{background-image: url(../../../assets/images/google.png);}
-.lookup-quandl{background-image: url(../../../assets/images/quandl.svg);}
-.lookup-yahoo{background-image: url(../../../assets/images/yahoo.png);}
-#lookup-resources a:hover{text-decoration:none;}
 
 // DE Chart List 
 #chart-caption-container { position:relative;top:16px;width:95%;font-size: 13px; height: 45px; }
 #chart-caption-container li { display:inline-block;margin-left:20px;text-transform:uppercase;color:#212121;float:right; } 
 #chart-list-table th.md-subhead.md-column.ng-binding.ng-scope.ng-isolate-scope { padding: 0; }
 
-// DE Vitals
-.vitals-table { width: 49% !important;  min-width: 49% !important; float:right; font-size: 14px; color: $medium-gray}
-.vitals-table td { color: $medium-gray !important; font-size: 14px !important; padding-left: 30px !important; }
-#vitals-header {
-    width: 50%;
-    height: 328px; 
-    display: inline-block;
-    float: left;
-    border-right: 2px dashed $lighter-gray;
-    text-align: center;
-}
+// DE Vitals Card
+.vitals-list { margin: 15px; display:inline-block; }
+.vitals-list li { color: $medium-gray !important; text-align:left; }
+#vitals-header { text-align: center; }
+#vitals-symbol { color: $orange; margin:0; padding-top:10px; }
 #vitals-header div { width:100%; }
 #vitals-header img { margin: auto; }
-#vitals-header md-icon {
-    min-height: 14px;
-    min-width: 14px;
-    width: 20px;
-    height: 17px;
-    position: relative;
-    bottom: 1px;
-    right: -4px;
-}
-#vitals-symbol { color: $orange; margin-top: 50px; }
-#vitals-price { display: inline-block; margin-right:5px; }
+#vitals-header md-icon { min-height: 14px; min-width: 14px; width: 20px; height: 17px; position: relative; bottom: 1px; right: -4px; }
+#vitals-price { display: inline-block; }
+#vitals-name, #vitals-industry {font-size: 14px;color:$medium-gray;}
+.vitals-change {   }
 .vitals-arrow-down { -webkit-transform: rotate(180deg);transform: rotate(180deg); }
-#vitals-info { width: 49%; height: 328px; }
-#vitals-ohl { text-align:center; }
+#vitals-info { text-align:center; }
+#vitals-ohl { text-align:center; margin-bottom: 15px; }
 #vitals-ohl li { display: inline-block; }
+ul#vitals-ohl>li:nth-child(odd){ color: #757575; }
+ul#vitals-ohl>li:nth-child(even){ color: $blue; }
+ul#vitals-external { text-align: center; margin-top: 25px;}
+ul#vitals-external li { display: inline-block; }
+ul#vitals-external md-icon.orange.md-light-blue-theme.md-font.material-icons { font-size: 1.5rem; }
+// DE About Card
+#about-description { color: $medium-gray;  }
+
+// DE Headlines Card
+.lookup-headlines { padding: 0px 0px 0px 0px;  }
+
+// DE Slider List
+.lookup-card { min-height: 328px !important; }
+.lookup-container {margin-bottom:0;}
+
 // DE Slider Fab
 .slick-prev, .slick-next { 
     min-width: 40px;
@@ -389,8 +377,8 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
     border-radius: 100%;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.12), 0 4px 4px rgba(0, 0, 0, 0.24);
  }
-.slick-prev {left: 0px !important;}
-.slick-next {right: 0px !important;}
+.slick-prev {left: -11px !important;}
+.slick-next {right: -11px !important;}
 .slick-prev:before {
     font-family: 'Material-Design-Iconic-Font' !important;
     content: '\f2fa' !important;
@@ -420,10 +408,8 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
     .lookup-chart {height:400px;}
 }
 @media all and (max-width:1000px){.lookup-widget {background-size: 80px !important;background-position-y: 12px;}}
-@media all and (max-width:959px){.lookup-widget {background-size: 122px !important;background-position-y: -6px;}}
-@media all and (max-width:900px){
-    .vitals-line-item-responsive{display:block;}
-    .vitals-line-item{display:none;}
+@media all and (max-width:959px){
+    .lookup-card { min-height: 312px !important; }
 }
 @media all and (max-width:880px){
     .ninety-day-outlook-responsive{display: block;}
@@ -445,7 +431,7 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
     .symbol-card{width: 95%;}
     .filter-group label {display:block;}
 }
-
+ 
 @media all and (max-width:600px){ .symbol-table-pagination{margin-bottom:75px;}}
 
 @media all and (max-width:525px){ .views-buttons{display: block;margin: auto;}}
@@ -454,11 +440,17 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
     .symbol-card{width:97%;margin-bottom:5px;}
     .lookup-chart-card {height:350px;}
     .lookup-chart {height:350px;}
+    .vitals-line-item-responsive{display:block;}
+    .vitals-line-item{display:none;}
 }
 
 @media all and (max-width: 450px){
     .padded-content-page{padding: 16px 0 !important}
     .reset-menu-container {right: 0px;}
+    .custom-slick { padding:15px; }
+    .slick-prev {left: 0px !important;}
+    .slick-next {right: 0px !important;}
+    .lookup-card { min-height: 320px !important; }
 }
 @media all and (max-width: 470px){
     .vitals-table td {padding:0px !important}
@@ -466,6 +458,9 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 }
 @media all and (max-width:425px){
     .list-subhead{float:none;display:block;}
+    .vitals-list{margin-top:0px; margin-bottom:0px;}
+    ul#vitals-external{margin-top:5px;}
+    #vitals-ohl {margin-bottom:10px;}
 }
 @media all and (max-width:414px){ /* iPhone 6 Plus, Nexus 5X */
 

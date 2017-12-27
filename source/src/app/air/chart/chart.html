@@ -1,4 +1,4 @@
-<div class="padded-content-page" ng-controller="chartController as vm">
+<div ng-controller="chartController as vm">
     <div layout="column" layout-gt-md="row">
         <md-card id="de-chart" flex flex="60" class="flex-gt-md-60">
             <!-- TradingView Chart Widget  -->
@@ -20,14 +20,9 @@
             <md-card-content ng-include="'app/air/chart/list.tmpl.html'"></md-card-content>
         </md-card>
     </div>
-    <!-- Trade Planning and Info Cards  -->
-    <!--<md-button class="white-background slider-fab" aria-label="previous" ng-click="slickConfig.method.slickPrev()">
-        <md-icon class="medium-gray" md-font-icon="zmdi zmdi-chevron-left"></md-icon>
-    </md-button>-->
-    <slick class="padding-15" settings="slickConfig">
-        <md-card flex="50" class="slick-item" ng-include="'app/air/chart/vitals.tmpl.html'"></md-card>
-        <md-card flex="50" class="slick-item" ng-include="'app/air/chart/headlines.tmpl.html'"></md-card>
-        <md-card flex="50" class="slick-item" ng-include="'app/air/chart/vitals.tmpl.html'"></md-card>
-        <md-card flex="50" class="slick-item" ng-include="'app/air/chart/vitals.tmpl.html'"></md-card>
+    <slick class="custom-slick" settings="vm.slickConfig">
+        <md-card flex="50" class="lookup-card slick-item" ng-include="'app/air/chart/vitals.tmpl.html'"></md-card>
+        <md-card flex="50" class="lookup-card slick-item" ng-include="'app/air/chart/about.tmpl.html'"></md-card>
+        <md-card flex="50" class="lookup-card slick-item" ng-include="'app/air/chart/headlines.tmpl.html'"></md-card>
     </slick>
 </div>
