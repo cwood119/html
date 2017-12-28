@@ -11,8 +11,8 @@
         // Page Variables
         vm.activate = function(){activate();};
         vm.currentPath = $location.path();
-        //vm.list = 'ecalTracker';
-        vm.list = 'watchlist';
+        vm.list = 'ecalTracker';
+        //vm.list = 'watchlist';
         vm.openSidebar = function(id) {$mdSidenav(id).toggle();vm.refreshSlider();};
         vm.toggleSearch = function() {vm.showSearch = !vm.showSearch;};
 
@@ -327,38 +327,13 @@
                     if (list == 'alerts') { distance = triggerPrice-price; }
                     else { distance = '-'; }
 
-                    if (float == '' || float == 0 || float == null) { shortPercent = '-'; }
+                    if (float == '' || float == 0 || float == null) { shortPercent = ''; }
                     else { shortPercent = 100 *(shortInterest/float); }
 
                     if ( when.announce == 1 ) { announce = 'After Market'; }
                     if ( when.announce == 2 ) { announce = 'Pre Market'; }
                     if ( when.announce == 3 ) { announce = 'Intraday'; }
                     if ( when.announce == 4 ) { announce = 'Unknown'; }
-
-                    if (added == '' || added == 0 || added == null){ added = '-'; }
-                    if (name == '' || name == 0 || name == null){ name = '-'; }
-                    if (price == '' || price == 0 || price == null){ price = '-'; }
-                    if (open == '' || open == 0 || open == null){ open = '-'; }
-                    if (high == '' || high == 0 || high == null){ high = '-'; }
-                    if (low == '' || low == 0 || low == null){ low = '-'; }
-                    if (announce == '' || announce == 0 || announce == null){ announce = '-'; }
-                    if (announceDay == '' || announceDay == 0 || announceDay == null){ announceDay = '-'; }
-                    if (volume == '' || volume == 0 || volume == null){ volume = '-'; }
-                    if (avgVol == '' || avgVol == 0 || avgVol == null){ avgVol = '-'; }
-                    if (exchange == '' || exchange == 0 || exchange == null){ exchange = '-'; }
-                    if (headlines == '' || headlines == 0 || headlines == null){ headlines = '-'; }
-                    if (distance == '' || distance == 0 || distance == null){ distance = '-'; }
-                    if (triggerPrice == '' || triggerPrice == 0 || triggerPrice == null){ triggerPrice = '-'; }
-                    if (chartUrl == '' || chartUrl == 0 || chartUrl == null){ chartUrl = '-'; }
-                    if (marketCap == '' || marketCap == 0 || marketCap == null){ marketCap = '-'; }
-                    if (week52high == '' || week52high == 0 || week52high == null){ week52high = '-'; }
-                    if (week52low == '' || week52low == 0 || week52low == null){ week52low = '-'; }
-                    if (week52change == '' || week52change == 0 || week52change == null){ week52change = '-'; }
-                    if (shortInterest == '' || shortInterest == 0 || shortInterest == null){ shortInterest = '-'; }
-                    if (shortPercent == '' || shortPercent == 0 || shortPercent == null){ shortPercent = '-'; }
-                    if (shortDate == '' || shortDate == 0 || shortDate == null){ shortDate = '-'; }
-                    if (float == '' || float == 0 || float == null){ float = '-'; }
-                    if (logo == '' || logo == 0 || logo == null){ logo = 'https://automatedinvestmentresearch.com/app/assets/images/Blue-Logo.svg'; }
 
                     var symbolObject = {
                         'id':id,

@@ -27,17 +27,22 @@
     </ul>
 
     <ul class="white-background vitals-list">
-        <li ng-class="{'blurry-text': vm.lookupLoader}" >
-            {{vm.lookupSymbol.float | numeraljs:'0.0a'}}
+        <li ng-class="{'blurry-text': vm.lookupLoader}">
+            <span ng-show="vm.lookupSymbol.float == 0">-</span>
+            <span ng-hide="vm.lookupSymbol.float == 0">{{vm.lookupSymbol.float | numeraljs:'0.0a'}}</span>
             <span class="vitals-line-item-responsive">Float</span>
         </li>
         <li class="help" ng-class="{'blurry-text': vm.lookupLoader}" >
-            <span class="dotted-underline">{{vm.lookupSymbol.shortInterest | numeraljs:'0.0a'}}</span>
-            <md-tooltip>As of {{vm.lookupSymbol.shortDate}}</md-tooltip>
+            <span ng-show="vm.lookupSymbol.shortInterest == 0">-</span>
+            <span ng-hide="vm.lookupSymbol.shortInterest == 0">
+                <span class="dotted-underline">{{vm.lookupSymbol.shortInterest | numeraljs:'0.0a'}}</span>
+                <md-tooltip>As of {{vm.lookupSymbol.shortDate}}</md-tooltip>
+            </span>
             <span class="vitals-line-item-responsive">Short</span>
         </li>
-        <li ng-class="{'blurry-text': vm.lookupLoader}" >
-            {{vm.lookupSymbol.shortPercent | number:2}} %
+        <li ng-class="{'blurry-text': vm.lookupLoader}">
+            <span ng-show="vm.lookupSymbol.shortPercent == 0">-</span>
+            <span ng-hide="vm.lookupSymbol.shortPercent == 0 ">{{vm.lookupSymbol.shortPercent | number:2}} %</span>
             <span class="vitals-line-item-responsive">Short %</span>
         </li>
     </ul>
@@ -47,16 +52,19 @@
         <li ng-class="{'blurry-text': vm.lookupLoader}" >Mkt Cap</li>
     </ul>
     <ul class="white-background vitals-list">
-        <li ng-class="{'blurry-text': vm.lookupLoader}" >
-            {{vm.lookupSymbol.price | number:2}}
+        <li ng-class="{'blurry-text': vm.lookupLoader}">
+            <span ng-show="vm.lookupSymbol.price == 0">-</span>
+            <span ng-hide="vm.lookupSymbol.price == 0">{{vm.lookupSymbol.price | number:2}}</span>
             <span class="vitals-line-item-responsive">Prev High</span>
         </li>
-        <li ng-class="{'blurry-text': vm.lookupLoader}" >
-            {{vm.lookupSymbol.price | number:2}}
+        <li ng-class="{'blurry-text': vm.lookupLoader}">
+            <span ng-show="vm.lookupSymbol.price == 0">-</span>
+            <span ng-hide="vm.lookupSymbol.price == 0">{{vm.lookupSymbol.price | number:2}}</span>
             <span class="vitals-line-item-responsive">Prev Low</span>
         </li>
-        <li ng-class="{'blurry-text': vm.lookupLoader}" >
-            {{vm.lookupSymbol.marketCap | numeraljs:'0.0a'}}
+        <li ng-class="{'blurry-text': vm.lookupLoader}">
+            <span ng-show="vm.lookupSymbol.marketCap == 0">-</span>
+            <span ng-hide="vm.lookupSymbol.marketCap == 0">{{vm.lookupSymbol.marketCap | numeraljs:'0.0a'}}</span>
             <span class="vitals-line-item-responsive">Mkt Cap</span>
         </li>
     </ul>
