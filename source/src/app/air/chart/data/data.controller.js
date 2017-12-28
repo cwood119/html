@@ -145,7 +145,7 @@
             };
 
             // Table Columns Show/Hide Menu
-            if (vm.list == 'ecal' || vm.list == 'ecalUpdate' || vm.list == 'ecalTracker') {
+            if (vm.list == 'ecal' || vm.list == 'ecalUpdate' || vm.list == 'ecalTracker' || vm.list == 'ecalNext') {
                 vm.columnsMenu = [
                     {'index':1,'name':'Price','checked':vm.showPrice,'disabled':'false','label':'Show/Hide Price Column'},
                     {'index':2,'name':'Change','checked':vm.showDollarChange,'disabled':'false','label':'Show/Hide Dollar Change Column'},
@@ -214,9 +214,10 @@
                         vm.download.push(s);
 
                         if (list == 'alerts') { var tp = value.alert; }
+                        if (list == 'ecalNext') { var w = value; }
 
                         vm.updated = new Date(value.timestamp).toLocaleString();
-                        getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange).then(function(data) {
+                        getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange,w,list).then(function(data) {
                             vm.symbols.push(data);
                             vm.symbols.sort(function(a, b){ return b.percentChange-a.percentChange; });
                             vm.symbolOne = vm.symbols[0];
@@ -256,8 +257,8 @@
                 });
         }
 
-        function getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange) {
-            return chartService.getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange)
+        function getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange,w,list) {
+            return chartService.getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange,w,list)
                 .then(function(data) {
 
                     // Data
@@ -267,7 +268,11 @@
                     var timestamp = parseInt(data[3]);
                     var avgVol = parseInt(data[4]);
                     var added = data[5];
-                    var when = data[6].data[0];
+                    var list = vm.list;
+                    var when;
+
+                    if (list == 'ecalNext') { when = data[6]; }
+                    else { when = data[6].data[0]; }
                     var triggerPrice = data[7];
                     var company = data[12].data;
                     var stats = data[13].data;
@@ -290,7 +295,6 @@
                     var high = quotes.high;
                     var low = quotes.low;
                     vm.percentChange = quotes.change_percentage;
-                    var list = vm.list;
                     if (list == 'ecalTracker') { vm.change = data[10]; vm.percentChange = data[11]; }
                     else { vm.change = quotes.change; }
                     var todayPercentChange = quotes.change_percentage;
@@ -398,7 +402,7 @@
                         'ratingsUrl':ratingsUrl,
                         'secUrl':secUrl,
                         'statementsUrl':statementsUrl,
-                        'transcriptsUrl':transcriptsUrl,
+                        'transcriptsUrl':transcriptsUrl
                     };
 
                     return symbolObject;
@@ -539,7 +543,6 @@
                 //vm.list = sy.list;
                 getSymbolData(s,id,ad,ts,av,API_CONFIG).then(function(data) {
                     vm.lookupSymbol = data;
-                    console.log(vm.lookupSymbol);
                     $timeout(function(){
                         jQuery(document).ready(function($) {
 
