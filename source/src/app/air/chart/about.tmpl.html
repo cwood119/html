@@ -1,12 +1,12 @@
 <md-toolbar>
     <div class="md-toolbar-tools">
-        <h2 flex  ng-class="{'blurry-text': vm.aboutLoader}">
-            <span translate>About</span>
+        <h2 flex id="about-header" ng-class="{'blurry-text': vm.aboutLoader}">
+            <span translate>About {{vm.lookupSymbol.symbol}}</span>
         </h2>
     </div>
 </md-toolbar>
 
-<md-content id="vitals-about" class="white-background no-padding">
+<md-content id="vitals-about" class="white-background">
     <ul id="about-list">
         <li ng-class="{'blurry-text': vm.aboutLoader}" >Industy: {{vm.lookupSymbol.industry}}</li>
         <li ng-class="{'blurry-text': vm.aboutLoader}" >Sector: {{vm.lookupSymbol.sector}}</li>

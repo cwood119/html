@@ -358,8 +358,11 @@ ul#vitals-ohl>li:nth-child(even){ color: $blue; }
 ul#vitals-external { text-align: center; margin-top: 25px;}
 ul#vitals-external li { display: inline-block; }
 ul#vitals-external md-icon.orange.md-light-blue-theme.md-font.material-icons { font-size: 1.5rem; }
+
 // DE About Card
 #about-description { color: $medium-gray;  }
+#about-list { color: $medium-gray; padding: 0px 25px 0px 25px; }
+#about-header { padding-left: 10px; }
 
 // DE Headlines Card
 .lookup-headlines { padding: 0px 0px 0px 0px;  }
