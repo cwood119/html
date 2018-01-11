@@ -54,12 +54,12 @@
     <ul class="white-background vitals-list">
         <li ng-class="{'blurry-text': vm.lookupLoader}">
             <span ng-show="vm.lookupSymbol.price == 0">-</span>
-            <span ng-hide="vm.lookupSymbol.price == 0">{{vm.lookupSymbol.price | number:2}}</span>
+            <span ng-hide="vm.lookupSymbol.price == 0">{{vm.lookupSymbol.prevHigh}}</span>
             <span class="vitals-line-item-responsive">Prev High</span>
         </li>
         <li ng-class="{'blurry-text': vm.lookupLoader}">
             <span ng-show="vm.lookupSymbol.price == 0">-</span>
-            <span ng-hide="vm.lookupSymbol.price == 0">{{vm.lookupSymbol.price | number:2}}</span>
+            <span ng-hide="vm.lookupSymbol.price == 0">{{vm.lookupSymbol.prevLow}}</span>
             <span class="vitals-line-item-responsive">Prev Low</span>
         </li>
         <li ng-class="{'blurry-text': vm.lookupLoader}">

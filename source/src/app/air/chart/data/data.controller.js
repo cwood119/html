@@ -279,6 +279,17 @@
                     var headlines = data[14].data.data;
                     var logo = data[15].data.url;
 
+                    // Previous 
+                    var previous = data[16].data;
+                    var prevOpen = previous.open;
+                    var prevHigh = previous.high;
+                    var prevLow = previous.low;
+                    var prevClose = previous.close;
+                    var prevChange = previous.change;
+                    var prevChangePercent = previous.changePercent;
+                    var prevVwap = previous.vwap;
+                    var prevVolume = previous.volume;
+
                     // Stats
                     var shortInterest = stats.shortInterest;
                     var shortDate = stats.shortDate;
@@ -301,6 +312,9 @@
                     var todayChange = quotes.change;
                     var volume = quotes.volume;
                     var exchange = quotes.exch;
+
+                    // Price Range
+                    var avgRange = ((high-low)+(prevHigh-prevLow))/2;
 
                     // Custom
                     var announce;
@@ -377,7 +391,10 @@
                         'ratingsUrl':ratingsUrl,
                         'secUrl':secUrl,
                         'statementsUrl':statementsUrl,
-                        'transcriptsUrl':transcriptsUrl
+                        'transcriptsUrl':transcriptsUrl,
+                        'prevHigh':prevHigh,
+                        'prevLow':prevLow,
+                        'avgRange':avgRange
                     };
 
                     return symbolObject;
