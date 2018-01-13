@@ -39,16 +39,14 @@
             return $q.all([headlines]);
         }
 
-        function getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange,w,list) {
+        function getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange,list) {
             if (symbol != '') {
                 var symbol = s;
                 var added = ad;
                 var timestamp = ts;
                 var avgVol = av;
                 var triggerPrice = tp;
-                var when;
-                if (list == 'ecalNext'){ when = w; }
-                else { when = $http.get(API_CONFIG.url + 'when/' + symbol); }
+                if (list != 'ecalNext'){ var when = $http.get(API_CONFIG.url + 'when/' + symbol); }
                 var quotes = $http.get('https://api.tradier.com/v1/markets/quotes?symbols=' + symbol, tradier);
                 var company = $http.get('https://api.iextrading.com/1.0/stock/' + symbol + '/company');
                 var stats = $http.get('https://api.iextrading.com/1.0/stock/' + symbol + '/stats');

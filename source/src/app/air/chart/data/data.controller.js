@@ -11,8 +11,8 @@
         // Page Variables
         vm.activate = function(){activate();};
         vm.currentPath = $location.path();
-        vm.list = 'ecalTracker';
-        //vm.list = 'watchlist';
+        //vm.list = 'ecalTracker';
+        vm.list = 'ecalNext';
         vm.openSidebar = function(id) {$mdSidenav(id).toggle();vm.refreshSlider();};
         vm.toggleSearch = function() {vm.showSearch = !vm.showSearch;};
 
@@ -214,10 +214,10 @@
                         vm.download.push(s);
 
                         if (list == 'alerts') { var tp = value.alert; }
-                        if (list == 'ecalNext') { var w = value; }
+                        if (list == 'ecalNext') { vm.announce = value.announce; vm.announceDay = value.date; }
 
                         vm.updated = new Date(value.timestamp).toLocaleString();
-                        getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange,w,list).then(function(data) {
+                        getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange,list).then(function(data) {
                             vm.symbols.push(data);
                             vm.symbols.sort(function(a, b){ return b.percentChange-a.percentChange; });
                             vm.symbolOne = vm.symbols[0];
@@ -257,8 +257,8 @@
                 });
         }
 
-        function getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange,w,list) {
-            return chartService.getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange,w,list)
+        function getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange,list) {
+            return chartService.getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange,list)
                 .then(function(data) {
 
                     // Data
@@ -269,10 +269,8 @@
                     var avgVol = parseInt(data[4]);
                     var added = data[5];
                     var list = vm.list;
-                    var when;
 
-                    if (list == 'ecalNext') { when = data[6]; }
-                    else { when = data[6].data[0]; }
+                    if (list != 'ecalNext') { vm.announce = data[6].data[0].announce; vm.announceDay = data[6].data[0].date; }
                     var triggerPrice = data[7];
                     var company = data[12].data;
                     var stats = data[13].data;
@@ -317,12 +315,13 @@
                     var avgRange = ((high-low)+(prevHigh-prevLow))/2;
 
                     // Custom
-                    var announce;
+                    var aDay = vm.announceDay;
+                    var announce = vm.announce;
                     var distance;
                     var changeHeader;
                     var percentChangeHeader;
                     var shortPercent;
-                    var announceDay = moment(when.date).format('MM/DD/YY');
+                    var announceDay = moment(aDay).format('MM/DD/YY');
 
                     var twitterUrl = 'https://twitter.com/search?f=tweets&vertical=default&q=%24' + symbol;
                     var googleUrl = 'https://www.google.com/finance?q=' + symbol; 
@@ -344,10 +343,10 @@
                     if (float == '' || float == 0 || float == null) { shortPercent = ''; }
                     else { shortPercent = 100 *(shortInterest/float); }
 
-                    if ( when.announce == 1 ) { announce = 'After Market'; }
-                    if ( when.announce == 2 ) { announce = 'Pre Market'; }
-                    if ( when.announce == 3 ) { announce = 'Intraday'; }
-                    if ( when.announce == 4 ) { announce = 'Unknown'; }
+                    if ( announce == 1 ) { announce = 'After Market'; }
+                    if ( announce == 2 ) { announce = 'Pre Market'; }
+                    if ( announce == 3 ) { announce = 'Intraday'; }
+                    if ( announce == 4 ) { announce = 'Unknown'; }
 
                     var symbolObject = {
                         'id':id,
