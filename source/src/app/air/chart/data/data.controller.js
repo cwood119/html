@@ -11,8 +11,8 @@
         // Page Variables
         vm.activate = function(){activate();};
         vm.currentPath = $location.path();
-        //vm.list = 'ecalTracker';
-        vm.list = 'ecalNext';
+        vm.list = 'ecalTracker';
+        //vm.list = 'ecalNext';
         vm.openSidebar = function(id) {$mdSidenav(id).toggle();vm.refreshSlider();};
         vm.toggleSearch = function() {vm.showSearch = !vm.showSearch;};
 

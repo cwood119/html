@@ -260,7 +260,8 @@ md-tabs { height:100%; }
 .symbol-container {padding-top:10px !important;padding-bottom:10px !important;min-width:85px;}
 .price-container {width:140px;text-align: center !important;}
 .chart-container {min-width:115px;max-width:125px;padding:10px 40px 10px 0px!important}
-.search-container {top:15px;width:175px;}
+.search-container {height:35px;width:175px;}
+.search-container-responsive {display:none;}
 md-icon.material-icons.fa.fa-bell-o.toggle-filter-long-up-arrow.md-light-blue-theme {font-size: 13px;padding: 0;top: -1px;position: relative;}
 
 // Symbol Table chart
@@ -341,7 +342,7 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 
 // DE Vitals Card
 .vitals-list { margin: 15px; display:inline-block; }
-.vitals-list li { color: $medium-gray !important; text-align:left; }
+.vitals-list li { color: $medium-gray !important; text-align:left; margin-bottom: 5px; }
 #vitals-header { text-align: center; }
 #vitals-symbol { color: $orange; margin:0; padding-top:10px; }
 #vitals-header div { width:100%; }
@@ -356,14 +357,26 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 #vitals-ohl li { display: inline-block; }
 ul#vitals-ohl>li:nth-child(odd){ color: #757575; }
 ul#vitals-ohl>li:nth-child(even){ color: $blue; }
-ul#vitals-external { text-align: center; margin-top: 25px;}
-ul#vitals-external li { display: inline-block; }
+ul#vitals-external { text-align: center; margin-top: 33px;}
+ul#vitals-external li, ul#about-external li { display: inline-block; }
 ul#vitals-external md-icon.orange.md-light-blue-theme.md-font.material-icons { font-size: 1.5rem; }
 
 // DE About Card
-#about-description { color: $medium-gray;  }
+#about-description {
+    color: #616161;
+    margin-top: 0;
+    margin-bottom: 0;
+    max-height: 120px;
+    min-height: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+}
 #about-list { color: $medium-gray; padding: 0px 25px 0px 25px; }
 #about-header { padding-left: 10px; }
+#about-external { text-align: center; color:$medium-gray; margin-top: 10px; }
 
 // DE Headlines Card
 .lookup-headlines { padding: 0px 0px 0px 0px;  }
@@ -429,6 +442,7 @@ ul#vitals-external md-icon.orange.md-light-blue-theme.md-font.material-icons { f
     .lookup-card {width: 95%;}
     .lookup-chart-card {width:100%;height:375px;}
     .lookup-chart {width:100%;height:375px;}
+    ul#vitals-external {margin-top: 18px;}
 }
 
 @media all and (max-width:730px){
@@ -446,6 +460,8 @@ ul#vitals-external md-icon.orange.md-light-blue-theme.md-font.material-icons { f
     .lookup-chart {height:350px;}
     .vitals-line-item-responsive{display:block;}
     .vitals-line-item{display:none;}
+    ul#vitals-external {margin-top:0px;}
+    #vitals-ohl, .vitals-list {margin-bottom:0px;}
 }
 
 @media all and (max-width: 450px){
@@ -465,12 +481,16 @@ ul#vitals-external md-icon.orange.md-light-blue-theme.md-font.material-icons { f
     .vitals-list{margin-top:0px; margin-bottom:0px;}
     ul#vitals-external{margin-top:5px;}
     #vitals-ohl {margin-bottom:10px;}
+    .vitals-list li {margin-bottom:1px;}
+    .md-dialog-content {padding:0px !important;}
 }
 @media all and (max-width:414px){ /* iPhone 6 Plus, Nexus 5X */
 
 }
 @media all and (max-width:375px){ /* iPhone 6 */
-
+    .search-container {display:none;}
+    .search-container-responsive {display:block; width: 90%; margin: auto !important;}
+    .md-dialog-content {min-height: 550px}
 }
 @media all and (max-width:360px){ /* Nexus 5 */
     .symbol-card-row1 .md-subhead{font-size:11px;}

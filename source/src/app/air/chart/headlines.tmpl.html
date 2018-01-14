@@ -3,12 +3,12 @@
         <h2 flex  ng-class="{'blurry-text': vm.headlinesLoader}">
             <span translate>{{vm.lookupSymbol.symbol}} Headlines</span>
         </h2>
-        <md-input-container class="no-margin search-container" ng-class="{'blurry-text': vm.headlinesLoader}">
-            <label>Search</label>
-            <input type="text" ng-model="search">
+        <md-input-container md-no-float class="no-margin search-container" ng-class="{'blurry-text': vm.headlinesLoader}">
+            <input type="text" ng-model="search" placeholder="Search">
         </md-input-container>
     </div>
 </md-toolbar>
+
 <md-list-item class="md-2-line lookup-headlines" ng-repeat="headlines in vm.filtered = (vm.lookupSymbol.headlines | filter: {title:search} | limitTo: 3)">
     <div class="md-list-item-text">
         <p ng-class="{'blurry-text': vm.headlinesLoader}" class="md-subhead headline-row1">{{headlines.publication_date | limitTo:19 | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</p>

@@ -4,17 +4,21 @@
             <h2 flex >
                 <span translate>{{modal.symbol.symbol}} Headlines</span>
             </h2>
-        <md-input-container class="no-margin search-container">
-            <label>Search</label>
-            <input type="text" ng-model="search">
-        </md-input-container>
+            <md-input-container md-no-float class="no-margin search-container">
+                <input type="text" ng-model="search" placeholder="Search">
+            </md-input-container>
 
             <md-button class="md-icon-button" ng-controller="dialogController as vm" ng-click="vm.cancelClick()" aria-label="cancel">
                 <md-icon md-font-icon="zmdi zmdi-close"></md-icon>
             </md-button>
         </div>
+
     </md-toolbar>
 
+            <md-input-container class="no-margin search-container-responsive">
+                <label>Search</label>
+                <input type="text" ng-model="search">
+            </md-input-container>
     <md-progress-linear data-loading="modal.symbol.loading" ng-show="modal.symbol.loading" class="md-accent" md-mode="indeterminate"></md-progress-linear>
     <md-dialog-content class="md-dialog-content">
         <md-list-item class="md-2-line" ng-repeat="headlines in vm.filtered = (modal.symbol.headlines | filter: {title:search})">
