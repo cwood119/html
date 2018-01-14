@@ -14,9 +14,9 @@
 
     <p id="about-description" class="padding-25" ng-class="{'blurry-text': vm.headlinesLoader}">{{vm.lookupSymbol.longDescription}}</p>
 
-    <ul id="about-external">
-        <a target="_blank" ng-href="{{vm.lookupSymbol.secUrl}}"><li ng-class="{'blurry-text': vm.lookupLoader}">Filings</li></a> | 
-        <a target="_blank" ng-href="{{vm.lookupSymbol.statementsUrl}}"><li ng-class="{'blurry-text': vm.lookupLoader}">Statements</li></a> | 
-        <a target="_blank" ng-href="{{vm.lookupSymbol.transcriptsUrl}}"><li ng-class="{'blurry-text': vm.lookupLoader}">Transcripts</li></a>
+    <ul id="about-external" ng-class="{'blurry-text': vm.lookupLoader}">
+        <a target="_blank" ng-href="{{vm.lookupSymbol.secUrl}}"><li>Filings</li></a> | 
+        <a target="_blank" ng-href="{{vm.lookupSymbol.statementsUrl}}"><li>Statements</li></a> | 
+        <a target="_blank" ng-href="{{vm.lookupSymbol.transcriptsUrl}}"><li>Transcripts</li></a>
     </ul>
 </md-content>

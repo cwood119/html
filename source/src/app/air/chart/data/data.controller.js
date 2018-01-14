@@ -406,7 +406,7 @@
         };
 
         // Check for New Data Every 60 Seconds
-        $interval(updateCheck, 300000);
+        $interval(updateCheck, 1);
 
         // Price Filter and Controls
         vm.filterFn = function()

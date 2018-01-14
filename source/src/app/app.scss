@@ -247,7 +247,7 @@ md-tabs { height:100%; }
 .external-links-button{width: 100%;margin: auto;text-transform:none;text-align:center !important;font-weight:500 !important;}
 
 // Symbol Table
-.list-symbol{font-size: 20px;font-weight: 400;letter-spacing: 0.005em;color: $medium-gray;cursor:pointer;}
+.list-symbol{font-size: 20px;font-weight: 400;letter-spacing: 0.005em;color: $medium-gray;}
 .list-template-container{padding-bottom: 0;}
 .list-card{max-width:1550px;margin:auto;}
 .list-buttons{position: absolute;top: 13px;right: 0;}
@@ -339,6 +339,19 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 #chart-caption-container li { display:inline-block;margin-left:20px;text-transform:uppercase;color:#212121;float:right; } 
 #chart-list-table th.md-subhead.md-column.ng-binding.ng-scope.ng-isolate-scope { padding: 0; }
 .chart-when-icon {line-height: 22px !important;padding-left: 3px}
+.list-buttons-menu-responsive { top: -5px; position: relative; }
+.list-buttons-menu-item {line-height: 2.5;}
+.list-buttons-menu-item-nested {
+    margin: 0 6px !important;
+    width: 100% !important;
+    font-weight: normal;
+    text-transform: none;
+    text-align: left;
+ }
+.list-buttons-menu-item-nested > md-icon {
+    margin-right: 16px;
+}
+.list-buttons-menu-item>button { width: 100% !important; }
 
 // DE Vitals Card
 .vitals-list { margin: 15px; display:inline-block; }

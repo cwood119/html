@@ -23,11 +23,6 @@
             <input type="text" ng-model="search" show-focus="vm.showSearch">
         </md-input-container>
         <!-- Table Controls -->
-        <div class="list-buttons" hide-gt-xs ng-show="!vm.showSearch">
-            <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
-                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw" ></md-icon>
-            </md-button>
-        </div>
         <div class="list-buttons" hide-xs>
             <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
                 <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw" ></md-icon>
@@ -54,6 +49,59 @@
                 </md-menu-content>
             </md-menu>
         </div>
+
+        <md-menu hide-gt-xs class="list-buttons-menu-responsive">
+            <md-button class="md-icon-button" aria-label="open menu" ng-click="$mdOpenMenu()">
+                <md-icon md-font-icon="fa fa-gear"></md-icon>
+            </md-button>
+
+            <md-menu-content width="3">
+                <md-menu-item class="list-buttons-menu-item">
+                    <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
+                        <md-icon class="list-buttons-icon float-left" md-font-icon="zmdi zmdi-replay zmdi-hc-fw"></md-icon>
+                        Refresh
+                    </md-button> 
+                </md-menu-item>
+
+                <md-menu-item class="list-buttons-menu-item">
+                    <md-button aria-label="search" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.showSearch = !vm.showSearch">
+                        <md-icon class="list-buttons-icon float-left" md-font-icon="zmdi zmdi-search"></md-icon>
+                        Search
+                    </md-button>
+                </md-menu-item>
+
+                <md-menu-item class="list-buttons-menu-item">
+                    <md-button aria-label="filter" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.openSidebar('filter-sidebar')">
+                        <md-icon class="list-buttons-icon float-left" md-font-icon="zmdi zmdi-filter-list"></md-icon>
+                        Filter
+                    </md-button>
+                </md-menu-item>
+
+                <md-menu-item class="list-buttons-menu-item">
+                    <md-button aria-label="download symbols" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" download="symbols.txt" ng-click="vm.downloadSymbols()">
+                        <md-icon class="list-buttons-icon float-left" md-font-icon="zmdi zmdi-download"></md-icon>
+                        Download
+                    </md-button>
+                    
+                </md-menu-item>
+
+                <md-menu-item class="list-buttons-menu-item">
+                    <md-menu class="no-padding">
+                        <md-button aria-label="show hide columns" class="list-buttons-menu-item-nested md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="$mdOpenMenu()">
+                            <md-icon class="float-left"  md-font-icon="zmdi zmdi-view-column"></md-icon>
+                            Columns
+                        </md-button>
+                        <md-menu-content width="3">
+                            <md-menu-item ng-repeat="column in vm.columnsMenu" >
+                                <md-input-container class="md-block">
+                                    <md-checkbox class="md-primary" ng-click="vm.columnClick(column.index,!column.checked)" ng-model="column.checked" ng-disabled="{{column.disabled}}" aria-label="{{column.label}}">{{column.name}}</md-checkbox>
+                                </md-input-container>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
     </div>
 </md-toolbar>
 <md-progress-linear data-loading="vm.mainLoader" ng-show="vm.mainLoader" class="md-accent" md-mode="indeterminate"></md-progress-linear>
@@ -67,10 +115,10 @@
         </thead>
 
         <tbody md-body>
-            <tr md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter:vm.volumeFilter() | filter: vm.avgVolFilter() | filter: {symbol:search}) | 
+            <tr class="pointer" md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter:vm.volumeFilter() | filter: vm.avgVolFilter() | filter: {symbol:search}) | 
             orderBy: vm.query.order| limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize track by symbol.id" ng-click="vm.lookup(symbol);">
                 <td md-cell class="symbol-container">
-                    <div class="list-symbol">{{symbol.symbol}}<md-tooltip>{{symbol.name}}</md-tooltip></div>
+                    <div class="list-symbol help">{{symbol.symbol}}<md-tooltip>{{symbol.name}}</md-tooltip></div>
                     <div class="md-body-1" ng-show="vm.list === 'alerts'">
                         <md-icon class="material-icons fa fa-bell-o toggle-filter-long-up-arrow" aria-hidden="true"></md-icon>
                         <md-icon class="material-icons zmdi zmdi-long-arrow-up toggle-filter-long-up-arrow" aria-hidden="true"></md-icon>
