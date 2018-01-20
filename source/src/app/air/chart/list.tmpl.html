@@ -22,13 +22,20 @@
             <label>Search</label>
             <input type="text" ng-model="search" show-focus="vm.showSearch">
         </md-input-container>
+
+        <md-input-container class="no-margin search-container-responsive" ng-show="vm.showSearch">
+            <label>Search</label>
+            <input type="text" ng-model="search" show-focus="vm.showSearch">
+        </md-input-container>
+
         <!-- Table Controls -->
         <div class="list-buttons" hide-xs>
             <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
                 <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw" ></md-icon>
             </md-button>
             <md-button aria-label="search" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.showSearch = !vm.showSearch">
-                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-search" ></md-icon>
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-search" ng-show="!vm.showSearch"></md-icon>
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-close" ng-show="vm.showSearch"></md-icon>
             </md-button>
             <md-button aria-label="filter" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.openSidebar('filter-sidebar')">
                 <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-filter-list"></md-icon>
@@ -52,7 +59,7 @@
 
         <md-menu hide-gt-xs class="list-buttons-menu-responsive">
             <md-button class="md-icon-button" aria-label="open menu" ng-click="$mdOpenMenu()">
-                <md-icon md-font-icon="fa fa-gear"></md-icon>
+                <md-icon md-font-icon="zmdi zmdi-more-vert"></md-icon>
             </md-button>
 
             <md-menu-content width="3">
@@ -65,7 +72,8 @@
 
                 <md-menu-item class="list-buttons-menu-item">
                     <md-button aria-label="search" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.showSearch = !vm.showSearch">
-                        <md-icon class="list-buttons-icon float-left" md-font-icon="zmdi zmdi-search"></md-icon>
+                        <md-icon class="list-buttons-icon float-left" md-font-icon="zmdi zmdi-search" ng-show="!vm.showSearch"> </md-icon>
+                        <md-icon class="list-buttons-icon float-left" md-font-icon="zmdi zmdi-close" ng-show="vm.showSearch"></md-icon>
                         Search
                     </md-button>
                 </md-menu-item>

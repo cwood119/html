@@ -328,7 +328,9 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 .card-loader{height: 612px;}
 .nv-axis.nv-y .tick line {display:none;}
 
-
+// DE Counter Widgets
+.de-counter-container {min-height:128px !important;}
+.de-counter-number {min-height:56px !important;}
 
 // DE Chart
 .lookup-chart-card {width:100%;height:500px;}
@@ -339,7 +341,7 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 #chart-caption-container li { display:inline-block;margin-left:20px;text-transform:uppercase;color:#212121;float:right; } 
 #chart-list-table th.md-subhead.md-column.ng-binding.ng-scope.ng-isolate-scope { padding: 0; }
 .chart-when-icon {line-height: 22px !important;padding-left: 3px}
-.list-buttons-menu-responsive { top: -5px; position: relative; }
+.list-buttons-menu-responsive { top: -5px; top: -25px; left: 20px; position: relative; }
 .list-buttons-menu-item {line-height: 2.5;}
 .list-buttons-menu-item-nested {
     margin: 0 6px !important;
@@ -388,6 +390,11 @@ ul#vitals-external md-icon.orange.md-light-blue-theme.md-font.material-icons { f
     -webkit-box-orient: vertical;
 }
 #about-list { color: $medium-gray; padding: 0px 25px 0px 25px; }
+ul#about-list>li {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 #about-header { padding-left: 10px; }
 #about-external { text-align: center; color:$medium-gray; margin-top: 10px; }
 
