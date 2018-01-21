@@ -276,6 +276,78 @@ $app->get('/ecalFrom/:start/:end', function ($start,$end) use ($app) {
     }
 });
 
+$app->get('/initStream', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $token = get_token();
+    if (null !== $token) {
+        $app->response->setStatus(200);
+        echo $token;
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
+
+$app->get('/streamTest', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+    $response->header('Content-Type: application/octet-stream');
+
+    $url = 'https://stream.tradier.com/v1/markets/events?symbols=DNR&sessionid=cfb0b5f5-aa8a-45a3-9dc0-1a79f3e62a6d';
+    
+$context = stream_context_create($options);
+// make the request
+$response = file_get_contents($url, false, $context);
+echo $response;
+print_r(json_decode($response));
+
+});
+
+$app->get('/stream/:symbols/:sessionid', function ($symbols,$sessionid) use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+    $response->header('Content-Type: application/octet-stream');
+
+    $quotes = get_stream($symbols,$sessionid);
+    if (null !== $quotes) {
+        $app->response->setStatus(200);
+        echo $quotes;
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
+function get_stream($symbols,$sessionid) {
+    echo 'symbol is '.$symbols;
+    echo 'sessionid is '.$sessionid;
+    $auth = "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6";
+    $url = 'https://stream.tradier.com/v1/markets/events?symbols=' . $symbols . '&sessionid=' . $sessionid;
+    //header('Content-Type: application/octet-stream');
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_VERBOSE, false);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    //curl_setopt($ch,CURLOPT_POSTFIELDS, $auth);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  
+    //curl_setopt($ch, CURLOPT_HTTPHEADER, array("accept:application/json"));
+
+    $data = curl_exec($ch);
+    echo $data;
+    curl_close ($ch);
+    
+    //return $data;
+}
+
+
+
 // Data Functions
 function get_ecal() {
     $pdo = connect_to_db();    
@@ -329,7 +401,8 @@ function get_ecalFuture() {
 
 function get_ecalTracker() {
     $pdo = connect_to_db();    
-    $data = $pdo->query('SELECT * FROM ecal_tracker WHERE erOpen != 0  ORDER BY date ASC;')->fetchAll();
+    //$data = $pdo->query('SELECT * FROM ecal_tracker WHERE erOpen != 0  ORDER BY date ASC;')->fetchAll();
+    $data = $pdo->query('SELECT * FROM ecal_tracker WHERE erOpen != 0;')->fetchAll();
     return $data;
 }
 
@@ -404,12 +477,30 @@ function get_ecalYear($year) {
 function get_ecalFrom($start,$end) {
     $pdo = connect_to_db();
 
-    $sth = $pdo->prepare('SELECT symbol, announce, avgVol, date FROM earnings_calendar_archive WHERE date BETWEEN ? AND ? ORDER BY date ASC');
+    $sth = $pdo->prepare('
+        SELECT max(id) as id, symbol, announce, avgVol, max(`earnings_calendar_archive`.`date`) as date FROM earnings_calendar_archive WHERE date BETWEEN ? AND ? GROUP BY symbol, month(`earnings_calendar_archive`.`date`) ORDER BY date ASC
+    ');
     $sth->bindParam(1, $start, PDO::PARAM_STR, 12);
     $sth->bindParam(2, $end, PDO::PARAM_STR, 12);
     $sth->execute();
     $data = $sth->fetchAll();
     return $data;
 }
+
+function get_token() {
+    $auth = "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6";
+    $url = 'https://api.tradier.com/v1/markets/events/session';
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_VERBOSE, false);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch,CURLOPT_POSTFIELDS, $auth);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array($auth,"accept:application/json"));
+    $data = curl_exec ($ch);
+    curl_close ($ch);
+    return $data;
+}
+
 
 $app->run();
