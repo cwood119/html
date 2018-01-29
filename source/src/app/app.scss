@@ -323,7 +323,11 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 .dashboard-trophy{font-size: 18px !important;text-align: center;line-height: 22px !important;}
 .calendar-heatmap > svg.svg {width:100% !important;}
 .list-subhead{float:right;color: rgba(0,0,0,0.54);font-size: 14px;}
+#ninety-day-outlook {min-height:303px;}
 .ninety-day-outlook-responsive{display:none;}
+.outlook-heading { font-size: 20px;padding: 15px 0px 0px 20px;color: $dark-gray; }
+.outlook-sub-heading { font-size: 15px; padding-left: 20px;color: $medium-gray; }
+.google-chart{padding-bottom: 20px;}
 .list-subhead md-select {margin:0;}
 .card-loader{height: 612px;}
 .nv-axis.nv-y .tick line {display:none;}

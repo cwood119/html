@@ -19,22 +19,28 @@
         </md-card>
     </div>-->
     <div id="ninety-day-outlook" layout="row" layout-xs="column">
-        <div flex="50" flex-xs="100" ng-controller="ninetyDayLookbackController as vm">
-            <ninety-day-lookback-widget flex flex="50" layout="column" start="vm.start" end="vm.end" time-spans="vm.timeSpans" on-time-change="vm.ninetyDayLookbackTimeSpanChanged(span)" data="vm.lookbackData.ninetyDayLookbackData" options="vm.ninetyDayLookbackOptions"></ninety-day-lookback-widget>
-        </div>
+        <md-card flex="50" flex-xs="100" ng-controller="lookbackController as vm">
+            <div class="outlook-heading">90 day lookback</div>
+            <div class="outlook-sub-heading">{{vm.firstLookback | date:'longDate' }} - {{vm.lastLookback | date:'longDate'}}</div>
+            <div class="google-chart" google-chart chart="::vm.lookbackData"></div>
+        </md-card>
         <div flex="50" flex-xs="100" ng-controller="ninetyDayForecastController as vm">
             <ninety-day-forecast-widget flex flex="50" layout="column" start="vm.start" end="vm.end" time-spans="vm.timeSpans" on-time-change="vm.ninetyDayForecastTimeSpanChanged(span)" data="vm.forecastData.ninetyDayForecastData" options="vm.ninetyDayForecastOptions"></ninety-day-forecast-widget>
         </div>
     </div>
     <div class="ninety-day-outlook-responsive" layout="row" layour-xs="column">
-        <div flex="100" flex-xs="100" ng-controller="ninetyDayLookbackController as vm">
-            <ninety-day-lookback-widget flex flex="50" layout="column" start="vm.start" end="vm.end" time-spans="vm.timeSpans" on-time-change="vm.ninetyDayLookbackTimeSpanChanged(span)" data="vm.lookbackData.ninetyDayLookbackData" options="vm.ninetyDayLookbackOptions"></ninety-day-lookback-widget>
-        </div>
+        <md-card flex="100" flex-xs="100" ng-controller="lookbackController as vm">
+            <div class="outlook-heading">90 day lookback</div>
+            <div class="outlook-sub-heading">{{vm.firstLookback | date:'longDate' }} - {{vm.lastLookback | date:'longDate'}}</div>
+            <div class="google-chart" google-chart chart="::vm.lookbackData"></div>
+        </md-card>
     </div>
     <div class="ninety-day-outlook-responsive" layout="row" layour-xs="column">
         <div flex="100" flex-xs="100" ng-controller="ninetyDayForecastController as vm">
             <ninety-day-forecast-widget flex flex="50" layout="column" start="vm.start" end="vm.end" time-spans="vm.timeSpans" on-time-change="vm.ninetyDayForecastTimeSpanChanged(span)" data="vm.forecastData.ninetyDayForecastData" options="vm.ninetyDayForecastOptions"></ninety-day-forecast-widget>
         </div>
     </div>
+
+
     <div ng-include="'app/air/chart/chart.html'"></div>
 </div>
