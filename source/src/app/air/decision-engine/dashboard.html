@@ -1,33 +1,51 @@
 <div class="padded-content-page" ng-controller="countersController as vm">
+    <!-- Counter Widgets  -->
     <div layout="row" layout-xs="column" layout-wrap>
         <div flex flex-sm="50">
+            <a href="#!/earnings-calendar">
             <counter-widget flex flex-sm="50" title="Announcements" count="vm.ecal.length" icon="zmdi zmdi-calendar-check" background="deep-orange-500" color="white"></counter-widget>
+            </a>
         </div>
         <div flex flex-sm="50">
+            <a href="#!/ecalPre">
             <counter-widget flex flex-sm="50" title="Pre Market" count="vm.ecalPre.length" icon="wi wi-horizon-alt"  background="light-blue-500" color="white"></counter-widget>
+            </a>
         </div>
         <div flex flex-sm="50">
+            <a href="#!/ecalAfter">
             <counter-widget flex flex-sm="50" title="After Market" count="vm.ecalAfter.length" icon="wi wi-night-clear"  background="deep-purple-500" color="white"></counter-widget>
+            </a>
         </div>
         <div flex flex-sm="50">
+            <a href="#!/market-movers">
             <counter-widget flex flex-sm="50" title="Market Movers" count="vm.gainers.length" icon="zmdi zmdi-trending-up"  background="green-500" color="white"></counter-widget>
+            </a>
         </div>
     </div>
+
 <!--    <div flex flex="100" layout="row">
         <md-card flex flex="100" ng-controller="decisionController as vm">
             <calendar-heatmap data="example_data" color="color" width="100%" overview="overview" handler="print"></calendar-heatmap>
         </md-card>
     </div>-->
+
+    <!-- Outlook elements -->
     <div id="ninety-day-outlook" layout="row" layout-xs="column">
         <md-card flex="50" flex-xs="100" ng-controller="lookbackController as vm">
-            <div class="outlook-heading">90 day lookback</div>
+            <div class="outlook-heading">90 Day Lookback</div>
             <div class="outlook-sub-heading">{{vm.firstLookback | date:'longDate' }} - {{vm.lastLookback | date:'longDate'}}</div>
             <div class="google-chart" google-chart chart="::vm.lookbackData"></div>
         </md-card>
-        <div flex="50" flex-xs="100" ng-controller="ninetyDayForecastController as vm">
-            <ninety-day-forecast-widget flex flex="50" layout="column" start="vm.start" end="vm.end" time-spans="vm.timeSpans" on-time-change="vm.ninetyDayForecastTimeSpanChanged(span)" data="vm.forecastData.ninetyDayForecastData" options="vm.ninetyDayForecastOptions"></ninety-day-forecast-widget>
+
+        <md-card flex="50" flex-xs="100" ng-controller="forecastController as vm">
+            <div class="outlook-heading">90 Day Forecast</div>
+            <div class="outlook-sub-heading">{{vm.firstForecast | date:'longDate' }} - {{vm.lastForecast | date:'longDate'}}</div>
+            <div class="google-chart" google-chart chart="::vm.forecastData"></div>
+        </md-card>
+
         </div>
     </div>
+    <!-- Responsive outlook elements -->
     <div class="ninety-day-outlook-responsive" layout="row" layour-xs="column">
         <md-card flex="100" flex-xs="100" ng-controller="lookbackController as vm">
             <div class="outlook-heading">90 day lookback</div>
@@ -35,12 +53,7 @@
             <div class="google-chart" google-chart chart="::vm.lookbackData"></div>
         </md-card>
     </div>
-    <div class="ninety-day-outlook-responsive" layout="row" layour-xs="column">
-        <div flex="100" flex-xs="100" ng-controller="ninetyDayForecastController as vm">
-            <ninety-day-forecast-widget flex flex="50" layout="column" start="vm.start" end="vm.end" time-spans="vm.timeSpans" on-time-change="vm.ninetyDayForecastTimeSpanChanged(span)" data="vm.forecastData.ninetyDayForecastData" options="vm.ninetyDayForecastOptions"></ninety-day-forecast-widget>
-        </div>
-    </div>
 
 
-    <div ng-include="'app/air/chart/chart.html'"></div>
+    <div ng-include="'app/air/chart/chart.html'" class="dashboard-content-container" ></div>
 </div>
