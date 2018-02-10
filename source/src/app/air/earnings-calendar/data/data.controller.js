@@ -181,7 +181,7 @@
                                 $timeout(function(){
                                     vm.mainLoader = false;
                                     $timeout(resize,1);
-                                },5000);
+                                },2000);
                             }
                         });
                     },1000);

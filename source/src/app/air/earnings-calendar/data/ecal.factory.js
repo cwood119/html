@@ -71,18 +71,18 @@
 
         function getSymbolData(s,id,w,ts,av,d,today) {
             if (symbol != '') {
+                var day;
                 var announce = w;
                 var avgVol = av;
                 var symbol = s;
                 var timestamp = ts;
                 var timeSales;
                 var historicalQuotes = [];
-
                 //var dataPoints = $http.get('https://api.intrinio.com/data_point?identifier=' + s + '&item=average_daily_volume,marketcap', intrinio);
                 if (d == today) { timeSales = $http.get('https://api.tradier.com/v1/markets/timesales?symbol=' + symbol + '&interval=5min&session_filter=open', tradier); }
                 else {
                     var thisDay = moment().format('dddd');
-                    if (thisDay == 'Saturday') { d = moment(d).subtract(1,'day'); }
+                    if (thisDay == 'Saturday') { d = moment(d).subtract(1,'day').format('YYYY-MM-DD'); }
                     if (thisDay == 'Sunday') { d = moment(d).subtract(2,'day').format('YYYY-MM-DD'); }
                     timeSales = $http.get('https://api.tradier.com/v1/markets/timesales?symbol=' + symbol + '&start=' + d + ' 09:30&end=' + d + ' 16:00&interval=5min', tradier);
                     var y = moment(d).subtract(1,'day');
