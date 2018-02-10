@@ -16,13 +16,15 @@
             var last = data[0].data.length-1;
             vm.lastForecast = data[0].data[last].date; 
             angular.forEach(forecast,function(value){
-                var date = value.date;
+                var date = new Date(value.date);
+                date.setDate(date.getDate() + 1);
+
                 var count = value.count;
-                var obj = { c: [ {v:new Date(date)},{v:count}  ]  };
+                var obj = { c: [ {v:date},{v:count}  ]  };
                 vm.rows.push(obj);
-console.log(vm.rows);
             });
         });
+
         vm.forecastData = {
             type: 'AreaChart',
             data: {
@@ -38,6 +40,8 @@ console.log(vm.rows);
                 colors: ['#03A9F4'],
                 vAxis: { gridlines: { color: 'transparent' } },
                 hAxis: { gridlines: { color: '#EEEEEE' } },
+          curveType: 'function',
+
                 width: '100%',
             }
         };
