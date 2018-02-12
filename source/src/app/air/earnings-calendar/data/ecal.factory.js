@@ -71,7 +71,6 @@
 
         function getSymbolData(s,id,w,ts,av,d,today) {
             if (symbol != '') {
-                var day;
                 var announce = w;
                 var avgVol = av;
                 var symbol = s;

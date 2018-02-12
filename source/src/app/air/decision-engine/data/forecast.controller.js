@@ -26,23 +26,21 @@
         });
 
         vm.forecastData = {
-            type: 'AreaChart',
+            type: 'Bar',
             data: {
                 'cols': [
-                    {id: 'day', label: 'Day', type: 'date'},
+                    {id: 'day', type: 'date'},
                     {id: 'count', label: 'Announcements', type: 'number'}
                 ],
                 'rows': vm.rows
-
             },
             options: {
-                legend: { position: 'bottom' },
+                legend: { position: 'none' },
                 colors: ['#03A9F4'],
-                vAxis: { gridlines: { color: 'transparent' } },
-                hAxis: { gridlines: { color: '#EEEEEE' } },
-          curveType: 'function',
-
+                vAxis: { gridlines: { color: 'transparent' }, legend: { position:'none' } },
+                hAxis: { gridlines: { color: 'transparent' }, legend: { position:'none' } },
                 width: '100%',
+                height: '100%'
             }
         };
 

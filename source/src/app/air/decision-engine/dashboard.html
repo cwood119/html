@@ -1,6 +1,6 @@
-<div class="padded-content-page" ng-controller="countersController as vm">
+<div class="dashboard-content-container" ng-controller="countersController as vm">
     <!-- Counter Widgets  -->
-    <div layout="row" layout-xs="column" layout-wrap>
+    <div class="dashboard-counters-container" layout="row" layout-xs="column" layout-wrap>
         <div flex flex-sm="50">
             <a href="#!/earnings-calendar">
             <counter-widget flex flex-sm="50" title="Announcements" count="vm.ecal.length" icon="zmdi zmdi-calendar-check" background="deep-orange-500" color="white"></counter-widget>
@@ -32,13 +32,13 @@
     <!-- Outlook elements -->
     <div id="ninety-day-outlook" layout="row" layout-xs="column">
         <md-card flex="50" flex-xs="100" ng-controller="lookbackController as vm">
-            <div class="outlook-heading">90 Day Lookback</div>
+            <div class="outlook-heading">Earnings Lookback</div>
             <div class="outlook-sub-heading">{{vm.firstLookback | date:'longDate' }} - {{vm.lastLookback | date:'longDate'}}</div>
             <div class="google-chart" google-chart chart="::vm.lookbackData"></div>
         </md-card>
 
         <md-card flex="50" flex-xs="100" ng-controller="forecastController as vm">
-            <div class="outlook-heading">90 Day Forecast</div>
+            <div class="outlook-heading">Earnings Forecast</div>
             <div class="outlook-sub-heading">{{vm.firstForecast | date:'longDate' }} - {{vm.lastForecast | date:'longDate'}}</div>
             <div class="google-chart" google-chart chart="::vm.forecastData"></div>
         </md-card>
@@ -48,12 +48,19 @@
     <!-- Responsive outlook elements -->
     <div class="ninety-day-outlook-responsive" layout="row" layour-xs="column">
         <md-card flex="100" flex-xs="100" ng-controller="lookbackController as vm">
-            <div class="outlook-heading">90 day lookback</div>
+            <div class="outlook-heading">Earnings lookback</div>
             <div class="outlook-sub-heading">{{vm.firstLookback | date:'longDate' }} - {{vm.lastLookback | date:'longDate'}}</div>
             <div class="google-chart" google-chart chart="::vm.lookbackData"></div>
         </md-card>
     </div>
-
+ 
+    <div class="ninety-day-outlook-responsive" layout="row" layour-xs="column">
+        <md-card flex="100" flex-xs="100" ng-controller="forecastController as vm">
+            <div class="outlook-heading">Earnings Forecast</div>
+            <div class="outlook-sub-heading">{{vm.firstForecast | date:'longDate' }} - {{vm.lastForecast | date:'longDate'}}</div>
+            <div class="google-chart" google-chart chart="::vm.forecastData"></div>
+        </md-card>
+    </div>
 
     <div ng-include="'app/air/chart/chart.html'" class="dashboard-content-container" ></div>
 </div>
