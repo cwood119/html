@@ -1,5 +1,4 @@
 <md-content id="vitals-header" class="white-background no-padding">
-    <!--<img ng-src="{{vm.lookupSymbol.logo}}">-->
     <h1 id="vitals-symbol" class="help"  ng-class="{'blurry-text': vm.lookupLoader}">{{vm.lookupSymbol.symbol}}<md-tooltip>{{vm.lookupSymbol.name}}</md-tooltip></h1>
     <div ng-class="{'blurry-text': vm.lookupLoader}">
         <h2 id="vitals-price">{{vm.lookupSymbol.price | number:2}}</h2>

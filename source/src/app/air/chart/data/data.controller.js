@@ -5,7 +5,7 @@
         .controller('chartController', chartController);
 
     /* @ngInject */
-    function chartController($http, $mdDialog, $location, $document, $timeout, $interval, $window, $mdSidenav, $scope, chartService, API_CONFIG, $sce) {
+    function chartController($http, $mdDialog, $location, $document, $timeout, $interval, $window, $mdSidenav, $scope, chartService, API_CONFIG, $sce, filterFilter) {
         var vm = this;
 
         // Page Variables
@@ -57,8 +57,6 @@
             'shortPercent': 12.34,
             'float': 12.34,
             'marketCap': 12.34,
-            'week52low': 12.34,
-            'week52high': 12.34,
             'headlines': [
                 {
                     'publication_date':moment(),
@@ -188,47 +186,68 @@
             }
 
             // Build Symbol List
-            
+            vm.announceData = []; 
+            vm.bulkQuotes = [];
             vm.symbols = [];
             vm.download = [];
 
             return getSymbolsList(API_CONFIG, list).then(function(data) {
                 if (data[0].data.length != 0) {
 
+                    vm.announceData = data[0].data;
+
                     if (data[0].data.length < vm.pageSize) { vm.showPagination = false; }
                     else { vm.showPagination = true; }
-                    
-                    // Get Symbols
+            
+                    // Prepare all symbols for bulk quotes
                     var symbols = data[0].data;
+                    var symbolsObject = [];
                     angular.forEach(symbols,function(value){
                         var s = value.symbol;
-                        var id = value.id;
-                        var ad = value.added;
-                        var ts = value.timestamp;
-                        var av = value.avgVol;
-                        var erClose = value.erClose;
-                        var latestClose = value.latestClose;
-                        var change = latestClose - erClose;
-                        var pChange = (change / erClose) * 100;
-                        var percentChange = Number(pChange);
-                        vm.download.push(s);
+                        symbolsObject.push(s);
+                    });
 
-                        if (list == 'alerts') { var tp = value.alert; }
-                        if (list == 'ecalNext') { vm.announce = value.announce; vm.announceDay = value.date; }
+                    var allSymbols = symbolsObject.toString();
 
-                        vm.updated = new Date(value.timestamp).toLocaleString();
-                        getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange,list).then(function(data) {
-                            vm.symbols.push(data);
-                            vm.symbols.sort(function(a, b){ return b.percentChange-a.percentChange; });
-                            vm.symbolOne = vm.symbols[0];
-                            var index = vm.symbols.length;
-                            if ( index == symbols.length) {
-                                var symbolOne = vm.symbolOne;
-                                vm.lookup(symbolOne);
-                                vm.mainLoader = false;
-                            }
+                    getBulkQuotes(allSymbols).then(function(data) {
+                        vm.bulkQuotes.push(data);
+
+                        // Look Through Symbols 
+                        angular.forEach(symbols,function(value){
+                            var s = value.symbol;
+                            var id = value.id;
+                            var ad = value.added;
+                            var ts = value.timestamp;
+                            var av = value.avgVol;
+                            var erClose = value.erClose;
+                            var latestClose = value.latestClose;
+                            var change = latestClose - erClose;
+                            var pChange = (change / erClose) * 100;
+                            var percentChange = Number(pChange);
+                            vm.download.push(s);
+
+                            if (list == 'alerts') { var tp = value.alert; }
+                            if (list == 'ecalNext') { vm.announce = value.announce; vm.announceDay = value.date; }
+
+                            vm.updated = new Date(value.timestamp).toLocaleString();
+
+                            // Build Symbol Objects
+                            getSymbolData(s,id,ad,ts,av,API_CONFIG,tp,erClose,latestClose,change,percentChange,list).then(function(data) {
+                                vm.symbols.push(data);
+                                vm.symbols.sort(function(a, b){ return b.percentChange-a.percentChange; });
+
+                                // Get First Symbol in List to run Lookup Function on
+                                vm.symbolOne = vm.symbols[0];
+                                var index = vm.symbols.length;
+                                if ( index == symbols.length) {
+                                    var symbolOne = vm.symbolOne;
+                                    vm.lookup(symbolOne);
+                                    vm.mainLoader = false;
+                                }
+                            });
                         });
                     });
+
 
                     vm.downloadSymbols = function() {
 
@@ -247,11 +266,30 @@
             });
         }
 
-        
-
         // Get Data from Service
         function getSymbolsList(API_CONFIG, list) {
             return chartService.getData(API_CONFIG,list)
+                .then(function(data) {
+                    return data;
+                });
+        }
+
+        function getBulkQuotes(allSymbols) {
+            return chartService.getBulkQuotes(allSymbols)
+                .then(function(data) {
+                    return data;
+                });
+        }
+
+        function getHeadlines(symbol) {
+            return chartService.getHeadlines(symbol)
+                .then(function(data) {
+                    return data;
+                });
+        }
+
+        function getLookupData(symbol,API_CONFIG) {
+            return chartService.getLookupData(symbol,API_CONFIG)
                 .then(function(data) {
                     return data;
                 });
@@ -262,57 +300,29 @@
                 .then(function(data) {
 
                     // Data
-                    var quotes = data[0].data.quotes.quote;
-                    var symbol = data[1];
-                    var id = parseInt(data[2]);
-                    var timestamp = parseInt(data[3]);
-                    var avgVol = parseInt(data[4]);
-                    var added = data[5];
+                    //var quotes = data[0].data.quotes.quote;
+                    var symbol = data[0];
+                    var id = parseInt(data[1]);
+                    var avgVol = parseInt(data[3]);
+                    var added = data[4];
                     var list = vm.list;
-
-                    if (list != 'ecalNext') { vm.announce = data[6].data[0].announce; vm.announceDay = data[6].data[0].date; }
-                    var triggerPrice = data[7];
-                    var company = data[12].data;
-                    var stats = data[13].data;
-                    var headlines = data[14].data.data;
-                    var logo = data[15].data.url;
-
-                    // Previous 
-                    var previous = data[16].data;
-                    var prevOpen = previous.open;
-                    var prevHigh = previous.high;
-                    var prevLow = previous.low;
-                    var prevClose = previous.close;
-                    var prevChange = previous.change;
-                    var prevChangePercent = previous.changePercent;
-                    var prevVwap = previous.vwap;
-                    var prevVolume = previous.volume;
-
-                    // Stats
-                    var shortInterest = stats.shortInterest;
-                    var shortDate = stats.shortDate;
-                    var float = stats.float;
-                    var marketCap = stats.marketcap;
-                    var week52high = stats.week52high;
-                    var week52low = stats.week52low;
-                    var week52change = stats.week52change;
+                    var quotes= filterFilter(vm.bulkQuotes[0][0].data.quotes.quote, { symbol: symbol }, true);
+                    if (list != 'ecalNext') { vm.announce = data[5].data[0].announce; vm.announceDay = data[5].data[0].date; }
+                    var triggerPrice = data[6];
 
                     // Quotes
-                    var name = quotes.description;
-                    var price = quotes.last;
-                    var open = quotes.open;
-                    var high = quotes.high;
-                    var low = quotes.low;
-                    vm.percentChange = quotes.change_percentage;
-                    if (list == 'ecalTracker') { vm.change = data[10]; vm.percentChange = data[11]; }
-                    else { vm.change = quotes.change; }
-                    var todayPercentChange = quotes.change_percentage;
-                    var todayChange = quotes.change;
-                    var volume = quotes.volume;
-                    var exchange = quotes.exch;
-
-                    // Price Range
-                    var avgRange = ((high-low)+(prevHigh-prevLow))/2;
+                    var name = quotes[0].description;
+                    var price = quotes[0].last;
+                    var open = quotes[0].open;
+                    var high = quotes[0].high;
+                    var low = quotes[0].low;
+                    vm.percentChange = quotes[0].change_percentage;
+                    if (list == 'ecalTracker') { vm.change = data[9]; vm.percentChange = data[10]; }
+                    else { vm.change = quotes[0].change; }
+                    var todayPercentChange = quotes[0].change_percentage;
+                    var todayChange = quotes[0].change;
+                    var volume = quotes[0].volume;
+                    var exchange = quotes[0].exch;
 
                     // Custom
                     var aDay = vm.announceDay;
@@ -320,28 +330,13 @@
                     var distance;
                     var changeHeader;
                     var percentChangeHeader;
-                    var shortPercent;
                     var announceDay = moment(aDay).format('MM/DD/YY');
-
-                    var twitterUrl = 'https://twitter.com/search?f=tweets&vertical=default&q=%24' + symbol;
-                    var googleUrl = 'https://www.google.com/finance?q=' + symbol; 
-                    var yahooUrl = 'http://finance.yahoo.com/quote/' + symbol + '?p=' + symbol;
-                    var ratingsUrl = 'https://www.benzinga.com/stock/' + symbol + '/ratings/';
-
-                    var secUrl = 'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=' + symbol + '&type=&dateb=&owner=exclude&count=100&output=xml';
-                    var statementsUrl = 'https://finance.google.com/finance?q=' + symbol + '&fstype=ii';
-                    var transcriptsUrl = 'https://seekingalpha.com/symbol/' + symbol + '/earnings/transcripts';
 
                     var chartUrl = 'https://www.tradingview.com/widgetembed/?symbol=' + symbol + '&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en&referral_id=5952';
 
-                    if ( todayChange < 0) { percentChangeHeader =  todayPercentChange * -1; changeHeader =  todayChange * -1; }
-                    else { percentChangeHeader = todayPercentChange; changeHeader = todayChange;  }
 
                     if (list == 'alerts') { distance = triggerPrice-price; }
                     else { distance = '-'; }
-
-                    if (float == '' || float == 0 || float == null) { shortPercent = ''; }
-                    else { shortPercent = 100 *(shortInterest/float); }
 
                     if ( announce == 1 ) { announce = 'After Market'; }
                     if ( announce == 2 ) { announce = 'Pre Market'; }
@@ -368,14 +363,91 @@
                         'volume':volume,
                         'avgVol':avgVol,
                         'exchange':exchange,
-                        'headlines':headlines,
                         'distance':distance,
                         'triggerPrice':triggerPrice,
-                        'chartUrl':chartUrl,
+                        'chartUrl':chartUrl
+                    };
+                    return symbolObject;
+                });
+        }
+
+        vm.lookup = function submit(sy) {
+            vm.lookupLoader = true;
+            vm.headlinesLoader = true;
+            vm.aboutLoader = true;
+            vm.s = sy.symbol;
+
+            if (vm.s != '') {
+                var chartUrl = 'https://www.tradingview.com/widgetembed/?symbol=' + vm.s + '&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en';
+                vm.chart = $sce.trustAsResourceUrl(chartUrl);
+                var symbol = sy.symbol;
+                var id = sy.id;
+
+                getLookupData(symbol,API_CONFIG).then(function(data) {
+                    var company = data[1].data;
+                    var stats = data[2].data;
+                    var headlines = data[3].data.data;
+
+                    // Quotes
+                    var price = sy.price;
+                    var open = sy.open;
+                    var high = sy.high; 
+                    var low = sy.low; 
+                    var todayChange = sy.dollarChange; 
+                    var todayPercentChange = sy.percentChange; 
+
+                    // Previous 
+                    var previous = data[4].data;
+                    var prevHigh = previous.high;
+                    var prevLow = previous.low;
+
+                    // Price Range
+                    var avgRange = ((high-low)+(prevHigh-prevLow))/2;
+
+                    // Percent Change
+                    var percentChangeHeader;
+                    var changeHeader;
+
+                    if ( todayChange < 0) { percentChangeHeader =  todayPercentChange * -1; changeHeader =  todayChange * -1; }
+                    else { percentChangeHeader = todayPercentChange; changeHeader = todayChange;  }
+
+                    // Stats
+                    var shortInterest = stats.shortInterest;
+                    var shortDate = stats.shortDate;
+                    var float = stats.float;
+                    var marketCap = stats.marketcap;
+
+                    // Float
+                    var shortPercent;
+                    if (float == '' || float == 0 || float == null) { shortPercent = ''; }
+                    else { shortPercent = 100 *(shortInterest/float); }
+
+                    // When
+                    var announceDay = sy.announceDay;
+                    var announce = sy.when;
+
+                    // External Links
+                    var twitterUrl = 'https://twitter.com/search?f=tweets&vertical=default&q=%24' + symbol;
+                    var googleUrl = 'https://www.google.com/finance?q=' + symbol; 
+                    var yahooUrl = 'http://finance.yahoo.com/quote/' + symbol + '?p=' + symbol;
+                    var ratingsUrl = 'https://www.benzinga.com/stock/' + symbol + '/ratings/';
+
+                    var secUrl = 'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=' + symbol + '&type=&dateb=&owner=exclude&count=100&output=xml';
+                    var statementsUrl = 'https://finance.google.com/finance?q=' + symbol + '&fstype=ii';
+                    var transcriptsUrl = 'https://seekingalpha.com/symbol/' + symbol + '/earnings/transcripts';
+
+                    vm.lookupSymbol = {
+                        'id':id,
+                        'symbol':symbol,
+                        'name':sy.name,
+                        'price':price,
+                        'open':open,
+                        'high':high,
+                        'low':low,
+                        'todayChange':todayChange,
+                        'changeHeader':changeHeader,
+                        'percentChangeHeader':percentChangeHeader,
                         'marketCap':marketCap,
-                        'week52high':week52high,
-                        'week52low':week52low,
-                        'week52change':week52change,
                         'shortInterest':shortInterest,
                         'shortPercent':shortPercent,
                         'shortDate':shortDate,
@@ -383,7 +455,6 @@
                         'industry':company.industry,
                         'longDescription':company.description,
                         'sector':company.sector,
-                        'logo':logo,
                         'twitterUrl':twitterUrl,
                         'googleUrl':googleUrl,
                         'yahooUrl':yahooUrl,
@@ -393,20 +464,57 @@
                         'transcriptsUrl':transcriptsUrl,
                         'prevHigh':prevHigh,
                         'prevLow':prevLow,
-                        'avgRange':avgRange
+                        'headlines':headlines,
+                        'chartUrl':chartUrl,
+                        'avgRange':avgRange,
+                        'when':announce,
+                        'announceDay':announceDay
                     };
 
-                    return symbolObject;
-                });
-        }
+                    $timeout(function(){
+                        jQuery(document).ready(function($) {
 
-        // Check for New Data
-        var updateCheck =  function() {
-            vm.refreshToggle = 1;
+                            // Content Slider
+                            vm.slickConfig = {
+                                method: {},
+                                infinite: false,
+                                slidesToShow: 3,
+                                slidesToScroll: 1,
+                                responsive: [
+                                    {
+                                        breakpoint: 1245,
+                                        settings: {
+                                            slidesToShow: 2,
+                                            slidesToScroll: 2
+                                        }
+                                    },
+                                    {
+                                        breakpoint: 860,
+                                        settings: {
+                                            slidesToShow: 1,
+                                            slidesToScroll:1 
+                                        }
+                                    }
+                                ]
+                            };
+                            $(window).trigger('resize');
+                            vm.lookupLoader = false;
+                            vm.headlinesLoader = false;
+                            vm.aboutLoader = false;
+                        });
+                    },1000);
+                });
+                vm.toggle = true;
+            }
         };
 
+        // Check for New Data
+        //var updateCheck =  function() {
+        //    vm.refreshToggle = 1;
+        //};
+
         // Check for New Data Every 60 Seconds
-        $interval(updateCheck, 1);
+        //$interval(updateCheck, 1);
 
         // Price Filter and Controls
         vm.filterFn = function()
@@ -506,69 +614,23 @@
                 clickOutsideToClose: true,
                 controller: function ($mdDialog) {
                     var vm = this;
+                    vm.symbol = {};
                     vm.symbol = symbol;
+                    symbol.loading=true;
                     vm.cancelClick = function () {
                         $mdDialog.cancel();
                     };
+                    getHeadlines(symbol).then(function(data) {
+                        symbol.headlines=data[0].data.data;
+                        symbol.loading=false;
+                    });
+
                 },
                 controllerAs: 'modal',
                 templateUrl: 'app/air/templates/dialogs/headlines-dialog.tmpl.html',
                 parent: angular.element($document.body),
                 targetEvent: e
             });
-        };
-
-        vm.lookup = function submit(sy) {
-            vm.lookupLoader = true;
-            vm.headlinesLoader = true;
-            vm.aboutLoader = true;
-            vm.s = sy.symbol;
-            if (vm.s != '') {
-                var chartUrl = 'https://www.tradingview.com/widgetembed/?symbol=' + vm.s + '&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en';
-                vm.chart = $sce.trustAsResourceUrl(chartUrl);
-                var s = sy.symbol;
-                var id = sy.id;
-                var ad = sy.added;
-                var ts = sy.timestamp;
-                var av = sy.avgVol;
-                //vm.list = sy.list;
-                getSymbolData(s,id,ad,ts,av,API_CONFIG).then(function(data) {
-                    vm.lookupSymbol = data;
-                    $timeout(function(){
-                        jQuery(document).ready(function($) {
-
-                            // Content Slider
-                            vm.slickConfig = {
-                                method: {},
-                                infinite: false,
-                                slidesToShow: 3,
-                                slidesToScroll: 1,
-                                responsive: [
-                                    {
-                                        breakpoint: 1245,
-                                        settings: {
-                                            slidesToShow: 2,
-                                            slidesToScroll: 2
-                                        }
-                                    },
-                                    {
-                                        breakpoint: 860,
-                                        settings: {
-                                            slidesToShow: 1,
-                                            slidesToScroll:1 
-                                        }
-                                    }
-                                ]
-                            };
-                            $(window).trigger('resize');
-                            vm.lookupLoader = false;
-                            vm.headlinesLoader = false;
-                            vm.aboutLoader = false;
-                        });
-                    },1000);
-                });
-                vm.toggle = true;
-            }
         };
     }
 })();
