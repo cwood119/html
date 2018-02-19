@@ -321,14 +321,20 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 ////////// Routes
 
 // Dashboard
+#dashboard-container {background: linear-gradient(to bottom right, #f1fafe, #B3E5FC);}
 .dashboard-trophy{font-size: 18px !important;text-align: center;line-height: 22px !important;}
 .calendar-heatmap > svg.svg {width:100% !important;}
 .list-subhead{float:right;color: rgba(0,0,0,0.54);font-size: 14px;}
 #ninety-day-outlook {min-height:275px;}
 .ninety-day-outlook-responsive{display:none;}
-.outlook-heading { font-size: 20px;padding: 5px 0px 0px 10px;color: $dark-gray; }
-.outlook-sub-heading { font-size: 15px; padding:0px 0px 0px 10px;color: $medium-gray; z-index:1;}
-.google-chart{padding: 10px;}
+.outlook-heading { font-size: 20px;padding: 10px 0px 0px 15px;color: $dark-gray; }
+.outlook-sub-heading { font-size: 15px; padding:0px 0px 0px 17px;color: $medium-gray; z-index:1;}
+.google-visualization-tooltip {box-shadow:0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);}
+.google-chart{
+    padding: 15px 0px 15px 0px;
+    width: 92%;
+    margin: auto;
+}
 .list-subhead md-select {margin:0;}
 .card-loader{height: 612px;}
 .nv-axis.nv-y .tick line {display:none;}
@@ -477,8 +483,11 @@ ul#about-list>li {
     .filter-group label {display:block;}
 }
  
-@media all and (max-width:600px){ .symbol-table-pagination{margin-bottom:75px;}}
-
+@media all and (max-width:600px){
+    .symbol-table-pagination{margin-bottom:75px;}
+    .dashboard-content-container {padding: 0px;}
+    .ninety-day-outlook-responsive {padding: 0px; background: transparent;}
+}
 @media all and (max-width:525px){ .views-buttons{display: block;margin: auto;}}
 
 @media all and (max-width:500px){ /* Nexus 6P, Nexus 5X */

@@ -23,7 +23,7 @@
             });
         });
         vm.lookbackData = {
-            type: 'ColumnChart',
+            type: 'Bar',
             data: {
                 'cols': [
                     {id: 'day', type: 'date'},
@@ -33,12 +33,14 @@
             },
             options: {
                 legend: { position: 'none' },
-                colors: ['#03A9F4'],
-                vAxis: { gridlines: { color: 'transparent' }, legend: { position:'none' } },
-                hAxis: { gridlines: { color: 'transparent' }, legend: { position:'none' } },
-                width: '100%',
-                height: '100%'
+                colors: ['#03A9F4']
+                //chartArea: {width: '100%', height: '80%'},
+                //vAxis: { gridlines: { color: 'transparent' }, legend: { position:'none' },textPosition: 'none' },
+                //hAxis: { gridlines: { color: 'transparent' }, legend: { position:'none' } },
+                //width: '100%',
+                //height: '100%'
             }
+
         };
 
         // Get Data from Service
