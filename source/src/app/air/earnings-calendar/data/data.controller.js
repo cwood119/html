@@ -99,32 +99,35 @@
         //////////
 
         function activate() {
+
             vm.bulkQuotes=[];
             vm.historicalQuotes=[];
-            vm.day = vm.snapshotDate;
-            var d = moment(vm.day).format('YYYY-MM-DD');
+            vm.symbols=[];
+
             vm.emptySet = false;
             vm.mainLoader = true;
             vm.refreshToggle = 0;
             var resize = function() { window.dispatchEvent(new Event('resize')); };
-            vm.symbols=[];
-            var td = moment().format('YYYY-MM-DD');
-            var thisDay = moment().format('dddd');
-            vm.listDay = '';
-            if (thisDay == 'Saturday') { td = moment().subtract(1,'day'); vm.listDay = moment(td).format('dddd, MMMM Do YYYY'); }
-            if (thisDay == 'Sunday') { td = moment().subtract(2,'day'); vm.listDay = moment(td).format('dddd, MMMM Do YYYY'); }
-            vm.today = moment(td).format('YYYY-MM-DD');
-            var today = vm.today;
+
+            var day = moment(vm.snapshotDate).format('YYYY-MM-DD');
+            var weekDay = moment(day).format('dddd');
+            var today = moment().format('YYYY-MM-DD');
+
+            vm.listDay = moment(day).format('dddd, MMMM Do YYYY');
+            if (day == today) {
+                if (weekDay == 'Saturday') { today = moment().subtract(1,'day'); vm.listDay = moment(today).format('dddd, MMMM Do YYYY'); }
+                if (weekDay == 'Sunday') { today = moment().subtract(2,'day'); vm.listDay = moment(today).format('dddd, MMMM Do YYYY'); }
+            }
             var yesterday = moment().subtract(1,'day');
             vm.yesterday = moment(yesterday).format('YYYY-MM-DD');
 
-            return getEcalData(API_CONFIG, d, today).then(function(data) {
+            return getEcalData(API_CONFIG, day, today).then(function(data) {
 
                 if (data[0].data.length != 0) {
 
                     var symbols = data[0].data;
 
-                    if (d == today) { 
+                    if (day == today) { 
                         // Prepare all symbols for bulk quotes
                         var symbolsObject = [];
 
@@ -173,7 +176,7 @@
                             //vm.list = value.list;
                             vm.updated = moment(value.date).format('MMM Do YYYY');
 
-                            getSymbolData(s,id,w,ts,av,d,today).then(function(data) {
+                            getSymbolData(s,id,w,ts,av,day,today).then(function(data) {
                                 vm.symbols.push(data);
                             });
 
@@ -190,8 +193,8 @@
         }
 
         // Get Data from Service
-        function getEcalData(API_CONFIG, d, today) {
-            return ecalService.getData(API_CONFIG, d, today)
+        function getEcalData(API_CONFIG, day, today) {
+            return ecalService.getData(API_CONFIG, day, today)
                 .then(function(data) {
                     return data;
                 });
