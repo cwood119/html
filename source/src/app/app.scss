@@ -50,7 +50,7 @@ md-title{color:#212121;}
 
 .center-text {text-align:center;}
 .capitalize {text-transform: capitalize;}
-
+.bold {font-weight:bold;}
 .blurry-text {-webkit-filter: blur(10px);filter: blur(10px);}
 
 // Mouse Styles
@@ -253,6 +253,7 @@ md-tabs { height:100%; }
 .list-card{max-width:1550px;margin:auto;}
 .list-buttons{position: absolute;top: 13px;right: 0;}
 .list-buttons-icon {font-size: 22px !important;}
+.list-buttons button { margin: 0px 0px 0px 5px !important; }
 .symbol-table {background-color:white;}
 .symbol-table-container {background-color:white;}
 .symbol-table > thead > tr > th {font-size: 15px !important;}

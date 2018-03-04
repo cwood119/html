@@ -12,6 +12,7 @@
             <md-select placeholder="vm.list" ng-model="vm.list" ng-change="vm.activate()">
                 <md-option value="ecalNext">Tomorrow</md-option>
                 <md-option value="ecalUpdate">Calendar</md-option>
+            
                 <md-option value="ecalTracker">Tracker</md-option>
                 <md-option value="watchlist">Watchlist</md-option>
                 <md-option value="alerts">Alerts</md-option>
@@ -20,22 +21,26 @@
         <!-- Symbol Filter -->
         <md-input-container class="no-margin search-container" ng-show="vm.showSearch">
             <label>Search</label>
-            <input type="text" ng-model="search" show-focus="vm.showSearch">
+            <input type="text" ng-model="vm.search" show-focus="vm.showSearch" maxlength="6" ng-keyup="vm.cancel($event)">
         </md-input-container>
 
         <md-input-container class="no-margin search-container-responsive" ng-show="vm.showSearch">
             <label>Search</label>
-            <input type="text" ng-model="search" show-focus="vm.showSearch">
+            <input type="text" ng-model="vm.search" show-focus="vm.showSearch" maxlength="6" ng-keyup="vm.cancel($event)">
         </md-input-container>
 
         <!-- Table Controls -->
         <div class="list-buttons" hide-xs>
+
+            <md-button aria-label="Tracker Info" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" >
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-info-outline" ng-show="vm.list === 'ecalTracker'"></md-icon><md-tooltip>Tracking the change in price since earnings day close.</md-tooltip>
+            </md-button>
             <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
                 <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw" ></md-icon>
             </md-button>
             <md-button aria-label="search" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.showSearch = !vm.showSearch">
                 <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-search" ng-show="!vm.showSearch"></md-icon>
-                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-close" ng-show="vm.showSearch"></md-icon>
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-close" ng-show="vm.showSearch" ng-click="vm.clearSearch()"></md-icon>
             </md-button>
             <md-button aria-label="filter" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-click="vm.openSidebar('filter-sidebar')">
                 <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-filter-list"></md-icon>
@@ -123,11 +128,11 @@
         </thead>
 
         <tbody md-body>
-            <tr class="pointer" md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter:vm.volumeFilter() | filter: vm.avgVolFilter() | filter: {symbol:search}) | 
+            <tr class="pointer" md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter:vm.volumeFilter() | filter: vm.avgVolFilter() | filter: {symbol:vm.search}) | 
             orderBy: vm.query.order| limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize track by symbol.id" ng-click="vm.lookup(symbol);">
                 <td md-cell class="symbol-container">
-                    <div class="list-symbol help">{{symbol.symbol}}<md-tooltip>{{symbol.name}}</md-tooltip></div>
-                    <div class="md-body-1" ng-show="vm.list === 'alerts'">
+                    <div class="list-symbol help" ng-class="{'orange': symbol.symbol == vm.s}">{{symbol.symbol}}<md-tooltip>{{symbol.name}}</md-tooltip></div>
+                    <div class="md-body-1" ng-class="{'green': symbol.distance <= 0}" ng-show="vm.list === 'alerts'">
                         <md-icon class="material-icons fa fa-bell-o toggle-filter-long-up-arrow" aria-hidden="true"></md-icon>
                         <md-icon class="material-icons zmdi zmdi-long-arrow-up toggle-filter-long-up-arrow" aria-hidden="true"></md-icon>
                         {{symbol.triggerPrice | number:2}}

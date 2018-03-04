@@ -35,7 +35,7 @@
             <span ng-show="vm.lookupSymbol.shortInterest == 0">-</span>
             <span ng-hide="vm.lookupSymbol.shortInterest == 0">
                 <span class="dotted-underline">{{vm.lookupSymbol.shortInterest | numeraljs:'0.0a'}}</span>
-                <md-tooltip>As of {{vm.lookupSymbol.shortDate}}</md-tooltip>
+                <md-tooltip>As of {{vm.lookupSymbol.shortDate | date:'M/d/yy'}}</md-tooltip>
             </span>
             <span class="vitals-line-item-responsive">Short</span>
         </li>

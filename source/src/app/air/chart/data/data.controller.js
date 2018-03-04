@@ -15,6 +15,13 @@
         //vm.list = 'ecalNext';
         vm.openSidebar = function(id) {$mdSidenav(id).toggle();vm.refreshSlider();};
         vm.toggleSearch = function() {vm.showSearch = !vm.showSearch;};
+        vm.clearSearch = function() {vm.search = '';};
+        vm.cancel = function(e) {
+            if (e.keyCode === 27) {
+                vm.showSearch = !vm.showSearch;
+                vm.clearSearch();
+            }
+        };
 
         // Pagination Variables
         vm.curPage = 1;
@@ -98,11 +105,11 @@
             vm.lookupLoader = true;
             vm.headlinesLoader = true;
             vm.aboutLoader = true;
-            vm.refreshToggle = 0;
+            vm.refreshToggle = 1;
 
             // Pagination Page Size
             var list = vm.list;
-            if (list == 'alerts') { vm.pageSize = 5; }
+            if (list == 'alerts') { vm.pageSize = 5; vm.query = {order: 'distance'};}
             else { vm.pageSize = 7;  }
 
             // Table Columns 
@@ -158,6 +165,16 @@
             }
 
             if (vm.list == 'alerts') {
+                // Table Columns 
+                vm.showDollarChange = false;
+                vm.showPercentChange = false;
+                vm.showVolume = true;
+                vm.showAvgVol = false;
+                vm.showDistance = true;
+                vm.showAdded = true;
+                vm.showWhen = true;
+                vm.showHeadlines = false;
+
                 vm.columnsMenu = [
                     {'index':1,'name':'Price','checked':vm.showPrice,'disabled':'false','label':'Show/Hide Price Column'},
                     {'index':2,'name':'Change','checked':vm.showDollarChange,'disabled':'false','label':'Show/Hide Dollar Change Column'},
@@ -212,7 +229,7 @@
                     getBulkQuotes(allSymbols).then(function(data) {
                         vm.bulkQuotes.push(data);
 
-                        // Look Through Symbols 
+                        // Loop Through Symbols 
                         angular.forEach(symbols,function(value){
                             var s = value.symbol;
                             var id = value.id;
@@ -332,9 +349,6 @@
                     var percentChangeHeader;
                     var announceDay = moment(aDay).format('MM/DD/YY');
 
-                    var chartUrl = 'https://www.tradingview.com/widgetembed/?symbol=' + symbol + '&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en&referral_id=5952';
-
-
                     if (list == 'alerts') { distance = triggerPrice-price; }
                     else { distance = '-'; }
 
@@ -364,8 +378,7 @@
                         'avgVol':avgVol,
                         'exchange':exchange,
                         'distance':distance,
-                        'triggerPrice':triggerPrice,
-                        'chartUrl':chartUrl
+                        'triggerPrice':triggerPrice
                     };
                     return symbolObject;
                 });
@@ -378,7 +391,7 @@
             vm.s = sy.symbol;
 
             if (vm.s != '') {
-                var chartUrl = 'https://www.tradingview.com/widgetembed/?symbol=' + vm.s + '&interval=D&hidesidetoolbar=1&symboledit=1&toolbarbg=f1f3f6&studies=&hideideas=1&theme=White&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en';
+                var chartUrl = 'https://www.tradingview.com/widgetembed/?symbol=' + vm.s + '&interval=D&hidesidetoolbar=1&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=%5B%5D&hideideas=1&theme=Light&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en&referral_id=5952';
                 vm.chart = $sce.trustAsResourceUrl(chartUrl);
                 var symbol = sy.symbol;
                 var id = sy.id;
@@ -393,8 +406,8 @@
                     var open = sy.open;
                     var high = sy.high; 
                     var low = sy.low; 
-                    var todayChange = sy.dollarChange; 
-                    var todayPercentChange = sy.percentChange; 
+                    var todayChange = sy.todayChange; 
+                    var todayPercentChange = sy.todayPercentChange; 
 
                     // Previous 
                     var previous = data[4].data;
