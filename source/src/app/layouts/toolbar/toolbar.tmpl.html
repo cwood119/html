@@ -1,3 +1,4 @@
+
 <div class="md-toolbar-tools">
     <md-button class="md-icon-button" ng-if="!vm.hideMenuButton()" ng-click="vm.openSideNav('left')" aria-label="side navigation">
         <md-icon md-font-icon="zmdi zmdi-menu"></md-icon>
@@ -10,8 +11,20 @@
         </span>
     </h2>
 -->
-        <h2 flex class="sidebar-left-title">Air <span class="blue">App</span></h2>
+    <h2 flex class="sidebar-left-title">Air <span class="blue">App</span></h2>
+    <span ng-controller="heatmapController as vm">
+        <md-sidenav class="md-sidenav-right md-whiteframe-z2 inner-sidenav" md-component-id="heatmap-sidebar">
+            <div >
+                <div flex flex="100" layout="row">
+                    <div id="cal-heatmap"></div>
+                </div>
+            </div>
+        </md-sidenav>
 
+    <md-button class="md-icon-button toolbar-button" ng-click="vm.openSidebar('heatmap-sidebar')">
+        <md-icon md-font-icon="zmdi zmdi-calendar"></md-icon>
+    </md-button>
+    </span>
     <md-button class="md-icon-button toolbar-button" ng-click="vm.toggleFullScreen()" aria-label="toggle fullscreen">
         <md-icon md-font-icon ng-class="vm.fullScreenIcon"></md-icon>
     </md-button>
@@ -26,6 +39,8 @@
             </md-menu-item>
         </md-menu-content>
     </md-menu>
+-->
+<!--
     <md-button class="md-icon-button toolbar-button animated" ng-click="vm.toggleNotificationsTab(0)" aria-label="side navigation">
         <md-icon md-font-icon="zmdi zmdi-bookmark"></md-icon>
         <span class="toolbar-button-badge animated" theme-background="accent" ng-class="{ 'toolbar-button-badge-new' : vm.emailNew }">5</span>

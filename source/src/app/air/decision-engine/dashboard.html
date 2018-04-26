@@ -24,14 +24,11 @@
         </div>
     </div>
 
-<!--    <div flex flex="100" layout="row">
-        <md-card flex flex="100" ng-controller="decisionController as vm">
-            <calendar-heatmap data="example_data" color="color" width="100%" overview="overview" handler="print"></calendar-heatmap>
-        </md-card>
-    </div>-->
+<!--    <div ng-include="'app/air/heatmap/heatmap.html'"></div> -->
+
 
     <!-- Outlook elements -->
-    <div id="ninety-day-outlook" layout="row" layout-xs="column">
+    <!--<div id="ninety-day-outlook" layout="row" layout-xs="column">
         <md-card flex="50" flex-xs="100" ng-controller="lookbackController as vm">
             <div class="outlook-heading">Earnings Lookback</div>
             <div class="outlook-sub-heading">{{vm.firstLookback | date:'longDate' }} - {{vm.lastLookback | date:'longDate'}}</div>
@@ -43,11 +40,9 @@
             <div class="outlook-sub-heading">{{vm.firstForecast | date:'longDate' }} - {{vm.lastForecast | date:'longDate'}}</div>
             <div class="google-chart" google-chart chart="::vm.forecastData"></div>
         </md-card>
-
-        </div>
-    </div>
+    </div>-->
     <!-- Responsive outlook elements -->
-    <div class="ninety-day-outlook-responsive" layout="row" layour-xs="column">
+    <!--<div class="ninety-day-outlook-responsive" layout="row" layout-xs="column">
         <md-card flex="100" flex-xs="100" ng-controller="lookbackController as vm">
             <div class="outlook-heading">Earnings lookback</div>
             <div class="outlook-sub-heading">{{vm.firstLookback | date:'longDate' }} - {{vm.lastLookback | date:'longDate'}}</div>
@@ -55,14 +50,14 @@
         </md-card>
     </div>
  
-    <div class="ninety-day-outlook-responsive" layout="row" layour-xs="column">
+    <div class="ninety-day-outlook-responsive" layout="row" layout-xs="column">
         <md-card flex="100" flex-xs="100" ng-controller="forecastController as vm">
             <div class="outlook-heading">Earnings Forecast</div>
             <div class="outlook-sub-heading">{{vm.firstForecast | date:'longDate' }} - {{vm.lastForecast | date:'longDate'}}</div>
             <div class="google-chart" google-chart chart="::vm.forecastData"></div>
         </md-card>
-    </div>
+    </div>-->
 
-    <div ng-include="'app/air/chart/chart.html'" class="dashboard-content-container" ></div>
+    <div ng-include="'app/air/chart/chart.html'"></div>
 </div>
 </div>

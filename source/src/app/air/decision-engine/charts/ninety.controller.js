@@ -3,10 +3,10 @@
 
     angular
         .module('app.air.decision')
-        .controller('ninetyController', ninetyController);
+        .controller('barController', barController);
 
     /* @ngInject */
-    function ninetyController() {
+    function barController() {
         var vm = this;
         vm.barChart = {
             type: 'Bar',
@@ -17,12 +17,10 @@
                 ['November', 2300]
             ],
             options: {
-                chart: {
-                    title: 'Number of Announcements'
-                },
                 bars: 'vertical',
                 width: '100%',
-                legend: { position: 'none' }
+                legend: { position: 'none' },
+                colors: ['#03A9F4'],
             }
         };
     }

@@ -324,7 +324,6 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 // Dashboard
 #dashboard-container {background: linear-gradient(to bottom right, #f1fafe, #B3E5FC);}
 .dashboard-trophy{font-size: 18px !important;text-align: center;line-height: 22px !important;}
-.calendar-heatmap > svg.svg {width:100% !important;}
 .list-subhead{float:right;color: rgba(0,0,0,0.54);font-size: 14px;}
 #ninety-day-outlook {min-height:275px;}
 .ninety-day-outlook-responsive{display:none;}
@@ -346,6 +345,10 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 .de-counter-container {min-height:128px !important;}
 .de-counter-number {min-height:56px !important;}
 
+// DE Heatmap
+#cal-heatmap {margin:auto;}
+rect.now { stroke: #01579B !important; }
+text.now { fill: #01579B !important; font-weight: normal !important; }
 // DE Chart
 .lookup-chart-card {width:100%;height:500px;}
 .lookup-chart {height:515px;}

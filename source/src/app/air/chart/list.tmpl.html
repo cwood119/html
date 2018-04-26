@@ -32,8 +32,8 @@
         <!-- Table Controls -->
         <div class="list-buttons" hide-xs>
 
-            <md-button aria-label="Tracker Info" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" >
-                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-info-outline" ng-show="vm.list === 'ecalTracker'"></md-icon><md-tooltip>Tracking the change in price since earnings day close.</md-tooltip>
+            <md-button ng-show="vm.list === 'ecalTracker'" aria-label="Tracker Info" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" >
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-info-outline"></md-icon><md-tooltip>Tracking the change in price since earnings day close.</md-tooltip>
             </md-button>
             <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
                 <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw" ></md-icon>

@@ -8,8 +8,7 @@
             'ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngMaterial',
             'googlechart', 'chart.js', 'linkify', 'ui.calendar', 'angularMoment', 
             'textAngular', 'hljs', 'md.data.table', angularDragula(angular), 'nvd3',
-            'app.air', 'rzModule', 'ngNumeraljs', 'slickCarousel'
-//, 'g1b.calendar-heatmap'
+            'app.air', 'rzModule', 'ngNumeraljs', 'slickCarousel','calHeatmap'
         ])
 
         // set a constant for the API we are connecting to
