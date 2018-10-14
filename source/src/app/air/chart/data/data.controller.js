@@ -323,23 +323,55 @@
                     var avgVol = parseInt(data[3]);
                     var added = data[4];
                     var list = vm.list;
-                    var quotes= filterFilter(vm.bulkQuotes[0][0].data.quotes.quote, { symbol: symbol }, true);
+                    var name;
+                    var price;
+                    var open;
+                    var high;
+                    var low;
+                    var todayPercentChange;
+                    var todayChange;
+                    var volume;
+                    var exchange;
+                    var quotes;
+
                     if (list != 'ecalNext') { vm.announce = data[5].data[0].announce; vm.announceDay = data[5].data[0].date; }
                     var triggerPrice = data[6];
 
-                    // Quotes
-                    var name = quotes[0].description;
-                    var price = quotes[0].last;
-                    var open = quotes[0].open;
-                    var high = quotes[0].high;
-                    var low = quotes[0].low;
-                    vm.percentChange = quotes[0].change_percentage;
-                    if (list == 'ecalTracker') { vm.change = data[9]; vm.percentChange = data[10]; }
-                    else { vm.change = quotes[0].change; }
-                    var todayPercentChange = quotes[0].change_percentage;
-                    var todayChange = quotes[0].change;
-                    var volume = quotes[0].volume;
-                    var exchange = quotes[0].exch;
+                    if (vm.bulkQuotes.length > 1) {
+                        quotes = filterFilter(vm.bulkQuotes[0][0].data.quotes.quote, { symbol: symbol }, true);
+
+                        // Quotes
+                        name = quotes[0].description;
+                        price = quotes[0].last;
+                        open = quotes[0].open;
+                        high = quotes[0].high;
+                        low = quotes[0].low;
+                        vm.percentChange = quotes[0].change_percentage;
+                        if (list == 'ecalTracker') { vm.change = data[9]; vm.percentChange = data[10]; }
+                        else { vm.change = quotes[0].change; }
+                        todayPercentChange = quotes[0].change_percentage;
+                        todayChange = quotes[0].change;
+                        volume = quotes[0].volume;
+                        exchange = quotes[0].exch;
+                    }
+
+                    if (vm.bulkQuotes.length == 1) {
+                        quotes = vm.bulkQuotes[0][0].data.quotes.quote;
+
+                        // Quotes
+                        name = quotes.description;
+                        price = quotes.last;
+                        open = quotes.open;
+                        high = quotes.high;
+                        low = quotes.low;
+                        vm.percentChange = quotes.change_percentage;
+                        if (list == 'ecalTracker') { vm.change = data[9]; vm.percentChange = data[10]; }
+                        else { vm.change = quotes.change; }
+                        todayPercentChange = quotes.change_percentage;
+                        todayChange = quotes.change;
+                        volume = quotes.volume;
+                        exchange = quotes.exch;
+                    }
 
                     // Custom
                     var aDay = vm.announceDay;
