@@ -222,6 +222,7 @@
             vm.bulkQuotes = [];
             vm.symbols = [];
             vm.download = [];
+            vm.filtered = [];
 
             return getSymbolsList(API_CONFIG, list).then(function(data) {
                 if (data[0].data.length != 0) {
@@ -282,17 +283,18 @@
                     });
 
 
-                    vm.downloadSymbols = function() {
+                    vm.downloadSymbols = function(f) {
 
                         var content = '';
 
-                        for (var i = 0; i < vm.download.length; i += 1) {
-                            content += vm.download[i] ;
+                        for (var i = 0; i < vm.filtered.length; i += 1) {
+                            content += vm.filtered[i].symbol ;
                             content += '\n';
                         }
 
                         var uri = 'data:application/octet-stream,' + encodeURIComponent(content);
                         $window.open(uri);
+
                     };
 
                 } else {vm.mainLoader = false;vm.lookupLoader = false;vm.headlinesLoader = false;vm.aboutLoader = false;vm.emptySet = true;}

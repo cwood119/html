@@ -21,7 +21,7 @@
     </md-input-container>
     <md-progress-linear data-loading="modal.symbol.loading" ng-show="modal.symbol.loading" class="md-accent" md-mode="indeterminate"></md-progress-linear>
     <md-dialog-content class="md-dialog-content">
-        <md-list-item class="md-2-line" ng-repeat="headlines in vm.filtered = (modal.symbol.headlines | filter: {title:search})">
+        <md-list-item class="md-2-line" ng-repeat="headlines in vm.filteredHeadlines = (modal.symbol.headlines | filter: {title:search})">
             <div class="md-list-item-text">
                <p class="md-subhead headline-row1">{{headlines.publication_date | limitTo:19 | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</p>
                <a href="{{headlines.url}}" target="_blank"><h3>{{headlines.title}}</h3></a>

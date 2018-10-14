@@ -9,7 +9,7 @@
     </div>
 </md-toolbar>
 
-<md-list-item class="md-2-line lookup-headlines" ng-repeat="headlines in vm.filtered = (vm.lookupSymbol.headlines | filter: {title:search} | limitTo: 3)">
+<md-list-item class="md-2-line lookup-headlines" ng-repeat="headlines in vm.filteredHeadlines = (vm.lookupSymbol.headlines | filter: {title:search} | limitTo: 3)">
     <div class="md-list-item-text">
         <p ng-class="{'blurry-text': vm.headlinesLoader}" class="md-subhead headline-row1">{{headlines.publication_date | limitTo:19 | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</p>
         <a href="{{headlines.url}}" target="_blank"><h3 ng-class="{'blurry-text': vm.headlinesLoader}">{{headlines.title}}</h3></a>
