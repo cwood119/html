@@ -11,7 +11,7 @@
         // Page Variables
         vm.activate = function(){activate();};
         vm.currentPath = $location.path();
-        vm.list = 'ecalTracker';
+        vm.list = 'winners';
         //vm.list = 'ecalUpdate';
         //vm.list = 'ecalNext';
         vm.openSidebar = function(id) {$mdSidenav(id).toggle();vm.refreshSlider();};
@@ -164,6 +164,20 @@
                     {'index':9,'name':'Headlines','checked':vm.showHeadlines,'disabled':'false','label':'Show/Hide Headlines Column'}
                 ];
             }
+            if (vm.list == 'winners') {
+                vm.showDollarChange = false;
+                vm.columnsMenu = [
+                    {'index':1,'name':'Price','checked':vm.showPrice,'disabled':'false','label':'Show/Hide Price Column'},
+                    {'index':2,'name':'Change','checked':vm.showDollarChange,'disabled':'true','label':'Show/Hide Dollar Change Column'},
+                    {'index':3,'name':'% Change','checked':vm.showPercentChange,'disabled':'false','label':'Show/Hide Percent Change Column'},
+                    {'index':4,'name':'Volume','checked':vm.showVolume,'disabled':'false','label':'Show/Hide Volume Column'},
+                    {'index':5,'name':'Avg Vol','checked':vm.showAvgVol,'disabled':'false','label':'Show/Hide Average Volume Column'},
+                    {'index':6,'name':'Distance','checked':vm.showDistance,'disabled':'true','label':'Show/Hide Distance Column'},
+                    {'index':7,'name':'Added','checked':vm.showAdded,'disabled':'true','label':'Show/Hide Added Column'},
+                    {'index':8,'name':'When','checked':vm.showWhen,'disabled':'false','label':'Show/Hide When Column'},
+                    {'index':9,'name':'Headlines','checked':vm.showHeadlines,'disabled':'false','label':'Show/Hide Headlines Column'}
+                ];
+            }
 
             if (vm.list == 'alerts') {
                 // Table Columns 
@@ -246,6 +260,7 @@
 
                             if (list == 'alerts') { var tp = value.alert; }
                             if (list == 'ecalNext') { vm.announce = value.announce; vm.announceDay = value.date; }
+                            if (list == 'winners') { percentChange = value.percentChange; }
 
                             vm.updated = new Date(value.timestamp).toLocaleString();
 
@@ -347,7 +362,7 @@
                         high = quotes[0].high;
                         low = quotes[0].low;
                         vm.percentChange = quotes[0].change_percentage;
-                        if (list == 'ecalTracker') { vm.change = data[9]; vm.percentChange = data[10]; }
+                        if (list == 'ecalTracker' || list == 'winners') { vm.change = data[9]; vm.percentChange = data[10]; }
                         else { vm.change = quotes[0].change; }
                         todayPercentChange = quotes[0].change_percentage;
                         todayChange = quotes[0].change;

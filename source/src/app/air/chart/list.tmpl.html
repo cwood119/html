@@ -12,9 +12,9 @@
             <md-select placeholder="vm.list" ng-model="vm.list" ng-change="vm.activate()">
                 <md-option value="ecalNext">Tomorrow</md-option>
                 <md-option value="ecalUpdate">Calendar</md-option>
-            
                 <md-option value="ecalTracker">Tracker</md-option>
                 <md-option value="watchlist">Watchlist</md-option>
+                <md-option value="winners">Winners</md-option>
                 <!--<md-option value="alerts">Alerts</md-option> -->
             </md-select>
         </span>
@@ -35,6 +35,9 @@
             <md-button ng-show="vm.list === 'ecalTracker'" aria-label="Tracker Info" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" >
                 <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-info-outline"></md-icon><md-tooltip>Tracking the change in price since earnings day close.</md-tooltip>
             </md-button>
+            <md-button ng-show="vm.list === 'winners'" aria-label="Earnings Winners Info" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" >
+                <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-info-outline"></md-icon><md-tooltip>Stocks that closed +5% on earnings day.</md-tooltip>
+            </md-button>
             <md-button aria-label="refresh" class="md-icon-button md-button ng-scope md-light-blue-white-theme md-ink-ripple" ng-show="vm.refreshToggle == 1" ng-click="vm.activate()">
                 <md-icon class="list-buttons-icon" md-font-icon="zmdi zmdi-replay zmdi-hc-fw" ></md-icon>
             </md-button>
@@ -53,7 +56,7 @@
                     <md-icon md-font-icon="zmdi zmdi-view-column"></md-icon>
                 </md-button>
                 <md-menu-content width="3">
-                    <md-menu-item ng-repeat="column in vm.columnsMenu" >
+                    <md-menu-item ng-repeat="column in vm.columnsMenu"  ng-hide="{{column.disabled}}">
                         <md-input-container class="md-block">
                             <md-checkbox class="md-primary" ng-click="vm.columnClick(column.index,!column.checked)" ng-model="column.checked" ng-disabled="{{column.disabled}}" aria-label="{{column.label}}">{{column.name}}</md-checkbox>
                         </md-input-container>
