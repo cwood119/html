@@ -322,7 +322,7 @@ md-radio-button.filter-radio-buttons.md-checked .md-on { transform: scale(1);bac
 ////////// Routes
 
 // Dashboard
-#dashboard-container {background: linear-gradient(to bottom right, #f1fafe, #B3E5FC);}
+#dashboard-container {background: linear-gradient(to bottom right, #f1fafe, #B3E5FC); min-height:100%;}
 .dashboard-trophy{font-size: 18px !important;text-align: center;line-height: 22px !important;}
 .list-subhead{float:right;color: rgba(0,0,0,0.54);font-size: 14px;}
 #ninety-day-outlook {min-height:275px;}

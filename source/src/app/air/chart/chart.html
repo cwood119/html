@@ -20,7 +20,7 @@
             <md-card-content ng-include="'app/air/chart/list.tmpl.html'"></md-card-content>
         </md-card>
     </div>
-    <slick class="custom-slick" settings="vm.slickConfig">
+    <slick class="custom-slick" settings="vm.slickConfig" ng-hide="vm.emptySet">
         <md-card flex="50" class="lookup-card slick-item" ng-include="'app/air/chart/vitals.tmpl.html'"></md-card>
         <md-card flex="50" class="lookup-card slick-item" ng-include="'app/air/chart/about.tmpl.html'"></md-card>
         <md-card flex="50" class="lookup-card slick-item" ng-include="'app/air/chart/headlines.tmpl.html'"></md-card>

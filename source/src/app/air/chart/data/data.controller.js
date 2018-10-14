@@ -11,7 +11,8 @@
         // Page Variables
         vm.activate = function(){activate();};
         vm.currentPath = $location.path();
-        vm.list = 'ecalUpdate';
+        vm.list = 'ecalTracker';
+        //vm.list = 'ecalUpdate';
         //vm.list = 'ecalNext';
         vm.openSidebar = function(id) {$mdSidenav(id).toggle();vm.refreshSlider();};
         vm.toggleSearch = function() {vm.showSearch = !vm.showSearch;};
@@ -337,9 +338,8 @@
                     if (list != 'ecalNext') { vm.announce = data[5].data[0].announce; vm.announceDay = data[5].data[0].date; }
                     var triggerPrice = data[6];
 
-                    if (vm.bulkQuotes.length > 1) {
+                    if (vm.bulkQuotes[0][0].data.quotes.quote.length) {
                         quotes = filterFilter(vm.bulkQuotes[0][0].data.quotes.quote, { symbol: symbol }, true);
-
                         // Quotes
                         name = quotes[0].description;
                         price = quotes[0].last;
@@ -355,7 +355,7 @@
                         exchange = quotes[0].exch;
                     }
 
-                    if (vm.bulkQuotes.length == 1) {
+                    else  {
                         quotes = vm.bulkQuotes[0][0].data.quotes.quote;
 
                         // Quotes

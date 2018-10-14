@@ -117,10 +117,12 @@
         </md-menu>
     </div>
 </md-toolbar>
+<div ng-show="vm.emptySet" class="center-text" >No symbols found in latest query</div>
+
 <md-progress-linear data-loading="vm.mainLoader" ng-show="vm.mainLoader" class="md-accent" md-mode="indeterminate"></md-progress-linear>
 
 <md-table-container ng-show="!vm.mainLoader">
-    <table md-table id="chart-list-table" class="md-primary md-data-table symbol-table">
+    <table md-table id="chart-list-table" class="md-primary md-data-table symbol-table" ng-hide="vm.emptySet">
         <thead md-head md-order="vm.query.order">
             <tr md-row>
                 <th ng-repeat="col in vm.cols" md-column class="md-subhead" md-order-by="{{col.order}}" ng-show="{{col.show}}">{{col.name}}</th>
