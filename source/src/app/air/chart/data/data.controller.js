@@ -478,7 +478,7 @@
                     var ratingsUrl = 'https://www.benzinga.com/stock/' + symbol + '/ratings/';
 
                     var secUrl = 'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=' + symbol + '&type=&dateb=&owner=exclude&count=100&output=xml';
-                    var statementsUrl = 'https://finance.google.com/finance?q=' + symbol + '&fstype=ii';
+                    var statementsUrl = 'https://www.marketwatch.com/investing/stock/' + symbol + '/financials';
                     var transcriptsUrl = 'https://seekingalpha.com/symbol/' + symbol + '/earnings/transcripts';
 
                     vm.lookupSymbol = {
