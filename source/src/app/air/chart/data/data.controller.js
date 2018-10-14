@@ -283,7 +283,7 @@
                     });
 
 
-                    vm.downloadSymbols = function(f) {
+                    vm.downloadSymbols = function() {
 
                         var content = '';
 
