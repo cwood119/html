@@ -12,12 +12,12 @@
             templateUrl: 'app/air/alerts/alerts.html'
         });
         // next add the menu item that points to the above state.
-        triMenuProvider.addMenu({
+        /*triMenuProvider.addMenu({
             name: 'Price Alerts',
             icon: 'zmdi zmdi-notifications',
             type: 'link',
             state: 'triangular.alerts',
             priority: 1.1
-        });
+        });*/
     }
 })();
