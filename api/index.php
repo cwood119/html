@@ -141,6 +141,21 @@ $app->get('/ecalFuture', function () use ($app) {
     }
 });
 
+$app->get('/ecalForecast', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $ecalForecast = get_ecalForecast();
+    if (null !== $ecalForecast) {
+        $app->response->setStatus(200);
+        echo json_encode($ecalForecast);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
 $app->get('/ecalTracker', function () use ($app) {
     $response = $app->response();
     $response->header('Access-Control-Allow-Origin', '*');
@@ -276,77 +291,50 @@ $app->get('/ecalFrom/:start/:end', function ($start,$end) use ($app) {
     }
 });
 
-$app->get('/initStream', function () use ($app) {
+$app->get('/lookback', function () use ($app) {
     $response = $app->response();
     $response->header('Access-Control-Allow-Origin', '*');
     $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
     $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
 
-    $token = get_token();
-    if (null !== $token) {
+    $lookback = get_lookback();
+    if (null !== $lookback) {
         $app->response->setStatus(200);
-        echo $token;
+        echo json_encode($lookback);
     } else {
         $app->response->setStatus(401);
     }
 });
 
-
-$app->get('/streamTest', function () use ($app) {
+$app->get('/heatmap', function () use ($app) {
     $response = $app->response();
     $response->header('Access-Control-Allow-Origin', '*');
     $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
     $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
-    $response->header('Content-Type: application/octet-stream');
 
-    $url = 'https://stream.tradier.com/v1/markets/events?symbols=DNR&sessionid=cfb0b5f5-aa8a-45a3-9dc0-1a79f3e62a6d';
-    
-$context = stream_context_create($options);
-// make the request
-$response = file_get_contents($url, false, $context);
-echo $response;
-print_r(json_decode($response));
-
-});
-
-$app->get('/stream/:symbols/:sessionid', function ($symbols,$sessionid) use ($app) {
-    $response = $app->response();
-    $response->header('Access-Control-Allow-Origin', '*');
-    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
-    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
-    $response->header('Content-Type: application/octet-stream');
-
-    $quotes = get_stream($symbols,$sessionid);
-    if (null !== $quotes) {
+    $heatmap = get_heatmap();
+    if (null !== $heatmap) {
         $app->response->setStatus(200);
-        echo $quotes;
+        echo json_encode($heatmap);
     } else {
         $app->response->setStatus(401);
     }
 });
 
-function get_stream($symbols,$sessionid) {
-    echo 'symbol is '.$symbols;
-    echo 'sessionid is '.$sessionid;
-    $auth = "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6";
-    $url = 'https://stream.tradier.com/v1/markets/events?symbols=' . $symbols . '&sessionid=' . $sessionid;
-    //header('Content-Type: application/octet-stream');
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_VERBOSE, false);
-    curl_setopt($ch, CURLOPT_URL, $url);
-    //curl_setopt($ch,CURLOPT_POSTFIELDS, $auth);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  
-    //curl_setopt($ch, CURLOPT_HTTPHEADER, array("accept:application/json"));
+$app->get('/winners', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
 
-    $data = curl_exec($ch);
-    echo $data;
-    curl_close ($ch);
-    
-    //return $data;
-}
-
-
+    $winners = get_winners();
+    if (null !== $winners) {
+        $app->response->setStatus(200);
+        echo json_encode($winners);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
 
 // Data Functions
 function get_ecal() {
@@ -354,7 +342,6 @@ function get_ecal() {
     $data = $pdo->query('SELECT * FROM earnings_calendar_latest')->fetchAll();
     return $data;
 }
-
 function get_ecalArchive() {
     $pdo = connect_to_db();    
     $data = $pdo->query('SELECT * FROM earnings_calendar_archive ORDER BY DATE ASC')->fetchAll();
@@ -396,6 +383,12 @@ function get_ecalUpdateSnapshot($d) {
 function get_ecalFuture() {
     $pdo = connect_to_db();    
     $data = $pdo->query('SELECT * FROM ecal_future;')->fetchAll();
+    return $data;
+}
+
+function get_ecalForecast() {
+    $pdo = connect_to_db();    
+    $data = $pdo->query('SELECT DATE_FORMAT(qrOne,"%Y-%m-%d") as date,count(*) as count FROM `ecal_future` WHERE qrOne < adddate(CURRENT_DATE,90) AND qrOne > CURRENT_DATE GROUP BY qrOne ORDER BY `date` ASC;')->fetchAll();
     return $data;
 }
 
@@ -487,20 +480,23 @@ function get_ecalFrom($start,$end) {
     return $data;
 }
 
-function get_token() {
-    $auth = "Authorization: Bearer 2IigxmuJp1Vzdq6nJKjxXwoXY9D6";
-    $url = 'https://api.tradier.com/v1/markets/events/session';
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_VERBOSE, false);
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch,CURLOPT_POSTFIELDS, $auth);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array($auth,"accept:application/json"));
-    $data = curl_exec ($ch);
-    curl_close ($ch);
+
+function get_lookback() {
+    $pdo = connect_to_db();    
+    $data = $pdo->query('SELECT date,count(*) as count FROM `earnings_calendar_archive` WHERE date BETWEEN CURDATE() - INTERVAL 90 DAY AND CURDATE() GROUP BY date')->fetchAll();
     return $data;
 }
 
+function get_heatmap() {
+  $pdo = connect_to_db();    
+  $data = $pdo->query('SELECT date,count(*) as count FROM `earnings_calendar_archive` WHERE date BETWEEN DATE_FORMAT(CURDATE(), "%Y-%m-01") - INTERVAL 2 MONTH AND CURDATE() GROUP BY date UNION SELECT DATE_FORMAT(qrOne,"%Y-%m-%d") as date,count(*) as count FROM `ecal_future` WHERE qrOne BETWEEN DATE_FORMAT(NOW() ,"%Y-%m-01") AND LAST_DAY(DATE_ADD(NOW(), INTERVAL 2 MONTH)) GROUP BY qrOne ORDER BY `date` ASC')->fetchAll();
+  return $data;
+}
+
+function get_winners() {
+  $pdo = connect_to_db();    
+  $data = $pdo->query('SELECT max(archiveId) as id, symbol, max(date) as date, percentChange, avgVol FROM winners GROUP BY symbol, month(date) ORDER BY date ASC')->fetchAll();
+  return $data;
+}
 
 $app->run();
