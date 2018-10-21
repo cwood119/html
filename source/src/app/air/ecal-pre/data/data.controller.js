@@ -35,11 +35,17 @@
         vm.avgVolIndicator = 'Any';
         vm.avgVolDisabled = true;
 
+        // Percent Change Filter Viarables
+        vm.percentChangeFilterValue = -100;
+        vm.percentChangeIndicator = 'Any';
+        vm.percentChangeDisabled = true;
+
         // Filter Data
         vm.filterPrice = ['5','10','15'];
         vm.filterVolume = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
         vm.filterAdv = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
         vm.filterTime = [{'value':'2','text':'Before Market'},{'value':'1','text':'Pre Market'},{'value':'3','text':'Intraday'},{'value':'4','text':'Unknown'}];
+        vm.filterPercentChange = [{'value':'5','text':'5%'},{'value':'10','text':'10%'},{'value':'15','text':'15%'}];
 
         // Table Rows
         vm.showPrice = true;
@@ -448,6 +454,32 @@
                 vm.avgVolRadio=false;
                 vm.avgVolDisabled=true;
                 vm.avgVolIndicator='Any';
+            }
+        };
+
+        // Percent Change Filter
+        vm.percentChangeFilter = function()
+        {
+            if (vm.percentChangeFilterValue < 0) {return function(item){ return item['percentChange'] <= vm.percentChangeFilterValue * -1; };}
+            else {return function(item){ return item['percentChange'] >= vm.percentChangeFilterValue; };}
+        };
+
+        // On Percent Change Radio Change
+        vm.percentChangeChange = function() {
+            vm.percentChangeToggle=true;
+            vm.percentChangeDisabled=false;
+            if (vm.percentChangeFilterValue < 0) {vm.percentChangeIndicator = vm.percentChangeFilterValue * -1;}
+            else {vm.percentChangeIndicator = vm.percentChangeFilterValue;}
+
+        };
+
+        // On Percent Change Toggle Change
+        vm.percentChangeFilterCheck = function (state) {
+            if (state == false) {
+                vm.percentChangeFilterValue=-100;
+                vm.percentChangeRadio=false;
+                vm.percentChangeDisabled=true;
+                vm.percentChangeIndicator='Any';
             }
         };
 

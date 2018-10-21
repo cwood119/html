@@ -133,8 +133,7 @@
         </thead>
 
         <tbody md-body>
-            <tr class="pointer" md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter:vm.volumeFilter() | filter: vm.avgVolFilter() | filter: {symbol:vm.search}) | 
-            orderBy: vm.query.order| limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize track by symbol.id" ng-click="vm.lookup(symbol);">
+            <tr class="pointer" md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter:vm.volumeFilter() | filter: vm.avgVolFilter() | filter: vm.percentChangeFilter() | filter: {symbol:vm.search}) | orderBy: vm.query.order| limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize track by symbol.id" ng-click="vm.lookup(symbol);">
                 <td md-cell class="symbol-container">
                     <div class="list-symbol help" ng-class="{'orange': symbol.symbol == vm.s}">{{symbol.symbol}}<md-tooltip>{{symbol.name}}</md-tooltip></div>
                     <div class="md-body-1" ng-class="{'green': symbol.distance <= 0}" ng-show="vm.list === 'alerts'">

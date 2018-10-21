@@ -54,8 +54,7 @@
         </thead>
         <tbody md-body>
 
-            <tr md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter:vm.volumeFilter() | filter: vm.avgVolFilter() | filter: {symbol:search}) | 
-            orderBy: vm.query.order| limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize track by symbol.id">
+            <tr md-row ng-repeat="symbol in vm.filtered = (vm.symbols | filter: vm.filterFn() | filter:vm.volumeFilter() | filter: vm.avgVolFilter() | filter: {symbol:search}) | filter: vm.percentChangeFilter() | orderBy: vm.query.order| limitTo: vm.pageSize : (vm.curPage - 1) * vm.pageSize track by symbol.id">
                 <td md-cell class="symbol-container">
                     <div class="list-symbol">{{symbol.symbol}}<md-tooltip ng-hide="vm.currentPath === '/ecalAfter' || vm.currentPath === '/ecalPre'">{{symbol.name}}</md-tooltip></div>
                     <div class="md-body-1" ng-show="vm.currentPath === '/alerts'">

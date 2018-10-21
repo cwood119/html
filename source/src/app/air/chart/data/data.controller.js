@@ -11,8 +11,7 @@
         // Page Variables
         vm.activate = function(){activate();};
         vm.currentPath = $location.path();
-        vm.list = 'winners';
-        //vm.list = 'ecalUpdate';
+        vm.list = 'ecalUpdate';
         //vm.list = 'ecalNext';
         vm.openSidebar = function(id) {$mdSidenav(id).toggle();vm.refreshSlider();};
         vm.toggleSearch = function() {vm.showSearch = !vm.showSearch;};
@@ -44,11 +43,16 @@
         vm.avgVolIndicator = 'Any';
         vm.avgVolDisabled = true;
 
+        // Percent Change Filter Viarables
+        vm.percentChangeFilterValue = -100;
+        vm.percentChangeIndicator = 'Any';
+        vm.percentChangeDisabled = true;
+
         //Filter Data
         vm.filterAdv = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
         vm.filterVolume = [{'value':'500000','text':'500k'},{'value':'1000000','text':'1M'},{'value':'5000000','text':'5M'}];
+        vm.filterPercentChange = [{'value':'5','text':'5%'},{'value':'10','text':'10%'},{'value':'15','text':'15%'}];
         
-
         // Data Placeholders
         vm.lookupSymbol = {
             'symbol': '#AirApp', 
@@ -107,6 +111,7 @@
             vm.headlinesLoader = true;
             vm.aboutLoader = true;
             vm.refreshToggle = 1;
+
 
             // Pagination Page Size
             var list = vm.list;
@@ -667,6 +672,32 @@
                 vm.avgVolRadio=false;
                 vm.avgVolDisabled=true;
                 vm.avgVolIndicator='Any';
+            }
+        };
+
+        // Percent Change Filter
+        vm.percentChangeFilter = function()
+        {
+            if (vm.percentChangeFilterValue < 0) {return function(item){ return item['percentChange'] <= vm.percentChangeFilterValue * -1; };}
+            else {return function(item){ return item['percentChange'] >= vm.percentChangeFilterValue; };}
+        };
+
+        // On Percent Change Radio Change
+        vm.percentChangeChange = function() {
+            vm.percentChangeToggle=true;
+            vm.percentChangeDisabled=false;
+            if (vm.percentChangeFilterValue < 0) {vm.percentChangeIndicator = vm.percentChangeFilterValue * -1;}
+            else {vm.percentChangeIndicator = vm.percentChangeFilterValue;}
+
+        };
+
+        // On Percent Change Toggle Change
+        vm.percentChangeFilterCheck = function (state) {
+            if (state == false) {
+                vm.percentChangeFilterValue=-100;
+                vm.percentChangeRadio=false;
+                vm.percentChangeDisabled=true;
+                vm.percentChangeIndicator='Any';
             }
         };
 

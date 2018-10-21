@@ -36,6 +36,11 @@
         vm.avgVolIndicator = 'Any';
         vm.avgVolDisabled = true;
 
+        // Percent Change Filter Viarables
+        vm.percentChangeFilterValue = -100;
+        vm.percentChangeIndicator = 'Any';
+        vm.percentChangeDisabled = true;
+
         // Table Rows
         vm.showPrice = true;
         vm.showDollarChange = true;
@@ -503,6 +508,32 @@
             }
         };
 
+        // Percent Change Filter
+        vm.percentChangeFilter = function()
+        {
+            if (vm.percentChangeFilterValue < 0) {return function(item){ return item['percentChange'] <= vm.percentChangeFilterValue * -1; };}
+            else {return function(item){ return item['percentChange'] >= vm.percentChangeFilterValue; };}
+        };
+
+        // On Percent Change Radio Change
+        vm.percentChangeChange = function() {
+            vm.percentChangeToggle=true;
+            vm.percentChangeDisabled=false;
+            if (vm.percentChangeFilterValue < 0) {vm.percentChangeIndicator = vm.percentChangeFilterValue * -1;}
+            else {vm.percentChangeIndicator = vm.percentChangeFilterValue;}
+
+        };
+
+        // On Percent Change Toggle Change
+        vm.percentChangeFilterCheck = function (state) {
+            if (state == false) {
+                vm.percentChangeFilterValue=-100;
+                vm.percentChangeRadio=false;
+                vm.percentChangeDisabled=true;
+                vm.percentChangeIndicator='Any';
+            }
+        };
+
         // Vitals Modal
         vm.openVitals = function (e, symbol) {
             $mdDialog.show({
@@ -576,6 +607,7 @@
         vm.filterFloat = [{'value':'50000000','text':'50M'},{'value':'100000000','text':'100M'},{'value':'500000000','text':'500M'}];
         vm.filterShort = [{'value':'5','text':'5%'},{'value':'15','text':'15%'},{'value':'25','text':'25%'}];
         vm.filterTime = [{'value':'2','text':'Before Market'},{'value':'1','text':'After Market'},{'value':'3','text':'Intraday'},{'value':'4','text':'Unknown'}];
+        vm.filterPercentChange = [{'value':'5','text':'5%'},{'value':'10','text':'10%'},{'value':'15','text':'15%'}];
 
     }
 })();
