@@ -336,6 +336,138 @@ $app->get('/winners', function () use ($app) {
     }
 });
 
+$app->get('/earningsDay/:symbol', function ($symbol) use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+    $earningsDay = get_earningsDay($symbol);
+    if (null !== $earningsDay) {
+        $app->response->setStatus(200);
+        echo json_encode($earningsDay);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
+$app->get('/gapUpAndFade', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $gapUpAndFade = get_gapUpAndFade();
+    if (null !== $gapUpAndFade) {
+        $app->response->setStatus(200);
+        echo json_encode($gapUpAndFade);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
+$app->get('/gapperWinners', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $gapperWinners = get_gapperWinners();
+    if (null !== $gapperWinners) {
+        $app->response->setStatus(200);
+        echo json_encode($gapperWinners);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
+$app->get('/bullishEarningsDayReversal', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $bullishEarningsDayReversal = get_bullishEarningsDayReversal();
+    if (null !== $bullishEarningsDayReversal) {
+        $app->response->setStatus(200);
+        echo json_encode($bullishEarningsDayReversal);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
+$app->get('/earningsTomorrow', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $earningsTomorrow = get_earningsTomorrow();
+    if (null !== $earningsTomorrow) {
+        $app->response->setStatus(200);
+        echo json_encode($earningsTomorrow);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
+$app->get('/symbolLists', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $symbolLists = get_symbolLists();
+    if (null !== $symbolLists) {
+        $app->response->setStatus(200);
+        echo json_encode($symbolLists);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
+$app->get('/indices', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $indices = get_indices();
+    if (null !== $indices) {
+        $app->response->setStatus(200);
+        echo json_encode($indices);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
+$app->get('/lastAnnouncement/:symbol', function ($symbol) use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+    $lastAnnouncement = get_lastAnnouncement($symbol);
+    if (null !== $lastAnnouncement) {
+        $app->response->setStatus(200);
+        echo json_encode($lastAnnouncement);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
+$app->get('/nextAnnouncement/:symbol', function ($symbol) use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+    $nextAnnouncement = get_nextAnnouncement($symbol);
+    if (null !== $nextAnnouncement) {
+        $app->response->setStatus(200);
+        echo json_encode($nextAnnouncement);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
 // Data Functions
 function get_ecal() {
     $pdo = connect_to_db();    
@@ -497,6 +629,69 @@ function get_winners() {
   $pdo = connect_to_db();    
   $data = $pdo->query('SELECT max(archiveId) as id, symbol, max(date) as date, percentChange, avgVol FROM winners GROUP BY symbol, month(date) ORDER BY date ASC')->fetchAll();
   return $data;
+}
+
+function get_earningsDay($symbol) {
+    $pdo = connect_to_db();    
+    $sth = $pdo->prepare('SELECT * FROM `earnings_announcements` WHERE symbol = ?');
+    $sth->bindParam(1, $symbol, PDO::PARAM_STR, 12);
+    $sth->execute();
+    $data = $sth->fetchAll();
+    return $data;
+}
+
+function get_gapUpAndFade() {
+    $pdo = connect_to_db();
+    $data = $pdo->query('SELECT *, ((earningsDayOpen - prevDayClose)/prevDayClose)*100 as earningsDayOpenPercentChange FROM `earnings_announcements` HAVING earningsDayOpenPercentChange >= 5 AND earningsDayPercentChange < 0')->fetchAll();
+    return $data;
+}
+
+function get_gapperWinners() {
+    $pdo = connect_to_db();
+    $data = $pdo->query('SELECT *,  ((earningsDayOpen - prevDayClose)/prevDayClose)*100 as earningsDayOpenPercentChange FROM `earnings_announcements` HAVING earningsDayOpenPercentChange >= 5 AND earningsDayPercentChange > earningsDayOpenPercentChange')->fetchAll();
+    return $data;
+}
+
+function get_bullishEarningsDayReversal() {
+    $pdo = connect_to_db();
+    $data = $pdo->query('SELECT *,  ((earningsDayOpen - prevDayClose)/prevDayClose)*100 as earningsDayOpenPercentChange FROM `earnings_announcements` HAVING earningsDayOpenPercentChange < 0 AND earningsDayPercentChange > 0')->fetchAll();
+    return $data;
+}
+
+function get_earningsTomorrow() {
+    $pdo = connect_to_db();    
+    $data = $pdo->query('SELECT * FROM earnings_tomorrow')->fetchAll();
+    return $data;
+}
+
+function get_symbolLists() {
+    $pdo = connect_to_db();    
+    $data = $pdo->query('SELECT * FROM symbol_lists')->fetchAll();
+    return $data;
+}
+
+function get_indices() {
+    $pdo = connect_to_db();    
+    $data = $pdo->query('SELECT * FROM indices')->fetchAll();
+    return $data;
+}
+
+function get_lastAnnouncement($symbol) {
+    $pdo = connect_to_db();    
+    $sth = $pdo->prepare('SELECT * FROM `earnings_announcements` WHERE symbol = ? ORDER BY earningsDate desc LIMIT 1');
+    $sth->bindParam(1, $symbol, PDO::PARAM_STR, 12);
+    $sth->execute();
+    $data = $sth->fetchAll();
+    return $data;
+}
+
+function get_nextAnnouncement($symbol) {
+    $pdo = connect_to_db();    
+    $sth = $pdo->prepare('SELECT id, symbol, announce as earningsTime, LEAST( IF(qrOne=0,DATE_ADD(CURRENT_DATE(), INTERVAL 365 DAY),qrOne), IF(qrTwo=0,DATE_ADD(CURRENT_DATE(), INTERVAL 365 DAY),qrTwo), IF(fr=0,DATE_ADD(CURRENT_DATE(), INTERVAL 365 DAY),fr) ) as nextAnnouncement from `ecal_future` where symbol = ?');
+    $sth->bindParam(1, $symbol, PDO::PARAM_STR, 12);
+    $sth->execute();
+    $data = $sth->fetchAll();
+    return $data;
 }
 
 $app->run();
