@@ -321,6 +321,36 @@ $app->get('/heatmap', function () use ($app) {
     }
 });
 
+$app->get('/heatmapCalendar', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $heatmapCalendar = get_heatmapCalendar();
+    if (null !== $heatmapCalendar) {
+        $app->response->setStatus(200);
+        echo json_encode($heatmapCalendar);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
+$app->get('/customHeatmap/:start/:end', function ($start,$end) use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $customHeatmap = get_customHeatmap($start,$end);
+    if (null !== $customHeatmap) {
+        $app->response->setStatus(200);
+        echo json_encode($customHeatmap);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
 $app->get('/winners', function () use ($app) {
     $response = $app->response();
     $response->header('Access-Control-Allow-Origin', '*');
@@ -395,6 +425,21 @@ $app->get('/bullishEarningsDayReversal', function () use ($app) {
     }
 });
 
+$app->get('/earningsToday', function () use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+
+    $earningsToday = get_earningsToday();
+    if (null !== $earningsToday) {
+        $app->response->setStatus(200);
+        echo json_encode($earningsToday);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
+
 $app->get('/earningsTomorrow', function () use ($app) {
     $response = $app->response();
     $response->header('Access-Control-Allow-Origin', '*');
@@ -440,34 +485,51 @@ $app->get('/indices', function () use ($app) {
     }
 });
 
-$app->get('/lastAnnouncement/:symbol', function ($symbol) use ($app) {
+$app->get('/lastEarnings/:symbol', function ($symbol) use ($app) {
     $response = $app->response();
     $response->header('Access-Control-Allow-Origin', '*');
     $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
     $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
-    $lastAnnouncement = get_lastAnnouncement($symbol);
-    if (null !== $lastAnnouncement) {
+    $lastEarnings = get_lastEarnings($symbol);
+    if (null !== $lastEarnings) {
         $app->response->setStatus(200);
-        echo json_encode($lastAnnouncement);
+        echo json_encode($lastEarnings);
     } else {
         $app->response->setStatus(401);
     }
 });
 
-$app->get('/nextAnnouncement/:symbol', function ($symbol) use ($app) {
+$app->get('/nextEarnings/:symbol', function ($symbol) use ($app) {
     $response = $app->response();
     $response->header('Access-Control-Allow-Origin', '*');
     $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
     $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
-    $nextAnnouncement = get_nextAnnouncement($symbol);
-    if (null !== $nextAnnouncement) {
+    $nextEarnings = get_nextEarnings($symbol);
+    if (null !== $nextEarnings) {
         $app->response->setStatus(200);
-        echo json_encode($nextAnnouncement);
+        echo json_encode($nextEarnings);
     } else {
         $app->response->setStatus(401);
     }
 });
 
+$app->get('/dashboardEarnings/:symbol', function ($symbol) use ($app) {
+    $response = $app->response();
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST , OPTIONS');
+    $response->header('Access-Control-Allow-Headers', 'Cache-Control, Pragma, accept, x-requested-with, origin, content-type, x-xsrf-token');
+    $dashboardEarnings = get_dashboardEarnings($symbol);
+    $nextEarnings = get_nextEarnings($symbol);
+    $quarterlyPerformance = get_quarterlyPerformance($symbol);
+
+    if (null !== $nextEarnings || null !== $dashboardEarnings || null !== $quarterlyPerformance) {
+        $app->response->setStatus(200);
+        $result = array_merge($nextEarnings,$dashboardEarnings,$quarterlyPerformance);
+        echo json_encode($result);
+    } else {
+        $app->response->setStatus(401);
+    }
+});
 // Data Functions
 function get_ecal() {
     $pdo = connect_to_db();    
@@ -485,7 +547,7 @@ function get_ecalUpdate() {
     $pdo = connect_to_db();
     $today = date('l');
 
-    if ($today != 'Saturday' || $today != 'Sunday' ) { $data = $pdo->query('SELECT * FROM earnings_calendar_latest WHERE announce IN (2,3,4) UNION SELECT * FROM earnings_calendar_archive WHERE date = subdate(current_date,1) AND announce = 1;')->fetchAll(); }
+    if ($today != 'Saturday' || $today != 'Sunday' ) { $data = $pdo->query('SELECT * FROM earnings_calendar_latest WHERE announce IN (2,3,4) UNION SELECT * FROM earnings_calendar_archive WHERE date = subdate(current_date,1) AND announce = 1 order by symbol asc;')->fetchAll(); }
 
     if ( $today == 'Saturday' ) { $data = $pdo->query('SELECT * FROM earnings_calendar_latest WHERE announce IN (2,3,4) UNION SELECT * FROM earnings_calendar_archive WHERE date = subdate(current_date,2) AND announce = 1;')->fetchAll(); }
 
@@ -545,7 +607,7 @@ function get_ecalPre() {
 
 function get_ecalNext() {
     $pdo = connect_to_db();    
-    $data = $pdo->query('SELECT * FROM ecal_next')->fetchAll();
+    $data = $pdo->query('SELECT * FROM ecal_next UNION SELECT * from earnings_calendar_latest WHERE announce = 1 order by symbol asc')->fetchAll();
     return $data;
 }
 
@@ -602,9 +664,9 @@ function get_ecalYear($year) {
 function get_ecalFrom($start,$end) {
     $pdo = connect_to_db();
 
-    $sth = $pdo->prepare('
-        SELECT max(id) as id, symbol, announce, avgVol, max(`earnings_calendar_archive`.`date`) as date FROM earnings_calendar_archive WHERE date BETWEEN ? AND ? GROUP BY symbol, month(`earnings_calendar_archive`.`date`) ORDER BY date ASC
-    ');
+    //$sth = $pdo->prepare('SELECT max(id) as id, symbol, announce, avgVol, max(`earnings_calendar_archive`.`date`) as date FROM earnings_calendar_archive WHERE date BETWEEN ? AND ? GROUP BY symbol, month(`earnings_calendar_archive`.`date`) ORDER BY date ASC');
+
+    $sth = $pdo->prepare('SELECT id, symbol, announce, avgVol, date FROM earnings_calendar_archive WHERE date BETWEEN ? AND ? ORDER BY date ASC');    
     $sth->bindParam(1, $start, PDO::PARAM_STR, 12);
     $sth->bindParam(2, $end, PDO::PARAM_STR, 12);
     $sth->execute();
@@ -625,9 +687,51 @@ function get_heatmap() {
   return $data;
 }
 
+function get_customHeatmap($start,$end) {
+  $pdo = connect_to_db();    
+  $sth = $pdo->prepare('SELECT date,count(*) as count FROM `earnings_calendar_archive` WHERE date BETWEEN ? AND CURDATE() GROUP BY date UNION SELECT DATE_FORMAT(qrOne,"%Y-%m-%d") as date,count(*) as count FROM `ecal_future` WHERE (qrOne BETWEEN CURDATE() AND ?) AND qrOne > current_date() GROUP BY qrOne ORDER BY `date` ASC');
+  $sth->bindParam(1, $start, PDO::PARAM_STR, 12);
+  $sth->bindParam(2, $end, PDO::PARAM_STR, 12);
+  $sth->execute();
+  $data = $sth->fetchAll();
+  return $data;
+}
+
+function get_heatmapCalendar() {
+  $pdo = connect_to_db();    
+  //  $data = $pdo->query('SELECT DATE_FORMAT(DATE_ADD(date, INTERVAL(-WEEKDAY(date)) DAY),"%a %b %d %Y") as name, date as rawDate, DATE_FORMAT(date,"%a %b %d %Y") as date, DATE_FORMAT(date,"%a") as day, count(*) as value FROM `earnings_calendar_archive` WHERE date BETWEEN DATE_FORMAT(CURDATE(), "%Y-%m-01") - INTERVAL 2 MONTH AND CURDATE() GROUP BY date UNION SELECT DATE_FORMAT(DATE_ADD(qrOne, INTERVAL(-WEEKDAY(qrOne)) DAY),"%a %b %d %Y") as name, qrOne as rawDate, DATE_FORMAT(qrOne,"%a %b %d %Y") as date, DATE_FORMAT(qrOne,"%a") as day, count(*) as value FROM `ecal_future` WHERE qrOne BETWEEN DATE_FORMAT(NOW() ,"%Y-%m-01") AND LAST_DAY(DATE_ADD(NOW(), INTERVAL 2 MONTH)) AND qrOne > current_date() GROUP BY qrOne ORDER BY name ASC, rawDate DESC')->fetchAll(\PDO::FETCH_GROUP);
+  //  $stmt = $pdo->prepare('SELECT DATE_FORMAT(DATE_ADD(date, INTERVAL(-WEEKDAY(date)) DAY),"%a %b %d %Y") as name, date as rawDate, DATE_FORMAT(date,"%a %b %d %Y") as date, DATE_FORMAT(date,"%a") as day, count(*) as value FROM `earnings_calendar_archive` WHERE date BETWEEN DATE_FORMAT(CURDATE(), "%Y-%m-01") - INTERVAL 2 MONTH AND CURDATE() GROUP BY date UNION SELECT DATE_FORMAT(DATE_ADD(qrOne, INTERVAL(-WEEKDAY(qrOne)) DAY),"%a %b %d %Y") as name, qrOne as rawDate, DATE_FORMAT(qrOne,"%a %b %d %Y") as date, DATE_FORMAT(qrOne,"%a") as day, count(*) as value FROM `ecal_future` WHERE qrOne BETWEEN DATE_FORMAT(NOW() ,"%Y-%m-01") AND LAST_DAY(DATE_ADD(NOW(), INTERVAL 2 MONTH)) AND qrOne > current_date() GROUP BY qrOne ORDER BY name ASC, rawDate DESC');
+  $stmt = $pdo->prepare('select * from ((SELECT DATE_FORMAT(DATE_ADD(date, INTERVAL(-WEEKDAY(date)) DAY),"%a %b %d %Y") as name, DATE_ADD(date, INTERVAL(-WEEKDAY(date)) DAY) as sortDateAsc, date as sortDateDesc, DATE_FORMAT(date,"%a %b %d %Y") as date, DATE_FORMAT(date,"%a") as day, count(*) as value FROM `earnings_calendar_archive` WHERE date BETWEEN DATE_FORMAT(CURDATE(), "%Y-%m-01") - INTERVAL 2 MONTH AND CURDATE() GROUP BY date order by name ASC, sortDateDesc DESC ) UNION ALL (SELECT DATE_FORMAT(DATE_ADD(qrOne, INTERVAL(-WEEKDAY(qrOne)) DAY),"%a %b %d %Y") as name, DATE_ADD(qrOne, INTERVAL(-WEEKDAY(qrOne)) DAY) as sortDateAsc, qrOne as sortDateDesc, DATE_FORMAT(qrOne,"%a %b %d %Y") as date, DATE_FORMAT(qrOne,"%a") as day, count(*) as value FROM `ecal_future` WHERE qrOne BETWEEN DATE_FORMAT(NOW() ,"%Y-%m-01") AND LAST_DAY(DATE_ADD(NOW(), INTERVAL 2 MONTH)) AND qrOne > current_date() GROUP BY qrOne ORDER BY name ASC, sortDateDesc DESC)) t order by sortDateAsc ASC, sortDateDesc DESC');
+  $stmt->execute();
+  $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+  $temp_array = array();
+  foreach($result as $bf) {
+    if (!isset($temp_array[$bf['name']])) {
+        $temp_array[$bf['name']] = array();
+    }
+    $temp_array[$bf['name']][] = array(
+        "date" => $bf['date'], 
+        "name" => $bf['day'], 
+        "value" => $bf['value']);
+  }
+
+  $final_array = array();
+
+  foreach ($temp_array as $name => $values) {
+    $final_array[] = array(
+        'name' => $name,
+        'series' => $values);
+  }
+  
+  return $final_array;
+}
+
 function get_winners() {
   $pdo = connect_to_db();    
-  $data = $pdo->query('SELECT max(archiveId) as id, symbol, max(date) as date, percentChange, avgVol FROM winners GROUP BY symbol, month(date) ORDER BY date ASC')->fetchAll();
+  $data = $pdo->query('SELECT id, symbol, date, percentChange, avgVol FROM winners')->fetchAll();
+  //$data = $pdo->query('SELECT id, symbol, earningsDate as date, earningsDayPercentChange as percentChange, earningsDayAverageVolumeThirtyDays as avgVol FROM `earnings_announcements` where earningsDate >= subdate(CURRENT_DATE,60) and earningsDayPercentChange >= 5')->fetchAll();
+  
   return $data;
 }
 
@@ -658,6 +762,12 @@ function get_bullishEarningsDayReversal() {
     return $data;
 }
 
+function get_earningsToday() {
+    $pdo = connect_to_db();    
+    $data = $pdo->query('SELECT * FROM earnings_today ORDER BY symbol ASC')->fetchAll();
+    return $data;
+}
+
 function get_earningsTomorrow() {
     $pdo = connect_to_db();    
     $data = $pdo->query('SELECT * FROM earnings_tomorrow')->fetchAll();
@@ -676,22 +786,52 @@ function get_indices() {
     return $data;
 }
 
-function get_lastAnnouncement($symbol) {
+function get_lastEarnings($symbol) {
     $pdo = connect_to_db();    
-    $sth = $pdo->prepare('SELECT * FROM `earnings_announcements` WHERE symbol = ? ORDER BY earningsDate desc LIMIT 1');
+    $sth = $pdo->prepare('SELECT *, ((earningsDayClose - earningsDayOpen)/earningsDayOpen)*100 as earningsDayPercentChangeFromOpen FROM `earnings_announcements` WHERE symbol = ? ORDER BY earningsDate desc LIMIT 1');
     $sth->bindParam(1, $symbol, PDO::PARAM_STR, 12);
     $sth->execute();
     $data = $sth->fetchAll();
     return $data;
 }
 
-function get_nextAnnouncement($symbol) {
+function get_nextEarnings($symbol) {
     $pdo = connect_to_db();    
-    $sth = $pdo->prepare('SELECT id, symbol, announce as earningsTime, LEAST( IF(qrOne=0,DATE_ADD(CURRENT_DATE(), INTERVAL 365 DAY),qrOne), IF(qrTwo=0,DATE_ADD(CURRENT_DATE(), INTERVAL 365 DAY),qrTwo), IF(fr=0,DATE_ADD(CURRENT_DATE(), INTERVAL 365 DAY),fr) ) as nextAnnouncement from `ecal_future` where symbol = ?');
+    //$sth = $pdo->prepare('SELECT id, symbol, announce as nextEarningsTime, LEAST( IF(qrOne=0,DATE_ADD(CURRENT_DATE(), INTERVAL 365 DAY),qrOne), IF(qrTwo=0,DATE_ADD(CURRENT_DATE(), INTERVAL 365 DAY),qrTwo), IF(fr=0,DATE_ADD(CURRENT_DATE(), INTERVAL 365 DAY),fr) ) as nextEarningsDate from `ecal_future` where symbol = ?');
+    $sth = $pdo->prepare('SELECT id, symbol, earningsTime as nextEarningsTime, earningsDate as nextEarningsDate from `earnings_today` where symbol = ? and (reactionDate = current_date() and earningsTime = "AMC") UNION SELECT id, symbol, announce as nextEarningsTime, LEAST( IF(qrOne=0,DATE_ADD(CURRENT_DATE(), INTERVAL 365 DAY),qrOne), IF(qrTwo=0,DATE_ADD(CURRENT_DATE(), INTERVAL 365 DAY),qrTwo), IF(fr=0,DATE_ADD(CURRENT_DATE(), INTERVAL 365 DAY),fr) ) as nextEarningsDate from `ecal_future` where symbol = ? LIMIT 1');
+    //$sth = $pdo->prepare('SELECT id, symbol, announce as nextEarningsTime, date as nextEarningsDate from `earnings_calendar_archive` where symbol = ? and (date = subdate(current_date,1) and announce = "1") UNION SELECT id, symbol, announce as nextEarningsTime, LEAST( IF(qrOne=0,DATE_ADD(CURRENT_DATE(), INTERVAL 365 DAY),qrOne), IF(qrTwo=0,DATE_ADD(CURRENT_DATE(), INTERVAL 365 DAY),qrTwo), IF(fr=0,DATE_ADD(CURRENT_DATE(), INTERVAL 365 DAY),fr) ) as nextEarningsDate from `ecal_future` where symbol = ? LIMIT 1');
+    $sth->bindParam(1, $symbol, PDO::PARAM_STR, 12);
+    $sth->bindParam(2, $symbol, PDO::PARAM_STR, 12);
+    
+    $sth->execute();
+    $data = $sth->fetchAll();
+    return $data;
+}
+
+function get_dashboardEarnings($symbol) {
+    $today = date('l');
+    $pdo = connect_to_db();    
+    //if ( $today != 'Sunday' || $day != 'Monday') { $sth = $pdo->prepare('SELECT id, symbol, earningsDate, earningsTime, earningsDayOpen,earningsDayHigh,earningsDayLow,earningsDayClose,earningsDayVolume FROM `earnings_announcements` WHERE symbol = ? AND reactionDate != current_date() AND earningsDate != current_date() order by earningsDate desc limit 1'); }
+    //if ( $today == 'Sunday' ) { $sth = $pdo->prepare('SELECT id, symbol, earningsDate, earningsTime, earningsDayOpen,earningsDayHigh,earningsDayLow,earningsDayClose,earningsDayVolume FROM `earnings_announcements` WHERE symbol = ? AND reactionDate != current_date() AND (earningsDate = subdate(current_date,2) AND earningsTime != "AMC") order by earningsDate desc limit 1'); }
+    //if ( $today == 'Monday' ) { $sth = $pdo->prepare('SELECT id, symbol, earningsDate, earningsTime, earningsDayOpen,earningsDayHigh,earningsDayLow,earningsDayClose,earningsDayVolume FROM `earnings_announcements` WHERE symbol = ? AND reactionDate != current_date() AND (earningsDate = subdate(current_date,3) AND earningsTime != "AMC") order by earningsDate desc limit 1'); }    
+    $sth = $pdo->prepare('SELECT id, symbol, earningsDate, earningsTime, earningsDayOpen,earningsDayHigh,earningsDayLow,earningsDayClose,earningsDayVolume FROM `earnings_announcements` WHERE symbol = ? AND reactionDate != current_date() AND earningsDate != current_date() order by earningsDate desc limit 1');
+    $sth->bindParam(1, $symbol, PDO::PARAM_STR, 12);
+    
+    $sth->execute();
+    $data = $sth->fetchAll();
+    return $data;
+}
+
+
+function get_quarterlyPerformance($symbol) {
+    $pdo = connect_to_db();    
+    //$sth = $pdo->prepare('SELECT id, symbol, CONCAT("Q",quarter(earningsDate)," ", year(earningsDate)) as quarter, earningsDayPercentChange as changeFromClose, format(((earningsDayClose - earningsDayOpen)/earningsDayOpen)*100,2) as changeFromOpen FROM `earnings_announcements` where symbol = ? order by earningsDate desc limit 4');
+    $sth = $pdo->prepare('SELECT id, symbol, CONCAT("Q",quarter(earningsDate)," ", year(earningsDate)) as quarter, earningsDayPercentChange as changeFromClose, earningsDayPercentChangeFromOpen as changeFromOpen FROM `earnings_announcements` where symbol = ? and earningsDayPercentChange is not null and earningsDayPercentChangeFromOpen is not null order by earningsDate desc limit 4');
     $sth->bindParam(1, $symbol, PDO::PARAM_STR, 12);
     $sth->execute();
     $data = $sth->fetchAll();
     return $data;
 }
+
 
 $app->run();
